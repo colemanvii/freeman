@@ -80,7 +80,7 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
       };
 
       [...document.querySelectorAll('.proj-btn')].forEach((b,i)=>b.classList.toggle('has-testimonial',Boolean(projects[i]?.quote)));
-      showProject(typeof current==='number'?current:0);
+      showProject(0);
     }catch(e){console.warn('Freeman testimonial enhancement skipped',e)}
   };
 
