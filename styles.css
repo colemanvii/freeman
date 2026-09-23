@@ -369,3 +369,157 @@ nav button{
   .v3-home-copy h1{font-size:50px!important;max-width:8ch!important}
   .v3-home-image{margin-top:18px!important}
 }
+
+/* V3 project spread */
+.v3-projects{
+  grid-template-columns:17% 83%!important;
+  gap:0!important;
+}
+.project-spread{
+  min-width:0;
+  padding:28px 0 26px 34px;
+  display:grid;
+  grid-template-rows:auto minmax(0,1fr);
+}
+.project-spread-head{
+  display:grid;
+  grid-template-columns:1fr;
+  align-content:start;
+  border-bottom:1px solid rgba(23,24,19,.14);
+  padding-bottom:14px;
+}
+.project-spread-head .micro{
+  font-size:8px!important;
+  letter-spacing:.12em!important;
+  color:var(--muted)!important;
+}
+.project-spread-head h1{
+  font-family:Baskerville,Georgia,serif;
+  font-size:clamp(54px,4.8vw,80px);
+  line-height:.88;
+  font-weight:400;
+  letter-spacing:-.04em;
+  margin:10px 0 0;
+}
+.project-spread-body{
+  min-height:0;
+  display:grid;
+  grid-template-columns:28% 72%;
+  gap:34px;
+  padding-top:20px;
+}
+.project-copy{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  padding-right:4px;
+}
+.project-kicker{
+  font:8px/1.2 Arial,sans-serif;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:var(--red);
+  margin-bottom:14px;
+}
+.project-copy .summary{
+  font-family:Baskerville,Georgia,serif!important;
+  font-size:20px!important;
+  line-height:1.2!important;
+  color:var(--ink)!important;
+  max-width:19ch!important;
+}
+.project-copy .project-commentary{
+  margin-top:20px!important;
+  padding-top:16px!important;
+  border-top:1px solid rgba(23,24,19,.14)!important;
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif!important;
+  font-size:12px!important;
+  line-height:1.52!important;
+  color:#5a5d55!important;
+  max-width:34ch!important;
+}
+.project-testimonial{
+  margin-top:auto!important;
+  padding:14px 0 0!important;
+  border-left:0!important;
+  border-top:1px solid rgba(23,24,19,.14)!important;
+}
+.project-testimonial .testimonial-label{
+  font-size:7px!important;
+  letter-spacing:.12em!important;
+}
+.project-testimonial .project-quote{
+  font-size:16px!important;
+  line-height:1.22!important;
+  max-width:25ch!important;
+}
+.project-testimonial .testimonial-credit{
+  font-size:7px!important;
+}
+.project-spread .proj-image{
+  margin:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  min-height:0!important;
+}
+.project-spread .proj-visual{
+  height:auto!important;
+  min-height:0!important;
+  flex:1 1 auto!important;
+}
+.project-spread .proj-visual img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+}
+.project-spread .quickfacts{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:0 18px!important;
+  margin-top:10px!important;
+  border-top:1px solid rgba(23,24,19,.16)!important;
+}
+.project-spread .qf{
+  display:block!important;
+  padding:9px 0 7px!important;
+  border-bottom:0!important;
+}
+.project-spread .qf .k{
+  font-size:7px!important;
+  letter-spacing:.12em!important;
+}
+.project-spread .qf .v{
+  font-size:10px!important;
+  line-height:1.18!important;
+  margin-top:3px!important;
+}
+.project-spread .project-nav{
+  margin-top:0!important;
+  padding-top:8px!important;
+  border-top:1px solid rgba(23,24,19,.11)!important;
+}
+.project-spread .project-nav button{
+  font-family:Baskerville,Georgia,serif!important;
+  font-size:12px!important;
+  letter-spacing:0!important;
+  text-transform:none!important;
+}
+.project-spread .project-nav span{
+  font-size:7px!important;
+  letter-spacing:.12em!important;
+}
+@media(max-width:1000px){
+  .project-spread{padding-left:24px}
+  .project-spread-body{grid-template-columns:31% 69%;gap:24px}
+  .project-copy .summary{font-size:18px!important}
+}
+@media(max-width:700px){
+  .v3-projects{display:flex!important;flex-direction:column!important}
+  .project-spread{padding:18px 0 30px!important}
+  .project-spread-head h1{font-size:50px!important}
+  .project-spread-body{display:flex!important;flex-direction:column!important;gap:20px!important}
+  .project-copy .summary{max-width:100%!important}
+  .project-copy .project-commentary{max-width:100%!important}
+  .project-spread .proj-visual{height:56svh!important}
+  .project-spread .quickfacts{grid-template-columns:repeat(2,1fr)!important}
+}
