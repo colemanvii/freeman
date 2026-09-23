@@ -41,7 +41,7 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
   if(overview)overview.innerHTML='<div class="freeman-story"><div class="story-note-box"><div class="story-label">THE FREEMAN STORY</div><div class="story-copy">Freeman was built around a simple belief: the construction process should earn the same trust as the finished place. From Cartersville, Georgia, the company brings clear communication, thoughtful coordination and durable craft to hospitality, commercial and residential work — building the relationships, as well as the spaces, intended to last.</div></div></div>';
   const archiveNote=document.querySelector('.archive-head span');if(archiveNote)archiveNote.textContent='A living extension of @builtforgenerations — the work, people, process and evolving Freeman story.';
   const homeStatement=document.querySelector('.home-statement');
-  if(homeStatement&&!document.querySelector('.home-capabilities')){const capabilities=document.createElement('div');capabilities.className='home-capabilities';capabilities.innerHTML='<b>Hospitality</b> · Commercial · High-End Residential<br>Ground-Up <i>/</i> Renovation <i>/</i> Construction Management';homeStatement.appendChild(capabilities)}
+  if(homeStatement&&!document.querySelector('.home-capabilities')){const capabilities=document.createElement('div');capabilities.className='home-capabilities';capabilities.innerHTML='<b>Hospitality</b> · Commercial · Healthcare · High-End Residential<br><strong>The Optimist:</strong> 3-week renovation · on time · under budget';homeStatement.appendChild(capabilities)}
 
   const homeProof=document.querySelector('.home-proof blockquote');
   if(homeProof)homeProof.innerHTML='“A breath of fresh air in the construction industry.”<cite>Paul Nair · Founder, Savi Provisions</cite>';
@@ -52,10 +52,7 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
 
   const installTestimonials=()=>{
     try{
-      projects[0].quote='Freeman treated our project like it mattered — and it showed in the finished work.';
-      projects[0].quoteBy='Rocket Farm Restaurants · Client';
-      projects[3].quote='Professional, responsive, and deeply knowledgeable. Freeman understands both construction and the importance of trust.';
-      projects[3].quoteBy='Bocado Pizza · Client';
+      projects.forEach(p=>{p.quote='';p.quoteBy='';});
       projects[4].quote='Freeman General Contracting is a breath of fresh air in the construction industry. Highly communicative, attentive to detail, and easy to be around.';
       projects[4].quoteBy='Paul Nair · Founder, Savi Provisions';
 
