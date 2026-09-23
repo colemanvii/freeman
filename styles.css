@@ -1011,3 +1011,18 @@ nav button{
 @media(max-width:1000px){
   #projects .field-evidence{display:none!important}
 }
+
+/* V3 brand hierarchy — Built for Generations leads */
+.v3-home-copy h1{
+  max-width:6.6ch!important;
+}
+.v3-home-meta{
+  grid-template-columns:1fr!important;
+  align-content:end!important;
+}
+.v3-home-meta span:first-child{
+  color:var(--ink)!important;
+}
+.v3-home-meta span:last-child{
+  color:var(--muted)!important;
+}
