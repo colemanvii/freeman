@@ -57,3 +57,41 @@
   .process-row p{font-size:13px}
   .field-note-meta{grid-template-columns:1fr;gap:3px}
 }
+
+/* V3 Monograph — structural simplification */
+.v3-home{grid-template-columns:31% 69%!important;gap:28px!important}
+.v3-home-copy{padding:34px 30px 18px 0!important;justify-content:flex-start!important}
+.v3-home-copy h1{
+  font-size:clamp(66px,6.2vw,102px)!important;
+  line-height:.84!important;
+  margin:26px 0 0!important;
+  max-width:7ch!important
+}
+.v3-home-meta{
+  margin-top:auto;
+  border-top:1px solid var(--rule);
+  padding-top:12px;
+  display:flex;justify-content:space-between;gap:20px;
+  font:8px/1.35 Arial,sans-serif;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted)
+}
+.v3-home-image{border-radius:0!important}
+.home-proof,.home-statement,.home-capabilities{display:none!important}
+.company-principles{display:none!important}
+.project-process{display:none!important}
+.proj-list .micro{color:var(--red)!important}
+.proj-list h2{margin-top:8px!important}
+.field-note-meta{
+  background:linear-gradient(to top,rgba(18,19,16,.72),rgba(18,19,16,0))!important;
+  border:0!important
+}
+@media(max-width:1000px){
+  .v3-home{grid-template-columns:36% 64%!important}
+  .v3-home-copy h1{font-size:68px!important}
+}
+@media(max-width:700px){
+  .v3-home{display:flex!important;flex-direction:column!important}
+  .v3-home-copy{padding:28px 0 18px!important}
+  .v3-home-copy h1{font-size:54px!important;margin-top:16px!important}
+  .v3-home-meta{margin-top:26px!important}
+}
