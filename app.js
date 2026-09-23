@@ -40,15 +40,7 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
   const overview=document.getElementById('overview');
   if(overview)overview.innerHTML='<div class="freeman-story"><div class="story-note-box"><div class="story-label">THE FREEMAN STORY</div><div class="story-copy">Freeman was built around a simple belief: the construction process should earn the same trust as the finished place. From Cartersville, Georgia, the company brings clear communication, thoughtful coordination and durable craft to hospitality, commercial and residential work — building the relationships, as well as the spaces, intended to last.</div></div></div>';
   const archiveNote=document.querySelector('.archive-head span');if(archiveNote)archiveNote.textContent='The working record behind the finished work — people, process, materials and decisions.';
-  const homeStatement=document.querySelector('.home-statement');
-  if(homeStatement&&!document.querySelector('.home-capabilities')){
-    const capabilities=document.createElement('div');capabilities.className='home-capabilities';
-    capabilities.innerHTML='<div class="v3-live"><span>CURRENTLY</span><b>Barnsley Gardens · Adairsville, Georgia</b><em>In the field</em></div><div class="v3-record"><span>PROJECT RECORD</span><b>The Optimist</b><em>3-week renovation · on time · under budget</em></div>';
-    homeStatement.appendChild(capabilities)
-  }
-
-  const homeProof=document.querySelector('.home-proof blockquote');
-  if(homeProof)homeProof.innerHTML='“A breath of fresh air in the construction industry.”<cite>Paul Nair · Founder, Savi Provisions</cite>';
+  // Homepage opening is intentionally spare in V3; proof lives with the work.
 
   const loader=document.createElement('div');loader.id='freeman-loader';loader.setAttribute('aria-hidden','true');loader.innerHTML='<img src="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6904f319ecdcf81821e678cb_Red%20Freeman%20Eagle.svg" alt="">';document.body.prepend(loader);
   const dismiss=()=>{loader.classList.add('out');setTimeout(()=>loader.remove(),550)};
@@ -70,33 +62,18 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
         quoteEl.parentNode.insertBefore(wrap,quoteEl);wrap.appendChild(label);wrap.appendChild(quoteEl);wrap.appendChild(credit);
       }else if(wrap){credit=wrap.querySelector('.testimonial-credit')}
 
-      const processByProject={
-        'Beetlecat':{
-          challenge:"Coordinate a highly detailed restaurant interior around the operational needs of service.",
-          decision:"Carry the design through construction while protecting the character of the room and the practical demands of the restaurant."
-        },
-        'The Optimist':{
-          challenge:"A three-week renovation schedule with no room for drift.",
-          decision:"Execute a custom radius window, radius tile around the oven, bespoke millwork, custom stainless pieces and new finishes within the compressed schedule.",
-          result:"Delivered on time and under budget."
-        },
-        'Barnsley Gardens':{
-          challenge:"Work inside an established resort environment where the finished work needed to feel at home from day one.",
-          decision:"Use disciplined coordination and close attention to the details guests actually experience."
-        },
-        'O-Ku Atlanta':{
-          challenge:"A full restaurant renovation on a tight three-week schedule.",
-          decision:"New custom millwork, a refreshed bar, new flooring in the dining and kitchen areas, and updated finishes throughout."
-        }
+
+      // V3 field evidence is project-specific and optional.
+      // Do not render generic archive imagery as proof for a project.
+      const fieldEvidenceByProject={
+        // Populate only with verified project-specific assets.
       };
+      window.freemanFieldEvidence=fieldEvidenceByProject;
 
-      const story=document.querySelector('.project-story');
-      let process=document.querySelector('.project-process');
-      if(story&&!process){
-        process=document.createElement('div');process.className='project-process';
-        story.insertBefore(process,document.querySelector('.project-testimonial'));
-      }
+      const existingProcess=document.querySelector('.project-process');
+      if(existingProcess)existingProcess.remove();
 
+      // Field Notes remains the chronological, unpaired working log.
       const fieldNotes=[...document.querySelectorAll('.archive-cell')].map((cell,i)=>({
         number:String(i+1).padStart(3,'0'),
         image:cell.querySelector('img')?.src||'',
@@ -109,9 +86,9 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
         if(!cell)return;
         cell.classList.add('field-note');
         const old=cell.querySelector('span'); if(old)old.remove();
-        const meta=document.createElement('div');meta.className='field-note-meta';
+        let meta=cell.querySelector('.field-note-meta');
+        if(!meta){meta=document.createElement('div');meta.className='field-note-meta';cell.appendChild(meta)}
         meta.innerHTML='<span class="field-note-number">FIELD NOTE '+note.number+'</span><b>'+note.title+'</b><em>'+note.meta+'</em>';
-        cell.appendChild(meta);
         cell.setAttribute('aria-label','Field Note '+note.number);
       });
 
@@ -119,16 +96,6 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
       showProject=function(i){
         baseShowProject(i);
         const p=projects[i];
-        const facts=processByProject[p.name]||{};
-        if(process){
-          const rows=[
-            ['WHAT FREEMAN BUILT',p.summary],
-            ['CHALLENGE',facts.challenge],
-            ['DECISION',facts.decision],
-            ['RESULT',facts.result]
-          ].filter(x=>x[1]);
-          process.innerHTML=rows.map(x=>'<div class="process-row"><span>'+x[0]+'</span><p>'+x[1]+'</p></div>').join('');
-        }
         const box=document.querySelector('.project-testimonial');
         const c=box?.querySelector('.testimonial-credit');
         if(box){box.style.display=p.quote?'block':'none'}
@@ -141,7 +108,7 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
   };
 
   const core=document.createElement('script');
-  core.src='app-core.js?v=v3field1';
+  core.src='app-core.js?v=v3mono2';
   core.onload=installTestimonials;
   document.body.appendChild(core);
 })();
