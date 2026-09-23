@@ -100,6 +100,14 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
         const c=box?.querySelector('.testimonial-credit');
         if(box){box.style.display=p.quote?'block':'none'}
         if(c)c.textContent=p.quoteBy||'';
+        const nav=document.getElementById('projectNav');
+        if(nav){
+          const prev=projects[(i-1+projects.length)%projects.length];
+          const next=projects[(i+1)%projects.length];
+          nav.innerHTML='<button type="button" class="project-nav-prev">← '+prev.name+'</button><span>'+String(i+1).padStart(2,'0')+' / '+String(projects.length).padStart(2,'0')+'</span><button type="button" class="project-nav-next">'+next.name+' →</button>';
+          nav.querySelector('.project-nav-prev').onclick=()=>showProject((i-1+projects.length)%projects.length);
+          nav.querySelector('.project-nav-next').onclick=()=>showProject((i+1)%projects.length);
+        }
       };
 
       [...document.querySelectorAll('.proj-btn')].forEach((b,i)=>b.classList.toggle('has-testimonial',Boolean(projects[i]?.quote)));
