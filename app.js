@@ -38,7 +38,7 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
 
   const overviewBtn=document.querySelector('.subnav button[data-sub="overview"]');if(overviewBtn)overviewBtn.textContent='Story';
   const overview=document.getElementById('overview');
-  if(overview)overview.innerHTML='<div class="freeman-story"><div class="story-note-box"><div class="story-label">THE FREEMAN STORY</div><div class="story-copy">Freeman was built around a simple belief: the construction process should earn the same trust as the finished place. From Cartersville, Georgia, the company brings clear communication, thoughtful coordination and durable craft to hospitality, commercial and residential work — building the relationships, as well as the spaces, intended to last.</div></div></div>';
+  if(overview)overview.innerHTML='<div class="freeman-story"><div class="story-note-box"><div class="story-label">THE FREEMAN STORY</div><div class="story-copy">Freeman was built around a simple belief: the construction process should earn the same trust as the finished place. Built for Generations is the standard. Constructing Hospitality describes the way Freeman works — with clear communication, thoughtful coordination and respect for the people involved.</div></div></div>';
   const archiveNote=document.querySelector('.archive-head span');if(archiveNote)archiveNote.textContent='The working record behind the finished work — people, process, materials and decisions.';
   // Homepage opening is intentionally spare in V3; proof lives with the work.
 
