@@ -39,9 +39,13 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
   const overviewBtn=document.querySelector('.subnav button[data-sub="overview"]');if(overviewBtn)overviewBtn.textContent='Story';
   const overview=document.getElementById('overview');
   if(overview)overview.innerHTML='<div class="freeman-story"><div class="story-note-box"><div class="story-label">THE FREEMAN STORY</div><div class="story-copy">Freeman was built around a simple belief: the construction process should earn the same trust as the finished place. From Cartersville, Georgia, the company brings clear communication, thoughtful coordination and durable craft to hospitality, commercial and residential work — building the relationships, as well as the spaces, intended to last.</div></div></div>';
-  const archiveNote=document.querySelector('.archive-head span');if(archiveNote)archiveNote.textContent='A living extension of @builtforgenerations — the work, people, process and evolving Freeman story.';
+  const archiveNote=document.querySelector('.archive-head span');if(archiveNote)archiveNote.textContent='The working record behind the finished work — people, process, materials and decisions.';
   const homeStatement=document.querySelector('.home-statement');
-  if(homeStatement&&!document.querySelector('.home-capabilities')){const capabilities=document.createElement('div');capabilities.className='home-capabilities';capabilities.innerHTML='<b>Hospitality</b> · Commercial · Healthcare · High-End Residential<br><strong>The Optimist:</strong> 3-week renovation · on time · under budget';homeStatement.appendChild(capabilities)}
+  if(homeStatement&&!document.querySelector('.home-capabilities')){
+    const capabilities=document.createElement('div');capabilities.className='home-capabilities';
+    capabilities.innerHTML='<div class="v3-live"><span>CURRENTLY</span><b>Barnsley Gardens · Adairsville, Georgia</b><em>In the field</em></div><div class="v3-record"><span>PROJECT RECORD</span><b>The Optimist</b><em>3-week renovation · on time · under budget</em></div>';
+    homeStatement.appendChild(capabilities)
+  }
 
   const homeProof=document.querySelector('.home-proof blockquote');
   if(homeProof)homeProof.innerHTML='“A breath of fresh air in the construction industry.”<cite>Paul Nair · Founder, Savi Provisions</cite>';
@@ -66,10 +70,65 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
         quoteEl.parentNode.insertBefore(wrap,quoteEl);wrap.appendChild(label);wrap.appendChild(quoteEl);wrap.appendChild(credit);
       }else if(wrap){credit=wrap.querySelector('.testimonial-credit')}
 
+      const processByProject={
+        'Beetlecat':{
+          challenge:"Coordinate a highly detailed restaurant interior around the operational needs of service.",
+          decision:"Carry the design through construction while protecting the character of the room and the practical demands of the restaurant."
+        },
+        'The Optimist':{
+          challenge:"A three-week renovation schedule with no room for drift.",
+          decision:"Execute a custom radius window, radius tile around the oven, bespoke millwork, custom stainless pieces and new finishes within the compressed schedule.",
+          result:"Delivered on time and under budget."
+        },
+        'Barnsley Gardens':{
+          challenge:"Work inside an established resort environment where the finished work needed to feel at home from day one.",
+          decision:"Use disciplined coordination and close attention to the details guests actually experience."
+        },
+        'O-Ku Atlanta':{
+          challenge:"A full restaurant renovation on a tight three-week schedule.",
+          decision:"New custom millwork, a refreshed bar, new flooring in the dining and kitchen areas, and updated finishes throughout."
+        }
+      };
+
+      const story=document.querySelector('.project-story');
+      let process=document.querySelector('.project-process');
+      if(story&&!process){
+        process=document.createElement('div');process.className='project-process';
+        story.insertBefore(process,document.querySelector('.project-testimonial'));
+      }
+
+      const fieldNotes=[...document.querySelectorAll('.archive-cell')].map((cell,i)=>({
+        number:String(i+1).padStart(3,'0'),
+        image:cell.querySelector('img')?.src||'',
+        title:'From the field',
+        meta:'Freeman archive'
+      }));
+      window.freemanFieldNotes=fieldNotes;
+      fieldNotes.forEach((note,i)=>{
+        const cell=document.querySelectorAll('.archive-cell')[i];
+        if(!cell)return;
+        cell.classList.add('field-note');
+        const old=cell.querySelector('span'); if(old)old.remove();
+        const meta=document.createElement('div');meta.className='field-note-meta';
+        meta.innerHTML='<span class="field-note-number">FIELD NOTE '+note.number+'</span><b>'+note.title+'</b><em>'+note.meta+'</em>';
+        cell.appendChild(meta);
+        cell.setAttribute('aria-label','Field Note '+note.number);
+      });
+
       const baseShowProject=showProject;
       showProject=function(i){
         baseShowProject(i);
         const p=projects[i];
+        const facts=processByProject[p.name]||{};
+        if(process){
+          const rows=[
+            ['WHAT FREEMAN BUILT',p.summary],
+            ['CHALLENGE',facts.challenge],
+            ['DECISION',facts.decision],
+            ['RESULT',facts.result]
+          ].filter(x=>x[1]);
+          process.innerHTML=rows.map(x=>'<div class="process-row"><span>'+x[0]+'</span><p>'+x[1]+'</p></div>').join('');
+        }
         const box=document.querySelector('.project-testimonial');
         const c=box?.querySelector('.testimonial-credit');
         if(box){box.style.display=p.quote?'block':'none'}
@@ -82,7 +141,7 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
   };
 
   const core=document.createElement('script');
-  core.src='app-core.js?v=testimonials1';
+  core.src='app-core.js?v=v3field1';
   core.onload=installTestimonials;
   document.body.appendChild(core);
 })();
