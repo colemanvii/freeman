@@ -116,7 +116,7 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
   };
 
   const core=document.createElement('script');
-  core.src='app-core.js?v=v3mono2';
+  core.src='app-core.js?v=v3project1';
   core.onload=installTestimonials;
   document.body.appendChild(core);
 })();
