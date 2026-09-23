@@ -96,6 +96,19 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
       showProject=function(i){
         baseShowProject(i);
         const p=projects[i];
+        const evidence=fieldEvidenceByProject[p.name];
+        const evidenceEl=document.getElementById('pEvidence');
+        if(evidenceEl){
+          if(evidence){
+            evidenceEl.hidden=false;
+            document.getElementById('pEvidenceImage').src=evidence.image;
+            document.getElementById('pEvidenceImage').alt=evidence.alt||('');
+            document.getElementById('pEvidenceNo').textContent=evidence.number||'FIELD NOTE';
+            document.getElementById('pEvidenceMeta').textContent=evidence.meta||'';
+          }else{
+            evidenceEl.hidden=true;
+          }
+        }
         const box=document.querySelector('.project-testimonial');
         const c=box?.querySelector('.testimonial-credit');
         if(box){box.style.display=p.quote?'block':'none'}
@@ -116,7 +129,7 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
   };
 
   const core=document.createElement('script');
-  core.src='app-core.js?v=v3project1';
+  core.src='app-core.js?v=freemanrecord1';
   core.onload=installTestimonials;
   document.body.appendChild(core);
 })();
