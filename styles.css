@@ -776,3 +776,238 @@ nav button{
 @media(max-width:1000px){
   #projects .field-evidence-reserved{display:none!important}
 }
+
+/* THE FREEMAN RECORD — canonical project screen */
+@media(min-width:1001px){
+  #projects{overflow:hidden!important}
+  #projects .v3-record{
+    height:100%!important;
+    display:grid!important;
+    grid-template-columns:9.5% 90.5%!important;
+    gap:0!important;
+    padding:0 0 24px!important;
+  }
+
+  #projects .record-index{
+    height:100%!important;
+    padding:28px 14px 0 0!important;
+    border-right:1px solid rgba(23,24,19,.12)!important;
+    overflow:hidden!important;
+  }
+  #projects .record-index .proj-list-items{
+    border-top:0!important;
+  }
+  #projects .record-index .proj-btn{
+    width:100%!important;
+    height:28px!important;
+    padding:0!important;
+    display:grid!important;
+    grid-template-columns:16px minmax(0,1fr)!important;
+    gap:2px!important;
+    border:0!important;
+    background:none!important;
+  }
+  #projects .record-index .proj-btn .n{
+    font:6px/1 Arial,sans-serif!important;
+    color:#a4a69f!important;
+  }
+  #projects .record-index .proj-btn .nm{
+    font-family:Baskerville,Georgia,serif!important;
+    font-size:10px!important;
+    line-height:1!important;
+    color:#74776f!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+  #projects .record-index .proj-btn.active .nm{
+    color:var(--red)!important;
+    font-style:normal!important;
+  }
+  #projects .record-index .proj-btn.active:before{display:none!important}
+
+  #projects .record-spread{
+    height:100%!important;
+    min-height:0!important;
+    padding:24px 0 0 28px!important;
+    display:grid!important;
+    grid-template-rows:auto minmax(0,1fr) auto!important;
+    overflow:hidden!important;
+  }
+  #projects .record-head{
+    display:block!important;
+    padding:0 0 12px!important;
+    border:0!important;
+  }
+  #projects .record-title{
+    display:flex!important;
+    align-items:flex-end!important;
+    justify-content:space-between!important;
+    gap:24px!important;
+  }
+  #projects .record-title h1{
+    margin:0!important;
+    font-family:Baskerville,Georgia,serif!important;
+    font-size:clamp(54px,4.4vw,74px)!important;
+    line-height:.86!important;
+    font-weight:400!important;
+    letter-spacing:-.04em!important;
+  }
+  #projects .record-title .micro{
+    max-width:46%!important;
+    padding-bottom:3px!important;
+    text-align:right!important;
+    font:7px/1.35 Arial,sans-serif!important;
+    letter-spacing:.12em!important;
+    text-transform:uppercase!important;
+    color:var(--muted)!important;
+  }
+
+  #projects .record-canvas{
+    min-height:0!important;
+    position:relative!important;
+    display:block!important;
+    overflow:hidden!important;
+  }
+  #projects .record-plate{
+    width:78%!important;
+    height:100%!important;
+    min-height:0!important;
+    margin:0!important;
+    display:grid!important;
+    grid-template-rows:minmax(0,1fr) auto!important;
+    gap:0!important;
+    overflow:hidden!important;
+  }
+  #projects .record-plate .proj-visual{
+    width:100%!important;
+    height:100%!important;
+    min-height:0!important;
+    overflow:hidden!important;
+    border-radius:0!important;
+  }
+  #projects .record-plate .proj-visual img{
+    width:100%!important;
+    height:100%!important;
+    object-fit:cover!important;
+    display:block!important;
+  }
+  #projects .record-plate .cap{
+    left:10px!important;
+    bottom:10px!important;
+    padding:6px 8px!important;
+    font-size:7px!important;
+    letter-spacing:.1em!important;
+  }
+
+  #projects .record-foot{
+    display:grid!important;
+    grid-template-columns:38% 62%!important;
+    gap:20px!important;
+    align-items:start!important;
+    margin-top:8px!important;
+    padding-top:8px!important;
+    border-top:1px solid rgba(23,24,19,.13)!important;
+  }
+  #projects .record-summary{
+    min-width:0!important;
+  }
+  #projects .record-summary .summary{
+    font-family:Baskerville,Georgia,serif!important;
+    font-size:13px!important;
+    line-height:1.3!important;
+    color:#42453e!important;
+    max-width:32ch!important;
+  }
+  #projects .record-summary .project-commentary{
+    display:none!important;
+  }
+  #projects .record-summary .project-testimonial{
+    margin-top:10px!important;
+    padding-top:10px!important;
+    border-top:1px solid rgba(23,24,19,.1)!important;
+  }
+  #projects .record-summary .project-testimonial .project-quote{
+    font-size:13px!important;
+    max-width:30ch!important;
+  }
+
+  #projects .record-foot .quickfacts{
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:0 16px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+  }
+  #projects .record-foot .qf{
+    display:block!important;
+    padding:0!important;
+    border:0!important;
+  }
+  #projects .record-foot .qf .k{
+    font:6px/1.2 Arial,sans-serif!important;
+    letter-spacing:.12em!important;
+    text-transform:uppercase!important;
+    color:var(--muted)!important;
+  }
+  #projects .record-foot .qf .v{
+    margin-top:3px!important;
+    font-size:9px!important;
+    line-height:1.2!important;
+  }
+
+  #projects .field-evidence{
+    position:absolute!important;
+    right:2.5%!important;
+    bottom:7%!important;
+    width:16.5%!important;
+    margin:0!important;
+  }
+  #projects .field-evidence[hidden]{display:none!important}
+  #projects .field-evidence img{
+    width:100%!important;
+    height:auto!important;
+    max-height:170px!important;
+    object-fit:cover!important;
+    display:block!important;
+    border-radius:0!important;
+  }
+  #projects .field-evidence-copy{
+    margin-top:6px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    gap:2px!important;
+  }
+  #projects .field-evidence-copy span{
+    font:6px/1.2 Arial,sans-serif!important;
+    letter-spacing:.12em!important;
+    text-transform:uppercase!important;
+    color:var(--red)!important;
+  }
+  #projects .field-evidence-copy em{
+    font:7px/1.3 Arial,sans-serif!important;
+    letter-spacing:.03em!important;
+    font-style:normal!important;
+    color:var(--muted)!important;
+  }
+
+  #projects .record-spread > .project-nav{
+    width:78%!important;
+    margin:8px 0 0!important;
+    padding-top:8px!important;
+    border-top:1px solid rgba(23,24,19,.11)!important;
+  }
+  #projects .record-spread > .project-nav button{
+    font-family:Baskerville,Georgia,serif!important;
+    font-size:10px!important;
+    letter-spacing:0!important;
+    text-transform:none!important;
+  }
+  #projects .record-spread > .project-nav span{
+    font-size:6px!important;
+  }
+}
+@media(max-width:1000px){
+  #projects .field-evidence{display:none!important}
+}
