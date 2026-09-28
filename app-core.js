@@ -45,6 +45,14 @@ function showProject(i){
   pTop.textContent=`${p.location} · ${p.type} · Project ${String(i+1).padStart(2,'0')} / 09`;
   pName.textContent=p.name;pSummary.textContent=p.summary;
   pDetails.textContent=p.details||'';pDetails.style.display=p.details?'block':'none';
+  document.getElementById('fieldRecordLink')?.remove();
+  if(p.name==='Barnsley Gardens'){
+    const link=document.createElement('a');
+    link.id='fieldRecordLink';link.href='record.html?project=barnsley-gardens';
+    link.textContent='View project record';
+    link.style.cssText='display:block;margin:0 0 16px;font:10px/1.5 Arial,sans-serif;letter-spacing:.085em;text-transform:uppercase;color:var(--red);text-underline-offset:4px';
+    pName.after(link);
+  }
   pQuote.textContent=p.quote?`“${p.quote}”`:'';pQuote.style.display=p.quote?'block':'none';
   pImage.style.opacity=0;pImage.alt=`${p.name} — ${p.location}`;
   setTimeout(()=>{pImage.src=p.images[0];pImage.style.opacity=1},60);

@@ -82,7 +82,20 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
   };
 
   const core=document.createElement('script');
-  core.src='app-core.js?v=testimonials1';
-  core.onload=installTestimonials;
+  core.src='app-core.js?v=project-record1';
+  core.onload=()=>{
+    installTestimonials();
+    const openLinkedView=()=>{
+      const [view,slug]=location.hash.slice(1).split('/');
+      if(!['projects','company','archive','contact'].includes(view))return;
+      showView(view);
+      if(view==='projects'&&slug){
+        const index=projects.findIndex(p=>p.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'' )===slug);
+        if(index>=0)showProject(index);
+      }
+    };
+    openLinkedView();
+    window.addEventListener('hashchange',openLinkedView);
+  };
   document.body.appendChild(core);
 })();

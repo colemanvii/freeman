@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Project Record — Freeman General Contracting</title>
+<meta name="description" content="Freeman project records: reference, decision, field, resolution, finished work and return.">
+<link rel="icon" href="favicon.ico" sizes="any"><link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="record.css">
+<script src="record-data.js" defer></script><script src="record.js" defer></script>
+</head>
+<body>
+<div class="record-site">
+<header class="site-header">
+<a class="brand" href="index.html" aria-label="Freeman General Contracting home"><img class="mark" src="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/69010b8d9ae70d8e5846b9e2_FGC%20Logomark.svg" width="30" height="36" alt="FGC"></a>
+<nav aria-label="Main navigation"><a href="index.html#projects" class="active" id="projects-link">Projects</a><a href="index.html#company">Company</a><a href="index.html#archive">Archive</a><a href="index.html#contact">Contact</a></nav>
+<span class="header-mark">Built For Generations™</span>
+</header>
+<main id="record-content" hidden>
+<div class="identity">
+<div><h1 id="project-title"></h1><p class="project-meta"><span id="project-location"></span><span id="project-type"></span><span id="project-status"></span></p></div>
+<p id="project-statement"></p>
+</div>
+<section class="same-place" aria-label="Same-place construction record">
+<figure>
+<div class="photograph" id="photograph" role="img" aria-label="Project photograph"><div id="photo-layers" aria-hidden="true"></div><p id="image-message" class="image-message" hidden></p></div>
+<figcaption id="sequence-notice"></figcaption>
+</figure>
+<div class="field-entry" aria-live="polite" aria-atomic="true">
+<div class="entry-date"><span id="day"></span><time id="date" hidden></time><span id="stage"></span></div>
+<p id="note"></p><span id="count" class="sr-only"></span>
+</div>
+<div class="time-control" id="time-control">
+<div class="control-top"><label for="time" class="sr-only">Move through the work</label><button type="button" id="recall" aria-describedby="recall-help">Hold for finished result</button></div>
+<p class="sr-only" id="recall-help">Press and hold with a pointer, Space, or Enter to see the finished result. Release to return to your selected moment.</p>
+<div class="scrubber"><div class="track" id="track" aria-hidden="true"></div><input id="time" type="range" min="0" max="0" step="1" value="0" aria-label="Construction stage"></div>
+<div class="stops" id="stops" role="group" aria-label="Recorded moments"></div>
+</div>
+</section>
+<section class="project-sequence" aria-label="Project sequence" id="project-sequence"></section>
+</main>
+<div id="record-error" class="record-error" hidden><h1>Record unavailable.</h1><p id="record-error-note"></p><a href="record.html?project=barnsley-gardens">Open Barnsley Gardens</a></div>
+<noscript><p>This project record needs JavaScript to move through its photographs. <a href="index.html">Return to Freeman</a>.</p></noscript>
+</div>
+</body>
+</html>
