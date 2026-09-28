@@ -1,12 +1,33 @@
-# Freeman GC V2
+# Freeman General Contractors
 
-Flat, cinematic working site for Freeman General Contractors.
+Current live website and working design system for Freeman General Contractors.
 
 **Built For Generations™**
 
-## Presentation candidate
+## Repository model
 
-Current Gabe-review checkpoint: `a85609009b6de4dafc36f9d7bb5e154f717a5671`
+This repo has one live branch and one active development branch.
+
+- `main` — approved, deployable Freeman site
+- `v4-project-record` — active development for the next project-record iteration
+
+The live GitHub Pages site deploys from `main`.
+
+## Working folders
+
+- `ideas/` — conceptual thinking, language, precedents, future directions
+- `studio/` — studies, working principles, journals, and evidence behind the public work
+
+Use the repo in this order:
+
+**Think → `ideas/`**  
+**Study / experiment → `studio/`**  
+**Build next version → `v4-project-record`**  
+**Approve → merge to `main`**
+
+Git history preserves older versions. Long-lived experiment branches should not become the archive.
+
+## Current site
 
 Desktop is intentionally static and viewport-composed. Mobile uses a scrollable adaptation of the same visual system.
 
@@ -16,9 +37,23 @@ Primary sections:
 - Archive
 - Contact
 
-Project content is aligned to the current Freeman site. Founder presentation is Gabe-focused. The contact action opens a pre-addressed email rather than implying a backend form submission.
+The current site is the approved editorial shell. New project-record work should deepen the project experience without redesigning the homepage.
 
-Mobile header rule: FGC monogram + Built For Generations™ only; full Freeman wordmark is hidden on screens 700px and below.
+## V4 focus
 
-Tomorrow's priority is visual QA on a full desktop display: Home → Projects → Company → Contact, followed by responsive spot checks and final share-link verification.
+The active V4 direction is a reusable Freeman Project Record:
 
+**Reference → Decision → Field → Resolution → Finished → Return**
+
+Barnsley Gardens is the pilot.
+
+The project record should feel like an architectural archive or builder's field book, while the existing homepage and overall Freeman visual language remain intact.
+
+## Implementation rules
+
+- No new repo.
+- No framework unless there is a compelling technical reason.
+- Preserve the existing Freeman visual language.
+- Do not redesign `main` while exploring V4.
+- Keep experimental work isolated until it is approved.
+- Promote only deliberate, reviewed changes into `main`.
