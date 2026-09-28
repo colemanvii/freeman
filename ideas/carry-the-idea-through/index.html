@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Freeman — Carry the Idea Through</title>
+<style>
+:root{--paper:#f1f1ed;--ink:#1d1e19;--muted:#72746d;--rule:#d2d4cd;--red:#ee3e23}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+button{font:inherit;color:inherit}
+.shell{height:100vh;display:grid;grid-template-rows:62px minmax(0,1fr);padding:0 26px 22px;overflow:hidden}
+header{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;border-bottom:1px solid var(--rule)}
+.brand{display:flex;align-items:center;gap:14px}
+.brand img{width:31px;height:auto}
+.brand-name{font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+nav{display:flex;gap:34px}
+nav button{border:0;background:none;padding:21px 0 18px;font-size:10px;letter-spacing:.11em;text-transform:uppercase;cursor:pointer;border-bottom:1px solid transparent}
+nav button.active{border-color:var(--red)}
+.motto{justify-self:end;font-size:10px;letter-spacing:.11em;text-transform:uppercase}
+.view{display:none;height:100%;min-height:0}.view.active{display:block}
+
+/* home */
+.home{height:100%;display:grid;grid-template-columns:41% 59%;gap:22px;padding-top:18px}
+.home-copy{display:flex;flex-direction:column;padding:24px 36px 10px 0}
+.micro{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.home h1,.projects h1,.record h1{font-family:Baskerville,"Iowan Old Style",Georgia,serif;font-weight:400;letter-spacing:-.045em}
+.home h1{font-size:clamp(80px,7.3vw,124px);line-height:.79;margin:30px 0 0;max-width:6.4ch}
+.home h1 em{font-weight:400;font-style:italic}
+.home-bottom{margin-top:auto;display:grid;grid-template-columns:1.25fr .75fr;gap:28px;border-top:1px solid var(--rule);padding-top:17px}
+.home-bottom h2{font-family:Baskerville,Georgia,serif;font-size:29px;font-weight:400;line-height:1.03;margin:0 0 11px}
+.home-bottom p{font-size:14px;line-height:1.52;color:#50534b;margin:0;max-width:480px}
+.thesis{border-left:2px solid var(--red);padding-left:16px}
+.thesis .label{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:10px}
+.thesis p{font-family:Baskerville,Georgia,serif;font-size:18px;line-height:1.25;color:var(--ink)}
+.hero{position:relative;overflow:hidden;background:#ddd}
+.hero img{width:100%;height:100%;object-fit:cover;display:block}
+.hero .tag{position:absolute;left:14px;bottom:14px;background:rgba(241,241,237,.95);padding:8px 10px;font-size:9px;letter-spacing:.1em;text-transform:uppercase}
+.hero .chain{position:absolute;top:14px;left:14px;right:14px;display:grid;grid-template-columns:repeat(7,1fr);background:rgba(241,241,237,.95);border:1px solid rgba(29,30,25,.12)}
+.chain span{padding:9px 8px;border-right:1px solid rgba(29,30,25,.12);font-size:8px;letter-spacing:.08em;text-transform:uppercase;text-align:center}.chain span:last-child{border-right:0}.chain b{color:var(--red);font-weight:400}
+
+/* projects */
+.projects{height:100%;display:grid;grid-template-columns:19% 31% 50%;padding-top:18px;min-height:0}
+.proj-list{border-right:1px solid var(--rule);padding:16px 24px 0 0}
+.proj-list h2{font-family:Baskerville,Georgia,serif;font-size:31px;font-weight:400;margin:22px 0 18px}
+.proj-btn{width:100%;display:grid;grid-template-columns:30px 1fr;border:0;border-top:1px solid var(--rule);background:none;padding:13px 0;text-align:left;cursor:pointer;color:#74766f}
+.proj-btn.active{color:var(--ink)}.proj-btn .n{font-size:9px}.proj-btn .nm{font-family:Baskerville,Georgia,serif;font-size:15px}
+.proj-info{padding:20px 38px 12px;display:flex;flex-direction:column}
+.proj-info h1{font-size:clamp(54px,4.5vw,79px);line-height:.88;margin:18px 0 24px;max-width:8ch}
+.proj-summary{font-size:15px;line-height:1.5;color:#44473f;max-width:460px}
+.sequence{margin-top:auto;border-top:1px solid var(--rule)}
+.seq-row{display:grid;grid-template-columns:32px 90px 1fr;gap:10px;padding:9px 0;border-bottom:1px solid var(--rule);align-items:baseline}
+.seq-row .num{font-size:8px;color:var(--red);letter-spacing:.08em}.seq-row .name{font-family:Baskerville,Georgia,serif;font-size:15px}.seq-row .copy{font-size:10px;line-height:1.4;color:var(--muted)}
+.proj-media{display:grid;grid-template-rows:minmax(0,1fr) 26%;gap:12px;padding-left:10px;min-height:0}
+.finished,.field{position:relative;overflow:hidden;background:#d9dad4}.finished img,.field img{width:100%;height:100%;object-fit:cover;display:block}
+.labelbox{position:absolute;left:12px;top:12px;background:rgba(241,241,237,.95);padding:7px 9px;font-size:8px;letter-spacing:.11em;text-transform:uppercase}
+.media-bottom{display:grid;grid-template-columns:42% 58%;gap:12px;min-height:0}
+.record-note{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:12px 6px 8px 0;display:flex;flex-direction:column;justify-content:space-between}
+.record-note .kicker{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--red)}
+.record-note p{font-family:Baskerville,Georgia,serif;font-size:15px;line-height:1.28;margin:8px 0;color:#33352f}
+.record-note .meta{font-size:8px;line-height:1.45;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* method */
+.method{height:100%;display:grid;grid-template-columns:40% 60%;padding-top:18px}
+.method-left{border-right:1px solid var(--rule);padding:18px 48px 22px 0;display:flex;flex-direction:column}
+.method-left h2{font-family:Baskerville,Georgia,serif;font-size:clamp(52px,5vw,82px);line-height:.88;font-weight:400;letter-spacing:-.04em;margin:25px 0}
+.method-left p{font-size:15px;line-height:1.55;color:#50534b;max-width:500px}
+.method-left .quote{margin-top:auto;border-top:1px solid var(--rule);padding-top:18px;font-family:Baskerville,Georgia,serif;font-size:20px;line-height:1.25}
+.method-right{padding-left:34px;display:grid;grid-template-rows:repeat(7,1fr)}
+.method-row{display:grid;grid-template-columns:46px 120px 1fr;align-items:center;border-bottom:1px solid var(--rule)}
+.method-row:first-child{border-top:1px solid var(--rule)}.method-row .n{font-size:9px;color:var(--red)}.method-row .t{font-family:Baskerville,Georgia,serif;font-size:22px}.method-row .d{font-size:11px;line-height:1.45;color:var(--muted);max-width:470px}
+
+/* record */
+.record{height:100%;display:grid;grid-template-columns:57% 43%;padding-top:18px}
+.record-left{border-right:1px solid var(--rule);padding:18px 46px 22px 0;display:flex;flex-direction:column}
+.record h1{font-size:clamp(72px,6.3vw,108px);line-height:.82;margin:42px 0 0;max-width:7ch}
+.record h1 em{font-style:italic;font-weight:400}
+.record-left .small{margin-top:auto;font-size:9px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+.record-right{padding:18px 0 10px 34px;display:flex;flex-direction:column}
+.record-right p{font-family:Baskerville,Georgia,serif;font-size:25px;line-height:1.3;max-width:560px;margin:78px 0 0}
+.record-grid{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--rule)}
+.record-grid div{padding:14px 0;border-bottom:1px solid var(--rule);font-size:9px;line-height:1.5;letter-spacing:.09em;text-transform:uppercase}.record-grid div:nth-child(odd){border-right:1px solid var(--rule);padding-right:20px}.record-grid div:nth-child(even){padding-left:20px}
+
+@media(max-width:900px){
+.shell{height:auto;min-height:100vh;overflow:visible;padding:0 16px 20px}.view{height:auto;min-height:calc(100vh - 62px)}
+.home,.projects,.method,.record{grid-template-columns:1fr;height:auto}.home-copy,.proj-info,.method-left,.record-left{border-right:0;padding-right:0}.hero{min-height:55vh}.home h1{font-size:70px}.home-bottom{grid-template-columns:1fr}.projects{grid-template-columns:1fr}.proj-list{border-right:0}.proj-media{padding-left:0;min-height:75vh}.method-right{padding-left:0}.record-right{padding-left:0}nav{gap:12px}.motto{display:none}.brand-name{display:none}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+<header>
+  <div class="brand"><img src="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/69010b8d9ae70d8e5846b9e2_FGC%20Logomark.svg" alt="FGC"><span class="brand-name">Freeman General Contractors</span></div>
+  <nav>
+    <button class="active" data-view="home">Overview</button>
+    <button data-view="projects">Projects</button>
+    <button data-view="method">Method</button>
+    <button data-view="record">Record</button>
+  </nav>
+  <div class="motto">Built For Generations™</div>
+</header>
+
+<main>
+<section class="view active" id="home">
+  <div class="home">
+    <div class="home-copy">
+      <div class="micro">Cartersville, Georgia · General Contractors</div>
+      <h1>Carry the<br><em>idea through.</em></h1>
+      <div class="home-bottom">
+        <div>
+          <h2>From intention to built reality.</h2>
+          <p>A building passes through hundreds of decisions before it becomes a place. Freeman’s work is to keep the important ones intact — aligning people, materials, schedule and craft so the original intention survives construction.</p>
+        </div>
+        <div class="thesis">
+          <div class="label">The Freeman position</div>
+          <p>The finished place is only the final piece of evidence.</p>
+        </div>
+      </div>
+    </div>
+    <div class="hero">
+      <img src="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/690112c66907ba02f5612747_Beetlecat%20Thumb%20Freeman%20General%20Contractors_HP.jpg" alt="Freeman project">
+      <div class="chain">
+        <span><b>01</b> Idea</span><span>02 Reference</span><span>03 Decision</span><span>04 Field</span><span>05 Resolution</span><span>06 Finished</span><span>07 Record</span>
+      </div>
+      <div class="tag">Beetlecat · Atlanta, Georgia · Finished Result</div>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="projects">
+<div class="projects">
+  <aside class="proj-list">
+    <div class="micro">Selected work · 03</div>
+    <h2>Project Records.</h2>
+    <button class="proj-btn active" data-p="0"><span class="n">01</span><span class="nm">Beetlecat</span></button>
+    <button class="proj-btn" data-p="1"><span class="n">02</span><span class="nm">The Optimist</span></button>
+    <button class="proj-btn" data-p="2"><span class="n">03</span><span class="nm">Barnsley Gardens</span></button>
+  </aside>
+  <section class="proj-info">
+    <div class="micro" id="pMeta"></div>
+    <h1 id="pTitle"></h1>
+    <div class="proj-summary" id="pSummary"></div>
+    <div class="sequence" id="sequence"></div>
+  </section>
+  <section class="proj-media">
+    <div class="finished"><img id="pFinished" alt=""><div class="labelbox">Finished / Result</div></div>
+    <div class="media-bottom">
+      <div class="field"><img id="pField" alt=""><div class="labelbox">Field / Evidence</div></div>
+      <div class="record-note">
+        <div>
+          <div class="kicker">Record note</div>
+          <p id="pNote"></p>
+        </div>
+        <div class="meta" id="pFacts"></div>
+      </div>
+    </div>
+  </section>
+</div>
+</section>
+
+<section class="view" id="method">
+  <div class="method">
+    <div class="method-left">
+      <div class="micro">The work between · Freeman method</div>
+      <h2>Protect the idea<br>through reality.</h2>
+      <p>Freeman’s role is not to claim authorship that belongs to the architect, designer or owner. It is to understand the intention deeply enough to steward it through cost, sequencing, trades, field conditions and execution.</p>
+      <div class="quote">Between the idea and the reality, the work happens.</div>
+    </div>
+    <div class="method-right">
+      <div class="method-row"><div class="n">01</div><div class="t">Idea</div><div class="d">What is the place trying to become?</div></div>
+      <div class="method-row"><div class="n">02</div><div class="t">Reference</div><div class="d">What gives the intention material, cultural and regional weight?</div></div>
+      <div class="method-row"><div class="n">03</div><div class="t">Decision</div><div class="d">Which choices carry the character of the project?</div></div>
+      <div class="method-row"><div class="n">04</div><div class="t">Field</div><div class="d">Where does reality push back — conditions, trades, schedule, cost?</div></div>
+      <div class="method-row"><div class="n">05</div><div class="t">Resolution</div><div class="d">How does builder judgment keep the important parts intact?</div></div>
+      <div class="method-row"><div class="n">06</div><div class="t">Finished</div><div class="d">What remains when construction disappears from view?</div></div>
+      <div class="method-row"><div class="n">07</div><div class="t">Record</div><div class="d">What should be preserved so the work can teach the next project?</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="record">
+  <div class="record">
+    <div class="record-left">
+      <div class="micro">The Freeman Record · Ongoing</div>
+      <h1>The idea.<br>The building.<br><em>The record.</em></h1>
+      <div class="small">Built For Generations™ · Cartersville, Georgia</div>
+    </div>
+    <div class="record-right">
+      <p>Drawings, mockups, field photographs, material decisions, redlines, problems, resolutions and finished rooms — kept together as one continuous record of how the work became real.</p>
+      <div class="record-grid">
+        <div>Field photographs<br>Conditions + sequence</div>
+        <div>Drawings + redlines<br>Intent + revision</div>
+        <div>Materials + mockups<br>Decision evidence</div>
+        <div>Finished result<br>What survived</div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+</div>
+
+<script>
+const views=[...document.querySelectorAll('.view')];
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');views.forEach(v=>v.classList.toggle('active',v.id===b.dataset.view));});
+
+const projects=[
+{title:'Beetlecat',meta:'Atlanta, Georgia · Hospitality',summary:'A highly detailed hospitality interior where operations, design intent and field execution had to stay aligned. The story is not only the finished room; it is the sequence of decisions that allowed the room to retain its character.',finished:'https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/690112c66907ba02f5612747_Beetlecat%20Thumb%20Freeman%20General%20Contractors_HP.jpg',field:'https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6913960ced1751e716bfb0d1_Tool%2010.png',note:'The finished result and the field record belong beside one another. One shows what the client sees; the other shows the work Freeman was responsible for carrying through.',facts:'Client · Rocket Farm Restaurants<br>Design · Chuck Marie Studio<br>Builder · Freeman',sequence:['Warm, layered hospitality room','Material + service references','Protect character and operational flow','Coordinate trades, details and systems','Resolve without flattening the design','A room that feels settled, not assembled','Preserve the proof']},
+{title:'The Optimist',meta:'Atlanta, Georgia · Hospitality',summary:'Three weeks. No room for drift. Freeman refreshed the Oyster Bar at The Optimist on a compressed schedule, delivering custom radius work, tile, millwork and stainless details on time and under budget.',finished:'https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6916c3cc412995612baf28e4_The%20Optimist_Freeman%20General%20Contractors%200.jpg',field:'https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6913960db4daa5efe493b52d_Tool%2018.png',note:'Here the governing idea is precision under constraint. The field evidence should prove schedule discipline and finish quality moving together.',facts:'Schedule · 3 weeks<br>Result · On time / Under budget<br>Builder · Freeman',sequence:['Refresh without losing the room','Existing language + custom details','Protect radius work and finish quality','Compressed schedule / live conditions','Sequence custom trades precisely','Finished on time, under budget','Document the constraint and proof']},
+{title:'Barnsley Gardens',meta:'Adairsville, Georgia · Hospitality',summary:'An established resort environment where new work has to feel native to the place from day one. Barnsley is where Freeman can begin documenting not only construction, but atmosphere, precedent, material judgment and the life of a project over time.',finished:'https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6916c7910f0d654dd4daa28f_Barnsley%20Gardens_Freeman%20General%20Contractors%201.jpg',field:'https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6913963dedf7618fdeb28918_Tool%2011.png',note:'This should become the living laboratory: reference → sketch → field decision → finished state. The record grows while the work is happening.',facts:'Place · Barnsley Gardens<br>Status · Living record<br>Builder · Freeman',sequence:['Respect the established place','Landscape, lodge, regional precedent','Choose what should feel inevitable','Capture ordinary construction honestly','Use builder judgment to protect atmosphere','Let the result feel settled','Build the archive while building the place']}
+];
+const labels=['Idea','Reference','Decision','Field','Resolution','Finished','Record'];
+function showProject(i){
+ const p=projects[i];
+ document.querySelectorAll('.proj-btn').forEach((b,j)=>b.classList.toggle('active',j===i));
+ pMeta.textContent=p.meta;pTitle.textContent=p.title;pSummary.textContent=p.summary;pFinished.src=p.finished;pField.src=p.field;pFinished.alt=p.title+' finished';pField.alt=p.title+' field';
+ pNote.textContent=p.note;pFacts.innerHTML=p.facts;
+ sequence.innerHTML=p.sequence.map((x,j)=>'<div class="seq-row"><div class="num">0'+(j+1)+'</div><div class="name">'+labels[j]+'</div><div class="copy">'+x+'</div></div>').join('');
+}
+document.querySelectorAll('.proj-btn').forEach((b,i)=>b.onclick=()=>showProject(i));showProject(0);
+</script>
+</body>
+</html>
