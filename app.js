@@ -80,6 +80,16 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
 
   const core=document.createElement('script');
   core.src='app-core.js?v=monograph1';
-  core.onload=installTestimonials;
+  core.onload=()=>{
+    installTestimonials();
+    const openSection=()=>{
+      const section=location.hash.slice(1);
+      const projectLinks={'optimist':1,'barnsley-gardens':2};
+      if(Object.hasOwn(projectLinks,section)){showView('projects');showProject(projectLinks[section]);}
+      else if(['home','projects','company','archive','contact'].includes(section)){showView(section);}
+    };
+    openSection();
+    window.addEventListener('hashchange',openSection);
+  };
   document.body.appendChild(core);
 })();
