@@ -40,9 +40,6 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
   const overview=document.getElementById('overview');
   if(overview)overview.innerHTML='<div class="freeman-story"><div class="story-note-box"><div class="story-label">THE FREEMAN STORY</div><div class="story-copy">Freeman was built around a simple belief: the construction process should earn the same trust as the finished place. From Cartersville, Georgia, the company brings clear communication, thoughtful coordination and durable craft to hospitality, commercial and residential work — building the relationships, as well as the spaces, intended to last.</div></div></div>';
   const archiveNote=document.querySelector('.archive-head span');if(archiveNote)archiveNote.textContent='A living extension of @builtforgenerations — the work, people, process and evolving Freeman story.';
-  const homeStatement=document.querySelector('.home-statement');
-  if(homeStatement&&!document.querySelector('.home-capabilities')){const capabilities=document.createElement('div');capabilities.className='home-capabilities';capabilities.innerHTML='<b>Hospitality</b> · Commercial · Healthcare · High-End Residential<br><strong>The Optimist:</strong> 3-week renovation · on time · under budget';homeStatement.appendChild(capabilities)}
-
   const homeProof=document.querySelector('.home-proof blockquote');
   if(homeProof)homeProof.innerHTML='“A breath of fresh air in the construction industry.”<cite>Paul Nair · Founder, Savi Provisions</cite>';
 
@@ -82,7 +79,52 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
   };
 
   const core=document.createElement('script');
-  core.src='app-core.js?v=testimonials1';
-  core.onload=installTestimonials;
+  core.src='app-core.js?v=monograph1';
+  core.onload=()=>{
+    installTestimonials();
+    const projectLinks={'optimist':1,'barnsley-gardens':2};
+    const sections=['home','projects','company','archive','contact'];
+    let applyingRoute=false;
+    const openSection=()=>{
+      const section=location.hash.slice(1) || 'home';
+      applyingRoute=true;
+      try {
+        if(Object.hasOwn(projectLinks,section)){
+          showView('projects');showProject(projectLinks[section]);
+        } else if(sections.includes(section)){
+          showView(section);
+          if(section==='projects'){
+            const saved=history.state?.freemanProject;
+            showProject(Number.isInteger(saved) && saved>=0 && saved<projects.length ? saved : 0);
+          }
+        } else {
+          showView('home');
+        }
+      } finally { applyingRoute=false; }
+    };
+    const setRoute=(section,projectIndex)=>{
+      const hash=section==='home'?'':`#${section}`;
+      const state=Number.isInteger(projectIndex)?{freemanProject:projectIndex}:null;
+      if(location.hash!==hash || history.state?.freemanProject!==state?.freemanProject){
+        history.pushState(state,'',location.pathname+location.search+hash);
+      }
+    };
+    // Keep the existing view functions and layout; synchronize their navigation with history.
+    document.querySelectorAll('nav button[data-view]').forEach(button=>{
+      button.onclick=()=>{setRoute(button.dataset.view,button.dataset.view==='projects'?current:undefined);openSection();};
+    });
+    document.getElementById('homeBtn').onclick=()=>{setRoute('home');openSection();};
+    const showSelectedProject=showProject;
+    showProject=function(index){
+      showSelectedProject(index);
+      if(!applyingRoute && document.getElementById('projects').classList.contains('active')){
+        const slug=Object.keys(projectLinks).find(key=>projectLinks[key]===index);
+        setRoute(slug || 'projects',index);
+      }
+    };
+    openSection();
+    window.addEventListener('popstate',openSection);
+    window.addEventListener('hashchange',openSection);
+  };
   document.body.appendChild(core);
 })();

@@ -39,19 +39,42 @@ homeBtn.onclick=()=>showView('home');
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>showView(b.dataset.view));
 
 let current=0;const plist=document.getElementById('projectList');
+// Existing project scope supplies the field record; no unverified photo pairings.
+const constructionNotes=[
+  "Coordinate the restaurant’s operational needs with a detailed interior; carry the design through to the practical demands of service.",
+  "A custom radius window, radius tile at the oven, bespoke millwork and stainless pieces. Delivered in three weeks, on time and under budget.",
+  "Work within an established resort, coordinating the details guests experience so the finished space feels at home from day one.",
+  "Custom millwork and a new bar; flooring in the dining room and kitchen, new finishes and an outdoor seating area.",
+  "Coordinate materials, layout and customer flow, balancing durability with refinement.",
+  "Custom millwork, a refreshed bar, new flooring and finishes throughout. Completed on a three-week schedule.",
+  "Four three-story residences with two-car garages, open floor plans, custom cabinetry and premium finishes.",
+  "Coordinate clinical requirements and patient comfort, with durability and long-term performance behind the finished surfaces.",
+  "Coordinate clinical requirements and patient comfort, with durability and long-term performance behind the finished surfaces."
+];
 function showProject(i){
   current=i;const p=projects[i];
   [...plist.children].forEach((b,j)=>{const active=j===i;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});
-  pTop.textContent=`${p.location} · ${p.type} · Project ${String(i+1).padStart(2,'0')} / 09`;
-  pName.textContent=p.name;pSummary.textContent=p.summary;
-  pDetails.textContent=p.details||'';pDetails.style.display=p.details?'block':'none';
+  pTop.textContent=`Completed · ${p.type}`;
+  pName.textContent=p.name;
+  pSummary.textContent=p.location;
+  pDetails.textContent=constructionNotes[i];
+  document.getElementById('fieldRecordLink')?.remove();
+  if(i===1){
+    const link=document.createElement('a');
+    link.id='fieldRecordLink';link.href='record.html';
+    link.textContent='Same place, different day · Explore the study';
+    link.style.cssText='display:block;margin-top:18px;font:12px/1.5 Arial,sans-serif;color:var(--red);text-underline-offset:4px';
+    pDetails.after(link);
+  }
   pQuote.textContent=p.quote?`“${p.quote}”`:'';pQuote.style.display=p.quote?'block':'none';
-  pImage.style.opacity=0;pImage.alt=`${p.name} — ${p.location}`;
-  setTimeout(()=>{pImage.src=p.images[0];pImage.style.opacity=1},60);
+  pImage.alt=`${p.name} — ${p.location}`;
+  pImage.src=p.images[0];
   pCap.textContent=`${p.name} · ${p.location}`;
-  quickfacts.innerHTML=p.credits.map(x=>`<div class="qf"><div class="k">${x[0]}</div><div class="v">${x[1]}</div></div>`).join('');
+  quickfacts.textContent=p.credits.filter(([key,value])=>
+    ['Photography','Interior Design'].includes(key)&&value!=='Interior Designer'
+  ).map(([key,value])=>`${key}: ${value}`).join(' · ');
 }
-projects.forEach((p,i)=>{const b=document.createElement('button');b.className='proj-btn'+(i===0?' active':'');b.type='button';b.setAttribute('aria-label',`View ${p.name}`);b.setAttribute('aria-pressed',String(i===0));b.innerHTML=`<span class="n">${String(i+1).padStart(2,'0')}</span><span class="nm">${p.name}</span>`;b.onclick=()=>showProject(i);plist.appendChild(b)});showProject(0);
+projects.forEach((p,i)=>{const b=document.createElement('button');b.className='proj-btn'+(i===0?' active':'');b.type='button';b.setAttribute('aria-label',`View ${p.name}`);b.setAttribute('aria-pressed',String(i===0));b.innerHTML=`<span class="nm">${p.name}</span>`;b.onclick=()=>showProject(i);plist.appendChild(b)});showProject(0);
 
 document.querySelectorAll('.subnav button').forEach(b=>{b.type='button';b.onclick=()=>{document.querySelectorAll('.subnav button').forEach(x=>{x.classList.remove('active');x.setAttribute('aria-selected','false')});b.classList.add('active');b.setAttribute('aria-selected','true');document.querySelectorAll('.subview').forEach(v=>v.classList.remove('active'));document.getElementById(b.dataset.sub).classList.add('active')}});
 document.querySelector('.subnav button.active')?.setAttribute('aria-selected','true');
