@@ -58,6 +58,14 @@ function showProject(i){
   pName.textContent=p.name;
   pSummary.textContent=p.location;
   pDetails.textContent=constructionNotes[i];
+  document.getElementById('fieldRecordLink')?.remove();
+  if(i===1){
+    const link=document.createElement('a');
+    link.id='fieldRecordLink';link.href='record.html';
+    link.textContent='Same place, different day · Explore the study';
+    link.style.cssText='display:block;margin-top:18px;font:12px/1.5 Arial,sans-serif;color:var(--red);text-underline-offset:4px';
+    pDetails.after(link);
+  }
   pQuote.textContent=p.quote?`“${p.quote}”`:'';pQuote.style.display=p.quote?'block':'none';
   pImage.alt=`${p.name} — ${p.location}`;
   pImage.src=p.images[0];
