@@ -32,7 +32,7 @@ Four direct stage buttons and a native keyboard-accessible range. No autoplay, s
 
 ## Review status
 
-Design-review implementation on `field-notes/first-visual-pass`; not merged into main or published to the live site. The main content limitation is the lack of dated jobsite photographs and project drawings. Replace archive references with current job evidence as supplied. The current rhythm and controls do not depend on exceptional photography or animation.
+Published from `main` alongside the Project Record and radius-window study. The original checkpoint remains on `field-notes/first-visual-pass`. The main content limitation is the lack of dated jobsite photographs and project drawings. Replace archive references with current job evidence as supplied. The current rhythm and controls do not depend on exceptional photography or animation.
 
 
 ## Navigation and verification

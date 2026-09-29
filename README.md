@@ -6,10 +6,11 @@ Current live website and working design system for Freeman General Contractors.
 
 ## Repository model
 
-This repo has one live branch and one active development branch.
+All current Freeman work is published together from `main`. Development branches retain their original checkpoints.
 
 - `main` — approved, deployable Freeman site
-- `v4-project-record` — active development for the next project-record iteration
+- `v4-project-record` — preserved V4 prototype checkpoint
+- `field-notes/first-visual-pass` — preserved Field Notes and original radius-window checkpoint
 
 The live GitHub Pages site deploys from `main`.
 
@@ -57,3 +58,13 @@ The project record should feel like an architectural archive or builder's field 
 - Do not redesign `main` while exploring V4.
 - Keep experimental work isolated until it is approved.
 - Promote only deliberate, reviewed changes into `main`.
+
+## Published pages
+
+- [Freeman home](index.html) — latest monograph layout and project navigation
+- [Field Notes](field-notes.html)
+- [Barnsley Gardens Project Record](record.html?project=barnsley-gardens)
+- [Radius-window study](radius-window.html) — original illustrative sequence
+- [Carry the Idea Through](ideas/carry-the-idea-through/index.html)
+
+The studies retain their illustrative-image disclosures. Project notes and studio material remain in `ideas/` and `studio/`.

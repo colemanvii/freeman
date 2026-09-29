@@ -79,7 +79,7 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
   };
 
   const core=document.createElement('script');
-  core.src='app-core.js?v=monograph1';
+  core.src='app-core.js?v=all-work1';
   core.onload=()=>{
     installTestimonials();
     const projectLinks={'optimist':1,'barnsley-gardens':2};
@@ -89,7 +89,11 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
       const section=location.hash.slice(1) || 'home';
       applyingRoute=true;
       try {
-        if(Object.hasOwn(projectLinks,section)){
+        if(section.startsWith('projects/')){
+          const slug=decodeURIComponent(section.slice(9));
+          const index=projects.findIndex(p=>p.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')===slug);
+          showView('projects');showProject(index>=0?index:0);
+        } else if(Object.hasOwn(projectLinks,section)){
           showView('projects');showProject(projectLinks[section]);
         } else if(sections.includes(section)){
           showView(section);

@@ -59,10 +59,10 @@ function showProject(i){
   pSummary.textContent=p.location;
   pDetails.textContent=constructionNotes[i];
   document.getElementById('fieldRecordLink')?.remove();
-  if(i===1){
+  if(p.name==='The Optimist'||p.name==='Barnsley Gardens'){
     const link=document.createElement('a');
-    link.id='fieldRecordLink';link.href='record.html';
-    link.textContent='Same place, different day · Explore the study';
+    link.id='fieldRecordLink';link.href=p.name==='Barnsley Gardens'?'record.html?project=barnsley-gardens':'radius-window.html';
+    link.textContent=p.name==='Barnsley Gardens'?'View project record':'Same place, different day · Explore the study';
     link.style.cssText='display:block;margin-top:18px;font:12px/1.5 Arial,sans-serif;color:var(--red);text-underline-offset:4px';
     pDetails.after(link);
   }
