@@ -82,13 +82,48 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
   core.src='app-core.js?v=monograph1';
   core.onload=()=>{
     installTestimonials();
+    const projectLinks={'optimist':1,'barnsley-gardens':2};
+    const sections=['home','projects','company','archive','contact'];
+    let applyingRoute=false;
     const openSection=()=>{
-      const section=location.hash.slice(1);
-      const projectLinks={'optimist':1,'barnsley-gardens':2};
-      if(Object.hasOwn(projectLinks,section)){showView('projects');showProject(projectLinks[section]);}
-      else if(['home','projects','company','archive','contact'].includes(section)){showView(section);}
+      const section=location.hash.slice(1) || 'home';
+      applyingRoute=true;
+      try {
+        if(Object.hasOwn(projectLinks,section)){
+          showView('projects');showProject(projectLinks[section]);
+        } else if(sections.includes(section)){
+          showView(section);
+          if(section==='projects'){
+            const saved=history.state?.freemanProject;
+            showProject(Number.isInteger(saved) && saved>=0 && saved<projects.length ? saved : 0);
+          }
+        } else {
+          showView('home');
+        }
+      } finally { applyingRoute=false; }
+    };
+    const setRoute=(section,projectIndex)=>{
+      const hash=section==='home'?'':`#${section}`;
+      const state=Number.isInteger(projectIndex)?{freemanProject:projectIndex}:null;
+      if(location.hash!==hash || history.state?.freemanProject!==state?.freemanProject){
+        history.pushState(state,'',location.pathname+location.search+hash);
+      }
+    };
+    // Keep the existing view functions and layout; synchronize their navigation with history.
+    document.querySelectorAll('nav button[data-view]').forEach(button=>{
+      button.onclick=()=>{setRoute(button.dataset.view,button.dataset.view==='projects'?current:undefined);openSection();};
+    });
+    document.getElementById('homeBtn').onclick=()=>{setRoute('home');openSection();};
+    const showSelectedProject=showProject;
+    showProject=function(index){
+      showSelectedProject(index);
+      if(!applyingRoute && document.getElementById('projects').classList.contains('active')){
+        const slug=Object.keys(projectLinks).find(key=>projectLinks[key]===index);
+        setRoute(slug || 'projects',index);
+      }
     };
     openSection();
+    window.addEventListener('popstate',openSection);
     window.addEventListener('hashchange',openSection);
   };
   document.body.appendChild(core);
