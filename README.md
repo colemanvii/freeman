@@ -6,7 +6,7 @@ Current live website and working design system for Freeman General Contractors.
 
 ## Repository model
 
-All current Freeman work is published together from `main`. Development branches retain their original checkpoints.
+All current Freeman work is published together from `main`. Development branches retain their original checkpoints. Branch names identify studies; `main` is the source of truth for the published site.
 
 - `main` — approved, deployable Freeman site
 - `v4-project-record` — preserved V4 prototype checkpoint
@@ -23,7 +23,7 @@ Use the repo in this order:
 
 **Think → `ideas/`**  
 **Study / experiment → `studio/`**  
-**Build next version → `v4-project-record`**  
+**Build next version → a focused development branch**  
 **Approve → merge to `main`**
 
 Git history preserves older versions. Long-lived experiment branches should not become the archive.
@@ -40,9 +40,9 @@ Primary sections:
 
 The current site is the approved editorial shell. New project-record work should deepen the project experience without redesigning the homepage.
 
-## V4 focus
+## Project-record direction
 
-The active V4 direction is a reusable Freeman Project Record:
+The project-record direction is a reusable Freeman Project Record:
 
 **Reference → Decision → Field → Resolution → Finished → Return**
 
