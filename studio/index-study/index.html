@@ -169,21 +169,19 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
   body{cursor:auto}
   .site{height:100svh;min-height:0;overflow:hidden;padding:0}
 
-  /* Home: exact desktop type system, reformatted only for mobile. */
+  /* Home: preserve the desktop composition and visual language on mobile. */
   .center{display:none!important}
   .mobile-home-nav{
     position:absolute;
     left:50%;top:50%;
     transform:translate(-50%,-50%);
-    width:min(330px,86vw);
-    min-height:260px;
-    padding:28px 24px 24px;
+    width:min(340px,88vw);
     display:flex!important;
     flex-direction:column;
     align-items:center;
     justify-content:center;
     gap:8px;
-    background:#fff;
+    background:transparent;
     border:0;
     box-shadow:none;
     font-family:var(--mono);
@@ -203,13 +201,8 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
     line-height:1.2;
     letter-spacing:.015em;
     text-transform:uppercase;
-  }
-  .mobile-home-nav .mobile-brand{
-    min-height:46px;
-    padding:12px 8px 10px;
-    font-size:1.18em;
-    font-weight:700;
-    letter-spacing:.005em;
+    min-height:42px;
+    padding:10px 6px 8px;
   }
   .mobile-row{
     width:100%;
@@ -218,14 +211,11 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
     justify-content:center;
     gap:0;
   }
-  .mobile-row button{
-    min-height:46px;
-    padding:12px 8px 10px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:1em;
-    font-weight:400;
+  .mobile-row-brand{margin-bottom:2px}
+  .mobile-home-nav .mobile-brand{
+    font-size:1.18em;
+    font-weight:700;
+    letter-spacing:.005em;
   }
   .mobile-sep{
     padding:0 11px;
@@ -233,16 +223,10 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
     font-size:1em;
     line-height:1.2;
   }
+  .mobile-row-portal{margin-top:2px}
   .mobile-home-nav .mobile-portal{
-    min-height:46px;
-    margin-top:2px;
-    padding:12px 8px 10px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:1em;
-    font-weight:400;
     color:var(--orange);
+    font-weight:400;
   }
   .mobile-home-nav button:active,
   .mobile-home-nav button:focus-visible{
@@ -251,7 +235,28 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
     outline:none;
   }
 
-  .eagle,.legal,.mark{display:none}
+  .eagle{
+    display:block;
+    left:18px;
+    bottom:max(20px,env(safe-area-inset-bottom));
+    width:32px;
+  }
+  .legal{
+    display:block;
+    left:58px;
+    bottom:max(20px,env(safe-area-inset-bottom));
+    font-size:7.5px;
+    line-height:1.4;
+    letter-spacing:.04em;
+  }
+  .mark{
+    display:block;
+    right:18px;
+    bottom:max(20px,env(safe-area-inset-bottom));
+    font-size:7.5px;
+    line-height:1.4;
+    letter-spacing:.04em;
+  }
 
   /* Panels remain full-frame sheets. */
   .panel{overflow:hidden}
@@ -359,14 +364,18 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
   </nav>
 
   <nav class="mobile-home-nav" aria-label="Mobile primary navigation">
-    <button class="mobile-brand" data-panel="home">FREEMAN</button>
+    <div class="mobile-row mobile-row-brand">
+      <button class="mobile-brand" data-panel="home">FREEMAN</button>
+    </div>
     <div class="mobile-row">
       <button data-panel="work">WORK</button><span class="mobile-sep">/</span><button data-panel="field">FIELD</button>
     </div>
     <div class="mobile-row">
       <button data-panel="company">COMPANY</button><span class="mobile-sep">/</span><button data-panel="contact">CONTACT</button>
     </div>
-    <button class="mobile-portal" data-panel="portal">CLIENT PORTAL</button>
+    <div class="mobile-row mobile-row-portal">
+      <button class="mobile-portal" data-panel="portal">CLIENT PORTAL</button>
+    </div>
   </nav>
 
   <img class="eagle" src="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6904f319ecdcf81821e678cb_Red%20Freeman%20Eagle.svg" alt="Freeman eagle">
