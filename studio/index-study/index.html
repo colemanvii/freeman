@@ -25,10 +25,10 @@ a{text-decoration:none}
 .center{
   position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
   display:flex;align-items:center;gap:0;white-space:nowrap;
-  font-size:13px;line-height:1;letter-spacing:.02em;text-transform:uppercase;
+  font-size:15px;line-height:1.2;letter-spacing:.015em;text-transform:uppercase;
 }
 .center .brand{font-weight:700}
-.center .sep{padding:0 9px;color:#747772}
+.center .sep{padding:0 11px;color:#9a9c97}
 .center button,.center a{position:relative;text-transform:uppercase}
 .center button:after,.center a:after{
   content:"";position:absolute;left:0;right:0;bottom:-5px;height:1px;background:currentColor;
@@ -50,6 +50,20 @@ a{text-decoration:none}
 .mark{
   position:absolute;right:29px;bottom:26px;text-align:right;font-size:8px;line-height:1.42;letter-spacing:.055em;text-transform:uppercase;color:#777a75;
 }
+.email-strip{
+  position:absolute;left:50%;top:calc(50% + 46px);transform:translateX(-50%);
+  width:min(560px,72vw);display:grid;grid-template-columns:auto auto 1fr auto auto;align-items:center;gap:8px;
+  font-size:10px;line-height:1;text-transform:uppercase;letter-spacing:.03em;color:#6f726d;
+}
+.email-strip label{color:var(--ink);font-weight:700}
+.email-strip input{
+  width:100%;border:0;border-bottom:1px solid #b7b9b3;background:transparent;color:var(--ink);
+  font:inherit;text-transform:uppercase;letter-spacing:.03em;outline:none;padding:4px 2px 5px;
+}
+.email-strip input::placeholder{color:#a1a39e;opacity:1}
+.email-strip input:focus{border-bottom-color:var(--orange)}
+.email-strip button{color:var(--orange);font-size:13px;line-height:1}
+.email-bracket{color:#a1a39e}
 .switcher{
   position:absolute;left:50%;bottom:30px;transform:translateX(-50%);
   display:flex;align-items:center;gap:10px;
@@ -60,12 +74,8 @@ a{text-decoration:none}
 .switcher button:nth-child(2){background:#fff}
 .switcher button:nth-child(3){background:#dfdfd9}
 .switcher button.active{outline:1px solid var(--ink);outline-offset:2px}
-.coordinate{
-  position:absolute;top:28px;left:29px;font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:#91948f;
-}
-.status{
-  position:absolute;top:28px;right:29px;font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:#91948f;
-}
+.coordinate{display:none}
+.status{display:none}
 .panel{
   position:absolute;inset:0;background:var(--paper);opacity:0;visibility:hidden;
   transition:opacity .16s ease,visibility 0s linear .16s;
@@ -123,6 +133,7 @@ a{text-decoration:none}
   .center{width:82%;white-space:normal;flex-wrap:wrap;justify-content:center;row-gap:12px;font-size:12px;line-height:1.2;text-align:center}
   .center .sep{padding:0 7px}
   .coordinate,.status{font-size:7px}
+  .email-strip{top:calc(50% + 72px);width:84vw;font-size:9px;grid-template-columns:auto auto 1fr auto auto}
   .legal{display:none}.mark{right:20px;bottom:18px}.eagle{left:20px;bottom:18px}
   .switcher{bottom:21px}
   .panel-body{inset:72px 20px 62px}
@@ -152,6 +163,13 @@ a{text-decoration:none}
     <button data-panel="info">INFO</button><span class="sep">/</span>
     <a class="portal" href="https://freemangc.com" target="_blank" rel="noreferrer">CLIENT PORTAL</a>
   </nav>
+  <form class="email-strip" id="emailStrip" aria-label="Email Freeman">
+    <label for="emailMessage">EMAIL US</label>
+    <span class="email-bracket">[</span>
+    <input id="emailMessage" name="message" autocomplete="off" placeholder="TELL US WHAT YOU'RE BUILDING..." aria-label="Project message">
+    <span class="email-bracket">]</span>
+    <button type="submit" aria-label="Open email">↗</button>
+  </form>
 
   <img class="eagle" src="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6904f319ecdcf81821e678cb_Red%20Freeman%20Eagle.svg" alt="Freeman eagle">
   <div class="legal">Freeman General Contractors<br>Cartersville, Georgia</div>
@@ -255,6 +273,12 @@ function openPanel(id){
 }
 nav.forEach(b=>b.addEventListener('click',()=>openPanel(b.dataset.panel)));
 document.querySelectorAll('.close').forEach(b=>b.addEventListener('click',closeAll));
+document.getElementById('emailStrip')?.addEventListener('submit',e=>{
+  e.preventDefault();
+  const msg=document.getElementById('emailMessage').value.trim();
+  const body=msg || 'I\'d like to talk about a project.';
+  window.location.href='mailto:gabe@freemangc.com?subject='+encodeURIComponent('Project inquiry — Freeman')+'&body='+encodeURIComponent(body);
+});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAll()});
 document.querySelectorAll('[data-tone]').forEach(b=>b.addEventListener('click',()=>{
   root.style.setProperty('--paper',b.dataset.tone);
