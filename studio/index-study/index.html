@@ -170,17 +170,28 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
 
   /* Home: same composition, scaled for a phone rather than redesigned. */
   .center{
-    width:auto;max-width:88vw;
+    width:min(260px,78vw);
     left:50%;top:48%;
     transform:translate(-50%,-50%);
-    display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
-    gap:0;row-gap:12px;
-    white-space:normal;text-align:center;
-    font-size:14px;line-height:1.28;letter-spacing:.01em;
+    display:flex;flex-direction:column;align-items:stretch;justify-content:center;
+    gap:0;
+    white-space:normal;text-align:left;
+    font-size:15px;line-height:1.2;letter-spacing:.01em;
   }
-  .center .brand{font-size:1.16em}
-  .center .sep{padding:0 8px;color:#9a9c97}
-  .center button,.center a{min-height:40px;padding:8px 2px;display:inline-flex;align-items:center;justify-content:center}
+  .center .brand{font-size:1.18em}
+  .center .sep{display:none}
+  .center button,.center a{
+    min-height:46px;
+    padding:13px 0 11px;
+    display:flex;align-items:center;justify-content:space-between;
+    border-bottom:1px solid var(--hair);
+  }
+  .center button:first-child{border-top:1px solid var(--hair)}
+  .center button:not(.brand)::after,.center a::after{
+    content:"↗";position:static;display:block;height:auto;background:none;
+    transform:none;margin-left:16px;color:#9a9c97;font-size:11px;
+  }
+  .center .portal::after{color:var(--orange)}
   .center button:after,.center a:after{display:none}
   .center button:hover,.center a:hover{background:transparent;color:inherit}
   .center .portal{color:var(--orange)}
