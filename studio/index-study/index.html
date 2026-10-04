@@ -164,22 +164,127 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
 .info-copy .rules div{padding:10px 0;border-bottom:1px solid var(--hair);font-size:10px;text-transform:uppercase;letter-spacing:.04em}
 .mobile-note{display:none}
 @media(max-width:760px){
-  .site{min-height:100svh}
-  .center{width:82%;white-space:normal;flex-wrap:wrap;justify-content:center;row-gap:12px;font-size:12px;line-height:1.2;text-align:center}
-  .center .sep{padding:0 7px}
-  .coordinate,.status{font-size:7px}
-  .email-state{display:none}
-  .legal{display:none}.mark{right:20px;bottom:18px}.eagle{left:20px;bottom:18px}
-  .panel-body{inset:72px 20px 62px}
-  .panel-head{left:20px;right:20px}
-  .work-grid{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:16px}
-  .index-list{display:grid;grid-template-columns:repeat(2,1fr)}
-  .index-item{padding:10px 0;font-size:10px}
-  .field-grid,.info-grid,.contact-simple,.company-grid,.portal-cover{grid-template-columns:1fr;gap:28px}
-  .field-grid{grid-template-rows:1.15fr .85fr}
-  .field-copy h1{font-size:38px;margin-top:10px}.field-copy p{font-size:12px;line-height:1.55}
+  html,body{overflow:hidden}
+  body{cursor:auto}
+  .site{height:100svh;min-height:0;overflow:hidden;padding:0}
 
-  .person h2{font-size:32px}
+  /* Home: same composition, scaled for a phone rather than redesigned. */
+  .center{
+    width:auto;max-width:88vw;
+    left:50%;top:48%;
+    transform:translate(-50%,-50%);
+    display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+    gap:0;row-gap:12px;
+    white-space:normal;text-align:center;
+    font-size:13px;line-height:1.25;letter-spacing:.01em;
+  }
+  .center .brand{font-size:1.16em}
+  .center .sep{padding:0 7px;color:#9a9c97}
+  .center button,.center a{min-height:22px}
+  .center button:after,.center a:after{display:none}
+  .center button:hover,.center a:hover{background:transparent;color:inherit}
+  .center .portal{color:var(--orange)}
+  .center .portal:hover{background:transparent;color:var(--orange)}
+
+  .eagle{left:18px;bottom:max(18px,env(safe-area-inset-bottom));width:20px}
+  .legal{
+    display:block;left:48px;bottom:max(17px,env(safe-area-inset-bottom));
+    font-size:7px;line-height:1.4;letter-spacing:.035em
+  }
+  .mark{
+    right:18px;bottom:max(17px,env(safe-area-inset-bottom));
+    font-size:7px;line-height:1.4;letter-spacing:.035em
+  }
+
+  /* Panels remain full-frame sheets. */
+  .panel{overflow:hidden}
+  .panel-head{
+    top:max(18px,env(safe-area-inset-top));
+    left:18px;right:18px;
+    font-size:9px;line-height:1.3;letter-spacing:.035em;
+  }
+  .panel-head>span{max-width:72%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .close{gap:5px;font-size:9px}
+  .panel-body{
+    inset:max(62px,calc(env(safe-area-inset-top) + 52px)) 18px max(54px,calc(env(safe-area-inset-bottom) + 42px));
+    overflow:auto;-webkit-overflow-scrolling:touch;
+    padding-bottom:18px;
+  }
+
+  /* Work */
+  .work-grid{grid-template-columns:1fr;grid-template-rows:auto minmax(280px,1fr);gap:18px}
+  .index-list{
+    display:block;overflow:visible;border-top:1px solid var(--hair)
+  }
+  .index-item{
+    grid-template-columns:32px 1fr;
+    padding:11px 0;font-size:10px;line-height:1.25
+  }
+  .project-stage{min-height:360px}
+  .project-label,.project-name{font-size:8px;padding:6px 7px}
+  .project-name{max-width:74%;line-height:1.35}
+
+  /* Field */
+  .field-grid{grid-template-columns:1fr;grid-template-rows:44svh auto;gap:20px}
+  .field-photo{min-height:300px}
+  .field-copy{padding-top:11px}
+  .field-copy h1{font-size:42px;line-height:.92;margin-top:12px}
+  .field-copy p{margin:32px 0 0;font-size:12px;line-height:1.58}
+  .field-meta{grid-template-columns:repeat(3,1fr);font-size:8px;gap:7px}
+
+  /* Company */
+  .company-grid{grid-template-columns:1fr;gap:34px;padding-top:14px}
+  .company-intro-simple h1{font-size:48px;line-height:.88;margin:14px 0 20px}
+  .company-intro-simple p{font-size:12px;line-height:1.6}
+  .company-record{gap:24px}
+  .company-record p{font-size:12px;line-height:1.55}
+  .company-lines>div{
+    grid-template-columns:1fr;gap:4px;padding:9px 0
+  }
+  .company-lines strong{font-size:10px}
+  .company-lines span{font-size:10px}
+
+  /* Contact */
+  .contact-simple{grid-template-columns:1fr;gap:28px;padding-top:14px}
+  .contact-note{max-width:none}
+  .contact-note p{font-size:12px;line-height:1.6;max-width:30ch}
+  .contact-meta-block{font-size:9px;margin-top:10px}
+  .contact-write{width:100%}
+  .contact-write textarea{
+    min-height:180px;font-size:13px;line-height:1.55;padding:14px;
+  }
+  .contact-actions{font-size:9px}
+
+  /* Portal */
+  .portal-cover{grid-template-columns:1fr;gap:30px;padding-top:14px}
+  .portal-project h1{font-size:52px;line-height:.86;margin:13px 0 10px}
+  .portal-place{font-size:9px}
+  .portal-path{
+    gap:7px 8px;margin-bottom:18px;font-size:9px
+  }
+  .portal-path button{font-size:9px}
+  .ledger-row{
+    grid-template-columns:110px 1fr;gap:12px;
+    padding:10px 0;font-size:10px
+  }
+  .record-list{margin-top:24px}
+  .record-list button{
+    grid-template-columns:1fr auto;gap:4px 10px;
+    padding:11px 0;font-size:10px
+  }
+  .record-list button strong{grid-column:1 / -1}
+  .record-list button em{text-align:right}
+  .portal-provenance{display:none}
+
+  /* Touch: retain orange signal by tapping/focus, not desktop hover. */
+  .hover-word:hover,.index-item .phrase-hover:hover{background:transparent;color:inherit}
+  button:focus-visible,a:focus-visible,.phrase-hover:active{
+    background:var(--orange);color:var(--paper);outline:none
+  }
+
+  .kicker,.record-label{font-size:9px}
+  .coordinate,.status{display:none}
+  .email-state{display:none}
 }
 </style>
 </head>
