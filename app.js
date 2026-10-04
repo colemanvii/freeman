@@ -13,6 +13,48 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
 @media(min-width:1001px){.service-card:nth-child(-n+2),.faq-item:nth-child(-n+2){border-top:0!important}.faq-list{height:100%!important;grid-template-rows:1fr 1fr!important;column-gap:46px!important}.faq-item{padding:24px 0 26px!important;display:flex!important;flex-direction:column!important;justify-content:flex-start!important}.faq-item h3{font-size:18px!important;line-height:1.16!important;letter-spacing:-.012em!important;margin:0 0 20px!important;white-space:nowrap!important}.faq-item p{font-size:14px!important;line-height:1.52!important;max-width:96%!important;margin:0!important}.subview[data-sub="faqs"],#faqs{height:100%!important}}
 @media(max-width:1000px) and (min-width:701px){.brand .mark{width:28px!important}.header-actions{gap:10px!important}.client-portal{height:26px!important;padding:0 9px!important;font-size:8px!important}.freeman-story .story-copy{font-size:11px}.project-testimonial .project-quote{font-size:16px!important}}
 @media(max-width:700px){header{min-height:94px!important;grid-template-rows:48px 46px!important}.brand .logo{display:none!important}.brand{gap:0!important}.brand .mark{width:29px!important}.header-actions{grid-column:2!important;grid-row:1!important;justify-self:end!important;gap:8px!important}.header-mark{font-size:8px!important;letter-spacing:.09em!important}.client-portal{height:25px!important;padding:0 8px!important;font-size:8px!important;letter-spacing:.07em!important}.client-full{display:none!important}.client-short{display:inline!important}nav button{padding:12px 0 9px!important}.home{padding-top:34px!important}.home-copy h1{margin-top:22px!important}.home-statement{margin-top:48px!important}.home-proof{margin-top:38px!important}.home-image{margin-top:28px!important}.home-capabilities{font-size:8px!important}.proj-list-items{gap:6px!important;padding:1px 0 16px!important;scroll-snap-type:x proximity!important;-webkit-mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 24px),transparent 100%)!important;mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 24px),transparent 100%)!important}.proj-btn{height:31px!important;padding:0 11px!important;border:1px solid rgba(23,24,19,.17)!important;border-radius:10px!important;background:rgba(244,245,241,.55)!important;box-shadow:none!important;scroll-snap-align:start!important}.proj-btn .nm{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:9px!important;font-weight:500!important;letter-spacing:.055em!important;line-height:1!important;text-transform:uppercase!important}.proj-btn.active{background:var(--ink)!important;border-color:var(--ink)!important}.proj-btn.active .nm{color:var(--paper)!important}.founder-photo{width:100%!important;height:auto!important;min-height:0!important;border-radius:16px!important;background:transparent!important}.founder-photo img{width:100%!important;height:auto!important;max-height:none!important;object-fit:contain!important;object-position:center top!important}.freeman-story{padding:40px 0 10px}.freeman-story .story-note-box{max-width:100%;padding:16px 16px 18px}.freeman-story .story-copy{font-size:11px}.project-testimonial{margin-top:18px;padding:13px 0 0 13px}.project-testimonial .project-quote{font-size:17px!important}}
+
+/* Mobile finishing pass — preserve the printed-window idea, but make the next panel visible. */
+@media(max-width:700px){
+  #home.view{padding:14px 18px 26px!important}
+  .signal-field{gap:14px!important}
+  .signal-window{
+    min-height:calc(100svh - 176px)!important;
+    max-height:none!important;
+    box-shadow:5px 5px 0 var(--ink)!important;
+  }
+  .signal-titlebar{height:40px!important;grid-template-columns:22px 1fr auto 1fr!important;gap:9px!important}
+  .signal-box{width:21px!important;height:21px!important}
+  .signal-lines{height:25px!important}
+  .signal-title{font-size:12px!important;padding:0 5px!important}
+  .signal-sheet{padding:24px 20px 18px!important}
+  .signal-kicker{font-size:9px!important;line-height:1.3!important}
+  .signal-hello{
+    font-size:clamp(56px,16.2vw,76px)!important;
+    line-height:.77!important;
+    margin:22px 0 24px!important;
+  }
+  .signal-deck{font-size:clamp(25px,7.4vw,34px)!important;line-height:1!important}
+  .signal-body{font-size:16px!important;line-height:1.32!important;margin-top:22px!important}
+  .signal-body p{margin-bottom:12px!important}
+  .signal-cta{margin-top:8px!important;padding:12px 14px!important;font-size:11px!important}
+  .signal-bottom{margin-top:18px!important;padding-top:12px!important;font-size:8px!important}
+  .signal-photo{height:58svh!important;min-height:420px!important}
+  .tap-flash{
+    background:var(--red)!important;
+    color:#fff!important;
+    border-color:var(--red)!important;
+  }
+  .signal-nav .tap-flash,
+  .client-portal.tap-flash,
+  .proj-btn.tap-flash{
+    background:var(--red)!important;
+    color:#fff!important;
+  }
+  .signal-nav .tap-flash *,
+  .client-portal.tap-flash *,
+  .proj-btn.tap-flash *{color:#fff!important}
+}
 #freeman-loader{position:fixed;inset:0;z-index:9999;background:#f4f5f1;display:grid;place-items:center;opacity:1;visibility:visible;transition:opacity .48s ease,visibility .48s ease}#freeman-loader img{width:clamp(126px,17vw,190px);height:auto;opacity:0;transform:translateY(7px);animation:freemanEagleIn .62s ease .08s forwards}@keyframes freemanEagleIn{to{opacity:1;transform:translateY(0)}}#freeman-loader.out{opacity:0;visibility:hidden}@media(prefers-reduced-motion:reduce){#freeman-loader,#freeman-loader img{transition:none!important;animation:none!important;opacity:1;transform:none}}
 `;
   document.head.appendChild(s);
@@ -75,6 +117,24 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
       showProject(0);
     }catch(e){console.warn('Freeman testimonial enhancement skipped',e)}
   };
+
+  // Touch feedback: on phones, interactions flash Freeman red like a physical keypress.
+  const installTapFlash=()=>{
+    if(!window.matchMedia('(hover: none), (pointer: coarse)').matches)return;
+    const selector='.signal-nav button,.signal-nav a,.signal-cta,.client-portal,.proj-btn,.subnav button';
+    document.addEventListener('pointerdown',e=>{
+      const el=e.target.closest?.(selector);
+      if(!el)return;
+      el.classList.add('tap-flash');
+      clearTimeout(el._freemanFlashTimer);
+      el._freemanFlashTimer=setTimeout(()=>el.classList.remove('tap-flash'),160);
+    },{passive:true});
+    document.addEventListener('pointercancel',e=>{
+      const el=e.target.closest?.(selector);
+      if(el)el.classList.remove('tap-flash');
+    },{passive:true});
+  };
+  installTapFlash();
 
   const core=document.createElement('script');
   core.src='app-core.js?v=all-work1';
