@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Freeman — Index Study</title>
+<meta name="description" content="Freeman General Contractors — Built for Generations.">
+<style>
+:root{
+  --paper:#f4f4f0;
+  --ink:#30312f;
+  --muted:#8e918c;
+  --hair:#cfd1cb;
+  --orange:#f05a28;
+  --mono:"Courier New",Courier,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:var(--paper);color:var(--ink);font-family:var(--mono);overflow:hidden}
+body{min-height:100svh}
+button,a{font:inherit;color:inherit}
+button{border:0;background:none;padding:0;cursor:pointer}
+a{text-decoration:none}
+.site{position:relative;width:100%;height:100svh;min-height:560px;overflow:hidden;background:var(--paper)}
+.site:before{content:"";position:absolute;inset:0;border-top:1px solid #a8aaa4;pointer-events:none}
+.center{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  display:flex;align-items:center;gap:0;white-space:nowrap;
+  font-size:13px;line-height:1;letter-spacing:-.03em;text-transform:uppercase;
+}
+.center .brand{font-weight:700}
+.center .sep{padding:0 9px;color:#747772}
+.center button,.center a{position:relative;text-transform:uppercase}
+.center button:after,.center a:after{
+  content:"";position:absolute;left:0;right:0;bottom:-5px;height:1px;background:currentColor;
+  transform:scaleX(0);transform-origin:left;transition:transform .16s ease;
+}
+.center button:hover:after,.center a:hover:after,.center button.active:after{transform:scaleX(1)}
+.center .portal{color:var(--orange);font-weight:700}
+.center .portal:before{
+  content:"";display:inline-block;width:5px;height:5px;margin-right:6px;background:var(--orange);border-radius:50%;
+  animation:pulse 1.35s steps(2,end) infinite;vertical-align:2px;
+}
+@keyframes pulse{50%{opacity:.12}}
+.eagle{
+  position:absolute;left:28px;bottom:27px;width:25px;height:auto;display:block;filter:none;
+}
+.legal{
+  position:absolute;left:64px;bottom:26px;font-size:8px;line-height:1.4;letter-spacing:.055em;text-transform:uppercase;color:#777a75;
+}
+.mark{
+  position:absolute;right:29px;bottom:26px;text-align:right;font-size:8px;line-height:1.42;letter-spacing:.055em;text-transform:uppercase;color:#777a75;
+}
+.switcher{
+  position:absolute;left:50%;bottom:30px;transform:translateX(-50%);
+  display:flex;align-items:center;gap:10px;
+}
+.switcher button{
+  width:11px;height:11px;border:1px solid #aaaDA7;background:transparent;
+}
+.switcher button:nth-child(2){background:#fff}
+.switcher button:nth-child(3){background:#dfdfd9}
+.switcher button.active{outline:1px solid var(--ink);outline-offset:2px}
+.coordinate{
+  position:absolute;top:28px;left:29px;font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:#91948f;
+}
+.status{
+  position:absolute;top:28px;right:29px;font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:#91948f;
+}
+.panel{
+  position:absolute;inset:0;background:var(--paper);opacity:0;visibility:hidden;
+  transition:opacity .16s ease,visibility 0s linear .16s;
+}
+.panel.open{opacity:1;visibility:visible;transition:opacity .16s ease}
+.panel-head{
+  position:absolute;top:27px;left:29px;right:29px;display:flex;justify-content:space-between;align-items:center;
+  font-size:9px;letter-spacing:.06em;text-transform:uppercase;
+}
+.close{display:inline-flex;align-items:center;gap:8px;text-transform:uppercase}
+.close:before{content:"×";font-size:14px;line-height:0}
+.panel-body{position:absolute;inset:90px 29px 70px;display:grid;min-height:0}
+.work-grid{grid-template-columns:180px minmax(0,1fr);gap:42px}
+.index-list{border-top:1px solid var(--hair)}
+.index-item{
+  width:100%;display:grid;grid-template-columns:34px 1fr;gap:8px;text-align:left;
+  padding:11px 0;border-bottom:1px solid var(--hair);font-size:10px;line-height:1.2;text-transform:uppercase;
+}
+.index-item span:first-child{color:var(--muted)}
+.index-item.active,.index-item:hover{color:var(--orange)}
+.project-stage{position:relative;overflow:hidden;background:#e8e8e3}
+.project-stage img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.88) contrast(.96);transition:opacity .18s ease}
+.project-label{
+  position:absolute;left:16px;bottom:15px;background:rgba(244,244,240,.94);padding:7px 9px;
+  font-size:8px;line-height:1.35;letter-spacing:.06em;text-transform:uppercase;
+}
+.project-name{
+  position:absolute;right:16px;top:15px;background:rgba(244,244,240,.94);padding:7px 9px;
+  font-size:8px;line-height:1.35;letter-spacing:.06em;text-transform:uppercase;text-align:right;
+}
+.field-grid{grid-template-columns:1.05fr .95fr;gap:22px}
+.field-photo{position:relative;overflow:hidden;background:#e8e8e3}
+.field-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.field-copy{border-top:1px solid var(--hair);padding-top:13px;display:flex;flex-direction:column}
+.kicker{font-size:8px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.field-copy h1{
+  margin:18px 0 0;font-size:clamp(36px,5.3vw,78px);font-weight:400;line-height:.88;letter-spacing:-.06em;text-transform:uppercase;
+}
+.field-copy p{margin:auto 0 0;max-width:460px;font-size:11px;line-height:1.58}
+.field-meta{padding-top:14px;border-top:1px solid var(--hair);margin-top:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;font-size:8px;line-height:1.45;text-transform:uppercase;color:var(--muted)}
+.people-grid{grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hair)}
+.person{background:var(--paper);padding:16px;display:flex;flex-direction:column}
+.person .num{font-size:8px;color:var(--muted)}
+.person h2{margin:auto 0 6px;font-size:clamp(28px,3.5vw,54px);font-weight:400;line-height:.9;letter-spacing:-.05em;text-transform:uppercase}
+.person p{margin:0;font-size:9px;line-height:1.45;text-transform:uppercase;color:var(--muted)}
+.info-grid{grid-template-columns:1fr 1fr;gap:60px;border-top:1px solid var(--hair);padding-top:15px}
+.info-grid h1{margin:0;font-size:clamp(48px,7vw,104px);font-weight:400;line-height:.84;letter-spacing:-.07em;text-transform:uppercase}
+.info-copy{display:flex;flex-direction:column;gap:18px;max-width:530px}
+.info-copy p{font-size:11px;line-height:1.62;margin:0}
+.info-copy .rules{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--hair)}
+.info-copy .rules div{padding:10px 0;border-bottom:1px solid var(--hair);font-size:8px;text-transform:uppercase;letter-spacing:.05em}
+.mobile-note{display:none}
+@media(max-width:760px){
+  .site{min-height:100svh}
+  .center{width:82%;white-space:normal;flex-wrap:wrap;justify-content:center;row-gap:12px;font-size:12px;line-height:1.2;text-align:center}
+  .center .sep{padding:0 7px}
+  .coordinate,.status{font-size:7px}
+  .legal{display:none}.mark{right:20px;bottom:18px}.eagle{left:20px;bottom:18px}
+  .switcher{bottom:21px}
+  .panel-body{inset:72px 20px 62px}
+  .panel-head{left:20px;right:20px}
+  .work-grid{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:16px}
+  .index-list{display:grid;grid-template-columns:repeat(2,1fr)}
+  .index-item{padding:8px 0;font-size:8px}
+  .field-grid,.info-grid{grid-template-columns:1fr;gap:16px}
+  .field-grid{grid-template-rows:1.15fr .85fr}
+  .field-copy h1{font-size:38px;margin-top:10px}.field-copy p{font-size:9px}
+  .people-grid{grid-template-columns:1fr}
+  .person h2{font-size:32px}
+}
+</style>
+</head>
+<body>
+<div class="site" id="site">
+  <div class="coordinate">FREEMAN / 34.1651° N / 84.7999° W</div>
+  <div class="status">GENERAL CONTRACTORS / GEORGIA</div>
+
+  <nav class="center" aria-label="Primary navigation">
+    <button class="brand" data-panel="home">FREEMAN</button><span class="sep">/</span>
+    <button data-panel="work">WORK</button><span class="sep">/</span>
+    <button data-panel="field">FIELD</button><span class="sep">/</span>
+    <button data-panel="people">PEOPLE</button><span class="sep">/</span>
+    <button data-panel="index">INDEX</button><span class="sep">/</span>
+    <button data-panel="info">INFO</button><span class="sep">/</span>
+    <a class="portal" href="https://freemangc.com" target="_blank" rel="noreferrer">CLIENT PORTAL</a>
+  </nav>
+
+  <img class="eagle" src="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6904f319ecdcf81821e678cb_Red%20Freeman%20Eagle.svg" alt="Freeman eagle">
+  <div class="legal">Freeman General Contractors<br>Cartersville, Georgia</div>
+  <div class="mark">Built for Generations™<br>Est. in Georgia</div>
+
+  <div class="switcher" aria-label="Tone selector">
+    <button data-tone="#ecece8" aria-label="Cool grey"></button>
+    <button class="active" data-tone="#f4f4f0" aria-label="Paper white"></button>
+    <button data-tone="#deded7" aria-label="Concrete"></button>
+  </div>
+
+  <section class="panel" id="work" aria-hidden="true">
+    <div class="panel-head"><span>WORK / COMPLETED + ACTIVE</span><button class="close">CLOSE</button></div>
+    <div class="panel-body work-grid">
+      <div class="index-list" id="projectList">
+        <button class="index-item active" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/690112c66907ba02f5612747_Beetlecat%20Thumb%20Freeman%20General%20Contractors_HP.jpg" data-name="BEETLECAT / ATLANTA"><span>001</span><span>Beetlecat</span></button>
+        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/690112c66907ba02f5612747_Beetlecat%20Thumb%20Freeman%20General%20Contractors_HP.jpg" data-name="HOSPITALITY / GEORGIA"><span>002</span><span>Hospitality</span></button>
+        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/690112c66907ba02f5612747_Beetlecat%20Thumb%20Freeman%20General%20Contractors_HP.jpg" data-name="FIELD RECORD / 2026"><span>003</span><span>Project Record</span></button>
+        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/690112c66907ba02f5612747_Beetlecat%20Thumb%20Freeman%20General%20Contractors_HP.jpg" data-name="BUILT FOR GENERATIONS"><span>004</span><span>Selected Work</span></button>
+      </div>
+      <figure class="project-stage">
+        <img id="projectImage" src="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/690112c66907ba02f5612747_Beetlecat%20Thumb%20Freeman%20General%20Contractors_HP.jpg" alt="Freeman project">
+        <figcaption class="project-label">The result proves taste.<br>The evidence proves capability.</figcaption>
+        <div class="project-name" id="projectName">BEETLECAT / ATLANTA</div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="panel" id="field" aria-hidden="true">
+    <div class="panel-head"><span>FIELD / EVIDENCE</span><button class="close">CLOSE</button></div>
+    <div class="panel-body field-grid">
+      <div class="field-photo"><img src="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/690112c66907ba02f5612747_Beetlecat%20Thumb%20Freeman%20General%20Contractors_HP.jpg" alt="Field evidence"></div>
+      <div class="field-copy">
+        <div class="kicker">FIELD NOTE / NO. 014</div>
+        <h1>Eleven-<br>sixteenths.</h1>
+        <p>Good construction is visible in the finished room. Better construction is visible in the decisions that made the room possible. Freeman records those decisions: dimensions, mockups, corrections, materials, hands, and the small acts of judgment that disappear when the project is complete.</p>
+        <div class="field-meta"><span>FIELD<br>OBSERVATION</span><span>PROJECT<br>RECORD</span><span>BUILT<br>EVIDENCE</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="people" aria-hidden="true">
+    <div class="panel-head"><span>PEOPLE / STEWARDSHIP</span><button class="close">CLOSE</button></div>
+    <div class="panel-body people-grid">
+      <article class="person"><span class="num">01 / LEADERSHIP</span><h2>Gabe<br>Freeman</h2><p>Founder / Freeman General Contractors</p></article>
+      <article class="person"><span class="num">02 / FIELD</span><h2>The<br>Builders</h2><p>Superintendents / craftsmen / trade partners</p></article>
+      <article class="person"><span class="num">03 / CLIENT</span><h2>The<br>Relationship</h2><p>Clarity / accountability / stewardship</p></article>
+    </div>
+  </section>
+
+  <section class="panel" id="index" aria-hidden="true">
+    <div class="panel-head"><span>INDEX / FREEMAN</span><button class="close">CLOSE</button></div>
+    <div class="panel-body work-grid">
+      <div class="index-list">
+        <div class="index-item"><span>001</span><span>Built for Generations</span></div>
+        <div class="index-item"><span>002</span><span>Finished Result</span></div>
+        <div class="index-item"><span>003</span><span>Field Evidence</span></div>
+        <div class="index-item"><span>004</span><span>People / Stewardship</span></div>
+        <div class="index-item"><span>005</span><span>Project Records</span></div>
+        <div class="index-item"><span>006</span><span>Contact</span></div>
+      </div>
+      <div class="field-copy">
+        <div class="kicker">FREEMAN / REPUTATION SYSTEM</div>
+        <h1>THE WORK<br>IS THE BRAND.</h1>
+        <p>Don't manufacture the Freeman story. Find it. Preserve what is distinctive, make it legible, and let the evidence carry the claim.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="info" aria-hidden="true">
+    <div class="panel-head"><span>INFO / FREEMAN GENERAL CONTRACTORS</span><button class="close">CLOSE</button></div>
+    <div class="panel-body info-grid">
+      <h1>Built for<br>Generations.</h1>
+      <div class="info-copy">
+        <p>Freeman General Contractors is a Georgia-based builder working across hospitality, commercial, healthcare and high-end residential construction. The standard is simple: clear communication, strong accountability, respect for design and craft, and work intended to last.</p>
+        <p>Construction is a service business. Schedules, budgets and craftsmanship matter. So does the experience of getting there.</p>
+        <div class="rules">
+          <div>Cartersville, Georgia</div><div>General Contracting</div>
+          <div>Hospitality</div><div>Residential</div>
+          <div>Commercial</div><div>Special Projects</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+const root=document.documentElement;
+const panels=[...document.querySelectorAll('.panel')];
+const nav=[...document.querySelectorAll('.center [data-panel]')];
+function closeAll(){
+  panels.forEach(p=>{p.classList.remove('open');p.setAttribute('aria-hidden','true')});
+  nav.forEach(n=>n.classList.remove('active'));
+}
+function openPanel(id){
+  if(id==='home'){closeAll();return}
+  closeAll();
+  const p=document.getElementById(id);
+  if(p){p.classList.add('open');p.setAttribute('aria-hidden','false')}
+  document.querySelector('.center [data-panel="'+id+'"]')?.classList.add('active');
+}
+nav.forEach(b=>b.addEventListener('click',()=>openPanel(b.dataset.panel)));
+document.querySelectorAll('.close').forEach(b=>b.addEventListener('click',closeAll));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAll()});
+document.querySelectorAll('[data-tone]').forEach(b=>b.addEventListener('click',()=>{
+  root.style.setProperty('--paper',b.dataset.tone);
+  document.querySelectorAll('[data-tone]').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+}));
+document.querySelectorAll('.index-item[data-image]').forEach(b=>b.addEventListener('mouseenter',()=>selectProject(b)));
+document.querySelectorAll('.index-item[data-image]').forEach(b=>b.addEventListener('click',()=>selectProject(b)));
+function selectProject(b){
+  document.querySelectorAll('.index-item[data-image]').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  const img=document.getElementById('projectImage');
+  img.style.opacity='.25';
+  setTimeout(()=>{img.src=b.dataset.image;document.getElementById('projectName').textContent=b.dataset.name;img.style.opacity='1'},90);
+}
+</script>
+</body>
+</html>
