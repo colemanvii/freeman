@@ -169,58 +169,63 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
   body{cursor:auto}
   .site{height:100svh;min-height:0;overflow:hidden;padding:0}
 
-  /* Home: literal 1994 treatment borrowed from the approved personal landing page. */
+  /* Home: bigger, stacked, simple, still 1994. */
   .center{display:none!important}
   .mobile-home-nav{
     position:absolute;
-    left:50%;top:50%;
+    left:50%;
+    top:50%;
     transform:translate(-50%,-50%);
-    width:min(260px,calc(100% - 44px));
+    width:min(280px,82vw);
     display:flex!important;
+    flex-direction:column;
     align-items:center;
     justify-content:center;
-    flex-wrap:wrap;
-    gap:0;
-    white-space:normal;
-    text-align:center;
     font-family:var(--mono);
     -webkit-font-smoothing:none;
     text-rendering:geometricPrecision;
-    font-size:13px;
-    line-height:2.15;
+    font-size:17px;
+    line-height:1.9;
     letter-spacing:.02em;
     text-transform:uppercase;
+    text-align:center;
     color:var(--ink);
   }
   .mobile-home-nav button{
-    display:inline-block;
-    position:relative;
     border:0;
     background:transparent;
     color:inherit;
     font:inherit;
-    line-height:inherit;
     letter-spacing:inherit;
     text-transform:uppercase;
     padding:0;
     min-height:0;
-  }
-  .mobile-home-nav button + button::before{
-    content:" / ";
-    white-space:pre;
-    color:var(--ink);
+    position:relative;
   }
   .mobile-home-nav .mobile-brand{
     font-weight:700;
+    font-size:22px;
+    line-height:1.15;
+    margin-bottom:20px;
+  }
+  .mobile-stack{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+  }
+  .mobile-stack button{
+    line-height:1.95;
   }
   .mobile-home-nav .mobile-portal{
     color:var(--orange);
+    margin-top:20px;
+    line-height:1.45;
   }
-  /* Large invisible touch target; the visible type stays exactly 1994-sized. */
   .mobile-home-nav button::after{
     content:"";
     position:absolute;
-    inset:-8px -5px;
+    inset:-10px -18px;
   }
   .mobile-home-nav button:active,
   .mobile-home-nav button:focus-visible{
@@ -343,10 +348,12 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
 
   <nav class="mobile-home-nav" aria-label="Mobile primary navigation">
     <button class="mobile-brand" data-panel="home">FREEMAN</button>
-    <button data-panel="work">WORK</button>
-    <button data-panel="field">FIELD</button>
-    <button data-panel="company">COMPANY</button>
-    <button data-panel="contact">CONTACT</button>
+    <div class="mobile-stack">
+      <button data-panel="work">WORK</button>
+      <button data-panel="field">FIELD</button>
+      <button data-panel="company">COMPANY</button>
+      <button data-panel="contact">CONTACT</button>
+    </div>
     <button class="mobile-portal" data-panel="portal">CLIENT PORTAL</button>
   </nav>
 
