@@ -51,6 +51,7 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
 .mark{
   position:absolute;right:29px;bottom:26px;text-align:right;font-size:9px;line-height:1.45;letter-spacing:.04em;text-transform:uppercase;color:#747772;
 }
+.mobile-home-nav{display:none}
 .coordinate{display:none}
 .status{display:none}
 .panel{
@@ -168,34 +169,59 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
   body{cursor:auto}
   .site{height:100svh;min-height:0;overflow:hidden;padding:0}
 
-  /* Home: same composition, scaled for a phone rather than redesigned. */
-  .center{
-    width:min(260px,78vw);
-    left:50%;top:48%;
-    transform:translate(-50%,-50%);
-    display:flex;flex-direction:column;align-items:stretch;justify-content:center;
-    gap:0;
-    white-space:normal;text-align:left;
-    font-size:15px;line-height:1.2;letter-spacing:.01em;
+  /* Home: dedicated mobile index. */
+  .center{display:none!important}
+  .mobile-home-nav{
+    position:absolute;
+    left:20px;right:20px;top:50%;
+    transform:translateY(-50%);
+    display:flex!important;
+    flex-direction:column;
+    border-top:1px solid var(--hair);
   }
-  .center .brand{font-size:1.18em}
-  .center .sep{display:none}
-  .center button,.center a{
-    min-height:46px;
-    padding:13px 0 11px;
-    display:flex;align-items:center;justify-content:space-between;
+  .mobile-home-nav button{
+    width:100%;
+    min-height:54px;
+    padding:15px 2px 13px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
     border-bottom:1px solid var(--hair);
+    text-align:left;
+    font-size:15px;
+    line-height:1;
+    letter-spacing:.01em;
+    text-transform:uppercase;
+    background:transparent;
+    color:var(--ink);
   }
-  .center button:first-child{border-top:1px solid var(--hair)}
-  .center button:not(.brand)::after,.center a::after{
-    content:"↗";position:static;display:block;height:auto;background:none;
-    transform:none;margin-left:16px;color:#9a9c97;font-size:11px;
+  .mobile-home-nav .mobile-brand{
+    font-weight:700;
+    font-size:17px;
+    justify-content:flex-start;
   }
-  .center .portal::after{color:var(--orange)}
-  .center button:after,.center a:after{display:none}
-  .center button:hover,.center a:hover{background:transparent;color:inherit}
-  .center .portal{color:var(--orange)}
-  .center .portal:hover{background:transparent;color:var(--orange)}
+  .mobile-home-nav button span:last-child{
+    font-size:9px;
+    letter-spacing:.04em;
+    color:#8d908b;
+  }
+  .mobile-home-nav .mobile-portal{
+    color:var(--orange);
+  }
+  .mobile-home-nav .mobile-portal span:last-child{
+    color:var(--orange);
+    font-size:13px;
+  }
+  .mobile-home-nav button:active,
+  .mobile-home-nav button:focus-visible{
+    background:var(--orange);
+    color:var(--paper);
+    outline:none;
+  }
+  .mobile-home-nav button:active span,
+  .mobile-home-nav button:focus-visible span{
+    color:var(--paper);
+  }
 
   .eagle{left:18px;bottom:max(18px,env(safe-area-inset-bottom));width:20px}
   .legal{
@@ -310,6 +336,15 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
     <button data-panel="company">COMPANY</button><span class="sep">/</span>
     <button data-panel="contact">CONTACT</button><span class="sep">/</span>
     <button class="portal" data-panel="portal">CLIENT PORTAL</button>
+  </nav>
+
+  <nav class="mobile-home-nav" aria-label="Mobile primary navigation">
+    <button class="mobile-brand" data-panel="home">FREEMAN</button>
+    <button data-panel="work"><span>WORK</span><span>01</span></button>
+    <button data-panel="field"><span>FIELD</span><span>02</span></button>
+    <button data-panel="company"><span>COMPANY</span><span>03</span></button>
+    <button data-panel="contact"><span>CONTACT</span><span>04</span></button>
+    <button class="mobile-portal" data-panel="portal"><span>CLIENT PORTAL</span><span>→</span></button>
   </nav>
 
   <img class="eagle" src="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6904f319ecdcf81821e678cb_Red%20Freeman%20Eagle.svg" alt="Freeman eagle">
@@ -459,7 +494,7 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
 <script>
 const root=document.documentElement;
 const panels=[...document.querySelectorAll('.panel')];
-const nav=[...document.querySelectorAll('.center [data-panel]')];
+const nav=[...document.querySelectorAll('.center [data-panel],.mobile-home-nav [data-panel]')];
 function closeAll(){
   panels.forEach(p=>{p.classList.remove('open');p.setAttribute('aria-hidden','true')});
   nav.forEach(n=>n.classList.remove('active'));
@@ -469,7 +504,7 @@ function openPanel(id){
   closeAll();
   const p=document.getElementById(id);
   if(p){p.classList.add('open');p.setAttribute('aria-hidden','false')}
-  document.querySelector('.center [data-panel="'+id+'"]')?.classList.add('active');
+  document.querySelectorAll('[data-panel="'+id+'"]').forEach(el=>el.classList.add('active'));
 }
 nav.forEach(b=>b.addEventListener('click',()=>openPanel(b.dataset.panel)));
 document.querySelectorAll('.close').forEach(b=>b.addEventListener('click',closeAll));
