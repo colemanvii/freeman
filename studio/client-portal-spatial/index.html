@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f3f1eb">
+<title>Freeman — Project Instrument Study</title>
+<style>
+:root{
+  --paper:#f3f1eb;--ink:#20211d;--muted:#72736d;--rule:#c9c8c1;--orange:#e96822;--soft:#e8e6df;
+  --font:Arial,"Helvetica Neue",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:var(--paper);color:var(--ink);font-family:var(--font);overflow:hidden}
+button{font:inherit}
+.shell{height:100dvh;display:grid;grid-template-rows:auto 1fr auto;padding:24px 30px 20px;gap:18px}
+.top{display:grid;grid-template-columns:1fr auto 1fr;align-items:start;border-bottom:1px solid var(--ink);padding-bottom:10px}
+.eyebrow,.meta,.label,.footer,.zone-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+.brand{font-size:12px;font-weight:700;letter-spacing:.02em}
+.title{text-align:center}
+.title strong{display:block;font-size:16px;letter-spacing:.04em}
+.title span{display:block;margin-top:4px;font-size:9px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+.status{text-align:right}
+.status b{color:var(--orange);font-weight:700}
+.stage{min-height:0;display:grid;grid-template-columns:minmax(260px,.72fr) minmax(420px,1.5fr) minmax(280px,.78fr);gap:18px}
+.panel{border-top:1px solid var(--ink);padding-top:10px;min-height:0}
+.panel h2{font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
+.left{display:flex;flex-direction:column}
+.pulse{font-size:24px;line-height:1.02;letter-spacing:-.025em;max-width:380px;margin:0 0 22px}
+.small{font-size:12px;line-height:1.4;color:var(--muted);max-width:360px}
+.attention{margin-top:auto;border-top:1px solid var(--rule);padding-top:12px}
+.attention .kicker{color:var(--orange);font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+.attention h3{font-size:34px;line-height:.95;margin:7px 0 9px;letter-spacing:-.04em}
+.attention p{font-size:12px;line-height:1.4;margin:0 0 12px;max-width:360px}
+.attention button{border:0;border-bottom:1px solid var(--ink);background:transparent;padding:0 0 3px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.center{position:relative;display:grid;grid-template-rows:auto 1fr auto}
+.plan-wrap{min-height:0;position:relative;border:1px solid var(--ink);background:#f8f7f3}
+.plan-head{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-bottom:1px solid var(--ink)}
+.plan-head b{font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.plan-head span{font-size:9px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.plan{width:100%;height:100%;display:block}
+.zone{cursor:pointer;transition:fill .12s ease}
+.zone:hover,.zone.active{fill:rgba(233,104,34,.14)}
+.zone-hit{fill:transparent;stroke:var(--ink);stroke-width:1.25}
+.zone-mark{fill:var(--orange)}
+.plan text{font-family:var(--font);fill:var(--ink)}
+.plan .tiny{font-size:10px;letter-spacing:.08em}
+.plan .micro{font-size:8px;fill:var(--muted);letter-spacing:.1em}
+.legend{display:flex;gap:18px;border-top:1px solid var(--ink);padding:8px 10px;font-size:9px;letter-spacing:.1em;text-transform:uppercase}
+.legend span::before{content:"";display:inline-block;width:7px;height:7px;border:1px solid var(--ink);margin-right:6px;vertical-align:-1px}
+.legend .active-key::before{background:var(--orange);border-color:var(--orange)}
+.right{display:flex;flex-direction:column}
+.detail{display:flex;flex-direction:column;min-height:0;flex:1}
+.detail-top{display:flex;justify-content:space-between;gap:10px}
+.detail-top span{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.detail-top b{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--orange)}
+.detail h3{font-size:36px;line-height:.92;letter-spacing:-.045em;margin:14px 0 10px}
+.detail .summary{font-size:13px;line-height:1.35;margin:0 0 16px}
+.record{border-top:1px solid var(--rule)}
+.row{display:grid;grid-template-columns:88px 1fr;gap:8px;padding:9px 0;border-bottom:1px solid var(--rule)}
+.row span{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.row strong{font-size:11px;font-weight:600}
+.photo{margin-top:auto;border-top:1px solid var(--ink);padding-top:9px}
+.photo .frame{aspect-ratio:16/8;background:linear-gradient(135deg,#dedbd2,#f5f3ee);border:1px solid var(--rule);display:grid;place-items:center;overflow:hidden}
+.photo .frame img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.86) contrast(.95)}
+.photo p{font-size:9px;line-height:1.35;color:var(--muted);margin:6px 0 0}
+.bottom{border-top:1px solid var(--ink);padding-top:8px;display:flex;justify-content:space-between;gap:16px;align-items:center}
+.bottom .leftmeta{display:flex;gap:16px}
+.bottom span{font-size:9px;letter-spacing:.11em;text-transform:uppercase}
+.bottom .orange{color:var(--orange)}
+@media(max-width:900px){
+  html,body{overflow:auto}
+  .shell{height:auto;min-height:100dvh;padding:16px;gap:14px}
+  .top{grid-template-columns:1fr auto}.title{display:none}
+  .stage{display:block}
+  .panel{margin-top:18px}
+  .pulse{font-size:29px}
+  .attention{margin-top:26px}
+  .center{height:54vh;min-height:410px}
+  .right{min-height:500px}
+  .detail h3{font-size:42px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="top">
+    <div><div class="brand">FREEMAN GENERAL CONTRACTING</div><div class="eyebrow">PROJECT INSTRUMENT / STUDY 01</div></div>
+    <div class="title"><strong>THE OPTIMIST</strong><span>Atlanta, Georgia / Rocket Farm Restaurants</span></div>
+    <div class="status"><div class="meta">PROJECT STATUS</div><b class="meta">ON TRACK</b></div>
+  </header>
+
+  <main class="stage">
+    <section class="panel left">
+      <h2>Project pulse</h2>
+      <p class="pulse">The project itself is the interface.</p>
+      <p class="small">A client should not have to translate a contractor's database into a mental picture. Freeman curates the signal and attaches it to the place where the work is happening.</p>
+
+      <div class="attention">
+        <div class="kicker">Your attention / needed Thursday</div>
+        <h3>BAR-TOP<br>FINISH</h3>
+        <p>Freeman recommends honed soapstone. Approval preserves the October 12 opening; waiting beyond Thursday adds approximately two weeks.</p>
+        <button id="jumpDecision">Locate decision on plan →</button>
+      </div>
+    </section>
+
+    <section class="panel center">
+      <h2>Project map</h2>
+      <div class="plan-wrap">
+        <div class="plan-head"><b>LEVEL 01 / CLIENT VIEW</b><span>Curated from project record</span></div>
+        <svg class="plan" viewBox="0 0 760 500" role="img" aria-label="Simplified architectural plan with selectable project zones">
+          <rect x="36" y="45" width="688" height="394" fill="none" stroke="#20211d" stroke-width="2"/>
+          <line x1="300" y1="45" x2="300" y2="439" stroke="#20211d" stroke-width="1"/>
+          <line x1="504" y1="45" x2="504" y2="439" stroke="#20211d" stroke-width="1"/>
+          <line x1="36" y1="212" x2="724" y2="212" stroke="#20211d" stroke-width="1"/>
+          <line x1="504" y1="330" x2="724" y2="330" stroke="#20211d" stroke-width="1"/>
+          <line x1="300" y1="330" x2="504" y2="330" stroke="#20211d" stroke-width="1"/>
+
+          <g class="zone" data-zone="oyster">
+            <rect class="zone-hit" x="36" y="45" width="264" height="167"/>
+            <circle class="zone-mark" cx="272" cy="71" r="5"/>
+            <text class="tiny" x="57" y="75">01 / OYSTER BAR</text>
+            <text class="micro" x="57" y="94">MILLWORK / FINISH / LIGHTING</text>
+          </g>
+          <g class="zone active" data-zone="bar">
+            <rect class="zone-hit" x="300" y="45" width="204" height="167"/>
+            <circle class="zone-mark" cx="476" cy="71" r="5"/>
+            <text class="tiny" x="321" y="75">02 / MAIN BAR</text>
+            <text class="micro" x="321" y="94">CLIENT DECISION OPEN</text>
+          </g>
+          <g class="zone" data-zone="dining">
+            <rect class="zone-hit" x="504" y="45" width="220" height="285"/>
+            <circle class="zone-mark" cx="696" cy="71" r="5"/>
+            <text class="tiny" x="525" y="75">03 / DINING</text>
+            <text class="micro" x="525" y="94">CEILING / LIGHTING / FLOOR</text>
+          </g>
+          <g class="zone" data-zone="kitchen">
+            <rect class="zone-hit" x="36" y="212" width="264" height="227"/>
+            <circle class="zone-mark" cx="272" cy="238" r="5"/>
+            <text class="tiny" x="57" y="242">04 / KITCHEN</text>
+            <text class="micro" x="57" y="261">EQUIPMENT / MEP / INSPECTION</text>
+          </g>
+          <g class="zone" data-zone="service">
+            <rect class="zone-hit" x="300" y="212" width="204" height="227"/>
+            <circle class="zone-mark" cx="476" cy="238" r="5"/>
+            <text class="tiny" x="321" y="242">05 / SERVICE</text>
+            <text class="micro" x="321" y="261">BACK OF HOUSE / DOORS</text>
+          </g>
+          <g class="zone" data-zone="entry">
+            <rect class="zone-hit" x="504" y="330" width="220" height="109"/>
+            <circle class="zone-mark" cx="696" cy="356" r="5"/>
+            <text class="tiny" x="525" y="360">06 / ENTRY</text>
+            <text class="micro" x="525" y="379">SIGNAGE / PUNCH / HANDOFF</text>
+          </g>
+
+          <text class="micro" x="36" y="470">NOT FOR CONSTRUCTION / CLIENT INTERPRETIVE VIEW</text>
+          <text class="micro" x="555" y="470">FGC / P-OPT-01 / 2026</text>
+        </svg>
+        <div class="legend"><span class="active-key">attention / active</span><span>record available</span></div>
+      </div>
+    </section>
+
+    <section class="panel right">
+      <h2>Selected area</h2>
+      <div class="detail">
+        <div class="detail-top"><span id="zoneNumber">02 / MAIN BAR</span><b id="zoneStatus">DECISION OPEN</b></div>
+        <h3 id="zoneTitle">BAR<br>ASSEMBLY</h3>
+        <p class="summary" id="zoneSummary">Millwork coordination is active. The bar-top finish is the only client decision presently affecting the critical path.</p>
+        <div class="record">
+          <div class="row"><span>Now</span><strong id="now">Millwork coordination</strong></div>
+          <div class="row"><span>Decision</span><strong id="decision">Honed soapstone / due Thu.</strong></div>
+          <div class="row"><span>Next</span><strong id="next">Fabrication release</strong></div>
+          <div class="row"><span>Risk</span><strong id="risk">+2 weeks if approval slips</strong></div>
+        </div>
+        <div class="photo">
+          <div class="frame"><img id="fieldPhoto" src="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6916c3cc412995612baf28e4_The%20Optimist_Freeman%20General%20Contractors%200.jpg" alt="The Optimist project field view"></div>
+          <p id="photoCaption">FIELD EVIDENCE / Oyster bar millwork and finish coordination. Curated client view; operational source remains Procore.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bottom">
+    <div class="leftmeta"><span>Finished Result ↔ Field Evidence</span><span class="orange">Built for Generations</span></div>
+    <span>Prototype / spatial client layer / not connected to Procore</span>
+  </footer>
+</div>
+<script>
+const zones={
+  bar:{num:"02 / MAIN BAR",status:"DECISION OPEN",title:"BAR<br>ASSEMBLY",summary:"Millwork coordination is active. The bar-top finish is the only client decision presently affecting the critical path.",now:"Millwork coordination",decision:"Honed soapstone / due Thu.",next:"Fabrication release",risk:"+2 weeks if approval slips",caption:"FIELD EVIDENCE / Oyster bar millwork and finish coordination. Curated client view; operational source remains Procore."},
+  oyster:{num:"01 / OYSTER BAR",status:"IN PROGRESS",title:"OYSTER<br>BAR",summary:"Finish coordination is underway. The client sees the part of the record that explains what changed here, not the raw photo stream.",now:"Millwork + finish coordination",decision:"No client action",next:"Lighting trim",risk:"No current schedule risk",caption:"FIELD EVIDENCE / Oyster bar millwork and finish coordination."},
+  dining:{num:"03 / DINING",status:"ON TRACK",title:"DINING<br>ROOM",summary:"Ceiling, lighting, and finish work are progressing in sequence. No client action is required.",now:"Lighting + ceiling closeout",decision:"None",next:"Floor finish",risk:"No current schedule risk",caption:"FIELD EVIDENCE / Dining room progress view."},
+  kitchen:{num:"04 / KITCHEN",status:"COMPLETE",title:"KITCHEN<br>ROUGH-IN",summary:"Rough-in inspections passed. This area is now moving from concealed infrastructure toward equipment installation.",now:"Inspection passed",decision:"None",next:"Equipment set",risk:"No current schedule risk",caption:"FIELD EVIDENCE / Kitchen rough-in record."},
+  service:{num:"05 / SERVICE",status:"IN PROGRESS",title:"SERVICE<br>CORE",summary:"Back-of-house doors, hardware, and coordination continue behind the public-facing spaces.",now:"Door + hardware coordination",decision:"None",next:"Punch sequence",risk:"Low",caption:"FIELD EVIDENCE / Service-core coordination."},
+  entry:{num:"06 / ENTRY",status:"UPCOMING",title:"ENTRY<br>+ HANDOFF",summary:"Final signage, punch, and handoff work sit downstream of the current critical-path decisions.",now:"Pending upstream completion",decision:"Signage confirmation later",next:"Punch + owner walk",risk:"Dependent on final sequence",caption:"FIELD EVIDENCE / Entry and handoff sequence."}
+};
+function selectZone(key){
+  document.querySelectorAll(".zone").forEach(z=>z.classList.toggle("active",z.dataset.zone===key));
+  const d=zones[key];
+  document.getElementById("zoneNumber").textContent=d.num;
+  document.getElementById("zoneStatus").textContent=d.status;
+  document.getElementById("zoneTitle").innerHTML=d.title;
+  document.getElementById("zoneSummary").textContent=d.summary;
+  document.getElementById("now").textContent=d.now;
+  document.getElementById("decision").textContent=d.decision;
+  document.getElementById("next").textContent=d.next;
+  document.getElementById("risk").textContent=d.risk;
+  document.getElementById("photoCaption").textContent=d.caption;
+}
+document.querySelectorAll(".zone").forEach(z=>z.addEventListener("click",()=>selectZone(z.dataset.zone)));
+document.getElementById("jumpDecision").addEventListener("click",()=>selectZone("bar"));
+</script>
+</body>
+</html>
