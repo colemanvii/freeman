@@ -22,6 +22,11 @@ button{border:0;background:none;padding:0;cursor:pointer}
 a{text-decoration:none}
 .site{position:relative;width:100%;height:100svh;min-height:560px;overflow:hidden;background:var(--paper)}
 .site:before{content:"";position:absolute;inset:0;border-top:1px solid #a8aaa4;pointer-events:none}
+.home-monogram{
+  position:absolute;left:50%;top:calc(50% - 88px);transform:translate(-50%,-50%);
+  width:54px;height:auto;display:block;
+  opacity:.96;
+}
 .center{
   position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
   display:flex;align-items:center;gap:0;white-space:nowrap;
@@ -159,7 +164,7 @@ a{text-decoration:none}
   <div class="coordinate">FREEMAN / 34.1651° N / 84.7999° W</div>
   <div class="status">GENERAL CONTRACTORS / GEORGIA</div>
 
-  <nav class="center" aria-label="Primary navigation">
+  <img class="home-monogram" src="fgc-mark.svg" alt="FGC monogram">\n\n  <nav class="center" aria-label="Primary navigation">
     <button class="brand" data-panel="home">FREEMAN</button><span class="sep">/</span>
     <button data-panel="work">WORK</button><span class="sep">/</span>
     <button data-panel="field">FIELD</button><span class="sep">/</span>
