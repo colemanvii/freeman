@@ -45,22 +45,6 @@ a{text-decoration:none}
 .mark{
   position:absolute;right:29px;bottom:26px;text-align:right;font-size:9px;line-height:1.45;letter-spacing:.04em;text-transform:uppercase;color:#747772;
 }
-.email-strip{
-  width:100%;display:grid;grid-template-columns:auto auto 1fr auto auto auto;align-items:center;gap:8px;
-  font-size:11px;line-height:1;text-transform:uppercase;letter-spacing:.03em;color:#6f726d;
-}
-.email-strip label{color:var(--ink);font-weight:700}
-.email-strip input{
-  width:100%;border:0;border-bottom:1px solid #b7b9b3;background:transparent;color:var(--ink);
-  font:inherit;text-transform:uppercase;letter-spacing:.03em;outline:none;padding:4px 2px 5px;
-}
-.email-strip input::placeholder{color:#a1a39e;opacity:1}
-.email-strip input:focus{border-bottom-color:var(--orange)}
-.email-strip button{color:var(--orange);font-size:13px;line-height:1}
-.email-state{min-width:56px;text-align:right;color:#a1a39e;font-size:8px;letter-spacing:.07em}
-.email-strip:focus-within .email-state{color:var(--orange)}
-.email-strip:focus-within label{color:var(--orange)}
-.email-bracket{color:#a1a39e}
 .switcher{
   position:absolute;left:50%;bottom:30px;transform:translateX(-50%);
   display:flex;align-items:center;gap:10px;
@@ -126,13 +110,20 @@ a{text-decoration:none}
 .faq-mini details{border-bottom:1px solid var(--hair);padding:10px 0}
 .faq-mini summary{cursor:pointer;font-size:10px;line-height:1.45;text-transform:uppercase;letter-spacing:.03em}
 .faq-mini p{margin:8px 0 2px!important;font-size:11px!important;line-height:1.55!important;color:#666963}
-.contact-grid{grid-template-columns:.95fr 1.05fr;gap:60px;border-top:1px solid var(--hair);padding-top:18px}
-.contact-copy{display:flex;flex-direction:column}
-.contact-copy h1{margin:18px 0 0;font-size:clamp(42px,6vw,92px);font-weight:400;line-height:.9;letter-spacing:-.055em;text-transform:uppercase}
-.contact-copy p{margin:auto 0 0;max-width:420px;font-size:14px;line-height:1.6}
-.contact-terminal{display:flex;flex-direction:column;justify-content:center}
-.contact-email{max-width:680px}
-.contact-meta{margin-top:24px;padding-top:12px;border-top:1px solid var(--hair);display:grid;grid-template-columns:repeat(3,1fr);gap:16px;font-size:10px;line-height:1.45;letter-spacing:.04em;text-transform:uppercase;color:#777a75}
+.contact-simple{
+  grid-template-columns:320px minmax(0,1fr);gap:72px;border-top:1px solid var(--hair);padding-top:18px;align-items:start
+}
+.contact-note{display:flex;flex-direction:column;gap:18px;max-width:280px}
+.contact-note p{margin:0;font-size:14px;line-height:1.65;color:#4d504b}
+.contact-meta-block{margin-top:18px;padding-top:12px;border-top:1px solid var(--hair);display:grid;gap:8px;font-size:10px;line-height:1.45;letter-spacing:.04em;text-transform:uppercase;color:#777a75}
+.contact-write{display:flex;flex-direction:column;gap:12px;width:100%}
+.contact-write label{font-size:10px;line-height:1;letter-spacing:.06em;text-transform:uppercase;color:#777a75}
+.contact-write textarea{width:100%;min-height:260px;resize:none;border:1px solid var(--hair);background:transparent;color:var(--ink);font:inherit;font-size:14px;line-height:1.6;padding:18px 18px 20px;outline:none}
+.contact-write textarea::placeholder{color:#9da09a;opacity:1}
+.contact-write textarea:focus{border-color:var(--orange)}
+.contact-actions{display:flex;justify-content:space-between;align-items:center;padding-top:2px}
+.contact-actions .email-state{font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:#9da09a}
+.contact-actions button{border:0;background:none;padding:0;color:var(--orange);font:inherit;font-size:11px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
 .info-grid{grid-template-columns:1fr 1fr;gap:60px;border-top:1px solid var(--hair);padding-top:15px}
 .info-grid h1{margin:0;font-size:clamp(48px,7vw,104px);font-weight:400;line-height:.84;letter-spacing:-.07em;text-transform:uppercase}
 .info-copy{display:flex;flex-direction:column;gap:18px;max-width:530px}
@@ -145,7 +136,6 @@ a{text-decoration:none}
   .center{width:82%;white-space:normal;flex-wrap:wrap;justify-content:center;row-gap:12px;font-size:12px;line-height:1.2;text-align:center}
   .center .sep{padding:0 7px}
   .coordinate,.status{font-size:7px}
-  .email-strip{font-size:9px;grid-template-columns:auto auto 1fr auto auto auto}
   .email-state{display:none}
   .legal{display:none}.mark{right:20px;bottom:18px}.eagle{left:20px;bottom:18px}
   .switcher{bottom:21px}
@@ -154,10 +144,10 @@ a{text-decoration:none}
   .work-grid{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:16px}
   .index-list{display:grid;grid-template-columns:repeat(2,1fr)}
   .index-item{padding:10px 0;font-size:10px}
-  .field-grid,.info-grid,.contact-grid{grid-template-columns:1fr;gap:16px}
+  .field-grid,.info-grid,.contact-simple{grid-template-columns:1fr;gap:28px}
   .field-grid{grid-template-rows:1.15fr .85fr}
   .field-copy h1{font-size:38px;margin-top:10px}.field-copy p{font-size:12px;line-height:1.55}
-  .contact-meta{grid-template-columns:1fr;gap:8px}.contact-copy p{margin-top:24px}.people-grid{grid-template-columns:1fr}
+
   .person h2{font-size:32px}
 }
 </style>
@@ -250,28 +240,26 @@ a{text-decoration:none}
   </section>
 
   <section class="panel" id="contact" aria-hidden="true">
-    <div class="panel-head"><span>CONTACT / FREEMAN GENERAL CONTRACTORS</span><button class="close">CLOSE</button></div>
-    <div class="panel-body contact-grid">
-      <div class="contact-copy">
+    <div class="panel-head"><span>CONTACT / FREEMAN GENERAL CONTRACTING</span><button class="close">CLOSE</button></div>
+    <div class="panel-body contact-simple">
+      <aside class="contact-note">
         <div class="kicker">START A CONVERSATION</div>
-        <h1>TELL US WHAT<br>YOU'RE BUILDING.</h1>
         <p>Hospitality, commercial, residential, and special projects begin with a conversation.</p>
-      </div>
-      <div class="contact-terminal">
-        <form class="email-strip contact-email" id="emailStrip" aria-label="Email Freeman">
-          <label for="emailMessage">EMAIL US</label>
-          <span class="email-bracket">[</span>
-          <input id="emailMessage" name="message" autocomplete="off" placeholder="TELL US WHAT YOU'RE BUILDING..." aria-label="Project message">
-          <span class="email-bracket">]</span>
-          <span class="email-state" id="emailState">READY</span>
-          <button type="submit" aria-label="Open email">↗</button>
-        </form>
-        <div class="contact-meta">
-          <span>GABE@FREEMANGC.COM</span>
-          <span>706.263.3348</span>
-          <span>CARTERSVILLE, GEORGIA</span>
+        <div class="contact-meta-block">
+          <div>GABE@FREEMANGC.COM</div>
+          <div>706.263.3348</div>
+          <div>CARTERSVILLE, GEORGIA</div>
         </div>
-      </div>
+      </aside>
+
+      <form class="contact-write" id="emailStrip" aria-label="Email Freeman">
+        <label for="emailMessage">WRITE</label>
+        <textarea id="emailMessage" name="message" placeholder="Tell us what you're building..." aria-label="Project message"></textarea>
+        <div class="contact-actions">
+          <span class="email-state" id="emailState">READY</span>
+          <button type="submit" aria-label="Send message">SEND ↗</button>
+        </div>
+      </form>
     </div>
   </section>
 
@@ -320,12 +308,12 @@ nav.forEach(b=>b.addEventListener('click',()=>openPanel(b.dataset.panel)));
 document.querySelectorAll('.close').forEach(b=>b.addEventListener('click',closeAll));
 const emailInput=document.getElementById('emailMessage');
 const emailState=document.getElementById('emailState');
-emailInput?.addEventListener('focus',()=>{if(emailState)emailState.textContent='TYPE'});
-emailInput?.addEventListener('blur',()=>{if(emailState)emailState.textContent=emailInput.value.trim()?'READY':'READY'});
+emailInput?.addEventListener('focus',()=>{if(emailState)emailState.textContent='WRITING'});
+emailInput?.addEventListener('blur',()=>{if(emailState)emailState.textContent='READY'});
 document.getElementById('emailStrip')?.addEventListener('submit',e=>{
   e.preventDefault();
   const msg=document.getElementById('emailMessage').value.trim();
-  const body=msg || 'I\'d like to talk about a project.';
+  const body=msg || "I'd like to talk about a project.";
   window.location.href='mailto:gabe@freemangc.com?subject='+encodeURIComponent('Project inquiry — Freeman')+'&body='+encodeURIComponent(body);
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAll()});
