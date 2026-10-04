@@ -14,32 +14,71 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
 @media(max-width:1000px) and (min-width:701px){.brand .mark{width:28px!important}.header-actions{gap:10px!important}.client-portal{height:26px!important;padding:0 9px!important;font-size:8px!important}.freeman-story .story-copy{font-size:11px}.project-testimonial .project-quote{font-size:16px!important}}
 @media(max-width:700px){header{min-height:94px!important;grid-template-rows:48px 46px!important}.brand .logo{display:none!important}.brand{gap:0!important}.brand .mark{width:29px!important}.header-actions{grid-column:2!important;grid-row:1!important;justify-self:end!important;gap:8px!important}.header-mark{font-size:8px!important;letter-spacing:.09em!important}.client-portal{height:25px!important;padding:0 8px!important;font-size:8px!important;letter-spacing:.07em!important}.client-full{display:none!important}.client-short{display:inline!important}nav button{padding:12px 0 9px!important}.home{padding-top:34px!important}.home-copy h1{margin-top:22px!important}.home-statement{margin-top:48px!important}.home-proof{margin-top:38px!important}.home-image{margin-top:28px!important}.home-capabilities{font-size:8px!important}.proj-list-items{gap:6px!important;padding:1px 0 16px!important;scroll-snap-type:x proximity!important;-webkit-mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 24px),transparent 100%)!important;mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 24px),transparent 100%)!important}.proj-btn{height:31px!important;padding:0 11px!important;border:1px solid rgba(23,24,19,.17)!important;border-radius:10px!important;background:rgba(244,245,241,.55)!important;box-shadow:none!important;scroll-snap-align:start!important}.proj-btn .nm{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:9px!important;font-weight:500!important;letter-spacing:.055em!important;line-height:1!important;text-transform:uppercase!important}.proj-btn.active{background:var(--ink)!important;border-color:var(--ink)!important}.proj-btn.active .nm{color:var(--paper)!important}.founder-photo{width:100%!important;height:auto!important;min-height:0!important;border-radius:16px!important;background:transparent!important}.founder-photo img{width:100%!important;height:auto!important;max-height:none!important;object-fit:contain!important;object-position:center top!important}.freeman-story{padding:40px 0 10px}.freeman-story .story-note-box{max-width:100%;padding:16px 16px 18px}.freeman-story .story-copy{font-size:11px}.project-testimonial{margin-top:18px;padding:13px 0 0 13px}.project-testimonial .project-quote{font-size:17px!important}}
 
-/* Mobile finishing pass — preserve the printed-window idea, but make the next panel visible. */
+/* Mobile finishing pass — one-screen composition, not a stacked brochure. */
 @media(max-width:700px){
-  #home.view{padding:14px 18px 26px!important}
-  .signal-field{gap:14px!important}
+  #home.view{padding:12px 14px 18px!important}
+  .signal-field{
+    height:calc(100svh - 118px)!important;
+    min-height:620px!important;
+    display:grid!important;
+    grid-template-rows:minmax(0,58%) minmax(0,42%)!important;
+    gap:12px!important;
+  }
   .signal-window{
-    min-height:calc(100svh - 176px)!important;
-    max-height:none!important;
-    box-shadow:5px 5px 0 var(--ink)!important;
+    min-height:0!important;
+    height:100%!important;
+    overflow:hidden!important;
+    box-shadow:4px 4px 0 var(--ink)!important;
+    padding:7px!important;
+    grid-template-rows:42px minmax(0,1fr)!important;
   }
-  .signal-titlebar{height:40px!important;grid-template-columns:22px 1fr auto 1fr!important;gap:9px!important}
-  .signal-box{width:21px!important;height:21px!important}
-  .signal-lines{height:25px!important}
-  .signal-title{font-size:12px!important;padding:0 5px!important}
-  .signal-sheet{padding:24px 20px 18px!important}
-  .signal-kicker{font-size:9px!important;line-height:1.3!important}
+  .signal-titlebar{
+    height:34px!important;
+    grid-template-columns:18px 1fr auto 1fr!important;
+    gap:7px!important;
+    padding:0 5px!important;
+  }
+  .signal-box{width:17px!important;height:17px!important;border-width:1.5px!important;box-shadow:inset 0 0 0 3px var(--paper)!important}
+  .signal-lines{height:20px!important;background:repeating-linear-gradient(to bottom,var(--ink) 0 1.5px,transparent 1.5px 4px)!important}
+  .signal-title{font-size:10px!important;line-height:1!important;padding:0 4px!important}
+  .signal-sheet{
+    min-height:0!important;
+    padding:17px 16px 14px!important;
+    overflow:hidden!important;
+  }
+  .signal-kicker{font-size:8px!important;letter-spacing:.055em!important}
   .signal-hello{
-    font-size:clamp(56px,16.2vw,76px)!important;
+    font-size:clamp(43px,12.6vw,58px)!important;
     line-height:.77!important;
-    margin:22px 0 24px!important;
+    letter-spacing:-.052em!important;
+    margin:14px 0 16px!important;
   }
-  .signal-deck{font-size:clamp(25px,7.4vw,34px)!important;line-height:1!important}
-  .signal-body{font-size:16px!important;line-height:1.32!important;margin-top:22px!important}
-  .signal-body p{margin-bottom:12px!important}
-  .signal-cta{margin-top:8px!important;padding:12px 14px!important;font-size:11px!important}
-  .signal-bottom{margin-top:18px!important;padding-top:12px!important;font-size:8px!important}
-  .signal-photo{height:58svh!important;min-height:420px!important}
+  .signal-deck{
+    font-size:clamp(20px,5.7vw,26px)!important;
+    line-height:.96!important;
+    letter-spacing:-.04em!important;
+  }
+  .signal-body{display:none!important}
+  .signal-cta{
+    margin-top:auto!important;
+    padding:9px 11px!important;
+    font-size:9px!important;
+  }
+  .signal-bottom{display:none!important}
+
+  .signal-photo{
+    height:100%!important;
+    min-height:0!important;
+    box-shadow:4px 4px 0 var(--ink)!important;
+    padding:7px!important;
+    gap:6px!important;
+  }
+  .signal-photo figcaption{
+    font-size:8px!important;
+    line-height:1.1!important;
+    padding:1px 2px 2px!important;
+  }
+
   .tap-flash{
     background:var(--red)!important;
     color:#fff!important;
