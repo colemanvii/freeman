@@ -169,48 +169,53 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
   body{cursor:auto}
   .site{height:100svh;min-height:0;overflow:hidden;padding:0}
 
-  /* Home: dedicated mobile index. */
+  /* Home: same Freeman type system, simplified for mobile. */
   .center{display:none!important}
   .mobile-home-nav{
     position:absolute;
-    left:20px;right:20px;top:50%;
-    transform:translateY(-50%);
+    left:50%;top:50%;
+    transform:translate(-50%,-50%);
+    width:min(310px,82vw);
     display:flex!important;
     flex-direction:column;
-    border-top:1px solid var(--hair);
+    align-items:center;
+    justify-content:center;
+    border:0;
+    background:transparent;
+    font-family:var(--mono);
+    -webkit-font-smoothing:none;
+    text-rendering:geometricPrecision;
   }
   .mobile-home-nav button{
     width:100%;
-    min-height:54px;
-    padding:15px 2px 13px;
+    min-height:56px;
+    padding:15px 0 13px;
     display:flex;
     align-items:center;
-    justify-content:space-between;
+    justify-content:center;
+    border:0;
     border-bottom:1px solid var(--hair);
-    text-align:left;
-    font-size:15px;
+    text-align:center;
+    font-family:var(--mono);
+    font-size:19px;
+    font-weight:400;
     line-height:1;
-    letter-spacing:.01em;
+    letter-spacing:.015em;
     text-transform:uppercase;
     background:transparent;
     color:var(--ink);
   }
   .mobile-home-nav .mobile-brand{
+    min-height:66px;
+    padding:17px 0 15px;
+    border-top:0;
+    font-size:24px;
     font-weight:700;
-    font-size:17px;
-    justify-content:flex-start;
-  }
-  .mobile-home-nav button span:last-child{
-    font-size:9px;
-    letter-spacing:.04em;
-    color:#8d908b;
+    letter-spacing:.005em;
   }
   .mobile-home-nav .mobile-portal{
     color:var(--orange);
-  }
-  .mobile-home-nav .mobile-portal span:last-child{
-    color:var(--orange);
-    font-size:13px;
+    border-bottom:0;
   }
   .mobile-home-nav button:active,
   .mobile-home-nav button:focus-visible{
@@ -218,20 +223,8 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
     color:var(--paper);
     outline:none;
   }
-  .mobile-home-nav button:active span,
-  .mobile-home-nav button:focus-visible span{
-    color:var(--paper);
-  }
 
-  .eagle{left:18px;bottom:max(18px,env(safe-area-inset-bottom));width:20px}
-  .legal{
-    display:block;left:48px;bottom:max(17px,env(safe-area-inset-bottom));
-    font-size:7px;line-height:1.4;letter-spacing:.035em
-  }
-  .mark{
-    right:18px;bottom:max(17px,env(safe-area-inset-bottom));
-    font-size:7px;line-height:1.4;letter-spacing:.035em
-  }
+  .eagle,.legal,.mark{display:none}
 
   /* Panels remain full-frame sheets. */
   .panel{overflow:hidden}
@@ -340,11 +333,11 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
 
   <nav class="mobile-home-nav" aria-label="Mobile primary navigation">
     <button class="mobile-brand" data-panel="home">FREEMAN</button>
-    <button data-panel="work"><span>WORK</span><span>01</span></button>
-    <button data-panel="field"><span>FIELD</span><span>02</span></button>
-    <button data-panel="company"><span>COMPANY</span><span>03</span></button>
-    <button data-panel="contact"><span>CONTACT</span><span>04</span></button>
-    <button class="mobile-portal" data-panel="portal"><span>CLIENT PORTAL</span><span>→</span></button>
+    <button data-panel="work">WORK</button>
+    <button data-panel="field">FIELD</button>
+    <button data-panel="company">COMPANY</button>
+    <button data-panel="contact">CONTACT</button>
+    <button class="mobile-portal" data-panel="portal">CLIENT PORTAL</button>
   </nav>
 
   <img class="eagle" src="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6904f319ecdcf81821e678cb_Red%20Freeman%20Eagle.svg" alt="Freeman eagle">
