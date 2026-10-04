@@ -51,16 +51,6 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
 .mark{
   position:absolute;right:29px;bottom:26px;text-align:right;font-size:9px;line-height:1.45;letter-spacing:.04em;text-transform:uppercase;color:#747772;
 }
-.switcher{
-  position:absolute;left:50%;bottom:30px;transform:translateX(-50%);
-  display:flex;align-items:center;gap:10px;
-}
-.switcher button{
-  width:11px;height:11px;border:1px solid #aaaDA7;background:transparent;
-}
-.switcher button:nth-child(2){background:#fff}
-.switcher button:nth-child(3){background:#dfdfd9}
-.switcher button.active{outline:1px solid var(--ink);outline-offset:2px}
 .coordinate{display:none}
 .status{display:none}
 .panel{
@@ -132,6 +122,40 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
 .contact-actions{display:flex;justify-content:space-between;align-items:center;padding-top:2px}
 .contact-actions .email-state{font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:#9da09a}
 .contact-actions button{border:0;background:none;padding:0;color:var(--orange);font:inherit;font-size:11px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
+.company-grid{grid-template-columns:.9fr 1.1fr;gap:72px;border-top:1px solid var(--hair);padding-top:18px}
+.company-intro-simple{display:flex;flex-direction:column}
+.company-intro-simple h1{margin:18px 0 22px;font-size:clamp(46px,6vw,88px);font-weight:400;line-height:.9;letter-spacing:-.055em;text-transform:uppercase}
+.company-intro-simple p{max-width:520px;font-size:14px;line-height:1.65;margin:0}
+.company-record{display:grid;gap:28px}
+.company-record section{border-top:1px solid var(--hair);padding-top:10px}
+.record-label{font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:#777a75;margin-bottom:12px}
+.company-record p{font-size:13px;line-height:1.6;margin:0;max-width:620px}
+.company-lines{display:grid}
+.company-lines>div{display:grid;grid-template-columns:220px 1fr;gap:20px;padding:10px 0;border-bottom:1px solid var(--hair)}
+.company-lines strong{font-size:11px;text-transform:uppercase;letter-spacing:.03em}
+.company-lines span{font-size:11px;line-height:1.45;color:#666963}
+.portal-cover{grid-template-columns:.9fr 1.1fr;gap:72px;border-top:1px solid var(--hair);padding-top:18px}
+.portal-project h1{margin:18px 0 12px;font-size:clamp(52px,7vw,104px);font-weight:400;line-height:.86;letter-spacing:-.06em;text-transform:uppercase}
+.portal-place{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:#777a75}
+.portal-ledger{display:flex;flex-direction:column;min-height:0}
+.portal-path{display:flex;align-items:center;flex-wrap:wrap;gap:8px 10px;margin-bottom:22px;font-size:10px;letter-spacing:.04em;text-transform:uppercase}
+.portal-path span{color:#9a9c97}
+.portal-path button{font-size:10px;letter-spacing:.04em;text-transform:uppercase}
+.portal-path button.active{font-weight:700}
+.portal-path button:hover{background:var(--orange);color:var(--paper)}
+.ledger-row{display:grid;grid-template-columns:160px 1fr;gap:20px;padding:11px 0;border-top:1px solid var(--hair);font-size:11px;line-height:1.35;text-transform:uppercase}
+.ledger-row:last-of-type{border-bottom:1px solid var(--hair)}
+.ledger-row span{color:#777a75}
+.ledger-row strong{font-weight:400}
+.record-list{margin-top:30px;border-top:1px solid var(--hair)}
+.record-list button{width:100%;display:grid;grid-template-columns:150px 1fr 130px;gap:18px;text-align:left;padding:13px 0;border-bottom:1px solid var(--hair);font-size:11px;line-height:1.35;text-transform:uppercase}
+.record-list button span{color:#777a75}
+.record-list button strong{font-weight:400}
+.record-list button em{font-style:normal;text-align:right;color:#777a75}
+.record-list button:hover strong{background:var(--orange);color:var(--paper);width:max-content}
+.portal-provenance{position:absolute;bottom:26px;font-size:9px;line-height:1.45;letter-spacing:.04em;text-transform:uppercase;color:#747772}
+.portal-provenance.left{left:29px}
+.portal-provenance.right{right:29px;text-align:right}
 .info-grid{grid-template-columns:1fr 1fr;gap:60px;border-top:1px solid var(--hair);padding-top:15px}
 .info-grid h1{margin:0;font-size:clamp(48px,7vw,104px);font-weight:400;line-height:.84;letter-spacing:-.07em;text-transform:uppercase}
 .info-copy{display:flex;flex-direction:column;gap:18px;max-width:530px}
@@ -146,13 +170,12 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
   .coordinate,.status{font-size:7px}
   .email-state{display:none}
   .legal{display:none}.mark{right:20px;bottom:18px}.eagle{left:20px;bottom:18px}
-  .switcher{bottom:21px}
   .panel-body{inset:72px 20px 62px}
   .panel-head{left:20px;right:20px}
   .work-grid{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:16px}
   .index-list{display:grid;grid-template-columns:repeat(2,1fr)}
   .index-item{padding:10px 0;font-size:10px}
-  .field-grid,.info-grid,.contact-simple{grid-template-columns:1fr;gap:28px}
+  .field-grid,.info-grid,.contact-simple,.company-grid,.portal-cover{grid-template-columns:1fr;gap:28px}
   .field-grid{grid-template-rows:1.15fr .85fr}
   .field-copy h1{font-size:38px;margin-top:10px}.field-copy p{font-size:12px;line-height:1.55}
 
@@ -164,25 +187,20 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
 <div class="site" id="site">
   <div class="coordinate">FREEMAN / 34.1651° N / 84.7999° W</div>
   <div class="status">GENERAL CONTRACTORS / GEORGIA</div>
-\n\n  <nav class="center" aria-label="Primary navigation">
+  <nav class="center" aria-label="Primary navigation">
     <button class="brand" data-panel="home">FREEMAN</button><span class="sep">/</span>
     <button data-panel="work">WORK</button><span class="sep">/</span>
     <button data-panel="field">FIELD</button><span class="sep">/</span>
-    <button data-panel="people">PEOPLE</button><span class="sep">/</span>
-    <button data-panel="info">INFO</button><span class="sep">/</span>
+    <button data-panel="company">COMPANY</button><span class="sep">/</span>
     <button data-panel="contact">CONTACT</button><span class="sep">/</span>
-    <a class="portal" href="https://freemangc.com" target="_blank" rel="noreferrer">CLIENT PORTAL</a>
+    <button class="portal" data-panel="portal">CLIENT PORTAL</button>
   </nav>
 
   <img class="eagle" src="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6904f319ecdcf81821e678cb_Red%20Freeman%20Eagle.svg" alt="Freeman eagle">
   <div class="legal">Freeman General Contractors<br>Cartersville, Georgia</div>
   <div class="mark">Built for Generations™<br>Est. in Georgia</div>
 
-  <div class="switcher" aria-label="Tone selector">
-    <button data-tone="#ecece8" aria-label="Cool grey"></button>
-    <button class="active" data-tone="#f4f4f0" aria-label="Paper white"></button>
-    <button data-tone="#deded7" aria-label="Concrete"></button>
-  </div>
+
 
   <section class="panel" id="work" aria-hidden="true">
     <div class="panel-head"><span>WORK / SELECT PROJECTS</span><button class="close">CLOSE</button></div>
@@ -219,32 +237,57 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
     </div>
   </section>
 
-  <section class="panel" id="people" aria-hidden="true">
-    <div class="panel-head"><span>PEOPLE / OUR TEAM</span><button class="close">CLOSE</button></div>
-    <div class="panel-body people-grid">
-      <article class="person"><span class="num">01 / PRESIDENT</span><h2>Gabe<br>Freeman</h2><p>Gabe has been in the construction industry for eight years. He worked as a Project Manager for four years, mastering the backend operations of General Contracting. The following three years were spent in a business partnership focused on ground-up construction of convenience stores, where he gained invaluable hands-on and practical experience. For the past year, Gabe has leveraged his comprehensive industry experience to confidently lead his newest endeavor, Freeman General Contracting.</p></article>
-      <article class="person"><span class="num">02 / VICE PRESIDENT</span><h2>Kendall<br>Hawkins</h2><p>Kendall began his career in land acquisitions and development before transitioning into a COO role, where he managed operations and financials for a multi-million dollar portfolio in the waste industry. Over the past year, he has immersed himself in the construction industry, rapidly gaining knowledge and expertise. Kendall's extensive experience in running diverse companies has translated into a significant impact on the trajectory and vision of Freeman General Contracting.</p></article>
-      <article class="person"><span class="num">03 / VP DEVELOPMENT & CONSTRUCTION</span><h2>Bo<br>Wright</h2><p>Bo brings a diverse range of professional experience in community development, real estate, and urban planning. He previously served as Director at Strong Towns and as Executive Director for a Main Street organization and economic development agency. More recently, Bo has consulted on mission-driven real estate projects and developed several of his own. Today, he works with Freeman General Contracting leading the firm's real estate development activities.</p></article>
+  <section class="panel" id="company" aria-hidden="true">
+    <div class="panel-head"><span>COMPANY / FREEMAN GENERAL CONTRACTING</span><button class="close">CLOSE</button></div>
+    <div class="panel-body company-grid">
+      <div class="company-intro-simple">
+        <div class="kicker">CONSTRUCTING HOSPITALITY</div>
+        <h1>Built for<br>Generations.</h1>
+        <p>The way we see it, construction is a service industry no different than a high end restaurant or a boutique hotel. The process of building should be as enjoyable as the end product, resulting in relationships and projects that are built for generations.</p>
+      </div>
+      <div class="company-record">
+        <section><div class="record-label">STORY</div><p>At Freeman General Contracting, relationships are the bedrock of our work. We bring the same values of respect, integrity, and commitment from our personal lives to our interactions with clients, subcontractors, suppliers, architects, and engineers. These genuine connections form the foundation for every project.</p></section>
+        <section><div class="record-label">SERVICES</div><div class="company-lines">
+          <div><strong>Design + Build</strong><span>Aligned decisions from design through construction.</span></div>
+          <div><strong>Construction Management</strong><span>Schedule, budget, quality, coordination.</span></div>
+          <div><strong>Commercial Construction</strong><span>Hospitality, retail, healthcare, restaurants and more.</span></div>
+          <div><strong>High End Residential</strong><span>Careful coordination, custom detail, durable work.</span></div>
+        </div></section>
+        <section><div class="record-label">PEOPLE</div><div class="company-lines">
+          <div><strong>Gabe Freeman</strong><span>President</span></div>
+          <div><strong>Kendall Hawkins</strong><span>Vice President</span></div>
+          <div><strong>Bo Wright</strong><span>VP Development & Construction</span></div>
+        </div></section>
+      </div>
     </div>
   </section>
 
-  <section class="panel" id="index" aria-hidden="true">
-    <div class="panel-head"><span>INDEX / FREEMAN</span><button class="close">CLOSE</button></div>
-    <div class="panel-body work-grid">
-      <div class="index-list">
-        <div class="index-item"><span>001</span><span><span class="phrase-hover">Built for Generations</span></span></div>
-        <div class="index-item"><span>002</span><span><span class="phrase-hover">Finished Result</span></span></div>
-        <div class="index-item"><span>003</span><span><span class="phrase-hover">Field Evidence</span></span></div>
-        <div class="index-item"><span>004</span><span><span class="phrase-hover">People / Stewardship</span></span></div>
-        <div class="index-item"><span>005</span><span><span class="phrase-hover">Project Records</span></span></div>
-        <div class="index-item"><span>006</span><span><span class="phrase-hover">Contact</span></span></div>
+  <section class="panel portal-panel" id="portal" aria-hidden="true">
+    <div class="panel-head"><span>FREEMAN / PORTAL / PROJECT RECORD</span><button class="close">CLOSE</button></div>
+    <div class="panel-body portal-cover">
+      <div class="portal-project">
+        <div class="kicker">PROJECT 0247</div>
+        <h1>BARNSLEY<br>GARDENS</h1>
+        <div class="portal-place">ADAIRSVILLE, GEORGIA</div>
       </div>
-      <div class="field-copy">
-        <div class="kicker">FREEMAN / REPUTATION SYSTEM</div>
-        <h1>THE WORK<br>IS THE BRAND.</h1>
-        <p>Don't manufacture the Freeman story. Find it. Preserve what is distinctive, make it legible, and let the evidence carry the claim.</p>
+      <div class="portal-ledger">
+        <div class="portal-path">
+          <button class="active">OVERVIEW</button><span>/</span><button>UPDATES</button><span>/</span><button>DECISIONS</button><span>/</span><button>DOCUMENTS</button><span>/</span><button>PHOTOS</button>
+        </div>
+        <div class="ledger-row"><span>STATUS</span><strong>ACTIVE</strong></div>
+        <div class="ledger-row"><span>PHASE</span><strong>INTERIORS</strong></div>
+        <div class="ledger-row"><span>LAST UPDATE</span><strong>04 OCT 2026</strong></div>
+        <div class="ledger-row"><span>LEAD</span><strong>GABE FREEMAN</strong></div>
+        <div class="record-list">
+          <button><span>UPDATE 018</span><strong>MILLWORK INSTALL</strong><em>04 OCT 2026</em></button>
+          <button><span>DECISION 007</span><strong>STONE SELECTION</strong><em>APPROVED</em></button>
+          <button><span>DOCUMENT A201</span><strong>ARCHITECTURAL SET</strong><em>REV 04</em></button>
+          <button><span>FIELD 0247-118</span><strong>NORTH WALL</strong><em>02 OCT 2026</em></button>
+        </div>
       </div>
     </div>
+    <div class="portal-provenance left">BARNSLEY GARDENS<br>ADAIRSVILLE, GEORGIA</div>
+    <div class="portal-provenance right">PROJECT 0247<br>AS OF 04 OCT 2026</div>
   </section>
 
   <section class="panel" id="contact" aria-hidden="true">
@@ -325,11 +368,6 @@ document.getElementById('emailStrip')?.addEventListener('submit',e=>{
   window.location.href='mailto:gabe@freemangc.com?subject='+encodeURIComponent('Project inquiry — Freeman')+'&body='+encodeURIComponent(body);
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAll()});
-document.querySelectorAll('[data-tone]').forEach(b=>b.addEventListener('click',()=>{
-  root.style.setProperty('--paper',b.dataset.tone);
-  document.querySelectorAll('[data-tone]').forEach(x=>x.classList.remove('active'));
-  b.classList.add('active');
-}));
 document.querySelectorAll('.index-item[data-image]').forEach(b=>b.addEventListener('mouseenter',()=>selectProject(b)));
 document.querySelectorAll('.index-item[data-image]').forEach(b=>b.addEventListener('click',()=>selectProject(b)));
 function selectProject(b){
