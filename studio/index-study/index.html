@@ -19,6 +19,8 @@ html,body{margin:0;width:100%;height:100%;background:var(--paper);color:var(--in
 body{min-height:100svh}
 button,a{font:inherit;color:inherit}
 button{border:0;background:none;padding:0;cursor:pointer}
+.hover-word{display:inline}
+.hover-word:hover{background:var(--orange);color:var(--paper)}
 a{text-decoration:none}
 .site{position:relative;width:100%;height:100svh;min-height:560px;overflow:hidden;background:var(--paper)}
 .site:before{content:"";position:absolute;inset:0;border-top:1px solid #a8aaa4;pointer-events:none}
@@ -331,6 +333,37 @@ function selectProject(b){
   img.style.opacity='.25';
   setTimeout(()=>{img.src=b.dataset.image;document.getElementById('projectName').textContent=b.dataset.name;img.style.opacity='1'},90);
 }
+
+function installWordHover(root=document.body){
+  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{
+    acceptNode(node){
+      const p=node.parentElement;
+      if(!p) return NodeFilter.FILTER_REJECT;
+      if(p.closest('script,style,textarea,input,select,option,.hover-word')) return NodeFilter.FILTER_REJECT;
+      if(!/[A-Za-z0-9]/.test(node.nodeValue||'')) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  const nodes=[];
+  while(walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach(node=>{
+    const parts=(node.nodeValue||'').split(/(\s+)/);
+    const frag=document.createDocumentFragment();
+    parts.forEach(part=>{
+      if(!part){return}
+      if(/^\s+$/.test(part) || !/[A-Za-z0-9]/.test(part)){
+        frag.appendChild(document.createTextNode(part));
+      }else{
+        const span=document.createElement('span');
+        span.className='hover-word';
+        span.textContent=part;
+        frag.appendChild(span);
+      }
+    });
+    node.replaceWith(frag);
+  });
+}
+installWordHover();
 </script>
 </body>
 </html>
