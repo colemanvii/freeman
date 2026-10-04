@@ -86,7 +86,7 @@ a{text-decoration:none}
 .close:before{content:"×";font-size:14px;line-height:0}
 .panel-body{position:absolute;inset:90px 29px 70px;display:grid;min-height:0}
 .work-grid{grid-template-columns:230px minmax(0,1fr);gap:54px}
-.index-list{border-top:1px solid var(--hair)}
+.index-list{border-top:1px solid var(--hair);overflow:auto;min-height:0}
 .index-item{
   width:100%;display:grid;grid-template-columns:34px 1fr;gap:8px;text-align:left;
   padding:14px 0;border-bottom:1px solid var(--hair);font-size:12px;line-height:1.3;text-transform:uppercase;
@@ -117,7 +117,15 @@ a{text-decoration:none}
 .person{background:var(--paper);padding:16px;display:flex;flex-direction:column}
 .person .num{font-size:10px;color:#777a75}
 .person h2{margin:auto 0 6px;font-size:clamp(28px,3.5vw,54px);font-weight:400;line-height:.9;letter-spacing:-.05em;text-transform:uppercase}
-.person p{margin:0;font-size:11px;line-height:1.5;text-transform:uppercase;color:#777a75}
+.person p{margin:18px 0 0;font-size:11px;line-height:1.55;text-transform:none;color:#666963;max-width:46ch}
+.people-grid .person{overflow:auto}
+.info-copy .rules{margin-top:10px}
+.info-copy .rules div{line-height:1.5;text-transform:none}
+.info-copy .rules strong{display:block;margin-bottom:4px;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink)}
+.faq-mini{margin-top:4px;border-top:1px solid var(--hair)}
+.faq-mini details{border-bottom:1px solid var(--hair);padding:10px 0}
+.faq-mini summary{cursor:pointer;font-size:10px;line-height:1.45;text-transform:uppercase;letter-spacing:.03em}
+.faq-mini p{margin:8px 0 2px!important;font-size:11px!important;line-height:1.55!important;color:#666963}
 .contact-grid{grid-template-columns:.95fr 1.05fr;gap:60px;border-top:1px solid var(--hair);padding-top:18px}
 .contact-copy{display:flex;flex-direction:column}
 .contact-copy h1{margin:18px 0 0;font-size:clamp(42px,6vw,92px);font-weight:400;line-height:.9;letter-spacing:-.055em;text-transform:uppercase}
@@ -179,18 +187,23 @@ a{text-decoration:none}
   </div>
 
   <section class="panel" id="work" aria-hidden="true">
-    <div class="panel-head"><span>WORK / COMPLETED + ACTIVE</span><button class="close">CLOSE</button></div>
+    <div class="panel-head"><span>WORK / SELECT PROJECTS</span><button class="close">CLOSE</button></div>
     <div class="panel-body work-grid">
       <div class="index-list" id="projectList">
-        <button class="index-item active" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/690112c66907ba02f5612747_Beetlecat%20Thumb%20Freeman%20General%20Contractors_HP.jpg" data-name="BEETLECAT / ATLANTA"><span>001</span><span>Beetlecat</span></button>
-        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/690112c66907ba02f5612747_Beetlecat%20Thumb%20Freeman%20General%20Contractors_HP.jpg" data-name="HOSPITALITY / GEORGIA"><span>002</span><span>Hospitality</span></button>
-        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/690112c66907ba02f5612747_Beetlecat%20Thumb%20Freeman%20General%20Contractors_HP.jpg" data-name="FIELD RECORD / 2026"><span>003</span><span>Project Record</span></button>
-        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/690112c66907ba02f5612747_Beetlecat%20Thumb%20Freeman%20General%20Contractors_HP.jpg" data-name="BUILT FOR GENERATIONS"><span>004</span><span>Selected Work</span></button>
+        <button class="index-item active" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/690112c66907ba02f5612747_Beetlecat%20Thumb%20Freeman%20General%20Contractors_HP.jpg" data-name="BEETLECAT / ROCKET FARM RESTAURANTS"><span>001</span><span>Beetlecat</span></button>
+        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6916c3cc412995612baf28e4_The%20Optimist_Freeman%20General%20Contractors%200.jpg" data-name="THE OPTIMIST / ROCKET FARM RESTAURANTS"><span>002</span><span>The Optimist</span></button>
+        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6916c7910f0d654dd4daa28f_Barnsley%20Gardens_Freeman%20General%20Contractors%201.jpg" data-name="BARNSLEY GARDENS / BARNSLEY RESORT"><span>003</span><span>Barnsley Gardens</span></button>
+        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/692db75041d703e9a18d4085_Bocado%20Pizza_Interior%20Seating.jpeg" data-name="BOCADO PIZZA / ATLANTA"><span>004</span><span>Bocado Pizza</span></button>
+        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/692db4c97f14414f0e9997d7_Freeman%20General%20Contractors_Savi-Provisions_Emory-Village.jpg" data-name="SAVI PROVISIONS / EMORY VILLAGE"><span>005</span><span>Savi Provisions</span></button>
+        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/692db404e2c8b7283f87b2cf_O-Ku%20Atlanta_Omotenashi%20Sign.jpeg" data-name="O-KU ATLANTA / ATLANTA"><span>006</span><span>O-Ku Atlanta</span></button>
+        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/692db50754b35340d6a11efd_FGC_La%20Cresta%20on%20Main_Exterior.jpeg" data-name="LACRESTA ON MAIN / BLUE RIDGE"><span>007</span><span>LaCresta on Main</span></button>
+        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/692db51e0255304cdedbe097_Cleveland%20Surgery%20Center_FGC.jpeg" data-name="CLEVELAND SURGERY CENTER / TENNESSEE"><span>008</span><span>Cleveland Surgery Center</span></button>
+        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/692db53cb73187579c63c249_Dalton%20Surgery%20Center_FGC.jpeg" data-name="DALTON SURGERY CENTER / GEORGIA"><span>009</span><span>Dalton Surgery Center</span></button>
       </div>
       <figure class="project-stage">
         <img id="projectImage" src="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/690112c66907ba02f5612747_Beetlecat%20Thumb%20Freeman%20General%20Contractors_HP.jpg" alt="Freeman project">
-        <figcaption class="project-label">The result proves taste.<br>The evidence proves capability.</figcaption>
-        <div class="project-name" id="projectName">BEETLECAT / ATLANTA</div>
+        <figcaption class="project-label">RECENT WORK<br>SELECT PROJECTS</figcaption>
+        <div class="project-name" id="projectName">BEETLECAT / ROCKET FARM RESTAURANTS</div>
       </figure>
     </div>
   </section>
@@ -209,11 +222,11 @@ a{text-decoration:none}
   </section>
 
   <section class="panel" id="people" aria-hidden="true">
-    <div class="panel-head"><span>PEOPLE / STEWARDSHIP</span><button class="close">CLOSE</button></div>
+    <div class="panel-head"><span>PEOPLE / OUR TEAM</span><button class="close">CLOSE</button></div>
     <div class="panel-body people-grid">
-      <article class="person"><span class="num">01 / LEADERSHIP</span><h2>Gabe<br>Freeman</h2><p>Founder / Freeman General Contractors</p></article>
-      <article class="person"><span class="num">02 / FIELD</span><h2>The<br>Builders</h2><p>Superintendents / craftsmen / trade partners</p></article>
-      <article class="person"><span class="num">03 / CLIENT</span><h2>The<br>Relationship</h2><p>Clarity / accountability / stewardship</p></article>
+      <article class="person"><span class="num">01 / PRESIDENT</span><h2>Gabe<br>Freeman</h2><p>Gabe has been in the construction industry for eight years. He worked as a Project Manager for four years, mastering the backend operations of General Contracting. The following three years were spent in a business partnership focused on ground-up construction of convenience stores, where he gained invaluable hands-on and practical experience. For the past year, Gabe has leveraged his comprehensive industry experience to confidently lead his newest endeavor, Freeman General Contracting.</p></article>
+      <article class="person"><span class="num">02 / VICE PRESIDENT</span><h2>Kendall<br>Hawkins</h2><p>Kendall began his career in land acquisitions and development before transitioning into a COO role, where he managed operations and financials for a multi-million dollar portfolio in the waste industry. Over the past year, he has immersed himself in the construction industry, rapidly gaining knowledge and expertise. Kendall's extensive experience in running diverse companies has translated into a significant impact on the trajectory and vision of Freeman General Contracting.</p></article>
+      <article class="person"><span class="num">03 / VP DEVELOPMENT & CONSTRUCTION</span><h2>Bo<br>Wright</h2><p>Bo brings a diverse range of professional experience in community development, real estate, and urban planning. He previously served as Director at Strong Towns and as Executive Director for a Main Street organization and economic development agency. More recently, Bo has consulted on mission-driven real estate projects and developed several of his own. Today, he works with Freeman General Contracting leading the firm's real estate development activities.</p></article>
     </div>
   </section>
 
@@ -263,22 +276,31 @@ a{text-decoration:none}
   </section>
 
   <section class="panel" id="info" aria-hidden="true">
-    <div class="panel-head"><span>INFO / FREEMAN GENERAL CONTRACTORS</span><button class="close">CLOSE</button></div>
+    <div class="panel-head"><span>INFO / FREEMAN GENERAL CONTRACTING</span><button class="close">CLOSE</button></div>
     <div class="panel-body info-grid">
-      <h1>Built for<br>Generations.</h1>
+      <div>
+        <div class="kicker">CONSTRUCTING HOSPITALITY</div>
+        <h1>Built for<br>Generations.</h1>
+      </div>
       <div class="info-copy">
-        <p>Freeman General Contractors is a Georgia-based builder working across hospitality, commercial, healthcare and high-end residential construction. The standard is simple: clear communication, strong accountability, respect for design and craft, and work intended to last.</p>
-        <p>Construction is a service business. Schedules, budgets and craftsmanship matter. So does the experience of getting there.</p>
+        <p>The way we see it, construction is a service industry no different than a high end restaurant or a boutique hotel. The process of building should be as enjoyable as the end product, resulting in relationships and projects that are built for generations.</p>
+        <p>At Freeman General Contracting, relationships are the bedrock of our work. We bring the same values of respect, integrity, and commitment from our personal lives to our interactions with clients, subcontractors, suppliers, architects, and engineers. These genuine connections form the foundation for every project.</p>
         <div class="rules">
-          <div>Cartersville, Georgia</div><div>General Contracting</div>
-          <div>Hospitality</div><div>Residential</div>
-          <div>Commercial</div><div>Special Projects</div>
+          <div><strong>Design + Build</strong><br>By collaborating closely with clients, architects, and engineers from the outset, we deliver innovative and cost-effective solutions tailored to meet specific project needs.</div>
+          <div><strong>Construction Management</strong><br>Comprehensive oversight and coordination throughout the entire construction process, with focus on schedule, budget, and quality.</div>
+          <div><strong>Commercial Construction</strong><br>Commercial work tailored to businesses and organizations including healthcare, retail spaces, restaurants, convenience stores and more.</div>
+          <div><strong>High End Residential Construction</strong><br>Expert construction management with comprehensive oversight, coordination, quality control, and budget management.</div>
+        </div>
+        <div class="faq-mini">
+          <details><summary>What is the typical timeline for a commercial construction project?</summary><p>Freeman General Contracting offers expert Construction Management services, providing comprehensive oversight and coordination throughout the entire construction process. Our approach ensures that projects are completed on time, within budget, and to the highest quality standards.</p></details>
+          <details><summary>How do you ensure projects stay on budget?</summary><p>We ensure projects stay on budget through meticulous planning, detailed cost estimation, and regular monitoring of expenses. Transparent communication with clients and proactive problem-solving also play key roles in budget management.</p></details>
+          <details><summary>What measures do you take to ensure site safety?</summary><p>Site safety is a top priority for us. We implement strict safety protocols, conduct regular training, and ensure all workers comply with safety regulations.</p></details>
+          <details><summary>How do you manage subcontractors and suppliers?</summary><p>We manage subcontractors and suppliers through rigorous vetting, clear contracts, and ongoing communication. We ensure they meet our quality standards and adhere to project schedules and specifications.</p></details>
         </div>
       </div>
     </div>
   </section>
 </div>
-
 <script>
 const root=document.documentElement;
 const panels=[...document.querySelectorAll('.panel')];
