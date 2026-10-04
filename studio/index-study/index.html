@@ -46,9 +46,8 @@ a{text-decoration:none}
   position:absolute;right:29px;bottom:26px;text-align:right;font-size:9px;line-height:1.45;letter-spacing:.04em;text-transform:uppercase;color:#747772;
 }
 .email-strip{
-  position:absolute;left:50%;top:calc(50% + 46px);transform:translateX(-50%);
-  width:min(650px,76vw);display:grid;grid-template-columns:auto auto 1fr auto auto auto;align-items:center;gap:8px;
-  font-size:10px;line-height:1;text-transform:uppercase;letter-spacing:.03em;color:#6f726d;
+  width:100%;display:grid;grid-template-columns:auto auto 1fr auto auto auto;align-items:center;gap:8px;
+  font-size:11px;line-height:1;text-transform:uppercase;letter-spacing:.03em;color:#6f726d;
 }
 .email-strip label{color:var(--ink);font-weight:700}
 .email-strip input{
@@ -119,6 +118,13 @@ a{text-decoration:none}
 .person .num{font-size:10px;color:#777a75}
 .person h2{margin:auto 0 6px;font-size:clamp(28px,3.5vw,54px);font-weight:400;line-height:.9;letter-spacing:-.05em;text-transform:uppercase}
 .person p{margin:0;font-size:11px;line-height:1.5;text-transform:uppercase;color:#777a75}
+.contact-grid{grid-template-columns:.95fr 1.05fr;gap:60px;border-top:1px solid var(--hair);padding-top:18px}
+.contact-copy{display:flex;flex-direction:column}
+.contact-copy h1{margin:18px 0 0;font-size:clamp(42px,6vw,92px);font-weight:400;line-height:.9;letter-spacing:-.055em;text-transform:uppercase}
+.contact-copy p{margin:auto 0 0;max-width:420px;font-size:14px;line-height:1.6}
+.contact-terminal{display:flex;flex-direction:column;justify-content:center}
+.contact-email{max-width:680px}
+.contact-meta{margin-top:24px;padding-top:12px;border-top:1px solid var(--hair);display:grid;grid-template-columns:repeat(3,1fr);gap:16px;font-size:10px;line-height:1.45;letter-spacing:.04em;text-transform:uppercase;color:#777a75}
 .info-grid{grid-template-columns:1fr 1fr;gap:60px;border-top:1px solid var(--hair);padding-top:15px}
 .info-grid h1{margin:0;font-size:clamp(48px,7vw,104px);font-weight:400;line-height:.84;letter-spacing:-.07em;text-transform:uppercase}
 .info-copy{display:flex;flex-direction:column;gap:18px;max-width:530px}
@@ -131,7 +137,7 @@ a{text-decoration:none}
   .center{width:82%;white-space:normal;flex-wrap:wrap;justify-content:center;row-gap:12px;font-size:12px;line-height:1.2;text-align:center}
   .center .sep{padding:0 7px}
   .coordinate,.status{font-size:7px}
-  .email-strip{top:calc(50% + 72px);width:88vw;font-size:9px;grid-template-columns:auto auto 1fr auto auto auto}
+  .email-strip{font-size:9px;grid-template-columns:auto auto 1fr auto auto auto}
   .email-state{display:none}
   .legal{display:none}.mark{right:20px;bottom:18px}.eagle{left:20px;bottom:18px}
   .switcher{bottom:21px}
@@ -140,10 +146,10 @@ a{text-decoration:none}
   .work-grid{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:16px}
   .index-list{display:grid;grid-template-columns:repeat(2,1fr)}
   .index-item{padding:10px 0;font-size:10px}
-  .field-grid,.info-grid{grid-template-columns:1fr;gap:16px}
+  .field-grid,.info-grid,.contact-grid{grid-template-columns:1fr;gap:16px}
   .field-grid{grid-template-rows:1.15fr .85fr}
   .field-copy h1{font-size:38px;margin-top:10px}.field-copy p{font-size:12px;line-height:1.55}
-  .people-grid{grid-template-columns:1fr}
+  .contact-meta{grid-template-columns:1fr;gap:8px}.contact-copy p{margin-top:24px}.people-grid{grid-template-columns:1fr}
   .person h2{font-size:32px}
 }
 </style>
@@ -159,16 +165,9 @@ a{text-decoration:none}
     <button data-panel="field">FIELD</button><span class="sep">/</span>
     <button data-panel="people">PEOPLE</button><span class="sep">/</span>
     <button data-panel="info">INFO</button><span class="sep">/</span>
+    <button data-panel="contact">CONTACT</button><span class="sep">/</span>
     <a class="portal" href="https://freemangc.com" target="_blank" rel="noreferrer">CLIENT PORTAL</a>
   </nav>
-  <form class="email-strip" id="emailStrip" aria-label="Email Freeman">
-    <label for="emailMessage">EMAIL US</label>
-    <span class="email-bracket">[</span>
-    <input id="emailMessage" name="message" autocomplete="off" placeholder="TELL US WHAT YOU'RE BUILDING..." aria-label="Project message">
-    <span class="email-bracket">]</span>
-    <span class="email-state" id="emailState">READY</span>
-    <button type="submit" aria-label="Open email">↗</button>
-  </form>
 
   <img class="eagle" src="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6904f319ecdcf81821e678cb_Red%20Freeman%20Eagle.svg" alt="Freeman eagle">
   <div class="legal">Freeman General Contractors<br>Cartersville, Georgia</div>
@@ -234,6 +233,32 @@ a{text-decoration:none}
         <div class="kicker">FREEMAN / REPUTATION SYSTEM</div>
         <h1>THE WORK<br>IS THE BRAND.</h1>
         <p>Don't manufacture the Freeman story. Find it. Preserve what is distinctive, make it legible, and let the evidence carry the claim.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="contact" aria-hidden="true">
+    <div class="panel-head"><span>CONTACT / FREEMAN GENERAL CONTRACTORS</span><button class="close">CLOSE</button></div>
+    <div class="panel-body contact-grid">
+      <div class="contact-copy">
+        <div class="kicker">START A CONVERSATION</div>
+        <h1>TELL US WHAT<br>YOU'RE BUILDING.</h1>
+        <p>Hospitality, commercial, residential, and special projects begin with a conversation.</p>
+      </div>
+      <div class="contact-terminal">
+        <form class="email-strip contact-email" id="emailStrip" aria-label="Email Freeman">
+          <label for="emailMessage">EMAIL US</label>
+          <span class="email-bracket">[</span>
+          <input id="emailMessage" name="message" autocomplete="off" placeholder="TELL US WHAT YOU'RE BUILDING..." aria-label="Project message">
+          <span class="email-bracket">]</span>
+          <span class="email-state" id="emailState">READY</span>
+          <button type="submit" aria-label="Open email">↗</button>
+        </form>
+        <div class="contact-meta">
+          <span>GABE@FREEMANGC.COM</span>
+          <span>706.263.3348</span>
+          <span>CARTERSVILLE, GEORGIA</span>
+        </div>
       </div>
     </div>
   </section>
