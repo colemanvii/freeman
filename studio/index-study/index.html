@@ -35,24 +35,24 @@ a{text-decoration:none}
   transform:scaleX(0);transform-origin:left;transition:transform .16s ease;
 }
 .center button:hover:after,.center a:hover:after,.center button.active:after{transform:scaleX(1)}
-.center .portal{color:var(--orange);font-weight:700}
+.center .portal{color:var(--orange);font-weight:400}
 .center .portal:before{
   content:"";display:inline-block;width:5px;height:5px;margin-right:6px;background:var(--orange);border-radius:50%;
-  animation:pulse 1.35s steps(2,end) infinite;vertical-align:2px;
+  animation:pulse 1.8s steps(2,end) infinite;vertical-align:2px;
 }
 @keyframes pulse{50%{opacity:.12}}
 .eagle{
   position:absolute;left:28px;bottom:27px;width:25px;height:auto;display:block;filter:none;
 }
 .legal{
-  position:absolute;left:64px;bottom:26px;font-size:8px;line-height:1.4;letter-spacing:.055em;text-transform:uppercase;color:#777a75;
+  position:absolute;left:64px;bottom:26px;font-size:9px;line-height:1.45;letter-spacing:.04em;text-transform:uppercase;color:#747772;
 }
 .mark{
-  position:absolute;right:29px;bottom:26px;text-align:right;font-size:8px;line-height:1.42;letter-spacing:.055em;text-transform:uppercase;color:#777a75;
+  position:absolute;right:29px;bottom:26px;text-align:right;font-size:9px;line-height:1.45;letter-spacing:.04em;text-transform:uppercase;color:#747772;
 }
 .email-strip{
   position:absolute;left:50%;top:calc(50% + 46px);transform:translateX(-50%);
-  width:min(560px,72vw);display:grid;grid-template-columns:auto auto 1fr auto auto;align-items:center;gap:8px;
+  width:min(650px,76vw);display:grid;grid-template-columns:auto auto 1fr auto auto auto;align-items:center;gap:8px;
   font-size:10px;line-height:1;text-transform:uppercase;letter-spacing:.03em;color:#6f726d;
 }
 .email-strip label{color:var(--ink);font-weight:700}
@@ -63,6 +63,9 @@ a{text-decoration:none}
 .email-strip input::placeholder{color:#a1a39e;opacity:1}
 .email-strip input:focus{border-bottom-color:var(--orange)}
 .email-strip button{color:var(--orange);font-size:13px;line-height:1}
+.email-state{min-width:56px;text-align:right;color:#a1a39e;font-size:8px;letter-spacing:.07em}
+.email-strip:focus-within .email-state{color:var(--orange)}
+.email-strip:focus-within label{color:var(--orange)}
 .email-bracket{color:#a1a39e}
 .switcher{
   position:absolute;left:50%;bottom:30px;transform:translateX(-50%);
@@ -133,7 +136,8 @@ a{text-decoration:none}
   .center{width:82%;white-space:normal;flex-wrap:wrap;justify-content:center;row-gap:12px;font-size:12px;line-height:1.2;text-align:center}
   .center .sep{padding:0 7px}
   .coordinate,.status{font-size:7px}
-  .email-strip{top:calc(50% + 72px);width:84vw;font-size:9px;grid-template-columns:auto auto 1fr auto auto}
+  .email-strip{top:calc(50% + 72px);width:88vw;font-size:9px;grid-template-columns:auto auto 1fr auto auto auto}
+  .email-state{display:none}
   .legal{display:none}.mark{right:20px;bottom:18px}.eagle{left:20px;bottom:18px}
   .switcher{bottom:21px}
   .panel-body{inset:72px 20px 62px}
@@ -159,7 +163,6 @@ a{text-decoration:none}
     <button data-panel="work">WORK</button><span class="sep">/</span>
     <button data-panel="field">FIELD</button><span class="sep">/</span>
     <button data-panel="people">PEOPLE</button><span class="sep">/</span>
-    <button data-panel="index">INDEX</button><span class="sep">/</span>
     <button data-panel="info">INFO</button><span class="sep">/</span>
     <a class="portal" href="https://freemangc.com" target="_blank" rel="noreferrer">CLIENT PORTAL</a>
   </nav>
@@ -168,6 +171,7 @@ a{text-decoration:none}
     <span class="email-bracket">[</span>
     <input id="emailMessage" name="message" autocomplete="off" placeholder="TELL US WHAT YOU'RE BUILDING..." aria-label="Project message">
     <span class="email-bracket">]</span>
+    <span class="email-state" id="emailState">READY</span>
     <button type="submit" aria-label="Open email">↗</button>
   </form>
 
@@ -273,6 +277,10 @@ function openPanel(id){
 }
 nav.forEach(b=>b.addEventListener('click',()=>openPanel(b.dataset.panel)));
 document.querySelectorAll('.close').forEach(b=>b.addEventListener('click',closeAll));
+const emailInput=document.getElementById('emailMessage');
+const emailState=document.getElementById('emailState');
+emailInput?.addEventListener('focus',()=>{if(emailState)emailState.textContent='TYPE'});
+emailInput?.addEventListener('blur',()=>{if(emailState)emailState.textContent=emailInput.value.trim()?'READY':'READY'});
 document.getElementById('emailStrip')?.addEventListener('submit',e=>{
   e.preventDefault();
   const msg=document.getElementById('emailMessage').value.trim();
