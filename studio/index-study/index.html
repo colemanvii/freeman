@@ -176,11 +176,11 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
     display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
     gap:0;row-gap:12px;
     white-space:normal;text-align:center;
-    font-size:13px;line-height:1.25;letter-spacing:.01em;
+    font-size:14px;line-height:1.28;letter-spacing:.01em;
   }
   .center .brand{font-size:1.16em}
-  .center .sep{padding:0 7px;color:#9a9c97}
-  .center button,.center a{min-height:22px}
+  .center .sep{padding:0 8px;color:#9a9c97}
+  .center button,.center a{min-height:40px;padding:8px 2px;display:inline-flex;align-items:center;justify-content:center}
   .center button:after,.center a:after{display:none}
   .center button:hover,.center a:hover{background:transparent;color:inherit}
   .center .portal{color:var(--orange)}
@@ -204,7 +204,7 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
     font-size:9px;line-height:1.3;letter-spacing:.035em;
   }
   .panel-head>span{max-width:72%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .close{gap:5px;font-size:9px}
+  .close{gap:5px;font-size:10px;min-height:40px;padding:8px 4px}
   .panel-body{
     inset:max(62px,calc(env(safe-area-inset-top) + 52px)) 18px max(54px,calc(env(safe-area-inset-bottom) + 42px));
     overflow:auto;-webkit-overflow-scrolling:touch;
@@ -218,7 +218,7 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
   }
   .index-item{
     grid-template-columns:32px 1fr;
-    padding:11px 0;font-size:10px;line-height:1.25
+    padding:14px 0;font-size:11px;line-height:1.3
   }
   .project-stage{min-height:360px}
   .project-label,.project-name{font-size:8px;padding:6px 7px}
@@ -253,7 +253,7 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
   .contact-write textarea{
     min-height:180px;font-size:13px;line-height:1.55;padding:14px;
   }
-  .contact-actions{font-size:9px}
+  .contact-actions{font-size:10px}.contact-actions button{min-height:40px;padding:8px 2px}
 
   /* Portal */
   .portal-cover{grid-template-columns:1fr;gap:30px;padding-top:14px}
@@ -262,7 +262,7 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
   .portal-path{
     gap:7px 8px;margin-bottom:18px;font-size:9px
   }
-  .portal-path button{font-size:9px}
+  .portal-path button{font-size:10px;min-height:38px;padding:7px 2px}
   .ledger-row{
     grid-template-columns:110px 1fr;gap:12px;
     padding:10px 0;font-size:10px
@@ -270,7 +270,7 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
   .record-list{margin-top:24px}
   .record-list button{
     grid-template-columns:1fr auto;gap:4px 10px;
-    padding:11px 0;font-size:10px
+    padding:14px 0;font-size:11px
   }
   .record-list button strong{grid-column:1 / -1}
   .record-list button em{text-align:right}
@@ -282,7 +282,7 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
     background:var(--orange);color:var(--paper);outline:none
   }
 
-  .kicker,.record-label{font-size:9px}
+  .kicker,.record-label{font-size:10px}
   .coordinate,.status{display:none}
   .email-state{display:none}
 }
