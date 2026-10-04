@@ -169,94 +169,72 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
   body{cursor:auto}
   .site{height:100svh;min-height:0;overflow:hidden;padding:0}
 
-  /* Home: preserve the desktop composition and visual language on mobile. */
+  /* Home: literal 1994 treatment borrowed from the approved personal landing page. */
   .center{display:none!important}
   .mobile-home-nav{
     position:absolute;
     left:50%;top:50%;
     transform:translate(-50%,-50%);
-    width:min(340px,88vw);
+    width:min(260px,calc(100% - 44px));
     display:flex!important;
-    flex-direction:column;
     align-items:center;
     justify-content:center;
-    gap:8px;
-    background:transparent;
-    border:0;
-    box-shadow:none;
+    flex-wrap:wrap;
+    gap:0;
+    white-space:normal;
+    text-align:center;
     font-family:var(--mono);
     -webkit-font-smoothing:none;
     text-rendering:geometricPrecision;
-    color:var(--ink);
-    font-size:15px;
-    line-height:1.2;
-    letter-spacing:.015em;
+    font-size:13px;
+    line-height:2.15;
+    letter-spacing:.02em;
     text-transform:uppercase;
+    color:var(--ink);
   }
   .mobile-home-nav button{
+    display:inline-block;
+    position:relative;
     border:0;
     background:transparent;
     color:inherit;
     font:inherit;
-    line-height:1.2;
-    letter-spacing:.015em;
+    line-height:inherit;
+    letter-spacing:inherit;
     text-transform:uppercase;
-    min-height:42px;
-    padding:10px 6px 8px;
+    padding:0;
+    min-height:0;
   }
-  .mobile-row{
-    width:100%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:0;
+  .mobile-home-nav button + button::before{
+    content:" / ";
+    white-space:pre;
+    color:var(--ink);
   }
-  .mobile-row-brand{margin-bottom:2px}
   .mobile-home-nav .mobile-brand{
-    font-size:1.18em;
     font-weight:700;
-    letter-spacing:.005em;
   }
-  .mobile-sep{
-    padding:0 11px;
-    color:#9a9c97;
-    font-size:1em;
-    line-height:1.2;
-  }
-  .mobile-row-portal{margin-top:2px}
   .mobile-home-nav .mobile-portal{
     color:var(--orange);
-    font-weight:400;
+  }
+  /* Large invisible touch target; the visible type stays exactly 1994-sized. */
+  .mobile-home-nav button::after{
+    content:"";
+    position:absolute;
+    inset:-8px -5px;
   }
   .mobile-home-nav button:active,
   .mobile-home-nav button:focus-visible{
-    background:var(--orange);
+    background:var(--ink);
     color:var(--paper);
     outline:none;
   }
+  .mobile-home-nav .mobile-portal:active,
+  .mobile-home-nav .mobile-portal:focus-visible{
+    background:var(--orange);
+    color:var(--paper);
+  }
 
-  .eagle{
-    display:block;
-    left:18px;
-    bottom:max(20px,env(safe-area-inset-bottom));
-    width:32px;
-  }
-  .legal{
-    display:block;
-    left:58px;
-    bottom:max(20px,env(safe-area-inset-bottom));
-    font-size:7.5px;
-    line-height:1.4;
-    letter-spacing:.04em;
-  }
-  .mark{
-    display:block;
-    right:18px;
-    bottom:max(20px,env(safe-area-inset-bottom));
-    font-size:7.5px;
-    line-height:1.4;
-    letter-spacing:.04em;
-  }
+  .eagle,.legal,.mark{display:none}
 
   /* Panels remain full-frame sheets. */
   .panel{overflow:hidden}
@@ -364,18 +342,12 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
   </nav>
 
   <nav class="mobile-home-nav" aria-label="Mobile primary navigation">
-    <div class="mobile-row mobile-row-brand">
-      <button class="mobile-brand" data-panel="home">FREEMAN</button>
-    </div>
-    <div class="mobile-row">
-      <button data-panel="work">WORK</button><span class="mobile-sep">/</span><button data-panel="field">FIELD</button>
-    </div>
-    <div class="mobile-row">
-      <button data-panel="company">COMPANY</button><span class="mobile-sep">/</span><button data-panel="contact">CONTACT</button>
-    </div>
-    <div class="mobile-row mobile-row-portal">
-      <button class="mobile-portal" data-panel="portal">CLIENT PORTAL</button>
-    </div>
+    <button class="mobile-brand" data-panel="home">FREEMAN</button>
+    <button data-panel="work">WORK</button>
+    <button data-panel="field">FIELD</button>
+    <button data-panel="company">COMPANY</button>
+    <button data-panel="contact">CONTACT</button>
+    <button class="mobile-portal" data-panel="portal">CLIENT PORTAL</button>
   </nav>
 
   <img class="eagle" src="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6904f319ecdcf81821e678cb_Red%20Freeman%20Eagle.svg" alt="Freeman eagle">
