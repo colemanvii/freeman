@@ -81,6 +81,8 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
 }
 .index-item span:first-child{color:#7e817c}
 .index-item.active,.index-item:hover{color:var(--orange)}
+.index-item .phrase-hover{display:inline-block}
+.index-item .phrase-hover:hover{background:var(--orange);color:var(--paper);cursor:var(--cursor-orange)}
 .project-stage{position:relative;overflow:hidden;background:#e8e8e3;cursor:var(--cursor-orange)}
 .project-stage img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.88) contrast(.96);transition:opacity .18s ease}
 .project-label{
@@ -184,15 +186,15 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
     <div class="panel-head"><span>WORK / SELECT PROJECTS</span><button class="close">CLOSE</button></div>
     <div class="panel-body work-grid">
       <div class="index-list" id="projectList">
-        <button class="index-item active" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/690112c66907ba02f5612747_Beetlecat%20Thumb%20Freeman%20General%20Contractors_HP.jpg" data-name="BEETLECAT / ROCKET FARM RESTAURANTS"><span>001</span><span>Beetlecat</span></button>
-        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6916c3cc412995612baf28e4_The%20Optimist_Freeman%20General%20Contractors%200.jpg" data-name="THE OPTIMIST / ROCKET FARM RESTAURANTS"><span>002</span><span>The Optimist</span></button>
-        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6916c7910f0d654dd4daa28f_Barnsley%20Gardens_Freeman%20General%20Contractors%201.jpg" data-name="BARNSLEY GARDENS / BARNSLEY RESORT"><span>003</span><span>Barnsley Gardens</span></button>
-        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/692db75041d703e9a18d4085_Bocado%20Pizza_Interior%20Seating.jpeg" data-name="BOCADO PIZZA / ATLANTA"><span>004</span><span>Bocado Pizza</span></button>
-        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/692db4c97f14414f0e9997d7_Freeman%20General%20Contractors_Savi-Provisions_Emory-Village.jpg" data-name="SAVI PROVISIONS / EMORY VILLAGE"><span>005</span><span>Savi Provisions</span></button>
-        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/692db404e2c8b7283f87b2cf_O-Ku%20Atlanta_Omotenashi%20Sign.jpeg" data-name="O-KU ATLANTA / ATLANTA"><span>006</span><span>O-Ku Atlanta</span></button>
-        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/692db50754b35340d6a11efd_FGC_La%20Cresta%20on%20Main_Exterior.jpeg" data-name="LACRESTA ON MAIN / BLUE RIDGE"><span>007</span><span>LaCresta on Main</span></button>
-        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/692db51e0255304cdedbe097_Cleveland%20Surgery%20Center_FGC.jpeg" data-name="CLEVELAND SURGERY CENTER / TENNESSEE"><span>008</span><span>Cleveland Surgery Center</span></button>
-        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/692db53cb73187579c63c249_Dalton%20Surgery%20Center_FGC.jpeg" data-name="DALTON SURGERY CENTER / GEORGIA"><span>009</span><span>Dalton Surgery Center</span></button>
+        <button class="index-item active" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/690112c66907ba02f5612747_Beetlecat%20Thumb%20Freeman%20General%20Contractors_HP.jpg" data-name="BEETLECAT / ROCKET FARM RESTAURANTS"><span>001</span><span><span class="phrase-hover">Beetlecat</span></span></button>
+        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6916c3cc412995612baf28e4_The%20Optimist_Freeman%20General%20Contractors%200.jpg" data-name="THE OPTIMIST / ROCKET FARM RESTAURANTS"><span>002</span><span><span class="phrase-hover">The Optimist</span></span></button>
+        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6916c7910f0d654dd4daa28f_Barnsley%20Gardens_Freeman%20General%20Contractors%201.jpg" data-name="BARNSLEY GARDENS / BARNSLEY RESORT"><span>003</span><span><span class="phrase-hover">Barnsley Gardens</span></span></button>
+        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/692db75041d703e9a18d4085_Bocado%20Pizza_Interior%20Seating.jpeg" data-name="BOCADO PIZZA / ATLANTA"><span>004</span><span><span class="phrase-hover">Bocado Pizza</span></span></button>
+        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/692db4c97f14414f0e9997d7_Freeman%20General%20Contractors_Savi-Provisions_Emory-Village.jpg" data-name="SAVI PROVISIONS / EMORY VILLAGE"><span>005</span><span><span class="phrase-hover">Savi Provisions</span></span></button>
+        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/692db404e2c8b7283f87b2cf_O-Ku%20Atlanta_Omotenashi%20Sign.jpeg" data-name="O-KU ATLANTA / ATLANTA"><span>006</span><span><span class="phrase-hover">O-Ku Atlanta</span></span></button>
+        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/692db50754b35340d6a11efd_FGC_La%20Cresta%20on%20Main_Exterior.jpeg" data-name="LACRESTA ON MAIN / BLUE RIDGE"><span>007</span><span><span class="phrase-hover">LaCresta on Main</span></span></button>
+        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/692db51e0255304cdedbe097_Cleveland%20Surgery%20Center_FGC.jpeg" data-name="CLEVELAND SURGERY CENTER / TENNESSEE"><span>008</span><span><span class="phrase-hover">Cleveland Surgery Center</span></span></button>
+        <button class="index-item" data-image="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/692db53cb73187579c63c249_Dalton%20Surgery%20Center_FGC.jpeg" data-name="DALTON SURGERY CENTER / GEORGIA"><span>009</span><span><span class="phrase-hover">Dalton Surgery Center</span></span></button>
       </div>
       <figure class="project-stage">
         <img id="projectImage" src="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/690112c66907ba02f5612747_Beetlecat%20Thumb%20Freeman%20General%20Contractors_HP.jpg" alt="Freeman project">
@@ -228,12 +230,12 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
     <div class="panel-head"><span>INDEX / FREEMAN</span><button class="close">CLOSE</button></div>
     <div class="panel-body work-grid">
       <div class="index-list">
-        <div class="index-item"><span>001</span><span>Built for Generations</span></div>
-        <div class="index-item"><span>002</span><span>Finished Result</span></div>
-        <div class="index-item"><span>003</span><span>Field Evidence</span></div>
-        <div class="index-item"><span>004</span><span>People / Stewardship</span></div>
-        <div class="index-item"><span>005</span><span>Project Records</span></div>
-        <div class="index-item"><span>006</span><span>Contact</span></div>
+        <div class="index-item"><span>001</span><span><span class="phrase-hover">Built for Generations</span></span></div>
+        <div class="index-item"><span>002</span><span><span class="phrase-hover">Finished Result</span></span></div>
+        <div class="index-item"><span>003</span><span><span class="phrase-hover">Field Evidence</span></span></div>
+        <div class="index-item"><span>004</span><span><span class="phrase-hover">People / Stewardship</span></span></div>
+        <div class="index-item"><span>005</span><span><span class="phrase-hover">Project Records</span></span></div>
+        <div class="index-item"><span>006</span><span><span class="phrase-hover">Contact</span></span></div>
       </div>
       <div class="field-copy">
         <div class="kicker">FREEMAN / REPUTATION SYSTEM</div>
@@ -341,7 +343,7 @@ function installWordHover(root=document.body){
     acceptNode(node){
       const p=node.parentElement;
       if(!p) return NodeFilter.FILTER_REJECT;
-      if(p.closest('script,style,textarea,input,select,option,.hover-word')) return NodeFilter.FILTER_REJECT;
+      if(p.closest('script,style,textarea,input,select,option,.hover-word,.phrase-hover')) return NodeFilter.FILTER_REJECT;
       if(!/[A-Za-z0-9]/.test(node.nodeValue||'')) return NodeFilter.FILTER_REJECT;
       return NodeFilter.FILTER_ACCEPT;
     }
