@@ -169,53 +169,87 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
   body{cursor:auto}
   .site{height:100svh;min-height:0;overflow:hidden;padding:0}
 
-  /* Home: same Freeman type system, simplified for mobile. */
+  /* Home: mobile title page, not a generic menu. */
   .center{display:none!important}
   .mobile-home-nav{
     position:absolute;
     left:50%;top:50%;
     transform:translate(-50%,-50%);
-    width:min(310px,82vw);
+    width:min(292px,76vw);
     display:flex!important;
     flex-direction:column;
     align-items:center;
     justify-content:center;
-    border:0;
     background:transparent;
     font-family:var(--mono);
     -webkit-font-smoothing:none;
     text-rendering:geometricPrecision;
+    color:var(--ink);
   }
   .mobile-home-nav button{
+    border:0;
+    background:transparent;
+    color:inherit;
+    font-family:var(--mono);
+    text-transform:uppercase;
+    letter-spacing:.012em;
+  }
+  .mobile-home-nav .mobile-brand{
+    width:auto;
+    min-height:0;
+    padding:0;
+    font-size:27px;
+    line-height:1;
+    font-weight:700;
+    letter-spacing:0;
+  }
+  .mobile-nav-rule{
     width:100%;
-    min-height:56px;
-    padding:15px 0 13px;
+    height:1px;
+    background:var(--hair);
+    margin:24px 0 19px;
+  }
+  .mobile-nav-rule-bottom{
+    margin:19px 0 18px;
+  }
+  .mobile-nav-main{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:2px;
+  }
+  .mobile-nav-main button{
+    width:100%;
+    min-height:44px;
+    padding:10px 0 9px;
     display:flex;
     align-items:center;
     justify-content:center;
-    border:0;
-    border-bottom:1px solid var(--hair);
-    text-align:center;
-    font-family:var(--mono);
-    font-size:19px;
-    font-weight:400;
+    font-size:20px;
     line-height:1;
-    letter-spacing:.015em;
-    text-transform:uppercase;
-    background:transparent;
-    color:var(--ink);
-  }
-  .mobile-home-nav .mobile-brand{
-    min-height:66px;
-    padding:17px 0 15px;
-    border-top:0;
-    font-size:24px;
-    font-weight:700;
-    letter-spacing:.005em;
+    font-weight:400;
   }
   .mobile-home-nav .mobile-portal{
+    width:auto;
+    min-height:44px;
+    padding:10px 5px 8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:19px;
+    line-height:1;
+    font-weight:400;
     color:var(--orange);
-    border-bottom:0;
+  }
+  .mobile-caption{
+    margin-top:14px;
+    font-size:7px;
+    line-height:1.4;
+    letter-spacing:.055em;
+    color:#777a75;
+    text-transform:uppercase;
+    text-align:center;
   }
   .mobile-home-nav button:active,
   .mobile-home-nav button:focus-visible{
@@ -333,11 +367,16 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
 
   <nav class="mobile-home-nav" aria-label="Mobile primary navigation">
     <button class="mobile-brand" data-panel="home">FREEMAN</button>
-    <button data-panel="work">WORK</button>
-    <button data-panel="field">FIELD</button>
-    <button data-panel="company">COMPANY</button>
-    <button data-panel="contact">CONTACT</button>
+    <div class="mobile-nav-rule"></div>
+    <div class="mobile-nav-main">
+      <button data-panel="work">WORK</button>
+      <button data-panel="field">FIELD</button>
+      <button data-panel="company">COMPANY</button>
+      <button data-panel="contact">CONTACT</button>
+    </div>
+    <div class="mobile-nav-rule mobile-nav-rule-bottom"></div>
     <button class="mobile-portal" data-panel="portal">CLIENT PORTAL</button>
+    <div class="mobile-caption">BUILT FOR GENERATIONS / GEORGIA</div>
   </nav>
 
   <img class="eagle" src="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/6904f319ecdcf81821e678cb_Red%20Freeman%20Eagle.svg" alt="Freeman eagle">
