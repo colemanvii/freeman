@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Freeman — Sequence Study</title>
+<meta name="theme-color" content="#0a0a0a">
+<style>
+:root{
+  --ink:#f2f0e9;
+  --muted:rgba(242,240,233,.56);
+  --line:rgba(242,240,233,.22);
+  --accent:#ff5a1f;
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  background:#0a0a0a;
+  color:var(--ink);
+  overflow:hidden;
+}
+body{
+  font-family:Monaco,"Courier New",monospace;
+  -webkit-font-smoothing:antialiased;
+}
+button{font:inherit;color:inherit}
+.frame{
+  position:fixed;
+  inset:0;
+  background:#0a0a0a;
+}
+.frame img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  filter:saturate(.88) contrast(1.03) brightness(.78);
+  transform:scale(1.001);
+}
+.veil{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(to bottom,rgba(0,0,0,.30),rgba(0,0,0,.03) 26%,rgba(0,0,0,.06) 62%,rgba(0,0,0,.5));
+  pointer-events:none;
+}
+.chrome{
+  position:absolute;
+  inset:0;
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  padding:18px 20px 16px;
+}
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  font-size:9px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.brand{
+  font-weight:700;
+  font-size:11px;
+  letter-spacing:.02em;
+}
+.top-right{
+  text-align:right;
+  color:var(--muted);
+  line-height:1.45;
+}
+.middle{
+  display:grid;
+  place-items:center;
+  text-align:center;
+}
+.statement{
+  max-width:min(860px,82vw);
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight:500;
+  font-size:clamp(34px,6vw,92px);
+  line-height:.94;
+  letter-spacing:-.055em;
+  text-wrap:balance;
+  text-shadow:0 1px 18px rgba(0,0,0,.18);
+}
+.statement.small{
+  font-size:clamp(22px,3.2vw,48px);
+  letter-spacing:-.04em;
+  max-width:min(720px,78vw);
+}
+.bottom{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:18px;
+  align-items:end;
+}
+.meta{
+  font-size:8px;
+  line-height:1.45;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.counter{
+  justify-self:center;
+  font-size:8px;
+  letter-spacing:.08em;
+  color:var(--muted);
+}
+.controls{
+  justify-self:end;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.controls button{
+  appearance:none;
+  border:1px solid var(--line);
+  background:rgba(0,0,0,.16);
+  width:32px;
+  height:32px;
+  cursor:pointer;
+  backdrop-filter:blur(4px);
+}
+.controls button:hover{
+  background:rgba(255,255,255,.08);
+}
+.progress{
+  position:absolute;
+  left:20px;
+  right:20px;
+  bottom:7px;
+  height:1px;
+  background:rgba(255,255,255,.14);
+}
+.progress span{
+  display:block;
+  height:100%;
+  background:var(--ink);
+  width:10%;
+  transition:width .24s ease;
+}
+.intro{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  background:#f2f0e9;
+  color:#111;
+  z-index:5;
+  transition:opacity .35s ease, visibility .35s ease;
+}
+.intro.hidden{
+  opacity:0;
+  visibility:hidden;
+}
+.intro-inner{
+  text-align:center;
+}
+.intro-brand{
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size:clamp(42px,7vw,108px);
+  line-height:.9;
+  letter-spacing:-.07em;
+  font-weight:600;
+}
+.intro-note{
+  margin-top:18px;
+  font-size:8px;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+  color:#777;
+}
+.endcard{
+  position:absolute;
+  inset:0;
+  display:none;
+  place-items:center;
+  background:#f2f0e9;
+  color:#111;
+  z-index:4;
+}
+.endcard.active{display:grid}
+.end-inner{
+  text-align:center;
+}
+.end-brand{
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size:clamp(54px,9vw,132px);
+  line-height:.84;
+  letter-spacing:-.075em;
+  font-weight:600;
+}
+.end-tag{
+  margin-top:22px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(20px,2.2vw,34px);
+}
+.end-nav{
+  margin-top:32px;
+  display:flex;
+  gap:18px;
+  justify-content:center;
+  font-size:8px;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+.end-nav a{color:inherit;text-decoration:none}
+.end-nav a:hover{color:var(--accent)}
+@media(max-width:720px){
+  .chrome{padding:14px 14px 12px}
+  .top-right{font-size:7px}
+  .statement{max-width:88vw;font-size:clamp(34px,11vw,66px)}
+  .statement.small{font-size:clamp(22px,7vw,38px)}
+  .bottom{grid-template-columns:1fr auto}
+  .counter{display:none}
+  .progress{left:14px;right:14px}
+  .meta{font-size:7px}
+}
+</style>
+</head>
+<body>
+<div class="intro" id="intro">
+  <div class="intro-inner">
+    <div class="intro-brand">FREEMAN</div>
+    <div class="intro-note">Click anywhere / use arrow keys</div>
+  </div>
+</div>
+
+<div class="frame" id="frame">
+  <img id="image" src="../field-notes-assets/barnsley.webp" alt="Freeman project sequence">
+  <div class="veil"></div>
+  <div class="chrome">
+    <div class="top">
+      <div class="brand">FREEMAN</div>
+      <div class="top-right" id="topMeta">FIELD RECORD<br>NORTH GEORGIA</div>
+    </div>
+
+    <div class="middle">
+      <div class="statement" id="statement">Before the wall closes.</div>
+    </div>
+
+    <div class="bottom">
+      <div class="meta" id="meta">Barnsley Resort<br>Adairsville, Georgia</div>
+      <div class="counter" id="counter">01 / 10</div>
+      <div class="controls">
+        <button id="prev" aria-label="Previous">←</button>
+        <button id="next" aria-label="Next">→</button>
+      </div>
+    </div>
+  </div>
+  <div class="progress"><span id="bar"></span></div>
+</div>
+
+<div class="endcard" id="endcard">
+  <div class="end-inner">
+    <div class="end-brand">FREEMAN</div>
+    <div class="end-tag">Built for Generations.</div>
+    <nav class="end-nav">
+      <a href="../v3-study.html">Work</a>
+      <a href="../archive/">Archive</a>
+      <a href="#">Company</a>
+      <a href="../portal.html">Client Portal</a>
+    </nav>
+  </div>
+</div>
+
+<script>
+const slides = [
+  {
+    src:'../field-notes-assets/barnsley.webp',
+    line:'Before the wall closes.',
+    meta:'Barnsley Resort<br>Adairsville, Georgia',
+    top:'FIELD RECORD<br>NORTH GEORGIA'
+  },
+  {
+    src:'../field-notes-assets/site.webp',
+    line:'The site does not arrive clean.',
+    meta:'Field Study<br>Georgia',
+    top:'EXISTING CONDITION<br>01'
+  },
+  {
+    src:'../field-notes-assets/steelwork.webp',
+    line:'Structure first.',
+    meta:'Field Study<br>North Georgia',
+    top:'STRUCTURE<br>02'
+  },
+  {
+    src:'../field-notes-assets/timber.webp',
+    line:'Then the parts nobody keeps.',
+    meta:'Field Study<br>North Georgia',
+    top:'HIDDEN SYSTEM<br>03'
+  },
+  {
+    src:'../field-notes-assets/barnsley.webp',
+    line:'A decision happens here.',
+    meta:'Barnsley Resort<br>Adairsville, Georgia',
+    top:'FIELD DECISION<br>04'
+  },
+  {
+    src:'../field-notes-assets/steelwork.webp',
+    line:'Most of the work will disappear.',
+    meta:'Field Study<br>North Georgia',
+    top:'COORDINATION<br>05'
+  },
+  {
+    src:'../field-notes-assets/optimist-detail.webp',
+    line:'What remains is the detail.',
+    meta:'The Optimist<br>Atlanta, Georgia',
+    top:'FINISHED DETAIL<br>06'
+  },
+  {
+    src:'../field-notes-assets/optimist.webp',
+    line:'Then the room.',
+    meta:'The Optimist<br>Atlanta, Georgia',
+    top:'FINISHED RESULT<br>07'
+  },
+  {
+    src:'../field-notes-assets/optimist.webp',
+    line:'The guest never sees the complexity.',
+    meta:'The Optimist<br>Atlanta, Georgia',
+    top:'HOSPITALITY<br>08'
+  },
+  {
+    src:'../field-notes-assets/barnsley.webp',
+    line:'But the builder remembers all of it.',
+    meta:'Freeman General Contracting<br>Georgia',
+    top:'FIELD MEMORY<br>09'
+  }
+];
+
+let i = 0;
+const intro = document.getElementById('intro');
+const image = document.getElementById('image');
+const statement = document.getElementById('statement');
+const meta = document.getElementById('meta');
+const topMeta = document.getElementById('topMeta');
+const counter = document.getElementById('counter');
+const bar = document.getElementById('bar');
+const endcard = document.getElementById('endcard');
+
+function render(){
+  endcard.classList.remove('active');
+  const s = slides[i];
+  image.src = s.src;
+  statement.textContent = s.line;
+  statement.classList.toggle('small', s.line.length > 34);
+  meta.innerHTML = s.meta;
+  topMeta.innerHTML = s.top;
+  counter.textContent = String(i+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+  bar.style.width = ((i+1)/slides.length*100)+'%';
+}
+function next(){
+  intro.classList.add('hidden');
+  if(i < slides.length-1){
+    i++;
+    render();
+  } else {
+    endcard.classList.add('active');
+  }
+}
+function prev(){
+  intro.classList.add('hidden');
+  if(endcard.classList.contains('active')){
+    endcard.classList.remove('active');
+    render();
+    return;
+  }
+  if(i>0){
+    i--;
+    render();
+  }
+}
+document.getElementById('next').addEventListener('click',e=>{e.stopPropagation();next()});
+document.getElementById('prev').addEventListener('click',e=>{e.stopPropagation();prev()});
+document.getElementById('frame').addEventListener('click',next);
+intro.addEventListener('click',()=>intro.classList.add('hidden'));
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight' || e.key===' ' || e.key==='Enter') next();
+  if(e.key==='ArrowLeft') prev();
+  if(e.key==='Escape') endcard.classList.remove('active');
+});
+render();
+</script>
+</body>
+</html>
