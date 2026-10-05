@@ -39,9 +39,9 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
   const overviewBtn=document.querySelector('.subnav button[data-sub="overview"]');if(overviewBtn)overviewBtn.textContent='Story';
   const overview=document.getElementById('overview');
   if(overview)overview.innerHTML='<div class="freeman-story"><div class="story-note-box"><div class="story-label">THE FREEMAN STORY</div><div class="story-copy">Freeman was built around a simple belief: the construction process should earn the same trust as the finished place. From Cartersville, Georgia, the company brings clear communication, thoughtful coordination and durable craft to hospitality, commercial and residential work — building the relationships, as well as the spaces, intended to last.</div></div></div>';
-  const archiveNote=document.querySelector('.archive-head span');if(archiveNote)archiveNote.textContent='A working record of the people, process, materials and decisions behind the finished work.';
+  const archiveNote=document.querySelector('.archive-head span');if(archiveNote)archiveNote.textContent='A living extension of @builtforgenerations — the work, people, process and evolving Freeman story.';
   const homeStatement=document.querySelector('.home-statement');
-  if(homeStatement&&!document.querySelector('.home-capabilities')){const capabilities=document.createElement('div');capabilities.className='home-capabilities';capabilities.innerHTML='<div class="home-current"><span>CURRENTLY</span><b>Barnsley Gardens · Adairsville, Georgia</b></div><div class="home-proofline"><span>PROJECT RECORD</span><b>The Optimist · 3-week renovation · on time · under budget</b></div>';homeStatement.appendChild(capabilities)}
+  if(homeStatement&&!document.querySelector('.home-capabilities')){const capabilities=document.createElement('div');capabilities.className='home-capabilities';capabilities.innerHTML='<b>Hospitality</b> · Commercial · High-End Residential<br>Ground-Up <i>/</i> Renovation <i>/</i> Construction Management';homeStatement.appendChild(capabilities)}
 
   const homeProof=document.querySelector('.home-proof blockquote');
   if(homeProof)homeProof.innerHTML='“A breath of fresh air in the construction industry.”<cite>Paul Nair · Founder, Savi Provisions</cite>';
@@ -52,7 +52,10 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
 
   const installTestimonials=()=>{
     try{
-      projects.forEach(p=>{p.quote='';p.quoteBy='';});
+      projects[0].quote='Freeman treated our project like it mattered — and it showed in the finished work.';
+      projects[0].quoteBy='Rocket Farm Restaurants · Client';
+      projects[3].quote='Professional, responsive, and deeply knowledgeable. Freeman understands both construction and the importance of trust.';
+      projects[3].quoteBy='Bocado Pizza · Client';
       projects[4].quote='Freeman General Contracting is a breath of fresh air in the construction industry. Highly communicative, attentive to detail, and easy to be around.';
       projects[4].quoteBy='Paul Nair · Founder, Savi Provisions';
 
@@ -77,30 +80,6 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
       };
 
       [...document.querySelectorAll('.proj-btn')].forEach((b,i)=>b.classList.toggle('has-testimonial',Boolean(projects[i]?.quote)));
-
-      const fieldNotes=[
-        ['014','Barnsley Gardens','From the field · current work','SEP 2026'],
-        ['013','The Optimist','Radius work and custom fabrication','ATLANTA'],
-        ['012','Savi Provisions','Millwork and finish coordination','ATLANTA'],
-        ['011','Beetlecat','Hospitality details in the field','ATLANTA'],
-        ['010','Barnsley Gardens','Material and site studies','ADAIRSVILLE'],
-        ['009','O-Ku Atlanta','Three-week renovation record','ATLANTA'],
-        ['008','La Cresta on Main','Residential work in progress','BLUE RIDGE'],
-        ['007','Cleveland Surgery Center','Clinical construction detail','CLEVELAND'],
-        ['006','Dalton Surgery Center','Field coordination','DALTON']
-      ];
-      const grid=document.getElementById('archiveGrid');
-      if(grid){
-        [...grid.children].forEach((cell,i)=>{
-          const note=fieldNotes[i%fieldNotes.length];
-          const old=cell.querySelector('span'); if(old) old.remove();
-          const meta=document.createElement('div');meta.className='field-note-meta';
-          meta.innerHTML='<span class="field-note-no">'+note[0]+'</span><div class="field-note-copy"><b>'+note[1]+'</b><em>'+note[2]+'</em></div><span class="field-note-date">'+note[3]+'</span>';
-          cell.appendChild(meta);
-          cell.setAttribute('aria-label','Field Note '+note[0]+' — '+note[1]);
-        });
-      }
-
       showProject(0);
     }catch(e){console.warn('Freeman testimonial enhancement skipped',e)}
   };
