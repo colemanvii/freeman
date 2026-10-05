@@ -1,0 +1,116 @@
+{
+  "updatedAt": "2026-10-05T19:05:00-05:00",
+  "source": "CHATGPT / FREEMAN",
+  "week": "WEEK 01",
+  "mission": "MAKE FREEMAN COHERENT, LEGIBLE, DISTINCT + DOCUMENTED.",
+  "doctrine": "THE RESULT PROVES TASTE. THE EVIDENCE PROVES CAPABILITY.",
+  "primary": "Find one thing Freeman knows that outsiders don’t.",
+  "primaryNote": "Go into the field, document it, understand it, name the principle, preserve the evidence, and make one useful artifact from it.",
+  "fieldTargets": [
+    [
+      "Barnsley / capture hidden systems before close-up",
+      "FIELD"
+    ],
+    [
+      "Ask superintendent: what detail is most likely to be missed?",
+      "INTERVIEW"
+    ],
+    [
+      "Photograph one condition → decision → resolution sequence",
+      "EVIDENCE"
+    ]
+  ],
+  "currentPrinciple": {
+    "title": "Before It Disappears.",
+    "note": "The most convincing proof of capability often vanishes behind the finished surface. Freeman should document important work before it is concealed."
+  },
+  "activeProjects": [
+    [
+      "Barnsley Project Record",
+      "BUILD"
+    ],
+    [
+      "Freeman Archive MVP",
+      "SYSTEM"
+    ],
+    [
+      "V3 website / freeze + real imagery",
+      "HOLD"
+    ],
+    [
+      "Photography field system",
+      "BUILD"
+    ]
+  ],
+  "archiveQueue": [
+    [
+      "Hidden system / before drywall",
+      "ADD"
+    ],
+    [
+      "Decision + responsible people",
+      "ADD"
+    ],
+    [
+      "Drawing / detail reference",
+      "ADD"
+    ],
+    [
+      "Finished resolution",
+      "ADD"
+    ]
+  ],
+  "publishQueue": [
+    [
+      "Field Note — one specific construction decision",
+      "NEXT"
+    ],
+    [
+      "Barnsley evidence sequence",
+      "QUEUE"
+    ],
+    [
+      "Principle visualization",
+      "STUDIO"
+    ]
+  ],
+  "questions": [
+    "What does Freeman consistently notice before anyone else?",
+    "Where does design intent most often get lost in the field?",
+    "What does Gabe obsess over that clients rarely see?"
+  ],
+  "bdMoves": [
+    [
+      "Share relevant proof with Reed",
+      "TOUCH"
+    ],
+    [
+      "Sean / SCAD / The Rose follow-up",
+      "TOUCH"
+    ],
+    [
+      "Identify one hospitality relationship from active work",
+      "FIND"
+    ]
+  ],
+  "guardrail": "No new brand artifact without real Freeman evidence.",
+  "guardrailNote": "If the field has not revealed a reason to change the site, make a graphic, design merch, or invent language—don’t.",
+  "metrics": [
+    [
+      "1+",
+      "FIELD DAY"
+    ],
+    [
+      "20+",
+      "USEFUL PHOTOS"
+    ],
+    [
+      "3+",
+      "OBSERVATIONS"
+    ],
+    [
+      "1",
+      "PRINCIPLE"
+    ]
+  ]
+}
