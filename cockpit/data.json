@@ -1,22 +1,22 @@
 {
-  "updatedAt": "2026-10-05T19:05:00-05:00",
+  "updatedAt": "2026-10-05T17:58:52-05:00",
   "source": "CHATGPT / FREEMAN",
   "week": "WEEK 01",
   "mission": "MAKE FREEMAN COHERENT, LEGIBLE, DISTINCT + DOCUMENTED.",
   "doctrine": "THE RESULT PROVES TASTE. THE EVIDENCE PROVES CAPABILITY.",
-  "primary": "Find one thing Freeman knows that outsiders don’t.",
-  "primaryNote": "Go into the field, document it, understand it, name the principle, preserve the evidence, and make one useful artifact from it.",
+  "primary": "Prepare the first Freeman field week so Day 1 starts with observation, not marketing.",
+  "primaryNote": "The role is signed and starts October 12. Freeze aesthetic exploration; arrive ready to learn the company, capture evidence, and extract the first real Freeman principle.",
   "fieldTargets": [
     [
-      "Barnsley / capture hidden systems before close-up",
-      "FIELD"
+      "Build the first-site shot list around hidden systems, hands, junctions, drawings, and unfinished conditions",
+      "PREP"
     ],
     [
-      "Ask superintendent: what detail is most likely to be missed?",
+      "Prepare 5 questions for Gabe / PM / superintendent that reveal judgment, not marketing language",
       "INTERVIEW"
     ],
     [
-      "Photograph one condition → decision → resolution sequence",
+      "Choose one active project to document condition → decision → resolution from the first field visit",
       "EVIDENCE"
     ]
   ],
@@ -26,6 +26,10 @@
   },
   "activeProjects": [
     [
+      "First-week Freeman immersion / starts Oct 12",
+      "NEXT"
+    ],
+    [
       "Barnsley Project Record",
       "BUILD"
     ],
@@ -34,12 +38,12 @@
       "SYSTEM"
     ],
     [
-      "V3 website / freeze + real imagery",
-      "HOLD"
+      "Photography / documentation library",
+      "BUILD"
     ],
     [
-      "Photography field system",
-      "BUILD"
+      "V3 website / freeze + real imagery",
+      "HOLD"
     ]
   ],
   "archiveQueue": [
@@ -62,7 +66,7 @@
   ],
   "publishQueue": [
     [
-      "Field Note — one specific construction decision",
+      "First real field note from observed Freeman evidence",
       "NEXT"
     ],
     [
