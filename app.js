@@ -5,134 +5,15 @@
 header{position:relative!important}.header-actions{justify-self:end!important;display:flex!important;align-items:center!important;gap:14px!important;white-space:nowrap!important}.header-actions .header-mark{justify-self:auto!important}
 .client-portal{display:inline-flex!important;align-items:center!important;justify-content:center!important;height:28px!important;padding:0 10px!important;border:1px solid rgba(23,24,19,.16)!important;border-radius:999px!important;color:var(--ink)!important;background:transparent!important;text-decoration:none!important;font-size:9px!important;line-height:1!important;letter-spacing:.09em!important;text-transform:uppercase!important;transition:border-color .18s ease,color .18s ease,background .18s ease!important}.client-portal:hover{border-color:var(--red)!important;color:var(--red)!important}.client-short{display:none!important}
 .company-hero-image .eagle-overlay{display:none!important}.founder-photo{height:auto!important;background:transparent!important;align-self:start!important}.founder-photo img{width:100%!important;height:auto!important;max-height:none!important;object-fit:contain!important;object-position:center top!important;display:block!important}
+.archive-head{align-items:flex-start!important;gap:32px!important}.archive-head span{max-width:620px!important;text-align:right!important;font-size:10px!important;line-height:1.42!important;letter-spacing:.09em!important;text-transform:uppercase!important;color:var(--muted)!important}.archive{min-height:0!important;overflow:hidden!important}.archive-grid{gap:9px!important;min-height:0!important;grid-template-rows:repeat(4,minmax(0,1fr))!important}.archive-cell{border-radius:6px!important;box-shadow:none!important;min-height:0!important}.archive-cell img{min-height:0!important}
 .home-capabilities{margin-top:17px;padding-top:13px;border-top:1px solid rgba(23,24,19,.12);font-size:9px;line-height:1.55;letter-spacing:.08em;text-transform:uppercase;color:#777a72}.home-capabilities b{color:#242620;font-weight:600}.home-capabilities i{font-style:normal;color:var(--red);padding:0 5px}
 .home-proof{position:relative}.home-proof:before{content:'CLIENT PERSPECTIVE';position:absolute;left:0;top:-17px;font:8px/1 Arial,sans-serif;letter-spacing:.12em;color:var(--red);text-transform:uppercase}.home-proof blockquote{max-width:390px}.home-proof cite{color:#666960}
 .freeman-story{height:100%;padding:72px 4% 30px 0}.freeman-story .story-note-box{max-width:760px;border:1px solid rgba(239,62,35,.52);padding:18px 20px 20px;background:rgba(239,62,35,.018)}.freeman-story .story-label{margin-bottom:14px;color:var(--red);font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase}.freeman-story .story-copy{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:12px;line-height:1.65;letter-spacing:.015em;color:#5e6159}.freeman-story .story-copy em{font-family:Baskerville,Georgia,serif;font-size:15px;color:var(--ink)}
 .project-testimonial{margin-top:20px;padding:15px 0 0 17px;border-top:1px solid rgba(212,215,207,.75);border-left:2px solid var(--red);max-width:465px}.project-testimonial .testimonial-label{font:8px/1.2 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:9px}.project-testimonial .project-quote{font-family:Baskerville,Georgia,serif!important;font-size:18px!important;line-height:1.22!important;font-style:normal!important;color:#262821!important;margin:0!important}.project-testimonial .testimonial-credit{margin-top:10px;font:9px/1.35 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .proj-btn.has-testimonial .nm:after{content:'';display:inline-block;width:4px;height:4px;margin:0 0 2px 7px;border-radius:50%;background:var(--red)}
 @media(min-width:1001px){.service-card:nth-child(-n+2),.faq-item:nth-child(-n+2){border-top:0!important}.faq-list{height:100%!important;grid-template-rows:1fr 1fr!important;column-gap:46px!important}.faq-item{padding:24px 0 26px!important;display:flex!important;flex-direction:column!important;justify-content:flex-start!important}.faq-item h3{font-size:18px!important;line-height:1.16!important;letter-spacing:-.012em!important;margin:0 0 20px!important;white-space:nowrap!important}.faq-item p{font-size:14px!important;line-height:1.52!important;max-width:96%!important;margin:0!important}.subview[data-sub="faqs"],#faqs{height:100%!important}}
-@media(max-width:1000px) and (min-width:701px){.brand .mark{width:28px!important}.header-actions{gap:10px!important}.client-portal{height:26px!important;padding:0 9px!important;font-size:8px!important}.freeman-story .story-copy{font-size:11px}.project-testimonial .project-quote{font-size:16px!important}}
-@media(max-width:700px){header{min-height:94px!important;grid-template-rows:48px 46px!important}.brand .logo{display:none!important}.brand{gap:0!important}.brand .mark{width:29px!important}.header-actions{grid-column:2!important;grid-row:1!important;justify-self:end!important;gap:8px!important}.header-mark{font-size:8px!important;letter-spacing:.09em!important}.client-portal{height:25px!important;padding:0 8px!important;font-size:8px!important;letter-spacing:.07em!important}.client-full{display:none!important}.client-short{display:inline!important}nav button{padding:12px 0 9px!important}.home{padding-top:34px!important}.home-copy h1{margin-top:22px!important}.home-statement{margin-top:48px!important}.home-proof{margin-top:38px!important}.home-image{margin-top:28px!important}.home-capabilities{font-size:8px!important}.proj-list-items{gap:6px!important;padding:1px 0 16px!important;scroll-snap-type:x proximity!important;-webkit-mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 24px),transparent 100%)!important;mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 24px),transparent 100%)!important}.proj-btn{height:31px!important;padding:0 11px!important;border:1px solid rgba(23,24,19,.17)!important;border-radius:10px!important;background:rgba(244,245,241,.55)!important;box-shadow:none!important;scroll-snap-align:start!important}.proj-btn .nm{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:9px!important;font-weight:500!important;letter-spacing:.055em!important;line-height:1!important;text-transform:uppercase!important}.proj-btn.active{background:var(--ink)!important;border-color:var(--ink)!important}.proj-btn.active .nm{color:var(--paper)!important}.founder-photo{width:100%!important;height:auto!important;min-height:0!important;border-radius:16px!important;background:transparent!important}.founder-photo img{width:100%!important;height:auto!important;max-height:none!important;object-fit:contain!important;object-position:center top!important}.freeman-story{padding:40px 0 10px}.freeman-story .story-note-box{max-width:100%;padding:16px 16px 18px}.freeman-story .story-copy{font-size:11px}.project-testimonial{margin-top:18px;padding:13px 0 0 13px}.project-testimonial .project-quote{font-size:17px!important}}
-
-/* Mobile: faithful reduction of the desktop composition. Same typography, hierarchy and copy. */
-@media(max-width:700px){
-  #home.view{padding:14px!important}
-  .signal-field{
-    height:auto!important;
-    display:flex!important;
-    flex-direction:column!important;
-    gap:14px!important;
-  }
-  .signal-window{
-    min-height:0!important;
-    height:auto!important;
-    overflow:visible!important;
-    padding:7px!important;
-    border-width:2px!important;
-    box-shadow:4px 4px 0 var(--ink)!important;
-    grid-template-rows:42px auto!important;
-  }
-  .signal-titlebar{
-    height:36px!important;
-    grid-template-columns:20px 1fr auto 1fr!important;
-    gap:8px!important;
-    padding:0 6px!important;
-    border-top-width:1.5px!important;
-    border-bottom-width:1.5px!important;
-  }
-  .signal-box{
-    width:18px!important;
-    height:18px!important;
-    border-width:1.5px!important;
-    box-shadow:inset 0 0 0 3px var(--paper)!important;
-  }
-  .signal-lines{
-    height:22px!important;
-    background:repeating-linear-gradient(to bottom,var(--ink) 0 1.5px,transparent 1.5px 4px)!important;
-  }
-  .signal-title{
-    font-size:11px!important;
-    line-height:1!important;
-    padding:0 5px!important;
-  }
-  .signal-sheet{
-    display:flex!important;
-    min-height:0!important;
-    flex-direction:column!important;
-    padding:24px 22px 20px!important;
-    overflow:visible!important;
-  }
-  .signal-kicker{
-    font-size:9px!important;
-    line-height:1.2!important;
-    letter-spacing:.07em!important;
-  }
-  .signal-hello{
-    font-family:Baskerville,"Iowan Old Style",Georgia,serif!important;
-    font-size:clamp(48px,13.8vw,64px)!important;
-    line-height:.72!important;
-    letter-spacing:-.055em!important;
-    font-weight:400!important;
-    margin:20px 0 22px!important;
-    max-width:none!important;
-  }
-  .signal-hello em{font-style:normal!important}
-  .signal-deck{
-    font:500 clamp(22px,6.4vw,30px)/.98 "Helvetica Neue",Arial,sans-serif!important;
-    letter-spacing:-.045em!important;
-    max-width:13ch!important;
-  }
-  .signal-body{
-    display:block!important;
-    font:400 15px/1.35 Baskerville,"Iowan Old Style",Georgia,serif!important;
-    max-width:none!important;
-    margin-top:24px!important;
-  }
-  .signal-body p{margin:0 0 12px!important}
-  .signal-body strong{font-weight:600!important}
-  .signal-cta{
-    margin-top:10px!important;
-    align-self:flex-start!important;
-    padding:10px 12px!important;
-    font-size:10px!important;
-  }
-  .signal-bottom{
-    display:flex!important;
-    border-top:1px solid #77786f!important;
-    margin-top:18px!important;
-    padding-top:12px!important;
-    gap:12px!important;
-    font-size:8px!important;
-  }
-  .signal-photo{
-    height:52svh!important;
-    min-height:360px!important;
-    border-width:2px!important;
-    box-shadow:4px 4px 0 var(--ink)!important;
-    padding:7px!important;
-    gap:7px!important;
-  }
-  .signal-photo figcaption{
-    font-size:9px!important;
-    line-height:1.2!important;
-    padding:2px 3px 3px!important;
-  }
-
-  .tap-flash{
-    background:var(--red)!important;
-    color:#fff!important;
-    border-color:var(--red)!important;
-  }
-  .signal-nav .tap-flash,
-  .client-portal.tap-flash,
-  .proj-btn.tap-flash{
-    background:var(--red)!important;
-    color:#fff!important;
-  }
-  .signal-nav .tap-flash *,
-  .client-portal.tap-flash *,
-  .proj-btn.tap-flash *{color:#fff!important}
-}
+@media(max-width:1000px) and (min-width:701px){.brand .mark{width:28px!important}.archive-head span{max-width:430px!important}.header-actions{gap:10px!important}.client-portal{height:26px!important;padding:0 9px!important;font-size:8px!important}.freeman-story .story-copy{font-size:11px}.project-testimonial .project-quote{font-size:16px!important}}
+@media(max-width:700px){header{min-height:94px!important;grid-template-rows:48px 46px!important}.brand .logo{display:none!important}.brand{gap:0!important}.brand .mark{width:29px!important}.header-actions{grid-column:2!important;grid-row:1!important;justify-self:end!important;gap:8px!important}.header-mark{font-size:8px!important;letter-spacing:.09em!important}.client-portal{height:25px!important;padding:0 8px!important;font-size:8px!important;letter-spacing:.07em!important}.client-full{display:none!important}.client-short{display:inline!important}nav button{padding:12px 0 9px!important}.home{padding-top:34px!important}.home-copy h1{margin-top:22px!important}.home-statement{margin-top:48px!important}.home-proof{margin-top:38px!important}.home-image{margin-top:28px!important}.home-capabilities{font-size:8px!important}.proj-list-items{gap:6px!important;padding:1px 0 16px!important;scroll-snap-type:x proximity!important;-webkit-mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 24px),transparent 100%)!important;mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 24px),transparent 100%)!important}.proj-btn{height:31px!important;padding:0 11px!important;border:1px solid rgba(23,24,19,.17)!important;border-radius:10px!important;background:rgba(244,245,241,.55)!important;box-shadow:none!important;scroll-snap-align:start!important}.proj-btn .nm{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:9px!important;font-weight:500!important;letter-spacing:.055em!important;line-height:1!important;text-transform:uppercase!important}.proj-btn.active{background:var(--ink)!important;border-color:var(--ink)!important}.proj-btn.active .nm{color:var(--paper)!important}.founder-photo{width:100%!important;height:auto!important;min-height:0!important;border-radius:16px!important;background:transparent!important}.founder-photo img{width:100%!important;height:auto!important;max-height:none!important;object-fit:contain!important;object-position:center top!important}.archive{overflow:visible!important}.archive-head{display:block!important}.archive-head span{display:block!important;margin-top:8px!important;max-width:100%!important;text-align:left!important;font-size:9px!important}.freeman-story{padding:40px 0 10px}.freeman-story .story-note-box{max-width:100%;padding:16px 16px 18px}.freeman-story .story-copy{font-size:11px}.project-testimonial{margin-top:18px;padding:13px 0 0 13px}.project-testimonial .project-quote{font-size:17px!important}}
 #freeman-loader{position:fixed;inset:0;z-index:9999;background:#f4f5f1;display:grid;place-items:center;opacity:1;visibility:visible;transition:opacity .48s ease,visibility .48s ease}#freeman-loader img{width:clamp(126px,17vw,190px);height:auto;opacity:0;transform:translateY(7px);animation:freemanEagleIn .62s ease .08s forwards}@keyframes freemanEagleIn{to{opacity:1;transform:translateY(0)}}#freeman-loader.out{opacity:0;visibility:hidden}@media(prefers-reduced-motion:reduce){#freeman-loader,#freeman-loader img{transition:none!important;animation:none!important;opacity:1;transform:none}}
 `;
   document.head.appendChild(s);
@@ -158,6 +39,10 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
   const overviewBtn=document.querySelector('.subnav button[data-sub="overview"]');if(overviewBtn)overviewBtn.textContent='Story';
   const overview=document.getElementById('overview');
   if(overview)overview.innerHTML='<div class="freeman-story"><div class="story-note-box"><div class="story-label">THE FREEMAN STORY</div><div class="story-copy">Freeman was built around a simple belief: the construction process should earn the same trust as the finished place. From Cartersville, Georgia, the company brings clear communication, thoughtful coordination and durable craft to hospitality, commercial and residential work — building the relationships, as well as the spaces, intended to last.</div></div></div>';
+  const archiveNote=document.querySelector('.archive-head span');if(archiveNote)archiveNote.textContent='A working record of the people, process, materials and decisions behind the finished work.';
+  const homeStatement=document.querySelector('.home-statement');
+  if(homeStatement&&!document.querySelector('.home-capabilities')){const capabilities=document.createElement('div');capabilities.className='home-capabilities';capabilities.innerHTML='<div class="home-current"><span>CURRENTLY</span><b>Barnsley Gardens · Adairsville, Georgia</b></div><div class="home-proofline"><span>PROJECT RECORD</span><b>The Optimist · 3-week renovation · on time · under budget</b></div>';homeStatement.appendChild(capabilities)}
+
   const homeProof=document.querySelector('.home-proof blockquote');
   if(homeProof)homeProof.innerHTML='“A breath of fresh air in the construction industry.”<cite>Paul Nair · Founder, Savi Provisions</cite>';
 
@@ -192,79 +77,36 @@ header{position:relative!important}.header-actions{justify-self:end!important;di
       };
 
       [...document.querySelectorAll('.proj-btn')].forEach((b,i)=>b.classList.toggle('has-testimonial',Boolean(projects[i]?.quote)));
+
+      const fieldNotes=[
+        ['014','Barnsley Gardens','From the field · current work','SEP 2026'],
+        ['013','The Optimist','Radius work and custom fabrication','ATLANTA'],
+        ['012','Savi Provisions','Millwork and finish coordination','ATLANTA'],
+        ['011','Beetlecat','Hospitality details in the field','ATLANTA'],
+        ['010','Barnsley Gardens','Material and site studies','ADAIRSVILLE'],
+        ['009','O-Ku Atlanta','Three-week renovation record','ATLANTA'],
+        ['008','La Cresta on Main','Residential work in progress','BLUE RIDGE'],
+        ['007','Cleveland Surgery Center','Clinical construction detail','CLEVELAND'],
+        ['006','Dalton Surgery Center','Field coordination','DALTON']
+      ];
+      const grid=document.getElementById('archiveGrid');
+      if(grid){
+        [...grid.children].forEach((cell,i)=>{
+          const note=fieldNotes[i%fieldNotes.length];
+          const old=cell.querySelector('span'); if(old) old.remove();
+          const meta=document.createElement('div');meta.className='field-note-meta';
+          meta.innerHTML='<span class="field-note-no">'+note[0]+'</span><div class="field-note-copy"><b>'+note[1]+'</b><em>'+note[2]+'</em></div><span class="field-note-date">'+note[3]+'</span>';
+          cell.appendChild(meta);
+          cell.setAttribute('aria-label','Field Note '+note[0]+' — '+note[1]);
+        });
+      }
+
       showProject(0);
     }catch(e){console.warn('Freeman testimonial enhancement skipped',e)}
   };
 
-  // Touch feedback: on phones, interactions flash Freeman red like a physical keypress.
-  const installTapFlash=()=>{
-    if(!window.matchMedia('(hover: none), (pointer: coarse)').matches)return;
-    const selector='.signal-nav button,.signal-nav a,.signal-cta,.client-portal,.proj-btn,.subnav button';
-    document.addEventListener('pointerdown',e=>{
-      const el=e.target.closest?.(selector);
-      if(!el)return;
-      el.classList.add('tap-flash');
-      clearTimeout(el._freemanFlashTimer);
-      el._freemanFlashTimer=setTimeout(()=>el.classList.remove('tap-flash'),160);
-    },{passive:true});
-    document.addEventListener('pointercancel',e=>{
-      const el=e.target.closest?.(selector);
-      if(el)el.classList.remove('tap-flash');
-    },{passive:true});
-  };
-  installTapFlash();
-
   const core=document.createElement('script');
-  core.src='app-core.js?v=all-work1';
-  core.onload=()=>{
-    installTestimonials();
-    const projectLinks={'optimist':1,'barnsley-gardens':2};
-    const sections=['home','projects','company','contact'];
-    let applyingRoute=false;
-    const openSection=()=>{
-      const section=location.hash.slice(1) || 'home';
-      applyingRoute=true;
-      try {
-        if(section.startsWith('projects/')){
-          const slug=decodeURIComponent(section.slice(9));
-          const index=projects.findIndex(p=>p.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')===slug);
-          showView('projects');showProject(index>=0?index:0);
-        } else if(Object.hasOwn(projectLinks,section)){
-          showView('projects');showProject(projectLinks[section]);
-        } else if(sections.includes(section)){
-          showView(section);
-          if(section==='projects'){
-            const saved=history.state?.freemanProject;
-            showProject(Number.isInteger(saved) && saved>=0 && saved<projects.length ? saved : 0);
-          }
-        } else {
-          showView('home');
-        }
-      } finally { applyingRoute=false; }
-    };
-    const setRoute=(section,projectIndex)=>{
-      const hash=section==='home'?'':`#${section}`;
-      const state=Number.isInteger(projectIndex)?{freemanProject:projectIndex}:null;
-      if(location.hash!==hash || history.state?.freemanProject!==state?.freemanProject){
-        history.pushState(state,'',location.pathname+location.search+hash);
-      }
-    };
-    // Keep the existing view functions and layout; synchronize their navigation with history.
-    document.querySelectorAll('nav button[data-view]').forEach(button=>{
-      button.onclick=()=>{setRoute(button.dataset.view,button.dataset.view==='projects'?current:undefined);openSection();};
-    });
-    document.getElementById('homeBtn').onclick=()=>{setRoute('home');openSection();};
-    const showSelectedProject=showProject;
-    showProject=function(index){
-      showSelectedProject(index);
-      if(!applyingRoute && document.getElementById('projects').classList.contains('active')){
-        const slug=Object.keys(projectLinks).find(key=>projectLinks[key]===index);
-        setRoute(slug || 'projects',index);
-      }
-    };
-    openSection();
-    window.addEventListener('popstate',openSection);
-    window.addEventListener('hashchange',openSection);
-  };
+  core.src='app-core.js?v=testimonials1';
+  core.onload=installTestimonials;
   document.body.appendChild(core);
 })();
