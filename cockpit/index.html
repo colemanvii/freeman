@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Freeman Cockpit</title>
+<style>
+:root{--paper:#f4f5f3;--ink:#111;--muted:#777;--line:#cfcfca;--accent:#d85a16}
+*{box-sizing:border-box}html,body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif}body{min-height:100vh}
+.wrap{min-height:100vh;display:grid;grid-template-rows:auto 1fr auto;padding:22px 26px 18px;gap:20px}
+header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid var(--line);padding-bottom:14px}
+.brand{display:flex;gap:18px;align-items:baseline}.brand h1{font-size:18px;letter-spacing:-.02em;margin:0;font-weight:700}
+.brand span,.week{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}.week{text-align:right;line-height:1.5}
+main{display:grid;grid-template-columns:1.2fr .8fr .8fr;gap:22px;min-height:0}.col{display:grid;gap:18px;align-content:start}
+section{border-top:1px solid var(--ink);padding-top:8px}.eyebrow{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:9px;letter-spacing:.14em;text-transform:uppercase}.eyebrow .n{color:var(--accent)}
+.big{font-size:30px;line-height:1.02;letter-spacing:-.04em;max-width:14ch;margin:2px 0 12px;font-weight:700}
+.principle{font-family:Georgia,"Times New Roman",serif;font-size:26px;line-height:1.05;letter-spacing:-.02em;margin:4px 0 10px}
+.sub{font-size:12px;line-height:1.45;color:#333;max-width:52ch}.rows{display:grid}.row{display:grid;grid-template-columns:18px 1fr auto;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);align-items:start;font-size:11px;line-height:1.3}.row:last-child{border-bottom:0}.num{color:var(--accent);font-size:9px}.right{color:var(--muted);font-size:9px;letter-spacing:.08em;text-transform:uppercase}
+.question{font-family:Georgia,"Times New Roman",serif;font-size:16px;line-height:1.28;padding:10px 0;border-bottom:1px solid var(--line)}.question:last-child{border-bottom:0}
+.score{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.metric{padding:10px 10px 9px 0}.metric strong{display:block;font-size:20px;letter-spacing:-.04em}.metric span{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+footer{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;border-top:1px solid var(--line);padding-top:10px;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}footer strong{color:var(--ink);font-weight:600}
+.sync{display:inline-flex;gap:6px;align-items:center}.dot{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+@media(max-width:980px){.wrap{padding:18px}main{grid-template-columns:1fr}.big{max-width:none}.score{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="brand"><h1>FREEMAN / COCKPIT</h1><span>Brand + Growth / Internal</span></div><div class="week"><div id="week">WEEK 01</div><div class="sync"><span class="dot"></span><span id="sync">SYNC / CHATGPT FREEMAN</span></div></div></header>
+<main>
+<div class="col">
+<section><div class="eyebrow"><span>01 / THIS WEEK</span><span class="n">PRIMARY</span></div><div class="big" id="primary"></div><div class="sub" id="primaryNote"></div></section>
+<section><div class="eyebrow"><span>02 / FIELD TARGET</span><span>ACTIVE</span></div><div class="rows" id="fieldTargets"></div></section>
+<section><div class="eyebrow"><span>03 / CURRENT PRINCIPLE</span><span class="n">WIP</span></div><div class="principle" id="principle"></div><div class="sub" id="principleNote"></div></section>
+<section><div class="eyebrow"><span>04 / SCOREBOARD</span><span>WEEKLY</span></div><div class="score" id="metrics"></div></section>
+</div>
+<div class="col">
+<section><div class="eyebrow"><span>05 / ACTIVE PROJECTS</span><span>NOW</span></div><div class="rows" id="activeProjects"></div></section>
+<section><div class="eyebrow"><span>06 / ARCHIVE QUEUE</span><span>5+ / WK</span></div><div class="rows" id="archiveQueue"></div></section>
+<section><div class="eyebrow"><span>07 / PUBLISH QUEUE</span><span>1 / WK</span></div><div class="rows" id="publishQueue"></div></section>
+</div>
+<div class="col">
+<section><div class="eyebrow"><span>08 / QUESTIONS</span><span class="n">OPEN</span></div><div id="questions"></div></section>
+<section><div class="eyebrow"><span>09 / BD MOVES</span><span>3+ / WK</span></div><div class="rows" id="bdMoves"></div></section>
+<section><div class="eyebrow"><span>10 / GUARDRAIL</span><span class="n">IMPORTANT</span></div><div class="principle" id="guardrail"></div><div class="sub" id="guardrailNote"></div></section>
+</div>
+</main>
+<footer><div><strong>MISSION:</strong> <span id="mission"></span></div><div id="doctrine"></div></footer>
+</div>
+<script>
+function rows(id, items){
+  document.getElementById(id).innerHTML=(items||[]).map((x,i)=>'<div class="row"><span class="num">'+String(i+1).padStart(2,'0')+'</span><span>'+x[0]+'</span><span class="right">'+x[1]+'</span></div>').join('');
+}
+function render(d){
+  document.getElementById('week').textContent=d.week||'';
+  document.getElementById('sync').textContent='SYNC / '+(d.source||'CHATGPT FREEMAN');
+  document.getElementById('primary').textContent=d.primary||'';
+  document.getElementById('primaryNote').textContent=d.primaryNote||'';
+  rows('fieldTargets',d.fieldTargets); rows('activeProjects',d.activeProjects); rows('archiveQueue',d.archiveQueue); rows('publishQueue',d.publishQueue); rows('bdMoves',d.bdMoves);
+  document.getElementById('principle').textContent=d.currentPrinciple?.title||'';
+  document.getElementById('principleNote').textContent=d.currentPrinciple?.note||'';
+  document.getElementById('questions').innerHTML=(d.questions||[]).map(q=>'<div class="question">'+q+'</div>').join('');
+  document.getElementById('guardrail').textContent=d.guardrail||'';
+  document.getElementById('guardrailNote').textContent=d.guardrailNote||'';
+  document.getElementById('metrics').innerHTML=(d.metrics||[]).map(m=>'<div class="metric"><strong>'+m[0]+'</strong><span>'+m[1]+'</span></div>').join('');
+  document.getElementById('mission').textContent=d.mission||'';
+  document.getElementById('doctrine').textContent=d.doctrine||'';
+  document.title='Freeman Cockpit';
+}
+async function refresh(){
+  try{const r=await fetch('data.json?t='+Date.now(),{cache:'no-store'}); if(r.ok)render(await r.json());}catch(e){}
+}
+refresh(); setInterval(refresh,30000);
+</script>
+</body></html>
