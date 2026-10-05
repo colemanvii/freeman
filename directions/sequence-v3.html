@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Freeman — Sequence Study III</title>
+<meta name="theme-color" content="#0b0b0a">
+<style>
+:root{
+  --black:#0b0b0a;
+  --white:#f4f1e9;
+  --muted:rgba(244,241,233,.62);
+  --line:rgba(244,241,233,.22);
+  --orange:#f15b2a;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--black)}
+body{font-family:Monaco,"Courier New",monospace;-webkit-font-smoothing:antialiased}
+button,a{font:inherit}
+a{color:inherit;text-decoration:none}
+.stage{position:fixed;inset:0;background:var(--black);color:var(--white)}
+.image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.88) contrast(1.03) brightness(.82);transition:opacity .18s ease}
+.scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.5),transparent 42%),linear-gradient(to bottom,rgba(0,0,0,.18),transparent 24%);pointer-events:none}
+.topbar{position:absolute;left:20px;right:20px;top:16px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;z-index:3;pointer-events:none}
+.brand{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:-.03em}
+.index{justify-self:center;font-size:8px;letter-spacing:.08em;color:var(--muted)}
+.project{justify-self:end;text-align:right;font-size:7px;line-height:1.4;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.copy{position:absolute;left:6vw;bottom:16vh;max-width:760px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:clamp(38px,5.6vw,86px);line-height:.92;letter-spacing:-.055em;font-weight:500;text-wrap:balance;z-index:2;pointer-events:none}
+.copy.empty{display:none}
+.meta{position:absolute;left:20px;bottom:18px;font-size:8px;line-height:1.45;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);z-index:3;pointer-events:none}
+.controls{position:absolute;right:20px;bottom:18px;display:flex;gap:8px;z-index:4}
+.controls button{appearance:none;border:1px solid var(--line);background:rgba(0,0,0,.28);color:var(--white);height:36px;padding:0 14px;cursor:pointer;backdrop-filter:blur(4px);font-size:9px;letter-spacing:.06em;text-transform:uppercase}
+.controls button:hover{background:rgba(255,255,255,.08)}
+.controls .next{border-color:rgba(244,241,233,.58)}
+.progress{position:absolute;left:20px;right:20px;bottom:7px;height:1px;background:rgba(244,241,233,.14);z-index:3}
+.progress span{display:block;height:100%;background:var(--white);width:0;transition:width .2s ease}
+.start,.end{position:absolute;inset:0;z-index:6;background:#f0eee8;color:#111}
+.start{display:grid;grid-template-rows:1fr auto;padding:26px}
+.startmain{align-self:center}
+.eyebrow{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#777;margin-bottom:16px}
+.starttitle{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:clamp(68px,11vw,168px);line-height:.8;letter-spacing:-.08em;font-weight:600}
+.startbottom{border-top:1px solid rgba(17,17,17,.18);padding-top:14px;display:flex;justify-content:space-between;align-items:center}
+.startmeta{font-size:8px;line-height:1.5;letter-spacing:.08em;text-transform:uppercase;color:#777}
+.enter{appearance:none;border:1px solid #111;background:transparent;padding:11px 16px;cursor:pointer;font-size:9px;letter-spacing:.08em;text-transform:uppercase}
+.enter:hover{background:#111;color:#f0eee8}
+.end{display:none;grid-template-rows:1fr auto;padding:26px}
+.end.active{display:grid}
+.endmain{align-self:center}
+.endtitle{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:clamp(64px,10vw,152px);line-height:.82;letter-spacing:-.075em;font-weight:600}
+.endbottom{border-top:1px solid rgba(17,17,17,.18);padding-top:14px;display:flex;justify-content:space-between;align-items:end}
+.endnav{display:flex;gap:18px;font-size:8px;letter-spacing:.08em;text-transform:uppercase}
+.endnav a:hover{color:var(--orange)}
+.endcredit{text-align:right;font-size:7px;line-height:1.45;letter-spacing:.08em;text-transform:uppercase;color:#777}
+.tapzones{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;z-index:1}
+.tapzones button{appearance:none;border:0;background:transparent}
+.tapzones .left{cursor:w-resize}.tapzones .right{cursor:e-resize}
+@media(max-width:720px){
+  .topbar{left:14px;right:14px}
+  .copy{left:18px;right:18px;bottom:18vh;font-size:clamp(38px,11vw,64px)}
+  .meta{left:14px;bottom:16px;font-size:7px}
+  .controls{right:14px;bottom:14px}
+  .controls button{height:34px;padding:0 11px;font-size:8px}
+  .progress{left:14px;right:14px}
+  .start,.end{padding:18px}
+  .startbottom,.endbottom{gap:14px}
+}
+</style>
+</head>
+<body>
+<main class="stage">
+  <img class="image" id="image" src="../field-notes-assets/site.webp" alt="">
+  <div class="scrim"></div>
+
+  <div class="topbar">
+    <div class="brand">FREEMAN</div>
+    <div class="index" id="index">01 / 08</div>
+    <div class="project" id="project">FIELD RECORD<br>GEORGIA</div>
+  </div>
+
+  <div class="copy empty" id="copy"></div>
+  <div class="meta" id="meta">Existing Condition<br>Georgia</div>
+
+  <div class="tapzones" aria-hidden="true">
+    <button class="left" id="tapPrev" tabindex="-1"></button>
+    <button class="right" id="tapNext" tabindex="-1"></button>
+  </div>
+
+  <div class="controls">
+    <button id="prev">← Back</button>
+    <button class="next" id="next">Next →</button>
+  </div>
+
+  <div class="progress"><span id="bar"></span></div>
+
+  <section class="start" id="start">
+    <div class="startmain">
+      <div class="eyebrow">Freeman General Contracting / Field Sequence 001</div>
+      <div class="starttitle">THE<br>WORK.</div>
+    </div>
+    <div class="startbottom">
+      <div class="startmeta">8 photographs<br>About 30 seconds</div>
+      <button class="enter" id="enter">Enter Sequence →</button>
+    </div>
+  </section>
+
+  <section class="end" id="end">
+    <div class="endmain">
+      <div class="eyebrow">Freeman General Contracting</div>
+      <div class="endtitle">BUILT FOR<br>GENERATIONS.</div>
+    </div>
+    <div class="endbottom">
+      <nav class="endnav">
+        <a href="../v3-study.html">Work</a>
+        <a href="../archive/">Archive</a>
+        <a href="#">Company</a>
+        <a href="../portal.html">Client Portal</a>
+      </nav>
+      <div class="endcredit">Cartersville, Georgia<br>Freeman GC</div>
+    </div>
+  </section>
+</main>
+
+<script>
+const slides=[
+ {src:'../field-notes-assets/site.webp',meta:'Existing Condition<br>Georgia',project:'FIELD RECORD<br>GEORGIA',copy:''},
+ {src:'../field-notes-assets/steelwork.webp',meta:'Structure<br>North Georgia',project:'FIELD 02<br>STRUCTURE',copy:'Most of the work is gone before anyone arrives.'},
+ {src:'../field-notes-assets/timber.webp',meta:'Framing + hidden systems<br>North Georgia',project:'FIELD 03<br>HIDDEN SYSTEMS',copy:''},
+ {src:'../field-notes-assets/barnsley.webp',meta:'Barnsley Resort<br>Adairsville, Georgia',project:'FIELD 04<br>DECISION',copy:'This is where the decisions live.'},
+ {src:'../field-notes-assets/steelwork.webp',meta:'Coordination<br>North Georgia',project:'FIELD 05<br>COORDINATION',copy:''},
+ {src:'../field-notes-assets/optimist-detail.webp',meta:'The Optimist<br>Atlanta, Georgia',project:'RESULT 01<br>DETAIL',copy:'Then the evidence disappears.'},
+ {src:'../field-notes-assets/optimist.webp',meta:'The Optimist<br>Atlanta, Georgia',project:'RESULT 02<br>ROOM',copy:''},
+ {src:'../field-notes-assets/barnsley.webp',meta:'Freeman General Contracting<br>Georgia',project:'RECORD 01<br>MEMORY',copy:'The room is what remains.'}
+];
+
+let i=0;
+let started=false;
+const image=document.getElementById('image');
+const index=document.getElementById('index');
+const project=document.getElementById('project');
+const copy=document.getElementById('copy');
+const meta=document.getElementById('meta');
+const bar=document.getElementById('bar');
+const start=document.getElementById('start');
+const end=document.getElementById('end');
+
+function render(){
+ const s=slides[i];
+ image.style.opacity='0';
+ const nextSrc=s.src;
+ const preload=new Image();
+ preload.onload=()=>{
+   image.src=nextSrc;
+   requestAnimationFrame(()=>image.style.opacity='1');
+ };
+ preload.src=nextSrc;
+ index.textContent=String(i+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+ project.innerHTML=s.project;
+ meta.innerHTML=s.meta;
+ copy.textContent=s.copy||'';
+ copy.className='copy'+(s.copy?'':' empty');
+ bar.style.width=((i+1)/slides.length*100)+'%';
+}
+
+function goNext(){
+ if(!started){
+   started=true;
+   start.style.display='none';
+   render();
+   return;
+ }
+ if(i<slides.length-1){
+   i++;
+   render();
+ }else{
+   end.classList.add('active');
+ }
+}
+function goPrev(){
+ if(end.classList.contains('active')){
+   end.classList.remove('active');
+   return;
+ }
+ if(!started)return;
+ if(i>0){i--;render();}
+}
+
+document.getElementById('enter').onclick=goNext;
+document.getElementById('next').onclick=goNext;
+document.getElementById('prev').onclick=goPrev;
+document.getElementById('tapNext').onclick=goNext;
+document.getElementById('tapPrev').onclick=goPrev;
+document.addEventListener('keydown',e=>{
+ if(e.key==='ArrowRight'||e.key==='Enter'||e.key===' ')goNext();
+ if(e.key==='ArrowLeft')goPrev();
+});
+render();
+</script>
+</body>
+</html>
