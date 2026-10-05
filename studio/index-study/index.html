@@ -161,6 +161,113 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
 .info-copy .rules{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--hair)}
 .info-copy .rules div{padding:10px 0;border-bottom:1px solid var(--hair);font-size:10px;text-transform:uppercase;letter-spacing:.04em}
 .mobile-note{display:none}
+/* V2 NORMALIZATION — same cover, deeper sheets */
+.panel-head{
+  top:30px;left:30px;right:30px;
+  font-size:10px;letter-spacing:.035em;
+}
+.panel-body{inset:100px 30px 72px}
+
+/* Work: index + evidence, not a gallery app */
+.work-grid{grid-template-columns:270px minmax(0,1fr);gap:64px}
+.index-item{padding:12px 0;font-size:11px}
+.project-stage{background:transparent}
+.project-label,.project-name{
+  background:var(--paper);
+  border:0;
+  padding:5px 7px;
+  font-size:9px;
+  line-height:1.35;
+}
+
+/* Field: keep image as evidence, keep language small */
+.field-grid{grid-template-columns:1.2fr .8fr;gap:42px}
+.field-copy{padding-top:11px}
+.field-copy h1{
+  margin:14px 0 0;
+  font-size:30px;
+  line-height:1.02;
+  letter-spacing:.01em;
+}
+.field-copy p{
+  margin:auto 0 0;
+  max-width:46ch;
+  font-size:12px;
+  line-height:1.58;
+}
+.field-meta{font-size:9px}
+
+/* Company: record sheet rather than About-page hero */
+.company-grid{
+  grid-template-columns:320px minmax(0,1fr);
+  gap:84px;
+  padding-top:14px;
+}
+.company-intro-simple h1{
+  margin:14px 0 18px;
+  font-size:30px;
+  line-height:1.02;
+  letter-spacing:.01em;
+}
+.company-intro-simple p{
+  max-width:34ch;
+  font-size:12px;
+  line-height:1.58;
+  color:#555852;
+}
+.company-record{gap:22px}
+.company-record p{font-size:12px;line-height:1.55;max-width:68ch}
+.company-lines>div{grid-template-columns:210px 1fr;padding:9px 0}
+.company-lines strong,.company-lines span{font-size:10px}
+
+/* Contact: a writing surface, not a form widget */
+.contact-simple{
+  grid-template-columns:280px minmax(0,560px);
+  gap:84px;
+  padding-top:14px;
+}
+.contact-note p{font-size:12px;line-height:1.58}
+.contact-write{gap:10px}
+.contact-write textarea{
+  min-height:160px;
+  background:transparent;
+  border:0;
+  border-top:1px solid var(--hair);
+  border-bottom:1px solid var(--hair);
+  padding:16px 0;
+  font-size:12px;
+  line-height:1.6;
+}
+.contact-write textarea:focus{border-color:var(--ink)}
+.contact-actions button{color:var(--orange)}
+
+/* Portal: project record, same V2 sheet grammar */
+.portal-cover{
+  grid-template-columns:330px minmax(0,1fr);
+  gap:84px;
+  padding-top:14px;
+}
+.portal-project h1{
+  margin:14px 0 10px;
+  font-size:32px;
+  line-height:1.02;
+  letter-spacing:.01em;
+}
+.portal-place{font-size:10px}
+.portal-path{margin-bottom:18px;font-size:9px}
+.portal-path button{font-size:9px}
+.ledger-row{grid-template-columns:150px 1fr;padding:10px 0;font-size:10px}
+.record-list{margin-top:24px}
+.record-list button{
+  grid-template-columns:140px 1fr 90px;
+  padding:11px 0;
+  font-size:10px;
+}
+.portal-provenance{font-size:8px}
+
+/* typography discipline across sheets */
+.kicker,.record-label{font-size:9px}
+.panel p{max-width:68ch}
 @media(max-width:760px){
   html,body{overflow:hidden}
   body{cursor:auto}
@@ -386,7 +493,7 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
     <div class="panel-body field-grid">
       <div class="field-photo"><img src="https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/690112c66907ba02f5612747_Beetlecat%20Thumb%20Freeman%20General%20Contractors_HP.jpg" alt="Field evidence"></div>
       <div class="field-copy">
-        <div class="kicker">FIELD NOTE / NO. 014</div>
+        <div class="kicker">FIELD / EVIDENCE</div>
         <h1>Eleven-<br>sixteenths.</h1>
         <p>Good construction is visible in the finished room. Better construction is visible in the decisions that made the room possible. Freeman records those decisions: dimensions, mockups, corrections, materials, hands, and the small acts of judgment that disappear when the project is complete.</p>
         <div class="field-meta"><span>FIELD<br>OBSERVATION</span><span>PROJECT<br>RECORD</span><span>BUILT<br>EVIDENCE</span></div>
@@ -423,7 +530,7 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
     <div class="panel-head"><span>FREEMAN / PORTAL / PROJECT RECORD</span><button class="close">CLOSE</button></div>
     <div class="panel-body portal-cover">
       <div class="portal-project">
-        <div class="kicker">PROJECT 0247</div>
+        <div class="kicker">PROJECT / PROTOTYPE</div>
         <h1>BARNSLEY<br>GARDENS</h1>
         <div class="portal-place">ADAIRSVILLE, GEORGIA</div>
       </div>
@@ -431,20 +538,20 @@ a{text-decoration:none;cursor:var(--cursor-orange)}
         <div class="portal-path">
           <button class="active">OVERVIEW</button><span>/</span><button>UPDATES</button><span>/</span><button>DECISIONS</button><span>/</span><button>DOCUMENTS</button><span>/</span><button>PHOTOS</button>
         </div>
-        <div class="ledger-row"><span>STATUS</span><strong>ACTIVE</strong></div>
-        <div class="ledger-row"><span>PHASE</span><strong>INTERIORS</strong></div>
-        <div class="ledger-row"><span>LAST UPDATE</span><strong>04 OCT 2026</strong></div>
-        <div class="ledger-row"><span>LEAD</span><strong>GABE FREEMAN</strong></div>
+        <div class="ledger-row"><span>STATUS</span><strong>PROTOTYPE</strong></div>
+        <div class="ledger-row"><span>PHASE</span><strong>—</strong></div>
+        <div class="ledger-row"><span>LAST UPDATE</span><strong>—</strong></div>
+        <div class="ledger-row"><span>LEAD</span><strong>—</strong></div>
         <div class="record-list">
-          <button><span>UPDATE 018</span><strong>MILLWORK INSTALL</strong><em>04 OCT 2026</em></button>
-          <button><span>DECISION 007</span><strong>STONE SELECTION</strong><em>APPROVED</em></button>
-          <button><span>DOCUMENT A201</span><strong>ARCHITECTURAL SET</strong><em>REV 04</em></button>
-          <button><span>FIELD 0247-118</span><strong>NORTH WALL</strong><em>02 OCT 2026</em></button>
+          <button><span>UPDATE —</span><strong>PROTOTYPE RECORD</strong><em>—</em></button>
+          <button><span>DECISION —</span><strong>PROTOTYPE RECORD</strong><em>—</em></button>
+          <button><span>DOCUMENT —</span><strong>PROTOTYPE RECORD</strong><em>—</em></button>
+          <button><span>FIELD —</span><strong>PROTOTYPE RECORD</strong><em>—</em></button>
         </div>
       </div>
     </div>
     <div class="portal-provenance left">BARNSLEY GARDENS<br>ADAIRSVILLE, GEORGIA</div>
-    <div class="portal-provenance right">PROJECT 0247<br>AS OF 04 OCT 2026</div>
+    <div class="portal-provenance right">PROJECT RECORD<br>PROTOTYPE</div>
   </section>
 
   <section class="panel" id="contact" aria-hidden="true">
