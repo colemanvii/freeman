@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Freeman — V4 Living Monograph</title>
+<meta name="theme-color" content="#f2efe8">
+<style>
+:root{
+  --paper:#f2efe8;
+  --ink:#11110f;
+  --muted:#77736d;
+  --line:rgba(17,17,15,.18);
+  --orange:#f15b2a;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:Monaco,"Courier New",monospace;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+img{display:block;width:100%;height:auto}
+.shell{max-width:1680px;margin:0 auto;padding:18px 20px 44px}
+.header{
+  position:sticky;top:0;z-index:20;
+  display:grid;grid-template-columns:1fr auto;
+  align-items:center;
+  min-height:50px;
+  background:rgba(242,239,232,.94);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.brand{
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight:700;font-size:13px;letter-spacing:-.03em
+}
+.nav{display:flex;gap:18px;font-size:8px;letter-spacing:.08em;text-transform:uppercase}
+.nav a:hover{color:var(--orange)}
+.intro{
+  min-height:34vh;
+  display:grid;
+  grid-template-columns:minmax(0,2fr) minmax(220px,.7fr);
+  align-items:end;
+  gap:24px;
+  padding:9vh 0 22px;
+  border-bottom:1px solid var(--line);
+}
+.intro h1{
+  margin:0;
+  max-width:1120px;
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size:clamp(58px,9.4vw,152px);
+  line-height:.82;
+  letter-spacing:-.075em;
+  font-weight:600;
+}
+.intro aside{
+  justify-self:end;
+  max-width:290px;
+  font-size:8px;
+  line-height:1.55;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--muted)
+}
+.stream{padding-top:8vh}
+.entry{margin:0 0 12vh}
+.entry.full{width:100%}
+.entry.wide{width:84%}
+.entry.medium{width:58%}
+.entry.small{width:34%}
+.entry.right{margin-left:auto}
+.entry.center{margin-left:auto;margin-right:auto}
+.media{
+  overflow:hidden;
+  background:#ddd8cf;
+}
+.media img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:saturate(.88) contrast(1.02);
+}
+.entry.full .media{aspect-ratio:16/9}
+.entry.wide .media{aspect-ratio:16/10}
+.entry.medium .media{aspect-ratio:4/3}
+.entry.small .media{aspect-ratio:1/1}
+.caption{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:16px;
+  padding-top:8px;
+  border-top:1px solid var(--line);
+  margin-top:7px;
+  font-size:7px;
+  line-height:1.45;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--muted)
+}
+.caption strong{color:var(--ink);font-weight:400}
+.statement{
+  margin:18vh 0;
+  padding:16vh 0 12vh;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+.statement .label{
+  font-size:8px;letter-spacing:.09em;text-transform:uppercase;color:var(--orange);margin-bottom:30px
+}
+.statement p{
+  margin:0;
+  max-width:1200px;
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size:clamp(52px,7.8vw,126px);
+  line-height:.88;
+  letter-spacing:-.065em;
+  font-weight:500;
+}
+.record{
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  min-height:72vh;
+  margin:18vh 0;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+.record-image{min-height:72vh}
+.record-image img{width:100%;height:100%;object-fit:cover;filter:saturate(.82)}
+.record-copy{
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:18px 0 18px 22px;border-left:1px solid var(--line)
+}
+.record-top{font-size:8px;line-height:1.55;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.record-big{
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size:clamp(42px,5vw,82px);
+  line-height:.92;letter-spacing:-.055em
+}
+.record-bottom{font-size:7px;line-height:1.5;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.footer{
+  margin-top:20vh;
+  padding-top:18px;
+  border-top:1px solid var(--line);
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:end;
+}
+.footer-title{
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size:clamp(50px,8vw,126px);
+  line-height:.82;letter-spacing:-.07em;font-weight:600
+}
+.footer-nav{display:flex;gap:16px;font-size:8px;letter-spacing:.08em;text-transform:uppercase}
+.footer-nav a:hover{color:var(--orange)}
+.orange-mark{width:7px;height:7px;background:var(--orange);display:inline-block;margin-right:8px}
+@media(max-width:760px){
+  .shell{padding:12px 14px 28px}
+  .header{min-height:44px}
+  .nav{gap:10px;font-size:7px}
+  .intro{grid-template-columns:1fr;min-height:46vh;padding-top:12vh}
+  .intro h1{font-size:clamp(54px,17vw,88px)}
+  .intro aside{justify-self:start}
+  .stream{padding-top:10vh}
+  .entry,.entry.full,.entry.wide,.entry.medium,.entry.small{width:100%;margin-bottom:12vh}
+  .entry.right,.entry.center{margin-left:0;margin-right:0}
+  .entry.small .media{aspect-ratio:4/5}
+  .statement{margin:14vh 0;padding:12vh 0 10vh}
+  .statement p{font-size:clamp(44px,13vw,72px)}
+  .record{grid-template-columns:1fr;min-height:0;margin:14vh 0}
+  .record-image{min-height:54vh}
+  .record-copy{min-height:46vh;padding:16px 0;border-left:0;border-top:1px solid var(--line)}
+  .footer{grid-template-columns:1fr;gap:24px}
+  .footer-title{font-size:clamp(52px,16vw,88px)}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="header">
+    <a class="brand" href="../v3-study.html">FREEMAN GC</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="#company">Company</a>
+      <a href="#work">Work</a>
+      <a href="../archive/">Archive</a>
+      <a href="../portal.html">Client Portal</a>
+    </nav>
+  </header>
+
+  <section class="intro" id="company">
+    <h1>BUILT FOR<br>GENERATIONS.</h1>
+    <aside>
+      <span class="orange-mark"></span>Freeman General Contracting<br>
+      Cartersville, Georgia<br><br>
+      A living record of finished work, field conditions, details and decisions.
+    </aside>
+  </section>
+
+  <main class="stream" id="work">
+    <article class="entry full">
+      <div class="media"><img src="../field-notes-assets/barnsley.webp" alt="Barnsley Resort"></div>
+      <div class="caption"><strong>Barnsley Resort / Adairsville, Georgia</strong><span>Result / 001</span></div>
+    </article>
+
+    <article class="entry small right">
+      <div class="media"><img src="../field-notes-assets/steelwork.webp" alt="Structural steelwork"></div>
+      <div class="caption"><strong>Structure / North Georgia</strong><span>Field / 014</span></div>
+    </article>
+
+    <article class="entry medium">
+      <div class="media"><img src="../field-notes-assets/timber.webp" alt="Timber framing"></div>
+      <div class="caption"><strong>Framing + Hidden Systems</strong><span>Evidence / 027</span></div>
+    </article>
+
+    <section class="statement">
+      <div class="label">Freeman / Operating principle</div>
+      <p>The result proves taste.<br>The evidence proves capability.</p>
+    </section>
+
+    <article class="entry wide right">
+      <div class="media"><img src="../field-notes-assets/optimist.webp" alt="The Optimist interior"></div>
+      <div class="caption"><strong>The Optimist / Atlanta, Georgia</strong><span>Result / 002</span></div>
+    </article>
+
+    <article class="entry small">
+      <div class="media"><img src="../field-notes-assets/optimist-detail.webp" alt="The Optimist detail"></div>
+      <div class="caption"><strong>Interior Detail / The Optimist</strong><span>Detail / 006</span></div>
+    </article>
+
+    <section class="record">
+      <div class="record-image"><img src="../field-notes-assets/window-sequence.webp" alt="Window installation sequence"></div>
+      <div class="record-copy">
+        <div class="record-top">
+          Freeman Archive<br>
+          Field Record<br>
+          Window Sequence
+        </div>
+        <div class="record-big">THE WORK<br>BEFORE IT<br>DISAPPEARS.</div>
+        <div class="record-bottom">
+          Existing condition → sequence → finished result<br>
+          Preserved as project memory.
+        </div>
+      </div>
+    </section>
+
+    <article class="entry medium center">
+      <div class="media"><img src="../field-notes-assets/site.webp" alt="Freeman field condition"></div>
+      <div class="caption"><strong>Existing Condition / Georgia</strong><span>Field / 001</span></div>
+    </article>
+
+    <article class="entry small right">
+      <div class="media"><img src="../field-notes-assets/square.webp" alt="Construction detail"></div>
+      <div class="caption"><strong>Field Detail</strong><span>Artifact / 011</span></div>
+    </article>
+
+    <article class="entry wide">
+      <div class="media"><img src="../field-notes-assets/barnsley.webp" alt="Barnsley Resort"></div>
+      <div class="caption"><strong>Barnsley Resort / Built work</strong><span>Record / 031</span></div>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-title">FREEMAN.</div>
+    <nav class="footer-nav">
+      <a href="../v3-study.html">V3</a>
+      <a href="../archive/">Archive</a>
+      <a href="../portal.html">Portal</a>
+      <a href="#company">Top ↑</a>
+    </nav>
+  </footer>
+</div>
+</body>
+</html>
