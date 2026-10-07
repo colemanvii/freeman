@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Freeman / Work Panel V3</title>
+<style>
+:root{--paper:#f3f4f1;--ink:#111;--muted:#767772;--line:#c9cac5;--accent:#d85a16}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+body{overflow:hidden}
+.panel{height:100vh;padding:12px 20px 10px;display:grid;grid-template-rows:auto auto auto auto 1fr auto;gap:7px}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;border-bottom:1px solid var(--ink);padding-bottom:10px}
+.brand{display:flex;gap:15px;align-items:baseline}
+.brand h1{margin:0;font-size:18px;letter-spacing:-.03em}
+.kicker,.week{font-size:11.5px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted)}
+.week{text-align:right;line-height:1.55}.week strong{color:var(--ink)}
+main{min-height:0;display:grid;grid-template-columns:.92fr 1.16fr .92fr;gap:16px}
+.col{min-height:0;display:grid;align-content:start;gap:7px}
+section{border-top:1px solid var(--ink);padding-top:7px}
+.head{display:flex;justify-content:space-between;align-items:center;gap:7px;margin-bottom:7px;font-size:9.5px;letter-spacing:.10em;text-transform:uppercase}
+.orange{color:var(--accent)}
+.big{margin:1px 0 8px;font-size:31px;line-height:1.02;letter-spacing:-.04em;max-width:13ch}
+.copy{font-size:11.5px;line-height:1.4;color:#333;max-width:48ch}
+.row{display:grid;grid-template-columns:22px 1fr auto;gap:7px;align-items:start;padding:7px 0;border-bottom:1px solid var(--line);font-size:11.5px;line-height:1.28}
+.row:last-child{border-bottom:0}
+.num{font-size:9.5px;color:var(--accent);padding-top:1px}
+.status{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.status.hot{color:var(--accent)}.status.good{color:var(--ink)}
+.scope .row{grid-template-columns:22px 1fr 72px}.scope .status{text-align:right}
+.receipt{padding:7px 0;border-bottom:1px solid var(--line)}.receipt:last-child{border-bottom:0}
+.receipt strong{display:block;font-size:11.5px;margin-bottom:2px}
+.receipt span{font-size:9.5px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.attention{border-left:3px solid var(--accent);padding-left:10px}
+.thesis{font-family:Georgia,"Times New Roman",serif;font-size:21px;line-height:1.15;letter-spacing:-.01em}
+.guardrail{font-family:Georgia,"Times New Roman",serif;font-size:23px;line-height:1.12;letter-spacing:-.015em}
+footer{border-top:1px solid var(--ink);padding-top:8px;display:flex;justify-content:space-between;gap:20px;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+footer strong{color:var(--ink)}
+@media(max-width:1000px){body{overflow:auto}.panel{height:auto;min-height:100vh}main{grid-template-columns:1fr}}
+.endstate{display:grid;grid-template-columns:1.1fr repeat(4,1fr);border-bottom:1px solid var(--line);min-height:0}
+.endintro{padding:8px 14px 9px 0;border-right:1px solid var(--line)}
+.endintro .label{font-size:9.5px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.endintro strong{display:block;font-size:18px;line-height:1.08;letter-spacing:-.025em}
+.goal{padding:8px 12px 9px;border-right:1px solid var(--line)}.goal:last-child{border-right:0}
+.goal .n{font-size:8.5px;color:var(--accent);margin-bottom:4px}
+.goal strong{display:block;font-size:12px;line-height:1.18;margin-bottom:3px}
+.goal span{display:block;font-size:9px;line-height:1.3;color:var(--muted)}
+.projects{display:grid;grid-template-columns:170px repeat(5,1fr);border-bottom:1px solid var(--ink);min-height:0}
+.projects .plabel{padding:8px 14px 9px 0;border-right:1px solid var(--line)}
+.projects .plabel .eyebrow{font-size:9.5px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.projects .plabel strong{display:block;font-size:16px;line-height:1.1;letter-spacing:-.02em}
+.project{padding:8px 11px 9px;border-right:1px solid var(--line)}.project:last-child{border-right:0}
+.project .state{font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:3px}
+.project strong{display:block;font-size:12px;line-height:1.18;margin-bottom:4px}
+.project span{display:block;font-size:9px;line-height:1.28;color:var(--muted)}
+.sixgoals{display:grid;grid-template-columns:190px repeat(3,1fr);border-bottom:1px solid var(--ink)}
+.sixgoals .glabel{padding:9px 14px 10px 0;border-right:1px solid var(--line)}
+.sixgoals .glabel .eyebrow{font-size:9.5px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.sixgoals .glabel strong{display:block;font-size:16px;line-height:1.08;letter-spacing:-.02em}
+.sixgoal{padding:9px 12px 10px;border-right:1px solid var(--line);display:grid;grid-template-columns:18px 1fr;gap:7px;align-items:start}
+.sixgoal:last-child{border-right:0}
+.sixgoal .box{width:13px;height:13px;border:1px solid var(--ink);margin-top:1px}
+.sixgoal .n{font-size:8.5px;color:var(--accent);margin-bottom:3px}
+.sixgoal strong{display:block;font-size:12.5px;line-height:1.16;margin-bottom:3px}
+.sixgoal span{display:block;font-size:9.3px;line-height:1.28;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="panel">
+<header>
+<div class="brand"><h1>FREEMAN / WORK PANEL</h1><span class="kicker">Six-Month Scope / Static View</span></div>
+<div class="week"><strong>WEEK 01 / 26</strong><br>OCT 2026</div>
+</header>
+<div class="endstate">
+<div class="endintro"><div class="label">END STATE / SIX MONTHS</div><strong>Make Freeman easier to understand, trust, remember + hire.</strong></div>
+<div class="goal"><div class="n">01</div><strong>KNOW FREEMAN DEEPLY</strong><span>Clear point of view on the company, culture, people + differentiators.</span></div>
+<div class="goal"><div class="n">02</div><strong>BUILD THE EVIDENCE SYSTEM</strong><span>Repeatable photography, documentation + archive workflow across projects.</span></div>
+<div class="goal"><div class="n">03</div><strong>MAKE THE BRAND LEGIBLE</strong><span>Website, case studies + client materials that prove how Freeman works.</span></div>
+<div class="goal"><div class="n">04</div><strong>CREATE A GROWTH ASSET</strong><span>A creative system that helps BD win the right next projects.</span></div>
+</div>
+<div class="sixgoals">
+<div class="glabel"><div class="eyebrow">TOP 3 / SIX MONTHS</div><strong>If these happen, the run worked.</strong></div>
+<div class="sixgoal"><div class="box"></div><div><div class="n">01</div><strong>BUILD FREEMAN'S EVIDENCE SYSTEM</strong><span>Archive + repeatable project documentation process working across active jobs.</span></div></div>
+<div class="sixgoal"><div class="box"></div><div><div class="n">02</div><strong>MAKE THE BRAND PROVE THE WORK</strong><span>Website, case studies, photography + client materials clearly show why Freeman is different.</span></div></div>
+<div class="sixgoal"><div class="box"></div><div><div class="n">03</div><strong>LEAVE A SYSTEM THAT HELPS WIN WORK</strong><span>A clear creative + communications rhythm that supports BD after the six-month run.</span></div></div>
+</div>
+<div class="projects">
+<div class="plabel"><div class="eyebrow">MAIN PROJECTS / JOBS</div><strong>What is actually in front of me.</strong></div>
+<div class="project"><div class="state">ACTIVE / BUILD</div><strong>FREEMAN ARCHIVE</strong><span>Turn field evidence into Freeman’s institutional memory.</span></div>
+<div class="project"><div class="state">ACTIVE / BASELINE</div><strong>WEBSITE V3</strong><span>Hold the container. Replace theory with real Freeman proof.</span></div>
+<div class="project"><div class="state">NEXT / FIELD</div><strong>PROJECT DOCUMENTATION</strong><span>Build the repeatable shoot → select → tag → preserve workflow.</span></div>
+<div class="project"><div class="state">NEXT / CLIENT</div><strong>PROPOSALS + QUALIFICATIONS</strong><span>Make client-facing materials feel as capable as the work itself.</span></div>
+<div class="project"><div class="state">UPCOMING</div><strong>CASE STUDIES + SOCIAL</strong><span>Turn accumulated evidence into stories Freeman can deploy.</span></div>
+</div>
+<main>
+<div class="col">
+<section><div class="head"><span>01 / THIS WEEK</span><span class="orange">3 THINGS</span></div>
+<div class="big">Stay close to the work.</div>
+<div class="row"><span class="num">01</span><span>Spend meaningful time with one project team.</span><span class="status">FIELD</span></div>
+<div class="row"><span class="num">02</span><span>Document one condition → decision → resolution sequence.</span><span class="status">EVIDENCE</span></div>
+<div class="row"><span class="num">03</span><span>Review one proposal / qualifications piece.</span><span class="status">CLIENT</span></div></section>
+<section class="attention"><div class="head"><span>02 / NEEDS ATTENTION</span><span class="orange">DON'T IGNORE</span></div>
+<div class="row"><span class="num">04</span><span>Team photography</span><span class="status">NOT STARTED</span></div>
+<div class="row"><span class="num">07</span><span>Social rhythm / content calendar</span><span class="status">NOT STARTED</span></div>
+<div class="row"><span class="num">09</span><span>Case studies</span><span class="status">NOT STARTED</span></div>
+<div class="row"><span class="num">10</span><span>Proposals / qualifications</span><span class="status hot">NEEDS WORK</span></div></section>
+<section><div class="head"><span>03 / CURRENT PRINCIPLE</span><span>WIP</span></div><div class="thesis">The result proves taste. The evidence proves capability.</div></section>
+</div>
+<div class="col scope"><section><div class="head"><span>04 / SCOPE COVERAGE</span><span>THE CONTRACT</span></div>
+<div class="row"><span class="num">01</span><span>Audit brand, website, social, photography + external presentation.</span><span class="status good">ACTIVE</span></div>
+<div class="row"><span class="num">02</span><span>Develop clear, consistent creative direction.</span><span class="status good">ACTIVE</span></div>
+<div class="row"><span class="num">03</span><span>Improve website, imagery, messaging + team presentation.</span><span class="status good">ACTIVE</span></div>
+<div class="row"><span class="num">04</span><span>Update headshots + company/team photography.</span><span class="status">NOT STARTED</span></div>
+<div class="row"><span class="num">05</span><span>Build active-project photography + documentation system.</span><span class="status hot">BUILDING</span></div>
+<div class="row"><span class="num">06</span><span>Build organized library of photos, video + brand assets.</span><span class="status hot">BUILDING</span></div>
+<div class="row"><span class="num">07</span><span>Establish social presence + content calendar.</span><span class="status">NOT STARTED</span></div>
+<div class="row"><span class="num">08</span><span>Create original content around projects, people, process + craft.</span><span class="status good">EARLY</span></div>
+<div class="row"><span class="num">09</span><span>Develop project case studies + storytelling.</span><span class="status">NOT STARTED</span></div>
+<div class="row"><span class="num">10</span><span>Improve proposals, qualifications + client materials.</span><span class="status hot">NEEDS WORK</span></div>
+<div class="row"><span class="num">11</span><span>Spend time with teams, clients, subs + leadership; identify differentiators.</span><span class="status good">ACTIVE</span></div>
+<div class="row"><span class="num">12</span><span>Build long-term brand + creative strategy supporting BD + growth.</span><span class="status good">EARLY</span></div>
+</section></div>
+<div class="col">
+<section><div class="head"><span>05 / FREEMAN RECEIVED</span><span>RECEIPTS</span></div>
+<div class="receipt"><strong>Freeman Archive MVP</strong><span>Internal evidence system</span></div>
+<div class="receipt"><strong>Photo Inbox + Curation Workflow</strong><span>Documentation system</span></div>
+<div class="receipt"><strong>Freeman V3</strong><span>Website baseline</span></div>
+<div class="receipt"><strong>Photography Doctrine</strong><span>Creative direction</span></div></section>
+<section><div class="head"><span>06 / NEXT RECEIPTS</span><span>WHAT FREEMAN SHOULD GAIN</span></div>
+<div class="row"><span class="num">05</span><span>First documented active-project record</span><span class="status">NEXT</span></div>
+<div class="row"><span class="num">06</span><span>Case-study template</span><span class="status">NEXT</span></div>
+<div class="row"><span class="num">07</span><span>Proposal / qualifications improvement pass</span><span class="status">NEXT</span></div></section>
+<section><div class="head"><span>07 / GUARDRAIL</span><span class="orange">IMPORTANT</span></div><div class="guardrail">No new brand artifact without real Freeman evidence.</div><div class="copy" style="margin-top:7px;">Learn the company. Preserve the proof. Then give that proof form.</div></section>
+</div>
+</main>
+<footer><div><strong>MANDATE → WORK → EVIDENCE</strong></div><div>STATIC / ONE-SCREEN / WEEKLY RESET</div></footer>
+</div>
+</body>
+</html>
