@@ -1,60 +1,284 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Freeman / Work Panel</title>
 <style>
-:root{--p:#f3f4f1;--i:#111;--m:#777872;--l:#c9cac5;--o:#d85a16}*{box-sizing:border-box}
-html,body{margin:0;width:100%;min-height:100%;background:var(--p);color:var(--i);font-family:Arial,Helvetica,sans-serif}
-body{overflow:hidden}.wrap{height:100vh;padding:22px 26px 18px;display:grid;grid-template-rows:auto 1fr auto;gap:20px}
-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid var(--i);padding-bottom:12px}
-.brand{display:flex;gap:16px;align-items:baseline}.brand h1{margin:0;font-size:20px;letter-spacing:-.03em}
-.kicker,.week{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--m)}.week{text-align:right;line-height:1.5}.week strong{color:var(--i)}
-main{display:grid;grid-template-columns:1.05fr 1fr 1fr;gap:28px;align-items:start}section{border-top:1px solid var(--i);padding-top:9px}
-.head{display:flex;justify-content:space-between;gap:10px;margin-bottom:16px;font-size:9px;letter-spacing:.13em;text-transform:uppercase}.orange{color:var(--o)}
-.goal{display:grid;grid-template-columns:24px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--l)}.goal:last-child,.project:last-child,.task:last-child{border-bottom:0}
-.box{width:15px;height:15px;border:1px solid var(--i);margin-top:2px}.goal strong,.project strong,.task strong{display:block;font-size:16px;line-height:1.15}
-.goal span,.project span{display:block;font-size:11px;line-height:1.4;color:var(--m);margin-top:4px}
-.project{padding:12px 0;border-bottom:1px solid var(--l)}.state,.tag{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--o);margin-bottom:4px}.tag{color:var(--m);margin:0}
-.task{display:grid;grid-template-columns:24px 1fr auto;gap:10px;padding:12px 0;border-bottom:1px solid var(--l);align-items:start}.num{font-size:9px;color:var(--o);padding-top:2px}
-.big{font-family:Georgia,"Times New Roman",serif;font-size:28px;line-height:1.08;letter-spacing:-.02em;margin:0 0 18px;max-width:12ch}
-.small{font-size:11px;line-height:1.45;color:#333;max-width:42ch;margin-top:18px}
-footer{border-top:1px solid var(--i);padding-top:10px;display:flex;justify-content:space-between;gap:18px;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--m)}
-footer strong,footer a{color:var(--i)}footer a{text-decoration:none}
-@media(max-width:900px){body{overflow:auto}.wrap{height:auto;min-height:100vh;padding:18px}main{grid-template-columns:1fr}header{flex-direction:column;gap:8px}.week{text-align:left}}
+:root{
+  --paper:#f3f4f1;
+  --ink:#111;
+  --muted:#777872;
+  --line:#c9cac5;
+  --accent:#d85a16;
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  width:100%;
+  min-height:100%;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:Arial,Helvetica,sans-serif;
+}
+body{overflow:hidden}
+.wrap{
+  height:100vh;
+  padding:22px 26px 18px;
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  gap:20px;
+}
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  border-bottom:1px solid var(--ink);
+  padding-bottom:12px;
+}
+.brand{
+  display:flex;
+  gap:16px;
+  align-items:baseline;
+}
+.brand h1{
+  margin:0;
+  font-size:20px;
+  letter-spacing:-.03em;
+}
+.kicker,.week{
+  font-size:10px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.week{text-align:right;line-height:1.5}
+.week strong{color:var(--ink)}
+main{
+  display:grid;
+  grid-template-columns:1.05fr 1fr 1fr;
+  gap:28px;
+  align-items:start;
+}
+section{
+  border-top:1px solid var(--ink);
+  padding-top:9px;
+}
+.head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:16px;
+  font-size:9px;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+.orange{color:var(--accent)}
+.goal{
+  display:grid;
+  grid-template-columns:24px 1fr;
+  gap:12px;
+  padding:12px 0;
+  border-bottom:1px solid var(--line);
+}
+.goal:last-child{border-bottom:0}
+.box{
+  width:15px;
+  height:15px;
+  border:1px solid var(--ink);
+  margin-top:2px;
+}
+.goal strong{
+  display:block;
+  font-size:16px;
+  line-height:1.15;
+  margin-bottom:4px;
+}
+.goal span{
+  display:block;
+  font-size:11px;
+  line-height:1.4;
+  color:var(--muted);
+}
+.project{
+  padding:12px 0;
+  border-bottom:1px solid var(--line);
+}
+.project:last-child{border-bottom:0}
+.project .state{
+  font-size:9px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:4px;
+}
+.project strong{
+  display:block;
+  font-size:16px;
+  line-height:1.15;
+  margin-bottom:3px;
+}
+.project span{
+  display:block;
+  font-size:11px;
+  color:var(--muted);
+  line-height:1.35;
+}
+.task{
+  display:grid;
+  grid-template-columns:24px 1fr auto;
+  gap:10px;
+  padding:12px 0;
+  border-bottom:1px solid var(--line);
+  align-items:start;
+}
+.task:last-child{border-bottom:0}
+.num{
+  font-size:9px;
+  color:var(--accent);
+  padding-top:2px;
+}
+.task strong{
+  font-size:16px;
+  line-height:1.18;
+  font-weight:600;
+}
+.tag{
+  font-size:9px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.big{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:28px;
+  line-height:1.08;
+  letter-spacing:-.02em;
+  margin:0 0 18px;
+  max-width:12ch;
+}
+.small{
+  font-size:11px;
+  line-height:1.45;
+  color:#333;
+  max-width:42ch;
+}
+footer{
+  border-top:1px solid var(--ink);
+  padding-top:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:18px;
+  font-size:9px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+footer strong{color:var(--ink)}
+footer a{
+  color:var(--ink);
+  text-decoration:none;
+}
+@media(max-width:900px){
+  body{overflow:auto}
+  .wrap{height:auto;min-height:100vh;padding:18px}
+  main{grid-template-columns:1fr}
+  header{flex-direction:column;gap:8px}
+  .week{text-align:left}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
-<header>
-<div class="brand"><h1>FREEMAN / WORK PANEL</h1><span class="kicker">Mission Card</span></div>
-<div class="week"><strong>WEEK 01 / 26</strong><br>OCT 2026</div>
-</header>
-<main>
-<section>
-<div class="head"><span>01 / TOP 3 — SIX MONTHS</span><span class="orange">END STATE</span></div>
-<div class="goal"><div class="box"></div><div><strong>Build Freeman’s evidence system.</strong><span>Archive + repeatable project documentation working across active jobs.</span></div></div>
-<div class="goal"><div class="box"></div><div><strong>Make the brand prove the work.</strong><span>Website, photography, case studies + client materials make Freeman easier to trust.</span></div></div>
-<div class="goal"><div class="box"></div><div><strong>Leave a system that helps win work.</strong><span>A clear creative + communications rhythm that supports BD after the six-month run.</span></div></div>
-</section>
-<section>
-<div class="head"><span>02 / MAIN PROJECTS</span><span>NOW</span></div>
-<div class="project"><div class="state">ACTIVE</div><strong>Freeman Archive</strong><span>Build Freeman’s institutional memory.</span></div>
-<div class="project"><div class="state">ACTIVE</div><strong>Project Documentation</strong><span>Shoot → select → tag → preserve.</span></div>
-<div class="project"><div class="state">BASELINE</div><strong>Website V3</strong><span>Hold the container. Feed it real proof.</span></div>
-<div class="project"><div class="state">NEXT</div><strong>Proposals + Qualifications</strong><span>Make client-facing material match the quality of the work.</span></div>
-</section>
-<section>
-<div class="head"><span>03 / THIS WEEK</span><span class="orange">3 THINGS</span></div>
-<p class="big">Stay close to the work.</p>
-<div class="task"><span class="num">01</span><strong>Spend meaningful time with one project team.</strong><span class="tag">Field</span></div>
-<div class="task"><span class="num">02</span><strong>Capture one condition → decision → resolution.</strong><span class="tag">Evidence</span></div>
-<div class="task"><span class="num">03</span><strong>Review one client-facing piece.</strong><span class="tag">Client</span></div>
-<p class="small">If something does not move one of these three sections forward, it probably does not belong on the front page.</p>
-</section>
-</main>
-<footer><div><strong>END STATE → PROJECTS → THIS WEEK</strong></div><div><a href="work-panel-full.html">VIEW FULL SCOPE →</a></div></footer>
+  <header>
+    <div class="brand">
+      <h1>FREEMAN / WORK PANEL</h1>
+      <span class="kicker">Mission Card</span>
+    </div>
+    <div class="week">
+      <strong>WEEK 01 / 26</strong><br>
+      OCT 2026
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="head"><span>01 / TOP 3 — SIX MONTHS</span><span class="orange">END STATE</span></div>
+      <div class="goal">
+        <div class="box"></div>
+        <div>
+          <strong>Build Freeman’s evidence system.</strong>
+          <span>Archive + repeatable project documentation working across active jobs.</span>
+        </div>
+      </div>
+      <div class="goal">
+        <div class="box"></div>
+        <div>
+          <strong>Make the brand prove the work.</strong>
+          <span>Website, photography, case studies + client materials make Freeman easier to trust.</span>
+        </div>
+      </div>
+      <div class="goal">
+        <div class="box"></div>
+        <div>
+          <strong>Leave a system that helps win work.</strong>
+          <span>A clear creative + communications rhythm that supports BD after the six-month run.</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="head"><span>02 / MAIN PROJECTS</span><span>NOW</span></div>
+      <div class="project">
+        <div class="state">ACTIVE</div>
+        <strong>Freeman Archive</strong>
+        <span>Build Freeman’s institutional memory.</span>
+      </div>
+      <div class="project">
+        <div class="state">ACTIVE</div>
+        <strong>Project Documentation</strong>
+        <span>Shoot → select → tag → preserve.</span>
+      </div>
+      <div class="project">
+        <div class="state">BASELINE</div>
+        <strong>Website V3</strong>
+        <span>Hold the container. Feed it real proof.</span>
+      </div>
+      <div class="project">
+        <div class="state">NEXT</div>
+        <strong>Proposals + Qualifications</strong>
+        <span>Make client-facing material match the quality of the work.</span>
+      </div>
+    </section>
+
+    <section>
+      <div class="head"><span>03 / THIS WEEK</span><span class="orange">3 THINGS</span></div>
+      <p class="big">Stay close to the work.</p>
+      <div class="task">
+        <span class="num">01</span>
+        <strong>Spend meaningful time with one project team.</strong>
+        <span class="tag">Field</span>
+      </div>
+      <div class="task">
+        <span class="num">02</span>
+        <strong>Capture one condition → decision → resolution.</strong>
+        <span class="tag">Evidence</span>
+      </div>
+      <div class="task">
+        <span class="num">03</span>
+        <strong>Review one client-facing piece.</strong>
+        <span class="tag">Client</span>
+      </div>
+      <p class="small">If something does not move one of these three sections forward, it probably does not belong on the front page.</p>
+    </section>
+  </main>
+
+  <footer>
+    <div><strong>END STATE → PROJECTS → THIS WEEK</strong></div>
+    <div><a href="work-panel-full.html">VIEW FULL SCOPE →</a></div>
+  </footer>
 </div>
 </body>
 </html>
