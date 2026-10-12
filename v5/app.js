@@ -28,3 +28,16 @@ function contact(){chrome('CONTACT / FREEMAN GENERAL CONTRACTORS');pageCount=1;r
 function home(){root.innerHTML=`<nav class="center" aria-label="Main">${links.map(([t,u,c])=>link(t,u,c)).join('<span class="sep">/</span>')}</nav><nav class="mobile-home-nav" aria-label="Main">${links.map(([t,u,c])=>link(t,u,c)).join('')}</nav><div class="legal">FREEMAN GENERAL CONTRACTORS<br>CARTERSVILLE, GEORGIA</div><div class="mark">BUILT FOR GENERATIONS™<br>EST. IN GEORGIA</div>`;words(root)}
 function init(){if(file==='index.html')return home();if(file==='projects.html')return indexPage(false);if(file==='fieldwork.html')return indexPage(true);if(file==='company.html')return company();if(file==='contact.html')return contact();let p=projects.find(p=>'project-'+p.slug+'.html'===file);if(p)return project(p);let a=archive.find(a=>'fieldwork-'+a.slug+'.html'===file);if(a)return record(a);reading('RECORD NOT FOUND',[block('h1','Record not found.'),link('RETURN TO INDEX','index.html','text-link phrase')],null,'index.html','INDEX')}
 init();window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{const note=document.querySelector('#note');if(note){state.note=note.value;if(document.activeElement===note)return}init()},80)});document.addEventListener('keydown',e=>{if(e.target.closest('input,textarea,select'))return;if(e.key==='Escape'){location.href='index.html'}if(e.key==='ArrowRight'){e.preventDefault();go(pageIndex+1)}if(e.key==='ArrowLeft'){e.preventDefault();go(pageIndex-1)}});
+
+/* Freeman palette selector — shared across pages, displayed on the entry screen. */
+(function initPalette(){
+  const choices=[['chalk','OFF-WHITE'],['sand','SAND'],['umber','UMBER']];
+  let selected='chalk';
+  try { const saved=localStorage.getItem('freeman-palette');if(choices.some(([id])=>id===saved))selected=saved; } catch(e) {}
+  document.documentElement.dataset.palette=selected;
+  if(file!=='index.html')return;
+  const holder=document.createElement('div');holder.className='palette-selector';holder.setAttribute('role','group');holder.setAttribute('aria-label','Website color palette');
+  function choose(id){document.documentElement.dataset.palette=id;holder.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.palette===id)));try{localStorage.setItem('freeman-palette',id)}catch(e){}}
+  choices.forEach(([id,name])=>{const b=document.createElement('button');b.type='button';b.className='palette-chip palette-'+id;b.dataset.palette=id;b.setAttribute('aria-label',name+' palette');b.title=name;b.setAttribute('aria-pressed',String(id===selected));b.addEventListener('click',()=>choose(id));holder.appendChild(b)});
+  root.appendChild(holder);
+})();
