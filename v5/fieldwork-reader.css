@@ -114,3 +114,69 @@ a.fw-button{align-self:flex-start}
 .fw-grid{grid-template-rows:minmax(0,1fr)}
 .fw-status{min-height:0;overflow-y:auto;scrollbar-width:none}
 .fw-status::-webkit-scrollbar{display:none}
+
+/* Integrated mobile Fieldwork: retain Opus routing; free space for the records. */
+@media(max-width:580px){
+ .fw-frame{padding:max(12px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left))}
+ .fw-top{min-height:40px;flex-shrink:0}
+ .fw-mast{padding:8px 0 12px}
+ .fw-title{font-size:clamp(27px,8vw,36px)}
+ .fw-description{font-size:10px;max-width:155px}
+ .fw-grid{display:flex;flex-direction:column;gap:7px;padding-top:8px;min-height:0}
+ .fw-side{flex:none;min-height:0;overflow:visible}
+ .fw-side>.fw-label,.fw-side>.fw-line,.fw-side>.fw-line+.fw-label{display:none}
+ .fw-menu,.fw-related{display:flex;flex-wrap:nowrap;gap:5px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding:1px 0 5px}
+ .fw-menu::-webkit-scrollbar,.fw-related::-webkit-scrollbar{display:none}
+ .fw-menu button,.fw-related button{flex:0 0 auto;width:auto;min-height:40px;white-space:nowrap;padding:7px 10px;border:1px solid var(--hair);font-size:10px;gap:10px}
+ .fw-menu button.active,.fw-related button[aria-pressed=true]{border-color:var(--ink)}
+ .fw-related{padding-bottom:2px}
+ .fw-related button{font-size:9px;min-height:34px}
+ .fw-window{flex:1;min-height:0;min-width:0}
+ .fw-toolbar{gap:6px;padding-bottom:7px}
+ .fw-search{min-width:0;flex:1;height:44px;font-size:16px}
+ .fw-step{width:44px;height:44px;flex:0 0 44px;font-size:17px}
+ .fw-record{grid-template-columns:58px minmax(0,1fr);min-height:87px;gap:12px;padding:9px 4px}
+ .fw-record .fw-number{display:none}
+ .fw-thumb,.fw-thumb-placeholder{width:58px;height:65px}
+ .fw-name{display:inline-flex;align-items:center;min-height:44px;font-size:12px;line-height:1.45;padding:7px 2px;overflow-wrap:anywhere}
+ .fw-meta{font-size:9px;line-height:1.5;margin-top:2px;overflow-wrap:anywhere}
+ .fw-scrollcount{font-size:9px;line-height:1.4}
+ .fw-foot{min-height:30px;padding-top:6px}
+ .fw-foot .fw-muted{display:none}
+ .fw-detail p{font-size:12px;line-height:1.7}
+ .fw-draft input,.fw-draft select,.fw-draft textarea{font-size:16px}
+ .fw-mobile-note{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;min-width:52px;min-height:44px;padding:0 7px;border:1px solid var(--hair);font:10px var(--mono)}
+ .fw-mobile-note:active{background:var(--orange);color:var(--paper)}
+ .fw-mobile-note:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+}
+@media(min-width:581px){.fw-mobile-note{display:none}}
+@media(max-width:580px) and (max-height:740px){
+ .fw-mast{padding:4px 0 8px}.fw-title{font-size:27px}
+ .fw-description{font-size:9px}
+ .fw-menu button{min-height:36px;padding:6px 9px}
+ .fw-related button{min-height:30px}
+ .fw-grid{gap:5px;padding-top:5px}
+ .fw-record{min-height:74px}
+ .fw-thumb,.fw-thumb-placeholder{height:55px}
+}
+@media(max-height:470px) and (orientation:landscape){
+ .fw-frame{padding:7px max(14px,env(safe-area-inset-right)) 7px max(14px,env(safe-area-inset-left))}
+ .fw-mast{padding:3px 0}
+ .fw-title{font-size:21px}
+ .fw-grid{display:grid;grid-template-columns:125px minmax(0,1fr);gap:11px;padding-top:5px}
+ .fw-side{overflow-y:auto;min-height:0}
+ .fw-menu{display:flex;flex-direction:column;gap:2px;overflow-x:visible}
+ .fw-menu button{width:100%;min-height:29px;padding:3px 5px}
+ .fw-related{display:none}
+ .fw-record{min-height:58px;padding:5px 2px}
+ .fw-thumb,.fw-thumb-placeholder{width:44px;height:44px}
+ .fw-record{grid-template-columns:44px minmax(0,1fr)}
+ .fw-toolbar{padding-bottom:4px}
+ .fw-search,.fw-step,.fw-mobile-note{height:32px;min-height:32px}
+ .fw-foot{padding-top:3px}
+}
+@media(pointer:coarse){
+ .fw-record:hover .fw-name{background:transparent;color:var(--ink)}
+ .fw-record:active .fw-name{background:var(--orange);color:var(--paper)}
+ .fw-menu button:focus-visible,.fw-name:focus-visible,.fw-step:focus-visible,.fw-mobile-note:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+}
