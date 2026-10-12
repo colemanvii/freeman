@@ -143,7 +143,7 @@ window.FreemanFieldwork = (() => {
 
   /* ---------- Index ---------- */
   function renderIndex(state) {
-    els.window.innerHTML = `<div class="fw-toolbar"><input class="fw-search" type="search" enterkeyhint="search" autocomplete="off" placeholder="SEARCH FIELDWORK / MATERIALS / PEOPLE..." aria-label="Search field records"><button type="button" class="fw-step" id="fw-prev" aria-label="Previous record">↑</button><button type="button" class="fw-step" id="fw-next" aria-label="Next record">↓</button></div><div class="fw-scroller" tabindex="0" aria-label="Scrollable field records"></div><div class="fw-scrollcount"><span id="fw-listcount"></span><span>↑ ↓ TO ADVANCE · SCROLL TO BROWSE</span></div>`;
+    els.window.innerHTML = `<div class="fw-toolbar"><input class="fw-search" type="search" enterkeyhint="search" autocomplete="off" placeholder="SEARCH FIELDWORK / MATERIALS / PEOPLE..." aria-label="Search field records"><button type="button" class="fw-step" id="fw-prev" aria-label="Previous record">↑</button><button type="button" class="fw-step" id="fw-next" aria-label="Next record">↓</button><a class="fw-mobile-note" href="fieldwork.html?note=new" aria-label="Create local field note">+ NOTE</a></div><div class="fw-scroller" tabindex="0" aria-label="Scrollable field records"></div><div class="fw-scrollcount"><span id="fw-listcount"></span><span>↑ ↓ TO ADVANCE · SCROLL TO BROWSE</span></div>`;
     const input = els.window.querySelector(".fw-search");
     input.value = mem.q;
     // Only the list is redrawn while typing, so the input (and the iOS keyboard) stays put.
