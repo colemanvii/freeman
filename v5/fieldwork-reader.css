@@ -108,3 +108,18 @@ html,body{overflow:hidden}
  .fw-menu button:active,.fw-record .fw-name:active{background:var(--orange);color:var(--paper)}
 }
 .fw-menu button:focus-visible,.fw-name:focus-visible,.fw-step:focus-visible,.fw-back:focus-visible,.fw-close:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+
+/* Preserve the project connections on phones without the desktop sidebar. */
+.fw-mobile-add{display:none}
+@media(max-width:580px){
+ .fw-related{display:flex;gap:6px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding:1px 1px 3px}
+ .fw-related button{width:auto;flex:0 0 auto;min-height:34px;white-space:nowrap;padding:6px 8px;border:1px solid var(--hair);font-size:9px}
+ .fw-related button[aria-pressed="true"]{border-color:var(--ink)}
+ .fw-mobile-add{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;min-width:56px;min-height:44px;background:transparent;color:var(--ink);border:1px solid var(--hair);padding:0 7px;font:10px var(--mono)}
+ .fw-mobile-add:active{background:var(--orange);color:var(--paper)}
+ .fw-mobile-add:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+}
+@media(max-height:470px) and (orientation:landscape){
+ .fw-related{display:none}
+ .fw-mobile-add{min-height:32px}
+}
