@@ -13,10 +13,10 @@
  *      COMPANY / PROJECTS / FIELDWORK / CONTACT  (current section in orange).
  *    "FREEMAN GC" is the brand, never a navigation link.
  *    The four sections link to each other directly; none routes through another.
- *  - ← BACK (bottom-left on every interior page; Escape on detail pages) is real history:
+ *  - × CLOSE (upper right on every interior page; Escape on detail pages) is real history:
  *    it returns to wherever the visitor actually came from, exactly like browser Back or a
  *    swipe-back. Each entry stores its depth within this visit; with no earlier same-site
- *    page (a direct arrival), BACK falls back to the entrance.
+ *    page (a direct arrival), CLOSE falls back to the entrance.
  *  - Leaving a page saves its view state (selected project, Fieldwork scroll/record) into
  *    that page's own history entry, so returning restores it. Filters and sheets live in the URL.
  */
@@ -159,14 +159,15 @@
   }
   window.FreemanNav = siteNav;
 
-  /* ---------- ← BACK: real history, entrance as the fallback ---------- */
-  const backMarkup = (cl = "section-link back-link phrase") =>
-    `<a class="${cl}" href="index.html" data-back="1" aria-label="Back to the previous page">← BACK</a>`;
+  /* ---------- × CLOSE: the one return control, upper right on every interior page ----------
+     Real history: back to wherever the visitor came from; the entrance on a direct arrival. */
+  const closeMarkup = () =>
+    `<a class="close phrase" href="index.html" data-back="1" aria-label="Close — return to the previous page">× CLOSE</a>`;
   function goBack() {
     if ((hist.state.depth || 0) > 0) history.back();
     else navigate("index.html");
   }
-  window.FreemanBack = backMarkup;
+  window.FreemanClose = closeMarkup;
 
   /* ---------- View state ---------- */
   let view = null; // { kind, detail, key(e), resize(), save(), destroy() }
@@ -176,8 +177,7 @@
 
   /* ---------- Panel chrome (Company / Projects / Contact) ---------- */
   function chrome({ title, section, parent }) {
-    const backHtml = backMarkup();
-    root.innerHTML = `<header class="panel-head"><h1 class="sr-only">${esc(title)}</h1>${siteNav(section, parent)}</header><section class="viewport" aria-label="Current sheet"></section><footer class="sheet-controls">${backHtml}<nav aria-label="Sheet navigation"><button id="previous" class="phrase" type="button">PREV</button><span class="count" aria-live="polite"></span><button id="next" class="phrase" type="button">NEXT</button></nav></footer>`;
+    root.innerHTML = `<header class="panel-head"><h1 class="sr-only">${esc(title)}</h1>${siteNav(section, parent)}${closeMarkup()}</header><section class="viewport" aria-label="Current sheet"></section><footer class="sheet-controls"><span class="section-link" aria-hidden="true"></span><nav aria-label="Sheet navigation"><button id="previous" class="phrase" type="button">PREV</button><span class="count" aria-live="polite"></span><button id="next" class="phrase" type="button">NEXT</button></nav></footer>`;
     root.querySelector("#previous").onclick = () => go(pageIndex - 1);
     root.querySelector("#next").onclick = () => go(pageIndex + 1);
   }
@@ -589,7 +589,7 @@
   } else {
     applyPalette([hist.state.palette, ss.get("freeman-palette")].find((p) => PALETTES.includes(p)));
   }
-  // A fresh arrival is depth 0 (BACK falls back to the entrance); a reload keeps its depth.
+  // A fresh arrival is depth 0 (CLOSE falls back to the entrance); a reload keeps its depth.
   hist.write("replaceState", { ...hist.state, fgc: 1, palette, depth: hist.state.depth || 0 }, location.href);
   render(first, hist.state);
   if (first.kind === "entrance") opening();

@@ -1,6 +1,6 @@
 
 /* Fieldwork: a photographic log inside the shared interior shell (styles.css positions the
-   section line, the viewport and ← BACK exactly as on the other pages). */
+   section line, × CLOSE and the viewport exactly as on the other pages). */
 .fw-view{display:flex;flex-direction:column}
 .fw-muted{color:var(--muted)}
 .fw-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.025em;margin-bottom:12px}

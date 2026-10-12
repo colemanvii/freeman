@@ -1,7 +1,7 @@
 "use strict";
 /*
  * Fieldwork — a photographic log. Mounted by app.js inside the same interior shell as the
- * other sections (section line at the top, ← BACK at the bottom-left).
+ * other sections (section line at the top left, × CLOSE at the top right).
  *   index   → one list of compact rows: thumbnail / title + project (+ date and time only
  *             when a record carries a genuine one; none are invented)
  *   record  → the existing record page; ↑ ↓ (or ← →) step records, each a history entry
@@ -63,7 +63,7 @@ window.FreemanFieldwork = (() => {
 
   /* ---------- Frame: the shared interior shell ---------- */
   function frame() {
-    host.innerHTML = `<header class="panel-head"><h1 class="sr-only">Fieldwork<span class="fw-tail"></span></h1></header><section class="viewport fw-view" id="fw-window" aria-label="Fieldwork"></section><footer class="sheet-controls">${window.FreemanBack ? window.FreemanBack() : ""}<span class="sr-only" id="fw-message" aria-live="polite"></span></footer>`;
+    host.innerHTML = `<header class="panel-head"><h1 class="sr-only">Fieldwork<span class="fw-tail"></span></h1>${window.FreemanClose ? window.FreemanClose() : ""}</header><section class="viewport fw-view" id="fw-window" aria-label="Fieldwork"></section><footer class="sheet-controls"><span class="sr-only" id="fw-message" aria-live="polite"></span></footer>`;
     els = {
       head: host.querySelector(".panel-head"),
       window: host.querySelector("#fw-window"),
@@ -73,13 +73,14 @@ window.FreemanFieldwork = (() => {
   }
   const setMessage = (v) => { if (els.message) els.message.textContent = v; };
 
-  /* Section line is shared with the rest of the site. */
+  /* Section line and × CLOSE are shared with the rest of the site. */
   function updateChrome() {
     const focus = current.record ? current.record.slug : undefined;
     const parent = current.kind === "index" ? null : { href: "fieldwork.html", focus };
     const old = els.head.querySelector(".site-nav");
     if (old) old.remove();
-    if (window.FreemanNav) els.head.insertAdjacentHTML("beforeend", window.FreemanNav("fieldwork", parent));
+    // The section line sits before × CLOSE, so CLOSE stays in the upper right.
+    if (window.FreemanNav) els.head.querySelector("h1").insertAdjacentHTML("afterend", window.FreemanNav("fieldwork", parent));
     els.tail.textContent =
       current.kind === "detail" ? " / " + numberOf(current.record) : current.kind === "note" ? " / New note" : "";
   }
@@ -131,7 +132,7 @@ window.FreemanFieldwork = (() => {
   function step(n) {
     const list = entries();
     const i = list.findIndex((a) => a.slug === current.record.slug) + n;
-    // Each record visited with ↑ ↓ is its own history step, so BACK retraces them.
+    // Each record visited with ↑ ↓ is its own history step, so CLOSE and browser Back retrace them.
     if (i >= 0 && i < list.length) api.navigate(href(list[i]));
   }
   function renderDetail() {
