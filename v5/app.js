@@ -7,15 +7,17 @@
  * palette, the Fieldwork index position and the opening state are never reset by a visit.
  *
  * Navigation rules
- *  - index.html is the entrance only. Leaving it REPLACES its history entry, so Back
- *    never returns to the centered screen, and no interior link points to it.
+ *  - index.html is the entrance. It stays in history like any other page; the eagle plays
+ *    only on the first load of a tab session.
  *  - Every interior page carries the same section line at top-left:
  *      FREEMAN GC / PROJECTS / FIELDWORK / CONTACT  (current section in orange).
  *    The four sections link to each other directly; none routes through another.
- *  - × CLOSE (and Escape) appears only on detail pages and returns to the parent section:
- *      project detail        → Projects (that project highlighted)
- *      Fieldwork record/note → Fieldwork (filters and list position kept)
- *    Top-level sections have no CLOSE.
+ *  - ← BACK (bottom-left on every interior page; Escape on detail pages) is real history:
+ *    it returns to wherever the visitor actually came from, exactly like browser Back or a
+ *    swipe-back. Each entry stores its depth within this visit; with no earlier same-site
+ *    page (a direct arrival), BACK falls back to the entrance.
+ *  - Leaving a page saves its view state (selected project, Fieldwork scroll/record) into
+ *    that page's own history entry, so returning restores it. Filters and sheets live in the URL.
  */
 (() => {
   const { projects, archive } = window.RECORDS;
@@ -156,28 +158,25 @@
   }
   window.FreemanNav = siteNav;
 
+  /* ---------- ← BACK: real history, entrance as the fallback ---------- */
+  const backMarkup = (cl = "section-link back-link phrase") =>
+    `<a class="${cl}" href="index.html" data-back="1" aria-label="Back to the previous page">← BACK</a>`;
+  function goBack() {
+    if ((hist.state.depth || 0) > 0) history.back();
+    else navigate("index.html");
+  }
+  window.FreemanBack = backMarkup;
+
   /* ---------- View state ---------- */
-  let view = null; // { kind, close(): target|null, key(e), resize(), save(), destroy() }
+  let view = null; // { kind, detail, key(e), resize(), save(), destroy() }
   let pageIndex = 0,
     pageCount = 1,
-    renderPage = () => {},
-    closeSpec = () => null;
+    renderPage = () => {};
 
   /* ---------- Panel chrome (FREEMAN GC / Projects / Contact) ---------- */
-  function closeMarkup(target) {
-    return target ? link("× CLOSE", target.href, "close phrase", { "data-focus": target.focus, "aria-label": "Close — " + target.label }) : "";
-  }
-  function refreshClose() {
-    const old = root.querySelector(".panel-head .close");
-    if (!old) return;
-    const t = document.createElement("template");
-    t.innerHTML = closeMarkup(closeSpec());
-    old.replaceWith(t.content.firstElementChild);
-  }
-  function chrome({ title, section, parent, close = null }) {
-    closeSpec = () => close;
-    const backHtml = '<span class="section-link" aria-hidden="true"></span>';
-    root.innerHTML = `<header class="panel-head"><h1 class="sr-only">${esc(title)}</h1>${siteNav(section, parent)}${closeMarkup(close)}</header><section class="viewport" aria-label="Current sheet"></section><footer class="sheet-controls">${backHtml}<nav aria-label="Sheet navigation"><button id="previous" class="phrase" type="button">PREV</button><span class="count" aria-live="polite"></span><button id="next" class="phrase" type="button">NEXT</button></nav></footer>`;
+  function chrome({ title, section, parent }) {
+    const backHtml = backMarkup();
+    root.innerHTML = `<header class="panel-head"><h1 class="sr-only">${esc(title)}</h1>${siteNav(section, parent)}</header><section class="viewport" aria-label="Current sheet"></section><footer class="sheet-controls">${backHtml}<nav aria-label="Sheet navigation"><button id="previous" class="phrase" type="button">PREV</button><span class="count" aria-live="polite"></span><button id="next" class="phrase" type="button">NEXT</button></nav></footer>`;
     root.querySelector("#previous").onclick = () => go(pageIndex - 1);
     root.querySelector("#next").onclick = () => go(pageIndex + 1);
   }
@@ -186,7 +185,8 @@
     root.querySelector(".count").textContent = `${pad(pageIndex + 1)} / ${pad(pageCount)}`;
     root.querySelector("#previous").disabled = pageIndex === 0;
     root.querySelector("#next").disabled = pageIndex === pageCount - 1;
-    refreshClose();
+    // A single sheet has nothing to page through.
+    root.querySelector(".sheet-controls nav").hidden = pageCount < 2;
   }
   function go(i) {
     if (i < 0 || i >= pageCount) return;
@@ -322,6 +322,7 @@
       rows.querySelectorAll("a").forEach((a) => {
         a.onmouseenter = () => preview(Number(a.dataset.index));
         a.onfocus = () => preview(Number(a.dataset.index));
+        a.onclick = () => preview(Number(a.dataset.index)); // remembered as the selection on return
       });
       const first = pageIndex * perPage;
       preview(activeIndex >= first && activeIndex < first + perPage ? activeIndex : first);
@@ -355,7 +356,6 @@
       title: "Projects / " + p.name,
       section: "projects",
       parent: { href: "projects.html", focus: p.slug },
-      close: { href: "projects.html", focus: p.slug, label: "return to Projects" },
     });
     const vp = root.querySelector(".viewport");
     const pages = reading(vp, b, [
@@ -467,15 +467,19 @@
     pageIndex = sheetFromUrl();
     pageCount = 1;
     renderPage = () => {};
-    closeSpec = () => null;
 
     if (route.kind === "fieldwork" && fw) {
       if (stayInFieldwork) fw.update(route, state);
       else fw.mount(root, route, state, fieldworkApi);
-      view = { kind: "fieldwork", close: () => fw.closeTarget(), key: (e) => fw.key(e), save: () => fw.save(), destroy: () => fw.destroy() };
+      view = { kind: "fieldwork", detail: () => fw.isDetail(), key: (e) => fw.key(e), save: () => fw.save(), destroy: () => fw.destroy() };
       document.title = fw.title() + " — Freeman GC";
     } else {
-      view = { kind: route.kind, close: () => closeSpec(), resize: () => render(parse(location.href), { ...hist.state, focus: currentFocus() }) };
+      view = {
+        kind: route.kind,
+        detail: () => route.kind === "project",
+        save: () => (route.kind === "projects" ? { focus: currentFocus() } : {}),
+        resize: () => render(parse(location.href), { ...hist.state, focus: currentFocus() }),
+      };
       if (route.kind === "entrance") entrance();
       else if (route.kind === "company") company();
       else if (route.kind === "projects") projectsIndex(state);
@@ -504,9 +508,10 @@
     const to = parse(url.href);
     // Remember where we were (list position etc.) on the entry we are leaving.
     if (view && view.save) hist.write("replaceState", { ...hist.state, ...view.save() }, location.href);
-    // The entrance is never kept in history; same-file moves (sheets, filters) replace too.
-    const method = replace || from.kind === "entrance" || viewKey(from) === viewKey(to) ? "replaceState" : "pushState";
-    const state = { fgc: 1, palette, introSeen: hist.state.introSeen, focus };
+    // Same-file moves (sheets, filters) replace; everything else is a real history step.
+    const method = replace || viewKey(from) === viewKey(to) ? "replaceState" : "pushState";
+    const depth = (hist.state.depth || 0) + (method === "pushState" ? 1 : 0);
+    const state = { fgc: 1, palette, introSeen: hist.state.introSeen, focus, depth };
     if (!hist.write(method, state, url.href)) {
       location.href = url.href; // History unavailable: fall back to a normal page load.
       return;
@@ -518,6 +523,11 @@
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     const a = e.target.closest && e.target.closest("a[href]");
     if (!a || (a.target && a.target !== "_self") || a.hasAttribute("download")) return;
+    if (a.dataset.back) {
+      e.preventDefault();
+      goBack();
+      return;
+    }
     const url = new URL(a.getAttribute("href"), location.href);
     if (!isAppUrl(url)) return;
     e.preventDefault();
@@ -537,10 +547,9 @@
     if (e.target.closest && e.target.closest("input,textarea,select")) return;
     if (view && view.key && view.key(e)) return;
     if (e.key === "Escape") {
-      const target = view && view.close && view.close();
-      if (target) {
+      if (view && view.detail && view.detail()) {
         e.preventDefault();
-        navigate(target.href, { focus: target.focus });
+        goBack();
       }
       return;
     }
@@ -569,7 +578,8 @@
   } else {
     applyPalette([hist.state.palette, ss.get("freeman-palette")].find((p) => PALETTES.includes(p)));
   }
-  hist.write("replaceState", { ...hist.state, fgc: 1, palette }, location.href);
+  // A fresh arrival is depth 0 (BACK falls back to the entrance); a reload keeps its depth.
+  hist.write("replaceState", { ...hist.state, fgc: 1, palette, depth: hist.state.depth || 0 }, location.href);
   render(first, hist.state);
   if (first.kind === "entrance") opening();
 })();

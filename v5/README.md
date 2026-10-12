@@ -16,10 +16,11 @@ Edit `content.json`, then run `python3 generate.py` to refresh route entry point
 
 Every route is a real file (`company.html`, `project-<slug>.html`, `fieldwork-<slug>.html`, …), so deep links and refreshes need no server rewrites. After the first load, links are handled in place with the History API, so nothing resets between visits (palette, Fieldwork filters and list position, opening state).
 
-- **Entrance (`index.html`) is shown once.** Leaving it replaces its history entry; no interior link points back to it, and browser Back from the first interior page leaves the site rather than returning to the centered screen. The red eagle plays on entry (once per tab session, never on Back/Forward).
-- **One section line on every interior page.** `FREEMAN GC / PROJECTS / FIELDWORK / CONTACT` sits top-left everywhere (current section in orange), and the four sections link to each other directly — nothing routes through FREEMAN GC.
+- **Entrance (`index.html`).** The red eagle plays on the first load of a tab session (never on Back/Forward). The entrance stays in history, so Back from the first interior page returns to it.
+- **One section line on every interior page.** `FREEMAN GC / PROJECTS / FIELDWORK / CONTACT` sits top-left everywhere (current section in orange), and the four sections link to each other directly.
 - **FREEMAN GC is the company page** — an editorial reading page about Freeman, paginated like the project records.
-- **× CLOSE / Escape appear only on detail pages** and return to the parent section: Project → Projects (that project highlighted and focused); Fieldwork record or note → Fieldwork index (filters, list position and record kept). Top-level sections have no CLOSE.
+- **← BACK is real history.** Every interior page has `← BACK` bottom-left (Escape does the same on project and Fieldwork detail pages). It behaves exactly like browser Back, trackpad and mobile swipe-back: it returns to wherever the visitor came from. Each history entry stores its depth within the visit; on a direct arrival (no earlier same-site page) BACK falls back to the entrance. Leaving a page saves its view state into its own history entry — selected project, Fieldwork scroll and record — and filters/sheets live in the URL, so returning restores them. There is no × CLOSE and no custom swipe handling.
+- **PREV / NEXT** only appear when a page has more than one sheet.
 - **Fieldwork** filters live in the URL (`fieldwork.html?category=Observation`); records step with ↑ ↓ (or ← → on a record) and name their connected project.
 - Palette choice travels in `history.state` (survives reloads without sessionStorage); the entrance always starts in off-white.
 

@@ -89,9 +89,8 @@ a,button,.hover-word,.phrase{transition:none!important;animation:none!important}
   .center a:after{content:"";position:absolute;inset:-14px -6px}
 }
 
-/* Contact: information left, one bordered message box right; no pager clutter. */
-body[data-route="contact"] .sheet-controls{display:none}
-body[data-route="contact"] .viewport{bottom:32px;display:flex}
+/* Contact: information left, one bordered message box right. */
+body[data-route="contact"] .viewport{display:flex}
 .contact-layout{min-height:0;width:min(940px,100%);margin:auto;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(40px,7vw,120px);align-items:start}
 .contact-label{display:block;margin:0 0 22px;font:10px/1.5 var(--mono);color:var(--muted);letter-spacing:.035em;text-transform:uppercase}
 .contact-layout .contact-sheet{margin:0;width:100%;height:auto;justify-content:flex-start;gap:22px}
@@ -105,7 +104,6 @@ body[data-route="contact"] .viewport{bottom:32px;display:flex}
 .contact-inquiry button:hover{background:var(--orange);color:var(--paper)}
 .contact-disclaimer{margin:8px 0 0;font:9px/1.5 var(--mono);color:var(--muted);text-transform:uppercase}
 @media(max-width:760px){
- body[data-route="contact"] .viewport{bottom:max(25px,env(safe-area-inset-bottom))}
  .contact-layout{display:flex;flex-direction:column;justify-content:center;align-items:stretch;gap:clamp(28px,5vh,44px);max-width:480px}
  .contact-label{margin-bottom:14px}
  .contact-layout .contact-sheet{gap:14px}
@@ -114,7 +112,6 @@ body[data-route="contact"] .viewport{bottom:32px;display:flex}
  .contact-disclaimer{margin-top:0}
 }
 @media(max-height:600px) and (orientation:landscape){
- body[data-route="contact"] .viewport{bottom:max(16px,env(safe-area-inset-bottom))}
  .contact-layout{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:28px;max-width:none;align-items:start}
  .contact-label{margin-bottom:8px}
  .contact-layout .contact-sheet{gap:9px}
@@ -139,3 +136,4 @@ body[data-route="contact"] .viewport{bottom:32px;display:flex}
 @media(max-width:760px){.site-nav .sep{padding:0 7px}}
 @media(max-width:360px){.site-nav .sep{padding:0 5px}}
 @media(pointer:coarse){.site-nav a::after{content:"";position:absolute;inset:-17px -5px}}
+.sheet-controls nav[hidden]{display:none}
