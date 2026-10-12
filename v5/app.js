@@ -428,7 +428,7 @@
   }
   function entrance() {
     const nav = (cl) => DESTINATIONS.map(([t, u, c]) => link(t, u, c, { "data-entry": "1" }));
-    root.innerHTML = `<nav class="center" aria-label="Main">${nav().join('<span class="sep">/</span>')}</nav><p class="mobile-brand">FREEMAN GC</p><nav class="mobile-home-nav" aria-label="Main">${nav().join("")}</nav><div class="legal">FREEMAN GENERAL CONTRACTORS<br>CARTERSVILLE, GEORGIA</div><div class="mark">BUILT FOR GENERATIONS™<br>EST. IN GEORGIA</div>`;
+    root.innerHTML = `<nav class="center" aria-label="Main">${nav().join('<span class="sep">/</span>')}</nav><p class="mobile-brand">FREEMAN GC</p><nav class="mobile-home-nav" aria-label="Main">${nav().join("")}</nav><div class="legal">FREEMAN GENERAL CONTRACTING<br>CARTERSVILLE, GEORGIA</div><div class="mark">BUILT FOR GENERATIONS™<br>EST. IN GEORGIA</div>`;
     words(root);
     paletteSelector();
   }
