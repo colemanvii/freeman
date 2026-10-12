@@ -142,3 +142,32 @@ body[data-route="contact"] .viewport{display:flex}
 .brand-id{color:var(--orange);pointer-events:none;user-select:none;white-space:nowrap;font:inherit;letter-spacing:inherit;text-transform:uppercase}
 .center .brand-id{margin-right:30px}
 .mobile-home-nav .brand-id{display:flex;align-items:center;justify-content:center;min-height:44px;margin-bottom:22px}
+
+/* Projects index: one full-width table — NO. / PROJECT / CLIENT / ARCHITECT / DATE; each row one link. */
+.pi{height:100%;display:flex;flex-direction:column}
+.pi-head,.pi-link{display:grid;grid-template-columns:96px minmax(0,1.9fr) minmax(0,1.15fr) minmax(0,.95fr) 96px;column-gap:24px;align-items:baseline}
+.pi-head{padding:0 0 12px;font-size:9px;line-height:1.5;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.pi-scroller{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--hair) transparent;border-top:1px solid var(--hair)}
+.pi-list{list-style:none;margin:0;padding:0}
+.pi-row{border-bottom:1px solid var(--hair)}
+.pi-link{padding:18px 0;color:var(--ink);outline:none}
+.pi-no{font-size:11px;color:var(--muted);letter-spacing:.04em}
+.pi-name{justify-self:start;font-size:13px;line-height:1.45;text-transform:uppercase;letter-spacing:.04em}
+.pi-client,.pi-arch,.pi-date{min-width:0;font-size:11px;line-height:1.5;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;overflow-wrap:anywhere}
+.pi-date,.pi-head-date{text-align:right}
+.pi-link:hover .pi-name,.pi-link:focus-visible .pi-name{background:var(--orange);color:var(--paper)}
+.pi-link:hover .pi-no,.pi-link:focus-visible .pi-no,.pi-row.is-current .pi-no{color:var(--orange)}
+@media(pointer:coarse){
+ .pi-link:hover .pi-name{background:transparent;color:var(--ink)}
+ .pi-link:hover .pi-no{color:var(--muted)}
+ .pi-link:active .pi-name{background:var(--orange);color:var(--paper)}
+}
+@media(max-width:760px){
+ .pi-head{display:none}
+ .pi-link{grid-template-columns:40px minmax(0,1fr);row-gap:5px;padding:16px 0}
+ .pi-no{font-size:10px}
+ .pi-name{font-size:14px}
+ .pi-client,.pi-arch,.pi-date{grid-column:2;text-align:left;font-size:10px}
+ .pi-empty{display:none}
+}
+

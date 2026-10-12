@@ -293,44 +293,39 @@
   }
 
   /* ---------- Projects ---------- */
+  // Only verified values: Client and Architect from the project credits, and a date only from an
+  // explicit, verified `date` field. The scraped "Complete: 2024" template credit is not used.
+  const credit = (p, key) => ((p.credits || []).find(([k]) => k === key) || [])[1] || "";
   function projectsIndex(state) {
     chrome({ title: "Projects / Selected work", section: "projects" });
     const vp = root.querySelector(".viewport");
-    vp.innerHTML = '<div class="index-layout"><section class="register"><div class="index-title"></div><nav class="index-rows" aria-label="Projects"></nav></section><figure class="preview" aria-hidden="true"><img alt=""><figcaption></figcaption></figure></div>';
-    const rows = vp.querySelector(".index-rows");
-    const rowHeight = matchMedia(PHONE).matches ? 68 : 54;
-    const perPage = Math.max(1, Math.min(projects.length, Math.floor((vp.clientHeight - 48) / rowHeight)));
-    pageCount = Math.ceil(projects.length / perPage);
-    let activeIndex = projects.findIndex((p) => p.slug === state.focus);
-    if (activeIndex >= 0) pageIndex = Math.floor(activeIndex / perPage);
-    function preview(i) {
-      activeIndex = i;
-      const a = projects[i];
-      vp.querySelector(".preview img").src = a.image;
-      vp.querySelector(".preview figcaption").textContent = a.name + " / " + a.location;
-      rows.querySelectorAll(".index-row").forEach((x) => x.classList.toggle("active", Number(x.dataset.index) === i));
+    const cell = (cls, value, label) =>
+      value
+        ? `<span class="${cls}"><span class="sr-only">${label} </span>${esc(value)}</span>`
+        : `<span class="${cls} pi-empty"><span class="sr-only">${label} not yet verified</span><span aria-hidden="true">—</span></span>`;
+    const rows = projects
+      .map((p, i) => {
+        const here = p.slug === state.focus;
+        return `<li class="pi-row${here ? " is-current" : ""}"><a class="pi-link" href="project-${esc(p.slug)}.html" data-slug="${esc(p.slug)}"><span class="pi-no">${pad(i + 1, 3)}</span><span class="pi-name">${esc(p.name)}</span>${cell("pi-client", credit(p, "Client"), "Client")}${cell("pi-arch", credit(p, "Architect"), "Architect")}${cell("pi-date", p.date || "", "Date")}</a></li>`;
+      })
+      .join("");
+    vp.innerHTML = `<div class="pi"><div class="pi-head" aria-hidden="true"><span>No.</span><span>Project</span><span>Client</span><span>Architect</span><span class="pi-head-date">Date</span></div><div class="pi-scroller"><ol class="pi-list" aria-label="Projects">${rows}</ol></div></div>`;
+    const scroller = vp.querySelector(".pi-scroller");
+    // The project a visitor opens is the selection they return to.
+    scroller.addEventListener("click", (e) => {
+      const row = e.target.closest(".pi-row");
+      if (!row) return;
+      scroller.querySelectorAll(".pi-row.is-current").forEach((r) => r.classList.remove("is-current"));
+      row.classList.add("is-current");
+    });
+    if (typeof state.projScroll === "number") scroller.scrollTop = state.projScroll;
+    const current = scroller.querySelector(".pi-row.is-current");
+    if (current) {
+      const top = current.offsetTop, bottom = top + current.offsetHeight;
+      if (top < scroller.scrollTop) scroller.scrollTop = top;
+      else if (bottom > scroller.scrollTop + scroller.clientHeight) scroller.scrollTop = bottom - scroller.clientHeight;
     }
-    renderPage = () => {
-      vp.querySelector(".index-title").textContent = "Selected projects / " + projects.length + " records";
-      rows.style.setProperty("--row-height", rowHeight + "px");
-      rows.innerHTML = projects
-        .slice(pageIndex * perPage, (pageIndex + 1) * perPage)
-        .map((p, n) => {
-          const i = pageIndex * perPage + n;
-          return `<a class="index-row" data-index="${i}" data-slug="${esc(p.slug)}" href="project-${esc(p.slug)}.html"><span class="number">${pad(i + 1)}</span><span class="phrase">${esc(p.name)}</span></a>`;
-        })
-        .join("");
-      rows.querySelectorAll("a").forEach((a) => {
-        a.onmouseenter = () => preview(Number(a.dataset.index));
-        a.onfocus = () => preview(Number(a.dataset.index));
-        a.onclick = () => preview(Number(a.dataset.index)); // remembered as the selection on return
-      });
-      const first = pageIndex * perPage;
-      preview(activeIndex >= first && activeIndex < first + perPage ? activeIndex : first);
-    };
-    renderPage();
     count();
-    if (pageIndex !== sheetFromUrl()) go(pageIndex);
   }
   function project(p) {
     const related = archive.filter((a) => a.link === p.slug);
@@ -480,7 +475,11 @@
       view = {
         kind: route.kind,
         detail: () => route.kind === "project",
-        save: () => (route.kind === "projects" ? { focus: currentFocus() } : {}),
+        save: () => {
+          if (route.kind !== "projects") return {};
+          const scroller = root.querySelector(".pi-scroller");
+          return { focus: currentFocus(), projScroll: scroller ? scroller.scrollTop : 0 };
+        },
         resize: () => render(parse(location.href), { ...hist.state, focus: currentFocus() }),
       };
       if (route.kind === "entrance") entrance();
@@ -494,7 +493,7 @@
     if (nav) settleFocus(state);
   }
   function currentFocus() {
-    const a = root.querySelector(".index-row.active[data-slug]");
+    const a = root.querySelector(".index-row.active[data-slug], .pi-row.is-current [data-slug]");
     return a ? a.dataset.slug : undefined;
   }
   /* After an in-place navigation, put keyboard focus where the visitor expects it. */
