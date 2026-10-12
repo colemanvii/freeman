@@ -39,3 +39,17 @@ a,button,.hover-word,.phrase{transition:none!important;animation:none!important}
 .center a:hover,.mobile-home-nav a:hover,.index-row:hover .phrase,.index-row:focus-visible .phrase{background:var(--orange);color:var(--paper)}
 .index-row:hover,.index-row:focus-visible{outline:none}
 @media(pointer:coarse){.index-row:hover .phrase{background:transparent;color:inherit}.index-row:focus-visible .phrase{background:var(--orange);color:var(--paper)}}
+
+/* Three quiet palette swatches, inspired by the Cole Calfee portfolio. */
+:root[data-palette="sand"]{--paper:#d9c5a7;--ink:#302820;--muted:#766757;--hair:#b8a388;--orange:#ba4e2d}
+:root[data-palette="umber"]{--paper:#51453b;--ink:#f5eddf;--muted:#c9bcae;--hair:#817063;--orange:#ec7950}
+/* Align fixed labels, separators and metadata with the active palette. */
+:root[data-palette="sand"] .sep,:root[data-palette="sand"] .legal,:root[data-palette="sand"] .mark,:root[data-palette="sand"] .subtle,:root[data-palette="sand"] .index-title,:root[data-palette="sand"] .index-row .number,:root[data-palette="sand"] .reading .micro,:root[data-palette="sand"] .reading .data span:first-child,:root[data-palette="sand"] .photo-sheet figcaption,:root[data-palette="sand"] .preview figcaption,:root[data-palette="sand"] .sheet-controls .count{color:var(--muted)}
+:root[data-palette="umber"] .sep,:root[data-palette="umber"] .legal,:root[data-palette="umber"] .mark,:root[data-palette="umber"] .subtle,:root[data-palette="umber"] .index-title,:root[data-palette="umber"] .index-row .number,:root[data-palette="umber"] .reading .micro,:root[data-palette="umber"] .reading .data span:first-child,:root[data-palette="umber"] .photo-sheet figcaption,:root[data-palette="umber"] .preview figcaption,:root[data-palette="umber"] .sheet-controls .count{color:var(--muted)}
+:root[data-palette="sand"] .reading .data span:first-child,:root[data-palette="umber"] .reading .data span:first-child{color:var(--muted)}
+.palette-selector{position:absolute;bottom:max(20px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:9px;z-index:20}
+.palette-chip{display:block;width:16px;height:16px;min-width:16px;border:1px solid rgba(30,26,23,.27);border-radius:0;padding:0;outline-offset:4px;touch-action:manipulation}
+.palette-chip.palette-chalk{background:#f4f4f0}.palette-chip.palette-sand{background:#d9c5a7}.palette-chip.palette-umber{background:#51453b}
+.palette-chip[aria-pressed="true"]{outline:1px solid var(--ink);outline-offset:3px}
+.palette-chip:focus-visible{outline:2px solid var(--orange);outline-offset:4px}
+@media(pointer:coarse){.palette-chip{width:24px;height:24px;min-width:24px;margin:0 3px}}
