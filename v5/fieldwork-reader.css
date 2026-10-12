@@ -180,3 +180,15 @@ a.fw-button{align-self:flex-start}
  .fw-record:active .fw-name{background:var(--orange);color:var(--paper)}
  .fw-menu button:focus-visible,.fw-name:focus-visible,.fw-step:focus-visible,.fw-mobile-note:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
 }
+
+/* Section line sits exactly where it does on the other interior pages (no jump between sections). */
+@media(max-width:580px){
+ .fw-top{align-items:flex-start;padding:max(0px,calc(20px - max(12px,env(safe-area-inset-top)))) 4px 0}
+}
+@media(max-height:470px) and (orientation:landscape){
+ .fw-frame{padding-top:18px}
+ .fw-top{padding:0 16px}
+}
+@media(max-height:470px) and (orientation:landscape) and (max-width:760px){
+ .fw-top{padding:0 4px}
+}

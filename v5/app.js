@@ -9,12 +9,13 @@
  * Navigation rules
  *  - index.html is the entrance only. Leaving it REPLACES its history entry, so Back
  *    never returns to the centered screen, and no interior link points to it.
- *  - × CLOSE (and Escape) goes up one level:
- *      project detail        → Projects
+ *  - Every interior page carries the same section line at top-left:
+ *      FREEMAN GC / PROJECTS / FIELDWORK / CONTACT  (current section in orange).
+ *    The four sections link to each other directly; none routes through another.
+ *  - × CLOSE (and Escape) appears only on detail pages and returns to the parent section:
+ *      project detail        → Projects (that project highlighted)
  *      Fieldwork record/note → Fieldwork (filters and list position kept)
- *      Projects / Fieldwork / Contact / unknown → FREEMAN GC
- *      FREEMAN GC sheet 02+  → FREEMAN GC sheet 01; on sheet 01 there is nothing to close.
- *  - FREEMAN GC is the interior home and always shows the four destinations.
+ *    Top-level sections have no CLOSE.
  */
 (() => {
   const { projects, archive } = window.RECORDS;
@@ -141,6 +142,20 @@
     });
   }
 
+  /* ---------- Section line (shared with fieldwork-reader.js) ---------- */
+  // `current` is the section file ("company", "projects", …); `parent` overrides that section's
+  // link on a detail page so it returns with selection/filters intact.
+  function siteNav(current, parent) {
+    const items = DESTINATIONS.map(([t, u, c]) => {
+      const here = u === current + ".html";
+      const href = here && parent ? parent.href : u;
+      const cl = ["site-link", "phrase", c, here ? "is-current" : ""].filter(Boolean).join(" ");
+      return link(t, href, cl, { "aria-current": here && !parent ? "page" : null, "data-focus": here && parent ? parent.focus : null });
+    });
+    return `<nav class="site-nav" aria-label="Sections">${items.join('<span class="sep" aria-hidden="true">/</span>')}</nav>`;
+  }
+  window.FreemanNav = siteNav;
+
   /* ---------- View state ---------- */
   let view = null; // { kind, close(): target|null, key(e), resize(), save(), destroy() }
   let pageIndex = 0,
@@ -150,9 +165,7 @@
 
   /* ---------- Panel chrome (FREEMAN GC / Projects / Contact) ---------- */
   function closeMarkup(target) {
-    return target
-      ? link("× CLOSE", target.href, "close phrase", { "data-focus": target.focus, "aria-label": "Close — " + target.label })
-      : `<button class="close phrase" type="button" disabled aria-label="Close — already at Freeman GC">× CLOSE</button>`;
+    return target ? link("× CLOSE", target.href, "close phrase", { "data-focus": target.focus, "aria-label": "Close — " + target.label }) : "";
   }
   function refreshClose() {
     const old = root.querySelector(".panel-head .close");
@@ -161,18 +174,12 @@
     t.innerHTML = closeMarkup(closeSpec());
     old.replaceWith(t.content.firstElementChild);
   }
-  function chrome({ title, crumb, close, back }) {
-    closeSpec = typeof close === "function" ? close : () => close;
-    const heading = crumb
-      ? `${link(crumb.text, crumb.href, "crumb phrase", { "data-focus": crumb.focus })} / ${esc(title)}`
-      : esc(title);
-    const backHtml = back
-      ? link("← " + back.text, back.href, "section-link phrase", { "data-focus": back.focus })
-      : '<span class="section-link" aria-hidden="true"></span>';
-    root.innerHTML = `<header class="panel-head"><h1>${heading}</h1>${closeMarkup(closeSpec())}</header><section class="viewport" aria-label="Current sheet"></section><footer class="sheet-controls">${backHtml}<nav aria-label="Sheet navigation"><button id="previous" class="phrase" type="button">PREV</button><span class="count" aria-live="polite"></span><button id="next" class="phrase" type="button">NEXT</button></nav></footer>`;
+  function chrome({ title, section, parent, close = null }) {
+    closeSpec = () => close;
+    const backHtml = '<span class="section-link" aria-hidden="true"></span>';
+    root.innerHTML = `<header class="panel-head"><h1 class="sr-only">${esc(title)}</h1>${siteNav(section, parent)}${closeMarkup(close)}</header><section class="viewport" aria-label="Current sheet"></section><footer class="sheet-controls">${backHtml}<nav aria-label="Sheet navigation"><button id="previous" class="phrase" type="button">PREV</button><span class="count" aria-live="polite"></span><button id="next" class="phrase" type="button">NEXT</button></nav></footer>`;
     root.querySelector("#previous").onclick = () => go(pageIndex - 1);
     root.querySelector("#next").onclick = () => go(pageIndex + 1);
-    words(root.querySelector(".panel-head h1"));
   }
   function count() {
     pageIndex = Math.max(0, Math.min(pageCount - 1, pageIndex));
@@ -257,14 +264,7 @@
     count();
   }
 
-  /* ---------- FREEMAN GC: interior home with the four destinations ---------- */
-  function registerMarkup(rowHeight) {
-    const rows = DESTINATIONS.map(
-      ([t, u], i) =>
-        `<a class="index-row${i === 0 ? " active" : ""}" href="${u}" data-slug="dest-${u.replace(".html", "")}"${i === 0 ? ' aria-current="page"' : ""}><span class="number">${pad(i + 1)}</span><span class="phrase">${esc(t)}</span></a>`,
-    ).join("");
-    return `<section class="register hub-register" aria-label="Freeman GC sections"><div class="index-title">Sections / ${pad(DESTINATIONS.length)}</div><nav class="index-rows" aria-label="Sections" style="--row-height:${rowHeight}px">${rows}</nav></section>`;
-  }
+  /* ---------- FREEMAN GC: the company, as an editorial reading page ---------- */
   function company() {
     const b = [
       block("p", "01 / COMPANY", "micro"),
@@ -286,36 +286,14 @@
       block("p", "Budget planning combines detailed estimating, expense monitoring and ongoing client communication. Project partners are coordinated through vetting, clear contracts and continuing conversation about quality and schedules."),
       link("BEGIN A CONVERSATION ↗", "contact.html", "text-link phrase"),
     ];
-    chrome({
-      title: "COMPANY / FREEMAN GENERAL CONTRACTORS",
-      close: () => (pageIndex > 0 ? { href: "company.html", label: "return to sheet 01" } : null),
-      back: null,
-    });
+    chrome({ title: "Company / Freeman General Contractors", section: "company" });
     const vp = root.querySelector(".viewport");
-    if (matchMedia(PHONE).matches) {
-      // Phones: the four destinations are sheet 01, the company text follows.
-      const rowHeight = Math.max(48, Math.min(68, Math.floor((vp.clientHeight - 64) / DESTINATIONS.length)));
-      const pages = reading(vp, b, [{ hub: true }]);
-      showPages(vp, pages, (page) => {
-        if (!page || !page.hub) return false;
-        vp.innerHTML = `<div class="hub-phone">${registerMarkup(rowHeight)}</div>`;
-        return true;
-      });
-    } else {
-      const rowHeight = Math.max(44, Math.min(54, Math.floor((vp.clientHeight - 64) / DESTINATIONS.length)));
-      vp.innerHTML = `<div class="hub-layout">${registerMarkup(rowHeight)}<div class="hub-reading"></div></div>`;
-      const target = vp.querySelector(".hub-reading");
-      showPages(target, reading(target, b));
-    }
+    showPages(vp, reading(vp, b));
   }
 
   /* ---------- Projects ---------- */
   function projectsIndex(state) {
-    chrome({
-      title: "PROJECTS / SELECTED WORK",
-      close: { href: "company.html", label: "return to Freeman GC" },
-      back: { href: "company.html", text: "FREEMAN GC" },
-    });
+    chrome({ title: "Projects / Selected work", section: "projects" });
     const vp = root.querySelector(".viewport");
     vp.innerHTML = '<div class="index-layout"><section class="register"><div class="index-title"></div><nav class="index-rows" aria-label="Projects"></nav></section><figure class="preview" aria-hidden="true"><img alt=""><figcaption></figcaption></figure></div>';
     const rows = vp.querySelector(".index-rows");
@@ -374,10 +352,10 @@
       ),
     ];
     chrome({
-      title: p.name,
-      crumb: { text: "PROJECTS", href: "projects.html", focus: p.slug },
+      title: "Projects / " + p.name,
+      section: "projects",
+      parent: { href: "projects.html", focus: p.slug },
       close: { href: "projects.html", focus: p.slug, label: "return to Projects" },
-      back: { href: "projects.html", text: "PROJECTS", focus: p.slug },
     });
     const vp = root.querySelector(".viewport");
     const pages = reading(vp, b, [
@@ -399,11 +377,7 @@
     },
   };
   function contact() {
-    chrome({
-      title: "CONTACT / FREEMAN GENERAL CONTRACTORS",
-      close: { href: "company.html", label: "return to Freeman GC" },
-      back: { href: "company.html", text: "FREEMAN GC" },
-    });
+    chrome({ title: "Contact / Freeman General Contractors", section: "contact" });
     pageCount = 1;
     renderPage = () => {};
     const vp = root.querySelector(".viewport");
@@ -424,11 +398,7 @@
     count();
   }
   function notFound() {
-    chrome({
-      title: "RECORD NOT FOUND",
-      close: { href: "company.html", label: "return to Freeman GC" },
-      back: { href: "company.html", text: "FREEMAN GC" },
-    });
+    chrome({ title: "Record not found", section: "" });
     const vp = root.querySelector(".viewport");
     showPages(vp, reading(vp, [block("h1", "Record not found."), link("RETURN TO FREEMAN GC", "company.html", "text-link phrase")]));
   }
@@ -523,7 +493,7 @@
   /* After an in-place navigation, put keyboard focus where the visitor expects it. */
   function settleFocus(state) {
     let el = state.focus ? root.querySelector(`[data-slug="${CSS.escape(state.focus)}"]`) : null;
-    if (!el) el = root.querySelector(".panel-head h1, .fw-top .fw-crumb");
+    if (!el) el = root.querySelector(".panel-head h1, .fw-top h1");
     if (!el) return;
     if (!el.matches("a,button,input,[tabindex]")) el.setAttribute("tabindex", "-1");
     try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); }

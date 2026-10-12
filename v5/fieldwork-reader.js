@@ -19,7 +19,7 @@ window.FreemanFieldwork = (() => {
   const connected = [["", "All projects"], ...[...new Set(data.archive.filter((a) => a.link).map((a) => a.project))].map((p) => [p, p])];
   const DRAFT_KEY = "freeman-fieldwork-local-drafts";
 
-  const mem = { category: "All records", project: "", q: "" };
+  const mem = { category: "All records", project: "", q: "", scroll: null };
   let api = null, host = null, els = {}, current = { kind: "index" }, active = 0, qTimer = null;
 
   let drafts = [];
@@ -73,16 +73,15 @@ window.FreemanFieldwork = (() => {
 
   /* ---------- Frame ---------- */
   function frame() {
-    host.innerHTML = `<div class="fw-frame"><header class="fw-top"><h1 class="fw-crumb"><a class="fw-link" href="company.html"><strong>FREEMAN GC</strong></a> / <a class="fw-link fw-section" href="fieldwork.html">FIELDWORK</a><span class="fw-tail"></span></h1><a class="fw-close" href="company.html">× CLOSE</a></header><div class="fw-line"></div><div class="fw-mast"><div><div class="fw-eyebrow">ARCHIVE / ONGOING</div><div class="fw-title" role="heading" aria-level="2">Fieldwork<i>.</i></div></div><div class="fw-description">A working record of the things we build, observe, and learn.</div></div><div class="fw-grid"><aside class="fw-side"><div class="fw-label">BROWSE / INDEX</div><nav class="fw-menu" aria-label="Record categories"></nav><div class="fw-line"></div><div class="fw-label">CONNECTED WORK</div><nav class="fw-related" aria-label="Project filters"></nav></aside><section class="fw-window" id="fw-window" aria-label="Records"></section><aside class="fw-status"><div class="fw-label">ARCHIVE STATUS</div><div class="fw-stat-row"><span class="fw-muted">RECORDS</span><div class="fw-stat" id="fw-total"></div></div><div class="fw-stat-row"><span class="fw-muted">MODE</span><div style="padding-top:8px">OPEN / ONGOING</div></div><div class="fw-label" style="margin-top:26px">RECENT ACTIVITY</div><div class="fw-activity"><b>+</b><span>New observations can be prepared as drafts</span></div><div class="fw-activity"><b>↗</b><span>Records connect to finished projects</span></div><div class="fw-activity"><b>○</b><span>Unverified references remain identified</span></div><a class="fw-button" id="fw-new" href="fieldwork.html?note=new">+ ADD LOCAL FIELD NOTE ↗</a></aside></div><div class="fw-line"></div><footer class="fw-foot"><a class="fw-backlink fw-link" href="company.html">← FREEMAN GC</a><span class="fw-muted" id="fw-message" aria-live="polite"></span><span class="fw-sig">FREEMAN / BUILT FOR GENERATIONS™</span></footer></div>`;
+    host.innerHTML = `<div class="fw-frame"><header class="fw-top"><h1 class="fw-crumb sr-only">Fieldwork<span class="fw-tail"></span></h1><span class="fw-nav"></span><a class="fw-close" href="fieldwork.html" hidden>× CLOSE</a></header><div class="fw-line"></div><div class="fw-mast"><div><div class="fw-eyebrow">ARCHIVE / ONGOING</div><div class="fw-title" role="heading" aria-level="2">Fieldwork<i>.</i></div></div><div class="fw-description">A working record of the things we build, observe, and learn.</div></div><div class="fw-grid"><aside class="fw-side"><div class="fw-label">BROWSE / INDEX</div><nav class="fw-menu" aria-label="Record categories"></nav><div class="fw-line"></div><div class="fw-label">CONNECTED WORK</div><nav class="fw-related" aria-label="Project filters"></nav></aside><section class="fw-window" id="fw-window" aria-label="Records"></section><aside class="fw-status"><div class="fw-label">ARCHIVE STATUS</div><div class="fw-stat-row"><span class="fw-muted">RECORDS</span><div class="fw-stat" id="fw-total"></div></div><div class="fw-stat-row"><span class="fw-muted">MODE</span><div style="padding-top:8px">OPEN / ONGOING</div></div><div class="fw-label" style="margin-top:26px">RECENT ACTIVITY</div><div class="fw-activity"><b>+</b><span>New observations can be prepared as drafts</span></div><div class="fw-activity"><b>↗</b><span>Records connect to finished projects</span></div><div class="fw-activity"><b>○</b><span>Unverified references remain identified</span></div><a class="fw-button" id="fw-new" href="fieldwork.html?note=new">+ ADD LOCAL FIELD NOTE ↗</a></aside></div><div class="fw-line"></div><footer class="fw-foot"><span class="fw-backlink" aria-hidden="true"></span><span class="fw-muted" id="fw-message" aria-live="polite"></span><span class="fw-sig">FREEMAN / BUILT FOR GENERATIONS™</span></footer></div>`;
     els = {
       window: host.querySelector("#fw-window"),
       menu: host.querySelector(".fw-menu"),
       related: host.querySelector(".fw-related"),
       message: host.querySelector("#fw-message"),
       tail: host.querySelector(".fw-tail"),
-      section: host.querySelector(".fw-section"),
+      nav: host.querySelector(".fw-nav"),
       close: host.querySelector(".fw-close"),
-      back: host.querySelector(".fw-backlink"),
     };
     els.menu.addEventListener("click", (e) => {
       const b = e.target.closest("[data-cat]");
@@ -101,22 +100,19 @@ window.FreemanFieldwork = (() => {
   }
   const setMessage = (v) => { els.message.textContent = v; };
 
-  /* Header, × CLOSE and footer link always describe the parent of the current view. */
+  /* Section line is shared with the rest of the site; × CLOSE appears only on a record or note. */
   function updateChrome() {
-    const parent = current.kind === "index" ? { href: "company.html", text: "FREEMAN GC", label: "return to Freeman GC" } : { href: filterQuery(), text: "FIELDWORK", label: "return to the Fieldwork index" };
-    const focus = current.record ? current.record.slug : "";
-    els.close.setAttribute("href", parent.href);
-    els.close.setAttribute("aria-label", "Close — " + parent.label);
-    els.back.setAttribute("href", parent.href);
-    els.back.textContent = "← " + parent.text;
-    [els.close, els.back].forEach((a) => (focus ? a.setAttribute("data-focus", focus) : a.removeAttribute("data-focus")));
-    els.section.setAttribute("href", current.kind === "index" ? "fieldwork.html" : filterQuery());
-    if (focus) els.section.setAttribute("data-focus", focus);
-    else els.section.removeAttribute("data-focus");
-    if (current.kind === "index") els.section.setAttribute("aria-current", "page");
-    else els.section.removeAttribute("aria-current");
+    const isIndex = current.kind === "index";
+    const focus = current.record ? current.record.slug : undefined;
+    const parent = isIndex ? null : { href: filterQuery(), focus };
+    els.nav.innerHTML = window.FreemanNav ? window.FreemanNav("fieldwork", parent) : "";
+    els.close.hidden = isIndex;
+    els.close.setAttribute("href", isIndex ? "fieldwork.html" : filterQuery());
+    els.close.setAttribute("aria-label", "Close — return to the Fieldwork index");
+    if (focus) els.close.setAttribute("data-focus", focus);
+    else els.close.removeAttribute("data-focus");
     els.tail.textContent =
-      current.kind === "detail" ? " / " + numberOf(current.record) : current.kind === "note" ? " / NEW NOTE" : "";
+      current.kind === "detail" ? " / " + numberOf(current.record) : current.kind === "note" ? " / New note" : "";
   }
 
   function renderNav() {
@@ -161,7 +157,9 @@ window.FreemanFieldwork = (() => {
     if (focusIndex >= 0) active = focusIndex;
     renderList();
     const scroller = els.window.querySelector(".fw-scroller");
-    if (state && typeof state.fwScroll === "number") scroller.scrollTop = state.fwScroll;
+    // Back/Forward carry the position in history; × CLOSE from a record reuses the last one seen.
+    const scroll = state && typeof state.fwScroll === "number" ? state.fwScroll : focusIndex >= 0 ? mem.scroll : null;
+    if (typeof scroll === "number") scroller.scrollTop = scroll;
     if (focusIndex >= 0) reveal(focusIndex);
   }
   function renderList() {
@@ -289,6 +287,7 @@ window.FreemanFieldwork = (() => {
       mem.category = "All records";
       mem.project = "";
       mem.q = "";
+      mem.scroll = null;
       active = 0;
       frame();
       show(route, state || {});
@@ -297,7 +296,7 @@ window.FreemanFieldwork = (() => {
       show(route, state || {});
     },
     closeTarget() {
-      if (current.kind === "index") return { href: "company.html", label: "Freeman GC" };
+      if (current.kind === "index") return null;
       return { href: filterQuery(), focus: current.record ? current.record.slug : undefined };
     },
     title() {
@@ -305,6 +304,7 @@ window.FreemanFieldwork = (() => {
     },
     save() {
       const scroller = els.window && els.window.querySelector(".fw-scroller");
+      if (scroller) mem.scroll = scroller.scrollTop;
       return scroller ? { fwScroll: scroller.scrollTop, fwActive: active } : {};
     },
     key(e) {

@@ -77,14 +77,6 @@ a,button,.hover-word,.phrase{transition:none!important;animation:none!important}
 .panel-head .close:disabled:hover{background:none;color:var(--muted)}
 .panel-head .crumb{position:relative}
 .sheet-controls .section-link:empty{min-width:1px}
-.hub-layout{display:grid;grid-template-columns:300px minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:64px;height:100%}
-.hub-reading{position:relative;height:100%;min-height:0;min-width:0;overflow:hidden}
-.hub-phone{height:100%}
-.hub-register .index-row{text-transform:uppercase;letter-spacing:.015em}
-.hub-register .index-row:first-child .phrase{font-weight:700}
-.hub-register .index-row.active .number{color:var(--orange)}
-:root[data-palette="sand"] .hub-register .index-title,:root[data-palette="umber"] .hub-register .index-title{color:var(--muted)}
-@media (max-width:760px){.hub-layout{grid-template-columns:1fr;gap:0}}
 @media (pointer:coarse){
   .close:after,.sheet-controls button:after,.sheet-controls .section-link:after{inset:-15px -8px}
   .panel-head .crumb:after{content:"";position:absolute;inset:-15px -6px}
@@ -135,3 +127,15 @@ body[data-route="contact"] .viewport{bottom:32px;display:flex}
 /* White writing surface remains white across all three site palettes. */
 .contact-inquiry textarea{background:#fff;color:#292927}
 .contact-inquiry textarea::placeholder{color:#868580}
+
+/* Section line: the same four destinations on every interior page; current section in orange. */
+.site-nav{display:flex;align-items:center;min-width:0;white-space:nowrap;text-transform:uppercase;letter-spacing:.035em}
+.site-nav .sep{padding:0 10px}
+.site-nav a{position:relative}
+.site-nav .brand{font-weight:700}
+.site-nav .is-current{color:var(--orange)}
+.site-nav a:hover{background:var(--orange);color:var(--paper)}
+.fw-close[hidden]{display:none}
+@media(max-width:760px){.site-nav .sep{padding:0 7px}}
+@media(max-width:360px){.site-nav .sep{padding:0 5px}}
+@media(pointer:coarse){.site-nav a::after{content:"";position:absolute;inset:-17px -5px}}
