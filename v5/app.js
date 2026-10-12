@@ -396,8 +396,16 @@
     pageCount = 1;
     renderPage = () => {};
     const vp = root.querySelector(".viewport");
-    vp.innerHTML = `<div class="contact-sheet"><p class="subtle">For new work, partnerships or general inquiries.</p>${link("gabe@freemangc.com ↗", "mailto:gabe@freemangc.com", "phrase")}${link("706.263.3348 ↗", "tel:+17062633348", "phrase")}<p class="subtle">GABE FREEMAN<br>CARTERSVILLE, GEORGIA</p></div>`;
-    words(vp);
+    vp.innerHTML = `<div class="contact-layout"><div class="contact-sheet"><p class="subtle">For new work, partnerships or general inquiries.</p>${link("gabe@freemangc.com ↗", "mailto:gabe@freemangc.com", "phrase")}${link("706.263.3348 ↗", "tel:+17062633348", "phrase")}<p class="subtle">GABE FREEMAN<br>CARTERSVILLE, GEORGIA</p></div><form class="contact-inquiry" id="contact-inquiry"><label for="contact-message">WRITE AN INQUIRY</label><textarea id="contact-message" name="message" required maxlength="4000" placeholder="Tell us about your project."></textarea><button type="submit">OPEN EMAIL ↗</button><p class="contact-disclaimer">OPENS YOUR EMAIL APPLICATION. NOTHING IS SENT FROM THIS WEBSITE.</p></form></div>`;
+    const form = vp.querySelector("#contact-inquiry");
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const message = form.elements.message.value.trim();
+      if (!message) return;
+      const subject = encodeURIComponent("Freeman GC — New inquiry");
+      const body = encodeURIComponent(message);
+      window.location.href = "mailto:gabe@freemangc.com?subject=" + subject + "&body=" + body;
+    });
     count();
   }
   function notFound() {
