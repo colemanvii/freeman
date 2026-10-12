@@ -34,7 +34,29 @@
       ],
       "slug": "beetlecat",
       "id": "01",
-      "image": "assets/project-0.jpg"
+      "image": "assets/project-0.jpg",
+      "gallery": [
+        {
+          "src": "assets/project-0.jpg",
+          "w": 1920,
+          "h": 1370
+        },
+        {
+          "src": "assets/projects/beetlecat-1.jpg",
+          "w": 1920,
+          "h": 1281
+        },
+        {
+          "src": "assets/projects/beetlecat-interior-2.jpg",
+          "w": 1440,
+          "h": 1920
+        },
+        {
+          "src": "assets/projects/beetlecat-3.jpg",
+          "w": 1920,
+          "h": 1281
+        }
+      ]
     },
     {
       "name": "The Optimist",
@@ -70,7 +92,24 @@
       ],
       "slug": "the-optimist",
       "id": "02",
-      "image": "assets/project-1.jpg"
+      "image": "assets/project-1.jpg",
+      "gallery": [
+        {
+          "src": "assets/project-1.jpg",
+          "w": 1920,
+          "h": 1080
+        },
+        {
+          "src": "assets/projects/the-optimist-1.jpg",
+          "w": 1920,
+          "h": 2400
+        },
+        {
+          "src": "assets/projects/the-optimist-2.jpg",
+          "w": 1920,
+          "h": 1311
+        }
+      ]
     },
     {
       "name": "Barnsley Gardens",
@@ -106,7 +145,24 @@
       ],
       "slug": "barnsley-gardens",
       "id": "03",
-      "image": "assets/project-2.jpg"
+      "image": "assets/project-2.jpg",
+      "gallery": [
+        {
+          "src": "assets/project-2.jpg",
+          "w": 1920,
+          "h": 1281
+        },
+        {
+          "src": "assets/projects/barnsley-gardens-2.jpg",
+          "w": 1920,
+          "h": 2704
+        },
+        {
+          "src": "assets/projects/barnsley-gardens-3.jpg",
+          "w": 1920,
+          "h": 1312
+        }
+      ]
     },
     {
       "name": "Bocado Pizza",

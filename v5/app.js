@@ -336,7 +336,109 @@
     }
     count();
   }
+  /* Photography-first project page: one photograph at a time, the name, place and verified credits
+     beside it. Desktop: click the right/left half of the photograph; phones: swipe; keys: ← →.
+     Changing photographs never adds history, so CLOSE still returns to wherever the visitor came from. */
+  let galleryKey = null;
+  function gallery(p) {
+    chrome({
+      title: "Projects / " + p.name,
+      section: "projects",
+      parent: { href: "projects.html", focus: p.slug },
+    });
+    const credits = [["Client", credit(p, "Client")], ["Interior design", credit(p, "Interior Design")], ["Photography", credit(p, "Photography")]]
+      .filter(([, v]) => v && v !== "Interior Designer");
+    const related = archive.filter((a) => a.link === p.slug);
+    const photos = p.gallery;
+    const vp = root.querySelector(".viewport");
+    vp.innerHTML = `<div class="pg"><header class="pg-info"><h2 class="pg-name">${esc(p.name)}</h2><p class="pg-place">${esc(p.location)}</p><dl class="pg-credits">${credits
+      .map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`)
+      .join("")}</dl>${related
+      .map((a) => link(`Fieldwork ${pad(archive.indexOf(a) + 1, 3)} ↗`, "fieldwork-" + a.slug + ".html", "pg-related phrase"))
+      .join("")}</header><section class="pg-stage" aria-roledescription="gallery" aria-label="${esc(p.name)} photographs"><div class="pg-frame" tabindex="0" aria-label="Photographs — use the left and right arrow keys"><div class="pg-track">${photos
+      .map((g, i) => `<figure class="pg-slide" aria-hidden="true"><img data-src="${esc(g.src)}" width="${g.w}" height="${g.h}" alt="${esc(p.name)} — photograph ${i + 1} of ${photos.length}" draggable="false"></figure>`)
+      .join("")}</div></div><div class="pg-controls"><button type="button" class="pg-arrow" data-step="-1" aria-label="Previous photograph">←</button><p class="pg-count" aria-live="polite"></p><button type="button" class="pg-arrow" data-step="1" aria-label="Next photograph">→</button></div></section></div>`;
+    const frame = vp.querySelector(".pg-frame"), track = vp.querySelector(".pg-track");
+    const slides = [...track.children], counter = vp.querySelector(".pg-count");
+    const [prevBtn, nextBtn] = vp.querySelectorAll(".pg-arrow");
+    const still = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let index = Math.max(0, Math.min(photos.length - 1, Number(hist.state.slide) || 0));
+    function show(i, animate = true) {
+      index = Math.max(0, Math.min(photos.length - 1, i));
+      // Load the current photograph and its neighbours only.
+      [index - 1, index, index + 1].forEach((n) => {
+        const img = slides[n] && slides[n].querySelector("img");
+        if (img && !img.getAttribute("src")) img.src = img.dataset.src;
+      });
+      track.style.transition = animate && !still() ? "" : "none";
+      track.style.transform = `translateX(${-index * 100}%)`;
+      slides.forEach((s, n) => s.setAttribute("aria-hidden", String(n !== index)));
+      counter.textContent = `${pad(index + 1)} / ${pad(photos.length)}`;
+      prevBtn.disabled = index === 0;
+      nextBtn.disabled = index === photos.length - 1;
+      frame.dataset.first = String(index === 0);
+      frame.dataset.last = String(index === photos.length - 1);
+      hist.write("replaceState", { ...hist.state, slide: index }, location.href); // kept for Back/Forward, never pushed
+    }
+    [prevBtn, nextBtn].forEach((b) => b.addEventListener("click", () => show(index + Number(b.dataset.step))));
+    // Desktop: the photograph's left half goes back, its right half forward.
+    frame.addEventListener("click", (e) => {
+      const img = e.target.closest("img");
+      if (!img || moved) return;
+      const r = img.getBoundingClientRect();
+      show(index + (e.clientX < r.left + r.width / 2 ? -1 : 1));
+    });
+    frame.addEventListener("mousemove", (e) => {
+      const img = e.target.closest("img");
+      if (!img) return (frame.dataset.side = "");
+      const r = img.getBoundingClientRect();
+      frame.dataset.side = e.clientX < r.left + r.width / 2 ? "prev" : "next";
+    });
+    frame.addEventListener("mouseleave", () => (frame.dataset.side = ""));
+    // Phones: horizontal swipe that follows the finger. Touches starting at the screen edge are
+    // left alone so the browser's own swipe-back keeps working.
+    const EDGE = 24;
+    let startX = 0, startY = 0, dx = 0, tracking = false, horizontal = null, moved = false;
+    frame.addEventListener("touchstart", (e) => {
+      const t = e.touches[0];
+      moved = false;
+      if (e.touches.length !== 1 || t.clientX < EDGE || t.clientX > innerWidth - EDGE) return (tracking = false);
+      tracking = true; horizontal = null; startX = t.clientX; startY = t.clientY; dx = 0;
+    }, { passive: true });
+    frame.addEventListener("touchmove", (e) => {
+      if (!tracking) return;
+      const t = e.touches[0];
+      dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+      if (horizontal === null && Math.abs(dx) + Math.abs(dy) > 8) horizontal = Math.abs(dx) > Math.abs(dy);
+      if (!horizontal) return;
+      e.preventDefault();
+      moved = true;
+      const atEnd = (dx > 0 && index === 0) || (dx < 0 && index === photos.length - 1);
+      track.style.transition = "none";
+      track.style.transform = `translateX(calc(${-index * 100}% + ${atEnd ? dx * 0.3 : dx}px))`;
+    }, { passive: false });
+    const endSwipe = () => {
+      if (!tracking) return;
+      tracking = false;
+      if (!horizontal) return;
+      const w = frame.clientWidth;
+      show(index + (dx < -Math.min(60, w * 0.18) ? 1 : dx > Math.min(60, w * 0.18) ? -1 : 0));
+      setTimeout(() => (moved = false), 50);
+    };
+    frame.addEventListener("touchend", endSwipe);
+    frame.addEventListener("touchcancel", endSwipe);
+    galleryKey = (e) => {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return false;
+      e.preventDefault();
+      show(index + (e.key === "ArrowRight" ? 1 : -1));
+      return true;
+    };
+    show(index, false);
+    count();
+  }
   function project(p) {
+    if (Array.isArray(p.gallery) && p.gallery.length) return gallery(p);
     const related = archive.filter((a) => a.link === p.slug);
     const b = [
       block("p", "P—" + p.id + " / " + p.type, "micro"),
@@ -481,9 +583,11 @@
       view = { kind: "fieldwork", detail: () => fw.isDetail(), key: (e) => fw.key(e), save: () => fw.save(), destroy: () => fw.destroy() };
       document.title = fw.title() + " — Freeman GC";
     } else {
+      galleryKey = null;
       view = {
         kind: route.kind,
         detail: () => route.kind === "project",
+        key: (e) => (galleryKey ? galleryKey(e) : false),
         save: () => {
           if (route.kind !== "projects") return {};
           const scroller = root.querySelector(".pi-scroller");
