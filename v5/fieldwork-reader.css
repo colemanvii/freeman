@@ -39,3 +39,72 @@ html,body{overflow:hidden}
 @media(max-width:580px){.fw-frame{padding:16px 15px max(14px,env(safe-area-inset-bottom))}.fw-top{font-size:9px}.fw-mast{padding:20px 0 15px}.fw-title{font-size:30px}.fw-description{max-width:135px;font-size:9px}.fw-grid{grid-template-columns:95px minmax(0,1fr);gap:10px;padding-top:10px}.fw-menu button,.fw-related button{font-size:9px;padding:8px 2px}.fw-label{font-size:8px}.fw-record{grid-template-columns:42px minmax(0,1fr);gap:8px;min-height:80px}.fw-record .fw-number{display:none}.fw-thumb,.fw-thumb-placeholder{width:42px;height:50px}.fw-name{font-size:10px}.fw-meta{font-size:8px}.fw-search{font-size:9px;padding:0 6px}.fw-step{width:31px;height:35px}.fw-scrollcount{font-size:8px}.fw-foot{font-size:8px;gap:6px}.fw-foot .fw-muted{font-size:8px}.fw-side .fw-line{margin:10px 0}.fw-detail h2{font-size:19px}}
 @media(max-height:650px){.fw-mast{padding:13px 0}.fw-title{font-size:29px}.fw-record{min-height:69px;padding:7px 2px}.fw-thumb,.fw-thumb-placeholder{height:47px}.fw-foot{padding-top:9px}.fw-line{margin-top:11px}}
 @media(prefers-reduced-motion:reduce){.fw-scroller{scroll-behavior:auto}}
+
+/* Mobile composition: keep the analog archive, release width to the records. */
+@media(max-width:580px){
+ .fw-frame{padding: max(12px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));}
+ .fw-top{min-height:42px;flex-shrink:0}
+ .fw-top a{display:inline-flex;align-items:center;min-height:44px}
+ .fw-top .fw-close{padding:0 4px;font-size:11px}
+ .fw-mast{padding:10px 0 14px}
+ .fw-mast .fw-eyebrow{margin-bottom:6px}
+ .fw-title{font-size:clamp(29px,8vw,38px)}
+ .fw-description{font-size:10px;max-width:155px}
+ .fw-grid{display:flex;flex-direction:column;gap:10px;padding-top:9px;min-height:0}
+ .fw-side{flex:0 0 auto;min-width:0;overflow:hidden}
+ .fw-side>.fw-label{margin:0 0 6px;font-size:9px}
+ .fw-menu{display:flex;gap:5px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding:2px 1px 5px}
+ .fw-menu::-webkit-scrollbar,.fw-related::-webkit-scrollbar{display:none}
+ .fw-menu button{flex:0 0 auto;width:auto;min-height:40px;display:inline-flex;align-items:center;gap:10px;border:1px solid var(--hair);padding:9px 11px;font-size:10px;white-space:nowrap}
+ .fw-menu button.active{border-color:var(--ink)}
+ .fw-side .fw-line,.fw-side .fw-line+.fw-label,.fw-related{display:none}
+ .fw-window{flex:1;min-height:0;min-width:0}
+ .fw-toolbar{gap:6px;padding-bottom:8px}
+ .fw-search{height:44px;font-size:11px}
+ .fw-step{width:44px;height:44px;font-size:17px}
+ .fw-record{grid-template-columns:58px minmax(0,1fr);min-height:87px;gap:12px;padding:9px 4px}
+ .fw-record .fw-number{display:none}
+ .fw-thumb,.fw-thumb-placeholder{width:58px;height:65px}
+ .fw-name{font-size:12px;line-height:1.45;padding:8px 2px;min-height:44px;display:inline-flex;align-items:center;overflow-wrap:anywhere}
+ .fw-meta{font-size:9px;line-height:1.5;margin-top:2px;overflow-wrap:anywhere}
+ .fw-scrollcount{font-size:9px;line-height:1.45}
+ .fw-foot{min-height:34px;padding-top:7px}
+ .fw-foot .fw-muted{display:none}
+ .fw-back{min-height:44px;display:inline-flex;align-items:center}
+ .fw-detail p{font-size:12px;line-height:1.7}
+ .fw-draft input,.fw-draft textarea,.fw-draft select{font-size:16px}
+ .fw-button{min-height:44px}
+}
+@media(max-width:580px) and (max-height:740px){
+ .fw-mast{padding:5px 0 9px}
+ .fw-title{font-size:27px}
+ .fw-description{font-size:9px}
+ .fw-side>.fw-label{display:none}
+ .fw-menu{padding-bottom:2px}
+ .fw-menu button{min-height:36px;padding:7px 10px}
+ .fw-grid{gap:6px;padding-top:6px}
+ .fw-record{min-height:75px}
+ .fw-thumb,.fw-thumb-placeholder{height:56px}
+}
+@media(max-height:470px) and (orientation:landscape){
+ .fw-frame{padding:8px max(14px,env(safe-area-inset-right)) 8px max(14px,env(safe-area-inset-left))}
+ .fw-top{min-height:27px}
+ .fw-mast{padding:5px 0}
+ .fw-mast .fw-eyebrow,.fw-description{display:none}
+ .fw-title{font-size:23px}
+ .fw-grid{grid-template-columns:125px minmax(0,1fr);gap:12px;padding-top:5px}
+ .fw-side>.fw-label{display:none}
+ .fw-menu button,.fw-related button{min-height:28px;padding:3px 5px}
+ .fw-record{min-height:62px;padding:5px 2px}
+ .fw-thumb,.fw-thumb-placeholder{height:44px;width:44px}
+ .fw-toolbar{padding-bottom:5px}
+ .fw-search,.fw-step{height:32px}
+ .fw-foot{padding-top:3px}
+}
+@media(pointer:coarse){
+ .fw-close,.fw-back,.fw-button{touch-action:manipulation}
+ .fw-menu button:hover,.fw-related button:hover,.fw-record .fw-name:hover{background:transparent;color:var(--ink)}
+ .fw-menu button.active:hover{background:var(--ink);color:var(--paper)}
+ .fw-menu button:active,.fw-record .fw-name:active{background:var(--orange);color:var(--paper)}
+}
+.fw-menu button:focus-visible,.fw-name:focus-visible,.fw-step:focus-visible,.fw-back:focus-visible,.fw-close:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
