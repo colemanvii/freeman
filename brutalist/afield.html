@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Afield — Freeman GC</title>
+<meta name="description" content="Afield: the living field record of Freeman General Contractors — details, materials, places, schedules and archive references, numbered and sourced.">
+<meta name="theme-color" content="#d4c4a8">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="stylesheet" href="assets/css/freeman.css">
+</head>
+<body data-page="afield" data-nav="afield" class="afield">
+<a class="sr" href="#main">Skip to content</a>
+<header class="mast wrap">
+  <div class="mast__row">
+    <a class="mast__brand" href="index.html"><span class="name">FREEMAN GENERAL CONTRACTORS</span><span class="sub">Afield / Field record</span></a>
+    <nav class="nav" aria-label="Primary"><a class="brand" data-nav="company" href="freeman-gc.html">Freeman GC</a><span class="slash" aria-hidden="true">/</span><a data-nav="projects" href="projects.html">Projects</a><span class="slash" aria-hidden="true">/</span><a data-nav="afield" href="afield.html">Afield</a><span class="slash" aria-hidden="true">/</span><a data-nav="contact" href="contact.html">Contact</a><span class="slash" aria-hidden="true">/</span><a class="portal" data-nav="portal" href="portal.html">Client Portal</a></nav>
+  </div>
+</header>
+<main id="main" class="wrap">
+
+<section class="af-intro">
+  <div class="mark"><p class="label muted" style="margin-bottom:18px">Field record · est. 2026</p><h1 class="display">Afield</h1></div>
+  <p class="lede">A standing record of Freeman’s work away from the drawing board — details, materials, places and schedules, filed one at a time. Every entry is numbered and sourced. Dates are entered only when they are verified.</p>
+</section>
+
+<dl class="ledger af-stats" data-stats></dl>
+
+<div class="af-controls">
+  <div class="af-search"><label class="label" for="af-q">Find</label><input id="af-q" type="search" data-q placeholder="Timber, schedule, Barnsley…" autocomplete="off"></div>
+  <div class="af-right">
+    <label class="af-select"><span class="muted">Project</span><select data-project-select aria-label="Filter by project"></select></label>
+    <div class="tally af-view" role="group" aria-label="View" style="margin:0"><button type="button" data-view="ledger" aria-pressed="true">Ledger</button><button type="button" data-view="sheet" aria-pressed="false">Sheet</button></div>
+  </div>
+  <div class="tally af-kinds" data-kinds role="group" aria-label="Filter by kind"></div>
+</div>
+<p class="micro" style="margin:10px 0 0;display:flex;justify-content:space-between;gap:20px"><span>Records <span data-count>036 / 036</span></span><span>Undated — capture dates not yet verified</span></p>
+<div data-records class="index af-ledger"></div>
+
+<section class="section">
+  <div class="shead"><span class="label n">S</span><span class="label">Sawdust</span><span class="label aside">Scraps, inspirations, outtakes &amp; ideas — unfiled</span></div>
+  <div class="two" style="margin-bottom:28px"><div class="k"></div><p class="v read" style="font-size:13.5px">Carried over from the Sawdust page of the previous Freeman site. These are references, not records of Freeman jobs. An item is promoted into the numbered record once it has been described and sourced.</p></div>
+  <div class="sawdust" data-sawdust></div>
+</section>
+
+<section class="section">
+  <div class="shead"><span class="label n">+</span><span class="label">Filing a record</span><span class="label aside">For the Freeman team</span></div>
+  <div class="two"><div class="k"></div>
+    <ol class="numbered v">
+      <li>Photograph from a safe, repeatable position. Keep the original file and its capture date.</li>
+      <li>Write one factual observation — what is seen, not what is hoped.</li>
+      <li>Add the entry to data/afield.js with the next number, the project, kind and source.</li>
+      <li>Leave the date blank unless it is verified. Never reuse a number.</li>
+    </ol>
+  </div>
+</section>
+
+</main>
+<footer class="foot wrap">
+  <div class="foot__row">
+    <span><img class="mark" src="assets/img/fgc-mark-ink.svg" alt="" width="16" height="16">© <span data-year>2026</span> Freeman General Contractors · Cartersville, Georgia</span>
+    <span class="r"><a href="tel:7062633348">Tel. 706.263.3348</a><a href="mailto:gabe@freemangc.com">gabe@freemangc.com</a><span>Built for Generations™</span></span>
+  </div>
+</footer>
+<script src="data/projects.js"></script>
+<script src="data/afield.js"></script>
+<script src="data/local-photography.js"></script>
+<script src="assets/js/site.js"></script>
+</body>
+</html>
