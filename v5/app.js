@@ -387,6 +387,17 @@
   }
 
   /* ---------- Contact / not found ---------- */
+  const contactDraft = {
+    value: "",
+    read() {
+      try { this.value = sessionStorage.getItem("freeman-contact-draft") || this.value; } catch (e) {}
+      return this.value;
+    },
+    write(v) {
+      this.value = v;
+      try { sessionStorage.setItem("freeman-contact-draft", v); } catch (e) {}
+    },
+  };
   function contact() {
     chrome({
       title: "CONTACT / FREEMAN GENERAL CONTRACTORS",
@@ -396,15 +407,19 @@
     pageCount = 1;
     renderPage = () => {};
     const vp = root.querySelector(".viewport");
-    vp.innerHTML = `<div class="contact-layout"><div class="contact-sheet"><p class="subtle">For new work, partnerships or general inquiries.</p>${link("gabe@freemangc.com ↗", "mailto:gabe@freemangc.com", "phrase")}${link("706.263.3348 ↗", "tel:+17062633348", "phrase")}<p class="subtle">GABE FREEMAN<br>CARTERSVILLE, GEORGIA</p></div><form class="contact-inquiry" id="contact-inquiry"><label for="contact-message">WRITE AN INQUIRY</label><textarea id="contact-message" name="message" required maxlength="4000" placeholder="Tell us about your project."></textarea><button type="submit">OPEN EMAIL ↗</button><p class="contact-disclaimer">OPENS YOUR EMAIL APPLICATION. NOTHING IS SENT FROM THIS WEBSITE.</p></form></div>`;
+    vp.innerHTML = `<div class="contact-layout"><div class="contact-sheet"><h2 class="contact-label">CONTACT INFORMATION</h2><p class="subtle">For new work, partnerships or general inquiries.</p>${link("gabe@freemangc.com ↗", "mailto:gabe@freemangc.com", "phrase")}${link("706.263.3348 ↗", "tel:+17062633348", "phrase")}<p class="subtle">GABE FREEMAN<br>CARTERSVILLE, GEORGIA</p></div><form class="contact-inquiry" id="contact-inquiry" novalidate><label class="contact-label" for="contact-message">WRITE A MESSAGE</label><textarea id="contact-message" name="message" maxlength="4000" placeholder="Tell us about your project."></textarea><button type="submit">OPEN EMAIL ↗</button><p class="contact-disclaimer">Opens your email application. Nothing is sent from this website.</p></form></div>`;
     const form = vp.querySelector("#contact-inquiry");
+    const field = form.elements.message;
+    // The draft outlives re-renders (rotation, resize) and a return from the mail app.
+    field.value = contactDraft.read();
+    field.addEventListener("input", () => contactDraft.write(field.value));
     form.addEventListener("submit", (event) => {
       event.preventDefault();
-      const message = form.elements.message.value.trim();
-      if (!message) return;
+      const message = field.value.trim();
+      contactDraft.write(field.value);
       const subject = encodeURIComponent("Freeman GC — New inquiry");
-      const body = encodeURIComponent(message);
-      window.location.href = "mailto:gabe@freemangc.com?subject=" + subject + "&body=" + body;
+      const body = message ? "&body=" + encodeURIComponent(message) : "";
+      window.location.href = "mailto:gabe@freemangc.com?subject=" + subject + body;
     });
     count();
   }

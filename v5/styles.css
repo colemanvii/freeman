@@ -97,31 +97,37 @@ a,button,.hover-word,.phrase{transition:none!important;animation:none!important}
   .center a:after{content:"";position:absolute;inset:-14px -6px}
 }
 
-/* Contact: a two-column inquiry sheet, without bottom-corner pager clutter. */
+/* Contact: information left, one bordered message box right; no pager clutter. */
 body[data-route="contact"] .sheet-controls{display:none}
-body[data-route="contact"] .viewport{bottom:32px}
-.contact-layout{height:100%;min-height:0;width:min(1080px,100%);margin:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(35px,5vw,95px);align-items:center}
-.contact-layout .contact-sheet{margin:0;width:100%;height:auto;gap:25px}
-.contact-inquiry{display:flex;flex-direction:column;gap:13px;min-width:0}
-.contact-inquiry label{font:10px var(--mono);color:var(--muted);letter-spacing:.035em}
-.contact-inquiry textarea{width:100%;height:clamp(160px,29vh,280px);min-height:120px;resize:none;border:1px solid var(--hair);border-radius:0;background:transparent;color:var(--ink);padding:16px;font:12px/1.7 var(--mono);outline:none;cursor:text}
+body[data-route="contact"] .viewport{bottom:32px;display:flex}
+.contact-layout{min-height:0;width:min(940px,100%);margin:auto;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(40px,7vw,120px);align-items:start}
+.contact-label{display:block;margin:0 0 22px;font:10px/1.5 var(--mono);color:var(--muted);letter-spacing:.035em;text-transform:uppercase}
+.contact-layout .contact-sheet{margin:0;width:100%;height:auto;justify-content:flex-start;gap:22px}
+.contact-layout .contact-sheet .contact-label{margin-bottom:0}
+.contact-layout .contact-sheet>a{align-self:flex-start}
+.contact-inquiry{display:flex;flex-direction:column;min-width:0;margin:0}
+.contact-inquiry textarea{display:block;width:100%;height:clamp(180px,32vh,300px);min-height:120px;resize:none;border:1px solid var(--hair);border-radius:0;background:transparent;color:var(--ink);padding:16px;font:12px/1.7 var(--mono);outline:none;cursor:text;-webkit-appearance:none;appearance:none}
 .contact-inquiry textarea:focus{border-color:var(--orange)}
-.contact-inquiry textarea::placeholder{color:var(--muted)}
-.contact-inquiry button{align-self:flex-start;padding:8px 0;font:11px var(--mono)}
+.contact-inquiry textarea::placeholder{color:var(--muted);opacity:1}
+.contact-inquiry button{align-self:flex-start;margin-top:16px;padding:8px 0;border:0;background:transparent;color:var(--ink);font:11px var(--mono);letter-spacing:.035em;position:relative}
 .contact-inquiry button:hover{background:var(--orange);color:var(--paper)}
-.contact-disclaimer{font:9px/1.5 var(--mono);color:var(--muted)}
+.contact-disclaimer{margin:8px 0 0;font:9px/1.5 var(--mono);color:var(--muted);text-transform:uppercase}
 @media(max-width:760px){
  body[data-route="contact"] .viewport{bottom:max(25px,env(safe-area-inset-bottom))}
- .contact-layout{display:flex;flex-direction:column;justify-content:center;align-items:stretch;gap:clamp(25px,5vh,48px);max-width:480px}
- .contact-layout .contact-sheet{gap:15px}
- .contact-inquiry textarea{height:clamp(130px,23dvh,210px);font-size:16px}
- .contact-inquiry button{min-height:44px}
- .contact-disclaimer{font-size:9px}
+ .contact-layout{display:flex;flex-direction:column;justify-content:center;align-items:stretch;gap:clamp(28px,5vh,44px);max-width:480px}
+ .contact-label{margin-bottom:14px}
+ .contact-layout .contact-sheet{gap:14px}
+ .contact-inquiry textarea{height:clamp(120px,22dvh,210px);font-size:16px;line-height:1.5;padding:12px}
+ .contact-inquiry button{min-height:44px;margin-top:6px;font-size:12px}
+ .contact-disclaimer{margin-top:0}
 }
 @media(max-height:600px) and (orientation:landscape){
- .contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:24px}
- .contact-inquiry textarea{height:clamp(86px,29dvh,150px);min-height:75px}
+ body[data-route="contact"] .viewport{bottom:max(16px,env(safe-area-inset-bottom))}
+ .contact-layout{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:28px;max-width:none;align-items:start}
+ .contact-label{margin-bottom:8px}
  .contact-layout .contact-sheet{gap:9px}
- .contact-inquiry{gap:7px}
- .contact-disclaimer{font-size:8px}
+ .contact-layout .contact-sheet>a{font-size:14px}
+ .contact-inquiry textarea{height:clamp(80px,34dvh,150px);min-height:70px;font-size:16px;padding:10px}
+ .contact-inquiry button{min-height:44px;margin-top:2px}
+ .contact-disclaimer{display:none}
 }
