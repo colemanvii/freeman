@@ -10,7 +10,8 @@
  *  - index.html is the entrance. It stays in history like any other page; the eagle plays
  *    only on the first load of a tab session.
  *  - Every interior page carries the same section line at top-left:
- *      FREEMAN GC / PROJECTS / FIELDWORK / CONTACT  (current section in orange).
+ *      COMPANY / PROJECTS / FIELDWORK / CONTACT  (current section in orange).
+ *    "FREEMAN GC" is the brand, never a navigation link.
  *    The four sections link to each other directly; none routes through another.
  *  - ← BACK (bottom-left on every interior page; Escape on detail pages) is real history:
  *    it returns to wherever the visitor actually came from, exactly like browser Back or a
@@ -25,7 +26,7 @@
   const PALETTES = ["chalk", "sand", "umber"];
   const PAPER = { chalk: "#f4f4f0", sand: "#d9c5a7", umber: "#51453b" };
   const DESTINATIONS = [
-    ["FREEMAN GC", "company.html", "brand"],
+    ["COMPANY", "company.html", ""],
     ["PROJECTS", "projects.html", ""],
     ["FIELDWORK", "fieldwork.html", ""],
     ["CONTACT", "contact.html", ""],
@@ -173,7 +174,7 @@
     pageCount = 1,
     renderPage = () => {};
 
-  /* ---------- Panel chrome (FREEMAN GC / Projects / Contact) ---------- */
+  /* ---------- Panel chrome (Company / Projects / Contact) ---------- */
   function chrome({ title, section, parent }) {
     const backHtml = backMarkup();
     root.innerHTML = `<header class="panel-head"><h1 class="sr-only">${esc(title)}</h1>${siteNav(section, parent)}</header><section class="viewport" aria-label="Current sheet"></section><footer class="sheet-controls">${backHtml}<nav aria-label="Sheet navigation"><button id="previous" class="phrase" type="button">PREV</button><span class="count" aria-live="polite"></span><button id="next" class="phrase" type="button">NEXT</button></nav></footer>`;
@@ -264,7 +265,7 @@
     count();
   }
 
-  /* ---------- FREEMAN GC: the company, as an editorial reading page ---------- */
+  /* ---------- COMPANY: the company, as an editorial reading page ---------- */
   function company() {
     const b = [
       block("p", "01 / COMPANY", "micro"),
@@ -400,7 +401,7 @@
   function notFound() {
     chrome({ title: "Record not found", section: "" });
     const vp = root.querySelector(".viewport");
-    showPages(vp, reading(vp, [block("h1", "Record not found."), link("RETURN TO FREEMAN GC", "company.html", "text-link phrase")]));
+    showPages(vp, reading(vp, [block("h1", "Record not found."), link("RETURN TO COMPANY", "company.html", "text-link phrase")]));
   }
 
   /* ---------- Entrance ---------- */

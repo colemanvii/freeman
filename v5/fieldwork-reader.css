@@ -170,7 +170,7 @@ a.fw-button{align-self:flex-start}
  .fw-related{display:none}
  .fw-record{min-height:58px;padding:5px 2px}
  .fw-thumb,.fw-thumb-placeholder{width:44px;height:44px}
- .fw-record{grid-template-columns:44px minmax(0,1fr)}
+ .fw-record{grid-template-columns:25px 44px minmax(0,1fr)}
  .fw-toolbar{padding-bottom:4px}
  .fw-search,.fw-step,.fw-mobile-note{height:32px;min-height:32px}
  .fw-foot{padding-top:3px}
@@ -192,3 +192,6 @@ a.fw-button{align-self:flex-start}
 @media(max-height:470px) and (orientation:landscape) and (max-width:760px){
  .fw-top{padding:0 4px}
 }
+
+/* Record toolbar: ↑ ↓ stay at the right edge now that ← ALL RECORDS is gone. */
+.fw-toolbar-count ~ #fw-prev{margin-left:auto}
