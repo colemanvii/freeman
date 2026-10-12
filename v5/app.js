@@ -41,3 +41,15 @@ init();window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTim
   choices.forEach(([id,name])=>{const b=document.createElement('button');b.type='button';b.className='palette-chip palette-'+id;b.dataset.palette=id;b.setAttribute('aria-label',name+' palette');b.title=name;b.setAttribute('aria-pressed',String(id===selected));b.addEventListener('click',()=>choose(id));holder.appendChild(b)});
   root.appendChild(holder);
 })();
+
+/* Entry splash: centered Freeman eagle over cream, followed by the fixed-screen index. */
+(function freemanOpening(){
+  if(file!=='index.html')return;
+  try{if(sessionStorage.getItem('fgc-intro-seen'))return;sessionStorage.setItem('fgc-intro-seen','1')}catch(e){}
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const splash=document.createElement('div');splash.className='freeman-intro';splash.setAttribute('aria-hidden','true');
+  splash.innerHTML='<img src="intro-eagle.svg" alt="">';
+  document.querySelector('#site').appendChild(splash);
+  splash.addEventListener('animationend',()=>splash.remove(),{once:true});
+  setTimeout(()=>splash.remove(),2300);
+})();
