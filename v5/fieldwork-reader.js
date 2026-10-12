@@ -1,10 +1,12 @@
 "use strict";
 /*
- * Fieldwork — living index. Mounted by app.js; follows the same interior navigation rules:
- *   every view             → ← BACK (footer) follows real history; returning to the index
- *                            restores its filters, scroll and selected record
+ * Fieldwork — a photographic log. Mounted by app.js inside the same interior shell as the
+ * other sections (section line at the top, ← BACK at the bottom-left).
+ *   index   → one list of compact rows: thumbnail / title + project (+ date and time only
+ *             when a record carries a genuine one; none are invented)
+ *   record  → the existing record page; ↑ ↓ (or ← →) step records, each a history entry
  * Each record has its own URL (fieldwork-<slug>.html), so records deep-link, refresh and
- * work with Back/Forward. Filters live in the index URL (?category=&project=&q=).
+ * work with Back/Forward. Returning to the index restores its scroll and selected row.
  */
 window.FreemanFieldwork = (() => {
   const data = window.RECORDS;
@@ -15,12 +17,10 @@ window.FreemanFieldwork = (() => {
       (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
     );
   const pad = (n, l = 3) => String(n).padStart(l, "0");
-  const categories = ["All records", "Field", "Observation", "Material", "Process", "Artifact"];
-  const connected = [["", "All projects"], ...[...new Set(data.archive.filter((a) => a.link).map((a) => a.project))].map((p) => [p, p])];
   const DRAFT_KEY = "freeman-fieldwork-local-drafts";
 
-  const mem = { category: "All records", project: "", q: "", scroll: null };
-  let api = null, host = null, els = {}, current = { kind: "index" }, active = 0, qTimer = null;
+  const mem = { scroll: null };
+  let api = null, host = null, els = {}, current = { kind: "index" }, active = -1;
 
   let drafts = [];
   try {
@@ -39,24 +39,14 @@ window.FreemanFieldwork = (() => {
   const numberOf = (a) => (a.isDraft ? "D" + String(a.draftIndex + 1).padStart(2, "0") : pad(data.archive.indexOf(a) + 1));
   const img = (a) => (a.isDraft ? null : "assets/" + a.image);
   const projectFor = (a) => (a.link ? data.projects.find((p) => p.slug === a.link) : null);
-  const matches = (a) =>
-    (mem.category === "All records" || a.type === mem.category) &&
-    (!mem.project || a.project === mem.project) &&
-    (!mem.q || (a.title + " " + a.type + " " + a.project + " " + a.text).toLowerCase().includes(mem.q.toLowerCase()));
-  const filtered = () => entries().filter(matches);
-  const filterQuery = () => {
-    const p = new URLSearchParams();
-    if (mem.category !== "All records") p.set("category", mem.category);
-    if (mem.project) p.set("project", mem.project);
-    if (mem.q) p.set("q", mem.q);
-    const s = p.toString();
-    return "fieldwork.html" + (s ? "?" + s : "");
-  };
-  function readFilters(params) {
-    const c = params.get("category"), p = params.get("project");
-    mem.category = categories.includes(c) ? c : "All records";
-    mem.project = connected.some(([id]) => id && id === p) ? p : "";
-    mem.q = (params.get("q") || "").slice(0, 120);
+  // Only a genuine timestamp carried by the record itself; never a placeholder.
+  function stamp(a) {
+    const raw = a.capturedAt || a.date || a.savedAt;
+    const d = raw ? new Date(raw) : null;
+    if (!d || isNaN(d)) return null;
+    const ymd = `${d.getFullYear()}.${pad(d.getMonth() + 1, 2)}.${pad(d.getDate(), 2)}`;
+    const hasTime = typeof raw === "number" || /T\d|\d:\d/.test(String(raw));
+    return { iso: d.toISOString(), text: hasTime ? `${ymd} / ${pad(d.getHours(), 2)}:${pad(d.getMinutes(), 2)}` : ymd };
   }
 
   /* Which view does a route describe? */
@@ -71,111 +61,53 @@ window.FreemanFieldwork = (() => {
     return { kind: "index" };
   }
 
-  /* ---------- Frame ---------- */
+  /* ---------- Frame: the shared interior shell ---------- */
   function frame() {
-    host.innerHTML = `<div class="fw-frame"><header class="fw-top"><h1 class="fw-crumb sr-only">Fieldwork<span class="fw-tail"></span></h1><span class="fw-nav"></span></header><div class="fw-line"></div><div class="fw-mast"><div><div class="fw-eyebrow">ARCHIVE / ONGOING</div><div class="fw-title" role="heading" aria-level="2">Fieldwork<i>.</i></div></div><div class="fw-description">A working record of the things we build, observe, and learn.</div></div><div class="fw-grid"><aside class="fw-side"><div class="fw-label">BROWSE / INDEX</div><nav class="fw-menu" aria-label="Record categories"></nav><div class="fw-line"></div><div class="fw-label">CONNECTED WORK</div><nav class="fw-related" aria-label="Project filters"></nav></aside><section class="fw-window" id="fw-window" aria-label="Records"></section><aside class="fw-status"><div class="fw-label">ARCHIVE STATUS</div><div class="fw-stat-row"><span class="fw-muted">RECORDS</span><div class="fw-stat" id="fw-total"></div></div><div class="fw-stat-row"><span class="fw-muted">MODE</span><div style="padding-top:8px">OPEN / ONGOING</div></div><div class="fw-label" style="margin-top:26px">RECENT ACTIVITY</div><div class="fw-activity"><b>+</b><span>New observations can be prepared as drafts</span></div><div class="fw-activity"><b>↗</b><span>Records connect to finished projects</span></div><div class="fw-activity"><b>○</b><span>Unverified references remain identified</span></div><a class="fw-button" id="fw-new" href="fieldwork.html?note=new">+ ADD LOCAL FIELD NOTE ↗</a></aside></div><div class="fw-line"></div><footer class="fw-foot">${window.FreemanBack ? window.FreemanBack("fw-backlink fw-link") : ""}<span class="fw-muted" id="fw-message" aria-live="polite"></span><span class="fw-sig">FREEMAN / BUILT FOR GENERATIONS™</span></footer></div>`;
+    host.innerHTML = `<header class="panel-head"><h1 class="sr-only">Fieldwork<span class="fw-tail"></span></h1></header><section class="viewport fw-view" id="fw-window" aria-label="Fieldwork"></section><footer class="sheet-controls">${window.FreemanBack ? window.FreemanBack() : ""}<span class="sr-only" id="fw-message" aria-live="polite"></span></footer>`;
     els = {
+      head: host.querySelector(".panel-head"),
       window: host.querySelector("#fw-window"),
-      menu: host.querySelector(".fw-menu"),
-      related: host.querySelector(".fw-related"),
       message: host.querySelector("#fw-message"),
       tail: host.querySelector(".fw-tail"),
-      nav: host.querySelector(".fw-nav"),
     };
-    els.menu.addEventListener("click", (e) => {
-      const b = e.target.closest("[data-cat]");
-      if (!b) return;
-      mem.category = b.dataset.cat;
-      mem.project = "";
-      filtersChanged();
-    });
-    els.related.addEventListener("click", (e) => {
-      const b = e.target.closest("[data-project]");
-      if (!b) return;
-      mem.project = b.dataset.project;
-      mem.category = "All records";
-      filtersChanged();
-    });
   }
-  const setMessage = (v) => { els.message.textContent = v; };
+  const setMessage = (v) => { if (els.message) els.message.textContent = v; };
 
-  /* Section line is shared with the rest of the site; ← BACK (footer) is real history. */
+  /* Section line is shared with the rest of the site. */
   function updateChrome() {
-    const isIndex = current.kind === "index";
     const focus = current.record ? current.record.slug : undefined;
-    const parent = isIndex ? null : { href: filterQuery(), focus };
-    els.nav.innerHTML = window.FreemanNav ? window.FreemanNav("fieldwork", parent) : "";
+    const parent = current.kind === "index" ? null : { href: "fieldwork.html", focus };
+    const old = els.head.querySelector(".site-nav");
+    if (old) old.remove();
+    if (window.FreemanNav) els.head.insertAdjacentHTML("beforeend", window.FreemanNav("fieldwork", parent));
     els.tail.textContent =
       current.kind === "detail" ? " / " + numberOf(current.record) : current.kind === "note" ? " / New note" : "";
   }
 
-  function renderNav() {
-    const all = entries();
-    els.menu.innerHTML = categories
-      .map((c) => `<button type="button" data-cat="${esc(c)}" class="${c === mem.category && !mem.project ? "active" : ""}" aria-pressed="${c === mem.category && !mem.project}"><span>${esc(c)}</span><span>${all.filter((a) => c === "All records" || a.type === c).length}</span></button>`)
-      .join("");
-    els.related.innerHTML = connected
-      .map(([id, name]) => `<button type="button" data-project="${esc(id)}" aria-pressed="${mem.project === id}">↗ ${esc(name)}</button>`)
-      .join("");
-    host.querySelector("#fw-total").textContent = pad(all.length);
-  }
-
-  function filtersChanged() {
-    active = 0;
-    if (current.kind === "index") {
-      renderNav();
-      renderList();
-      api.replaceUrl(filterQuery());
-    } else {
-      api.navigate(filterQuery());
-    }
-  }
-
-  /* ---------- Index ---------- */
+  /* ---------- Index: the log ---------- */
   function renderIndex(state) {
-    els.window.innerHTML = `<div class="fw-toolbar"><input class="fw-search" type="search" enterkeyhint="search" autocomplete="off" placeholder="SEARCH FIELDWORK / MATERIALS / PEOPLE..." aria-label="Search field records"><button type="button" class="fw-step" id="fw-prev" aria-label="Previous record">↑</button><button type="button" class="fw-step" id="fw-next" aria-label="Next record">↓</button><a class="fw-mobile-note" href="fieldwork.html?note=new" aria-label="Create local field note">+ NOTE</a></div><div class="fw-scroller" tabindex="0" aria-label="Scrollable field records"></div><div class="fw-scrollcount"><span id="fw-listcount"></span><span>↑ ↓ TO ADVANCE · SCROLL TO BROWSE</span></div>`;
-    const input = els.window.querySelector(".fw-search");
-    input.value = mem.q;
-    // Only the list is redrawn while typing, so the input (and the iOS keyboard) stays put.
-    input.addEventListener("input", () => {
-      mem.q = input.value;
-      active = 0;
-      renderList();
-      clearTimeout(qTimer);
-      qTimer = setTimeout(() => api.replaceUrl(filterQuery()), 350);
-    });
-    els.window.querySelector("#fw-prev").onclick = () => move(-1);
-    els.window.querySelector("#fw-next").onclick = () => move(1);
-    const list = filtered();
+    const list = entries();
     const focusIndex = state && state.focus ? list.findIndex((a) => a.slug === state.focus) : -1;
-    if (focusIndex >= 0) active = focusIndex;
-    renderList();
+    active = focusIndex;
+    els.window.innerHTML = `<div class="fw-scroller" tabindex="0" aria-label="Field records"><ol class="fw-log">${list
+      .map((a, i) => {
+        const t = stamp(a);
+        const thumb = img(a)
+          ? `<img class="fw-thumb" src="${esc(img(a))}" alt="" loading="lazy">`
+          : `<span class="fw-thumb fw-thumb-placeholder" aria-hidden="true">✎</span>`;
+        return `<li class="fw-record${i === active ? " is-current" : ""}" data-row="${i}"><a class="fw-entry" href="${esc(href(a))}" data-slug="${esc(a.slug)}">${thumb}<span class="fw-text"><span class="fw-name">${esc(a.title)}</span><span class="fw-meta">${esc(a.project)}${a.isDraft ? " / Local draft" : ""}</span></span>${t ? `<time class="fw-time" datetime="${esc(t.iso)}">${esc(t.text)}</time>` : ""}</a></li>`;
+      })
+      .join("")}</ol></div>`;
     const scroller = els.window.querySelector(".fw-scroller");
     // The record a visitor opens becomes the selection they return to.
     scroller.addEventListener("click", (e) => {
       const row = e.target.closest(".fw-record");
       if (row) active = Number(row.dataset.row);
     });
-    // Back/Forward carry the position in history; × CLOSE from a record reuses the last one seen.
+    // Back/Forward carry the position in history; otherwise reuse the last one seen.
     const scroll = state && typeof state.fwScroll === "number" ? state.fwScroll : focusIndex >= 0 ? mem.scroll : null;
     if (typeof scroll === "number") scroller.scrollTop = scroll;
     if (focusIndex >= 0) reveal(focusIndex);
-  }
-  function renderList() {
-    const list = filtered();
-    active = Math.max(0, Math.min(active, list.length - 1));
-    const scroller = els.window.querySelector(".fw-scroller");
-    scroller.innerHTML =
-      list
-        .map((a, i) => {
-          const proj = projectFor(a);
-          return `<article class="fw-record ${i === active ? "is-current" : ""}" data-row="${i}"><span class="fw-number">${numberOf(a)}</span>${img(a) ? `<img class="fw-thumb" src="${esc(img(a))}" alt="" loading="lazy">` : `<span class="fw-thumb-placeholder" aria-hidden="true">✎</span>`}<div><a class="fw-name" href="${esc(href(a))}" data-slug="${esc(a.slug)}">${esc(a.title)}</a><div class="fw-meta">${proj ? "↗ " : ""}${esc(a.project)} / ${esc(a.type)}${a.isDraft ? " / LOCAL DRAFT" : ""}</div></div></article>`;
-        })
-        .join("") || '<div class="fw-empty">No matching records. Try another classification.</div>';
-    els.window.querySelector("#fw-listcount").textContent = `${list.length} RECORDS / ${mem.project || "ALL PROJECTS"}`;
-    renderNav();
-    updateSteps();
-    setMessage("SELECT A RECORD TO OPEN →");
   }
   /* Keep a row visible inside the scroller without scrolling the fixed page (iOS-safe). */
   function reveal(i) {
@@ -186,31 +118,18 @@ window.FreemanFieldwork = (() => {
     if (top < scroller.scrollTop) scroller.scrollTop = top;
     else if (bottom > scroller.scrollTop + scroller.clientHeight) scroller.scrollTop = bottom - scroller.clientHeight;
   }
+  // Keyboard only: ↑ ↓ move the selection through the log.
   function move(n) {
     const nodes = [...els.window.querySelectorAll(".fw-record")];
     if (!nodes.length) return;
-    active = Math.max(0, Math.min(nodes.length - 1, active + n));
+    active = Math.max(0, Math.min(nodes.length - 1, active < 0 ? 0 : active + n));
     nodes.forEach((el, i) => el.classList.toggle("is-current", i === active));
     reveal(active);
-    setMessage(`RECORD ${pad(active + 1, 2)} / ${pad(nodes.length, 2)}`);
-    updateSteps();
-  }
-  function updateSteps() {
-    const list = current.kind === "detail" ? stepList() : filtered();
-    const i = current.kind === "detail" ? list.findIndex((a) => a.slug === current.record.slug) : active;
-    const prev = els.window.querySelector("#fw-prev"), next = els.window.querySelector("#fw-next");
-    if (prev) prev.disabled = i <= 0;
-    if (next) next.disabled = i < 0 || i >= list.length - 1;
   }
 
   /* ---------- Record ---------- */
-  // Step through the list the visitor came from; if the record is outside it, step through everything.
-  const stepList = () => {
-    const list = filtered();
-    return list.some((a) => a.slug === current.record.slug) ? list : entries();
-  };
   function step(n) {
-    const list = stepList();
+    const list = entries();
     const i = list.findIndex((a) => a.slug === current.record.slug) + n;
     // Each record visited with ↑ ↓ is its own history step, so BACK retraces them.
     if (i >= 0 && i < list.length) api.navigate(href(list[i]));
@@ -218,22 +137,24 @@ window.FreemanFieldwork = (() => {
   function renderDetail() {
     const a = current.record;
     const proj = projectFor(a);
+    const t = stamp(a);
     const relation = proj
       ? `<a class="fw-relation-link" href="project-${encodeURIComponent(proj.slug)}.html">P—${esc(proj.id)} / ${esc(proj.name)} ↗</a>`
       : `<span>${esc(a.project)}</span><span class="fw-muted"> / no project relationship established</span>`;
-    els.window.innerHTML = `<div class="fw-toolbar"><span class="fw-toolbar-count fw-muted"></span><button type="button" class="fw-step" id="fw-prev" aria-label="Previous record">↑</button><button type="button" class="fw-step" id="fw-next" aria-label="Next record">↓</button></div><article class="fw-detail" tabindex="0" aria-label="${esc(a.title)}"><div class="fw-label">${numberOf(a)} / ${esc(a.type)} / ${esc(a.status || "LOCAL DRAFT")}</div><h2>${esc(a.title)}</h2><div class="fw-relation"><span class="fw-label">CONNECTED PROJECT</span><div>${relation}</div></div>${img(a) ? `<img src="${esc(img(a))}" alt="${esc(a.title)}" />` : ""}<p>${esc(a.text || "")}</p>${a.note ? `<p class="fw-note">${esc(a.note)}</p>` : ""}<div class="fw-tags"><span>${esc(a.type)}</span><span>${esc(a.project)}</span><span>${esc(a.status || "LOCAL DRAFT")}</span></div><dl class="fw-facts"><div><dt>CAPTURE DATE</dt><dd>${a.isDraft ? "Saved in this browser" : "Not established"}</dd></div><div><dt>SOURCE</dt><dd>${esc(a.source || "This browser only")}</dd></div></dl></article>`;
-    const list = stepList();
-    els.window.querySelector(".fw-toolbar-count").textContent = `${pad(list.findIndex((x) => x.slug === a.slug) + 1, 2)} / ${pad(list.length, 2)}`;
-    els.window.querySelector("#fw-prev").onclick = () => step(-1);
-    els.window.querySelector("#fw-next").onclick = () => step(1);
-    updateSteps();
-    renderNav();
-    setMessage(a.isDraft ? "LOCAL DRAFT / NOT PUBLISHED" : "ARCHIVE RECORD / " + (a.status || "REFERENCE"));
+    els.window.innerHTML = `<div class="fw-record-page"><div class="fw-toolbar"><span class="fw-toolbar-count fw-muted"></span><button type="button" class="fw-step" id="fw-prev" aria-label="Previous record">↑</button><button type="button" class="fw-step" id="fw-next" aria-label="Next record">↓</button></div><article class="fw-detail" tabindex="0" aria-label="${esc(a.title)}"><div class="fw-label">${numberOf(a)} / ${esc(a.type)} / ${esc(a.status || "LOCAL DRAFT")}</div><h2>${esc(a.title)}</h2><div class="fw-relation"><span class="fw-label">CONNECTED PROJECT</span><div>${relation}</div></div>${img(a) ? `<img src="${esc(img(a))}" alt="${esc(a.title)}" />` : ""}<p>${esc(a.text || "")}</p>${a.note ? `<p class="fw-note">${esc(a.note)}</p>` : ""}<div class="fw-tags"><span>${esc(a.type)}</span><span>${esc(a.project)}</span><span>${esc(a.status || "LOCAL DRAFT")}</span></div><dl class="fw-facts"><div><dt>CAPTURE DATE</dt><dd>${t ? esc(t.text) : a.isDraft ? "Saved in this browser" : "Not established"}</dd></div><div><dt>SOURCE</dt><dd>${esc(a.source || "This browser only")}</dd></div></dl></article></div>`;
+    const list = entries();
+    const i = list.findIndex((x) => x.slug === a.slug);
+    els.window.querySelector(".fw-toolbar-count").textContent = `${pad(i + 1, 2)} / ${pad(list.length, 2)}`;
+    const prev = els.window.querySelector("#fw-prev"), next = els.window.querySelector("#fw-next");
+    prev.onclick = () => step(-1);
+    next.onclick = () => step(1);
+    prev.disabled = i <= 0;
+    next.disabled = i < 0 || i >= list.length - 1;
   }
 
-  /* ---------- Local note (this browser only) ---------- */
+  /* ---------- Local note (this browser only; reached at fieldwork.html?note=new) ---------- */
   function renderNote() {
-    els.window.innerHTML = `<div class="fw-detail"><div class="fw-label">NEW FIELD NOTE / THIS DEVICE ONLY</div><h2>Record an observation.</h2><form class="fw-draft" id="fw-form"><label for="fw-title-input">TITLE</label><input id="fw-title-input" required maxlength="100" placeholder="What caught your attention?"><label for="fw-project-input">CONNECTED PROJECT</label><select id="fw-project-input"><option>Unassigned reference</option>${data.projects.map((p) => `<option>${esc(p.name)}</option>`).join("")}</select><label for="fw-note-input">THE NOTE</label><textarea id="fw-note-input" required maxlength="2000" placeholder="Describe what you saw, why it matters, or what was decided."></textarea><button type="submit" class="fw-button">SAVE LOCAL DRAFT ↗</button></form><p class="fw-note" style="margin-top:18px">Drafts are kept only in this browser's local storage. Nothing is uploaded, shared, or published to Freeman. Production publishing will require an authenticated workflow.</p></div>`;
+    els.window.innerHTML = `<div class="fw-record-page"><div class="fw-detail"><div class="fw-label">NEW FIELD NOTE / THIS DEVICE ONLY</div><h2>Record an observation.</h2><form class="fw-draft" id="fw-form"><label for="fw-title-input">TITLE</label><input id="fw-title-input" required maxlength="100" placeholder="What caught your attention?"><label for="fw-project-input">CONNECTED PROJECT</label><select id="fw-project-input"><option>Unassigned reference</option>${data.projects.map((p) => `<option>${esc(p.name)}</option>`).join("")}</select><label for="fw-note-input">THE NOTE</label><textarea id="fw-note-input" required maxlength="2000" placeholder="Describe what you saw, why it matters, or what was decided."></textarea><button type="submit" class="fw-button">SAVE LOCAL DRAFT ↗</button></form><p class="fw-note" style="margin-top:18px">Drafts are kept only in this browser's local storage. Nothing is uploaded, shared, or published to Freeman. Production publishing will require an authenticated workflow.</p></div></div>`;
     els.window.querySelector("#fw-form").onsubmit = (e) => {
       e.preventDefault();
       const title = els.window.querySelector("#fw-title-input").value.trim(),
@@ -247,32 +168,21 @@ window.FreemanFieldwork = (() => {
         status: "LOCAL DRAFT",
         source: "Saved in this browser",
         note: "Draft / not publicly published",
+        savedAt: new Date().toISOString(), // the real moment it was saved
       });
       try {
         localStorage.setItem(DRAFT_KEY, JSON.stringify(drafts));
       } catch (err) {
         drafts.shift();
-        setMessage("BROWSER STORAGE UNAVAILABLE / NOTE NOT SAVED");
+        setMessage("Browser storage unavailable. Note not saved.");
         return;
       }
-      mem.q = "";
-      mem.category = "All records";
-      mem.project = "";
       api.navigate("fieldwork.html", { replace: true, focus: "draft-0" });
     };
-    renderNav();
-    setMessage("DRAFT ONLY / NOT PUBLISHED");
   }
 
   function show(route, state) {
     current = resolve(route);
-    if (current.kind === "index") readFilters(route.params);
-    // A record reached from outside the active list resets the list context.
-    if (current.kind === "detail" && !current.record.isDraft && !filtered().some((a) => a.slug === current.record.slug)) {
-      mem.category = "All records";
-      mem.project = "";
-      mem.q = "";
-    }
     updateChrome();
     if (current.kind === "detail") renderDetail();
     else if (current.kind === "note") renderNote();
@@ -283,12 +193,8 @@ window.FreemanFieldwork = (() => {
     mount(root, route, state, routerApi) {
       api = routerApi;
       host = root;
-      // Entering Fieldwork from another section starts from the URL, not stale memory.
-      mem.category = "All records";
-      mem.project = "";
-      mem.q = "";
       mem.scroll = null;
-      active = 0;
+      active = -1;
       frame();
       show(route, state || {});
     },
@@ -305,7 +211,7 @@ window.FreemanFieldwork = (() => {
       const scroller = els.window && els.window.querySelector(".fw-scroller");
       if (!scroller) return {};
       mem.scroll = scroller.scrollTop;
-      const a = filtered()[active];
+      const a = entries()[active];
       return { fwScroll: scroller.scrollTop, fwActive: active, focus: a ? a.slug : undefined };
     },
     key(e) {
@@ -315,7 +221,7 @@ window.FreemanFieldwork = (() => {
         return true;
       }
       if (current.kind === "index" && e.key === "Enter" && e.target.classList && e.target.classList.contains("fw-scroller")) {
-        const a = filtered()[active];
+        const a = entries()[active];
         if (a) { e.preventDefault(); api.navigate(href(a)); return true; }
       }
       if (current.kind === "detail" && (e.key === "ArrowLeft" || e.key === "ArrowRight")) {
@@ -326,7 +232,6 @@ window.FreemanFieldwork = (() => {
       return false;
     },
     destroy() {
-      clearTimeout(qTimer);
       host = null;
       els = {};
     },
