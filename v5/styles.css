@@ -106,7 +106,7 @@ body[data-route="contact"] .viewport{bottom:32px;display:flex}
 .contact-layout .contact-sheet .contact-label{margin-bottom:0}
 .contact-layout .contact-sheet>a{align-self:flex-start}
 .contact-inquiry{display:flex;flex-direction:column;min-width:0;margin:0}
-.contact-inquiry textarea{display:block;width:100%;height:clamp(180px,32vh,300px);min-height:120px;resize:none;border:1px solid var(--hair);border-radius:0;background:transparent;color:var(--ink);padding:16px;font:12px/1.7 var(--mono);outline:none;cursor:text;-webkit-appearance:none;appearance:none}
+.contact-inquiry textarea{display:block;width:100%;height:clamp(180px,32vh,300px);min-height:120px;resize:none;border:1px solid var(--hair);border-radius:0;background:#fff;color:#292927;padding:16px;font:12px/1.7 var(--mono);outline:none;cursor:text;-webkit-appearance:none;appearance:none}
 .contact-inquiry textarea:focus{border-color:var(--orange)}
 .contact-inquiry textarea::placeholder{color:var(--muted);opacity:1}
 .contact-inquiry button{align-self:flex-start;margin-top:16px;padding:8px 0;border:0;background:transparent;color:var(--ink);font:11px var(--mono);letter-spacing:.035em;position:relative}
@@ -131,3 +131,7 @@ body[data-route="contact"] .viewport{bottom:32px;display:flex}
  .contact-inquiry button{min-height:44px;margin-top:2px}
  .contact-disclaimer{display:none}
 }
+
+/* White writing surface remains white across all three site palettes. */
+.contact-inquiry textarea{background:#fff;color:#292927}
+.contact-inquiry textarea::placeholder{color:#868580}
