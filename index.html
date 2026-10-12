@@ -76,6 +76,15 @@ body{
   .footer-left{left:16px}
   .footer-right{right:16px}
 }
+
+.sound-toggle{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);border:0;background:none;color:var(--muted);font:inherit;font-size:9px;letter-spacing:.07em;cursor:pointer;padding:8px;text-transform:uppercase}
+.sound-toggle:hover,.sound-toggle:focus-visible{color:var(--ink)}
+.sound-panel{position:fixed;right:24px;bottom:63px;width:260px;padding:9px;background:var(--paper);border:1px solid var(--slash);box-shadow:0 8px 25px #00000016;z-index:5}
+.sound-panel[hidden]{display:none}
+.sound-panel iframe{display:block;width:240px;height:200px;border:0}
+.sound-panel-label{display:flex;justify-content:space-between;align-items:center;padding:2px 0 8px;font-size:9px;letter-spacing:.02em}
+.sound-close{border:0;background:none;font:inherit;color:var(--muted);cursor:pointer;padding:3px}
+@media(max-width:720px){.sound-toggle{bottom:47px;font-size:8px}.sound-panel{right:12px;bottom:85px}}
 </style>
 </head>
 <body>
@@ -94,6 +103,41 @@ body{
 
   <div class="footer-left">FREEMAN GENERAL CONTRACTORS<br>CARTERSVILLE, GEORGIA</div>
   <div class="footer-right">BUILT FOR GENERATIONS™<br>EST. IN GEORGIA</div>
+
+  <button class="sound-toggle" id="sound-toggle" type="button" aria-controls="sound-panel" aria-expanded="false">♪ SOUND OFF</button>
+  <aside class="sound-panel" id="sound-panel" hidden aria-label="Optional soundtrack">
+    <div class="sound-panel-label"><span>DIRE STRAITS / MONEY FOR NOTHING</span><button type="button" class="sound-close" id="sound-close" aria-label="Close music player">×</button></div>
+    <div id="sound-embed"></div>
+  </aside>
 </main>
+<script>
+(function(){
+  const button=document.getElementById('sound-toggle');
+  const panel=document.getElementById('sound-panel');
+  const close=document.getElementById('sound-close');
+  const embed=document.getElementById('sound-embed');
+  function stop(){
+    embed.replaceChildren();
+    panel.hidden=true;
+    button.textContent='♪ SOUND OFF';
+    button.setAttribute('aria-expanded','false');
+  }
+  button.addEventListener('click',function(){
+    if(!panel.hidden){stop();return;}
+    const frame=document.createElement('iframe');
+    frame.src='https://www.youtube-nocookie.com/embed/wTP2RUD_cL0?autoplay=1&playsinline=1';
+    frame.title='Money for Nothing — Dire Straits (YouTube player)';
+    frame.allow='autoplay; encrypted-media; picture-in-picture';
+    frame.referrerPolicy='strict-origin-when-cross-origin';
+    frame.allowFullscreen=true;
+    embed.appendChild(frame);
+    panel.hidden=false;
+    button.textContent='♪ SOUND ON';
+    button.setAttribute('aria-expanded','true');
+  });
+  close.addEventListener('click',stop);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden)stop();});
+})();
+</script>
 </body>
 </html>
