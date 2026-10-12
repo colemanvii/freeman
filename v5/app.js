@@ -293,9 +293,11 @@
   }
 
   /* ---------- Projects ---------- */
-  // Only verified values: Client and Architect from the project credits, and a date only from an
-  // explicit, verified `date` field. The scraped "Complete: 2024" template credit is not used.
+  // Only verified values: Client and Design (Freeman's published "Interior Design" credit; its
+  // "Interior Designer" template placeholder is not a credit) from the project credits, and a date
+  // only from an explicit, verified `date` field. The scraped "Complete: 2024" credit is not used.
   const credit = (p, key) => ((p.credits || []).find(([k]) => k === key) || [])[1] || "";
+  const designCredit = (p) => (credit(p, "Interior Design") === "Interior Designer" ? "" : credit(p, "Interior Design"));
   function projectsIndex(state) {
     chrome({ title: "Projects / Selected work", section: "projects" });
     const vp = root.querySelector(".viewport");
@@ -306,10 +308,10 @@
     const rows = projects
       .map((p, i) => {
         const here = p.slug === state.focus;
-        return `<li class="pi-row${here ? " is-current" : ""}"><a class="pi-link" href="project-${esc(p.slug)}.html" data-slug="${esc(p.slug)}"><span class="pi-no">${pad(i + 1, 3)}</span><span class="pi-name">${esc(p.name)}</span>${cell("pi-client", credit(p, "Client"), "Client")}${cell("pi-arch", credit(p, "Architect"), "Architect")}${cell("pi-date", p.date || "", "Date")}</a></li>`;
+        return `<li class="pi-row${here ? " is-current" : ""}"><a class="pi-link" href="project-${esc(p.slug)}.html" data-slug="${esc(p.slug)}"><span class="pi-no">${pad(i + 1, 3)}</span><span class="pi-name">${esc(p.name)}</span>${cell("pi-client", credit(p, "Client"), "Client")}${cell("pi-arch", designCredit(p), "Design")}${cell("pi-date", p.date || "", "Date")}</a></li>`;
       })
       .join("");
-    vp.innerHTML = `<div class="pi"><div class="pi-head" aria-hidden="true"><span>No.</span><span>Project</span><span>Client</span><span>Architect</span><span class="pi-head-date">Date</span></div><div class="pi-scroller"><ol class="pi-list" aria-label="Projects">${rows}</ol></div></div>`;
+    vp.innerHTML = `<div class="pi"><div class="pi-head" aria-hidden="true"><span>No.</span><span>Project</span><span>Client</span><span>Design</span><span class="pi-head-date">Date</span></div><div class="pi-scroller"><ol class="pi-list" aria-label="Projects">${rows}</ol></div></div>`;
     const scroller = vp.querySelector(".pi-scroller");
     // The project a visitor opens is the selection they return to.
     scroller.addEventListener("click", (e) => {
