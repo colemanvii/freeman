@@ -137,6 +137,8 @@ body[data-route="contact"] .viewport{display:flex}
 @media(max-width:360px){.site-nav .sep{padding:0 5px}}
 @media(pointer:coarse){.site-nav a::after{content:"";position:absolute;inset:-17px -5px}}
 .sheet-controls nav[hidden]{display:none}
-/* Phone entrance: a small static brand line, apart from the centered navigation (not a link). */
-.mobile-brand{display:none}
-@media(max-width:760px){.mobile-brand{display:block;position:absolute;top:max(20px,env(safe-area-inset-top));left:0;right:0;margin:0;text-align:center;font-size:10px;line-height:1.5;font-weight:700;letter-spacing:.035em;text-transform:uppercase}}
+/* Entrance brand: orange FREEMAN GC in the navigation's own Monaco, size and baseline; not a link.
+   It is an item of the centred group, so brand and navigation centre as one. */
+.brand-id{color:var(--orange);pointer-events:none;user-select:none;white-space:nowrap;font:inherit;letter-spacing:inherit;text-transform:uppercase}
+.center .brand-id{margin-right:30px}
+.mobile-home-nav .brand-id{display:flex;align-items:center;justify-content:center;min-height:44px;margin-bottom:22px}
