@@ -19,16 +19,43 @@ Opening `brutalist/index.html` directly from disk also works.
 
 ## Map
 
-| Page | File | Notes |
+Every public screen is a single fixed composition: the page never scrolls.
+Long material is reached by navigation instead — numbered panels, PREV/NEXT
+slides and measured pages.
+
+| Screen | File | How additional material is reached |
 |---|---|---|
-| Entry | `index.html` | The near-empty reference screen: five words, four corners |
-| Freeman GC | `freeman-gc.html` | Position, practice, typologies, territory, method, people, FAQ |
-| Projects | `projects.html` | Numbered index → hover plate → plate sequence |
-| Project | `project.html?p=<slug>` | One template for every project |
-| Afield | `afield.html` | Field record: search, kind/project filters, ledger/sheet views, Sawdust |
-| Afield record | `record.html?r=AF-001` | One template for every record |
-| Contact | `contact.html` | Verified contact lines and an inquiry that prepares an email |
-| Client Portal | `portal.html` → `portal-demo.html` | Access page, then a labelled demonstration |
+| Entry | `index.html` | — (five words, four corners) |
+| Freeman GC | `freeman-gc.html#overview` | Six panels: Overview · Practice · Territory · People · Kind words · Questions. Each list item shows its detail on hover, focus or click |
+| Projects | `projects.html` | Numbered index; hovering a row swaps the plate |
+| Project | `project.html?p=<slug>#n` | Presentation: photographs, description, drawing, scope, particulars, kind words, Afield — one at a time, PREV/NEXT, ← → keys, contents line |
+| Afield | `afield.html?view=ledger` | Filters + four views (Ledger · Sheet · Sawdust · About), paginated to fit the screen |
+| Record | `record.html?r=AF-001` | ← → between records |
+| Contact | `contact.html` | Two states: contact lines, and the inquiry form |
+| Client Portal | `portal.html` → `portal-demo.html#overview` | Six tabbed panels, each paginated to fit |
+
+## Interaction
+
+- **Cursor:** a thin 1px crosshair everywhere (inputs keep the text cursor).
+- **Hover:** an immediate, solid Freeman-orange rectangle tight to the word or
+  phrase, text turns paper. Index rows highlight their title phrase. No
+  transitions, fades or movement anywhere.
+- **Keyboard focus:** a 1px orange outline box with 4px of air, ink text —
+  as in the reference recording.
+- **Keys:** ← → / PageUp PageDown step slides, panels and pages; ↑ ↓ move
+  through section and pick lists; Home / End jump to the ends; Esc closes
+  overlays.
+- **Mobile:** navigation collapses to an INDEX overlay; company panels step
+  with a bottom PREV/NEXT bar; Afield filters open as a full-screen sheet.
+
+### How fitting works (`assets/js/site.js`)
+
+- `Pager` measures the blocks inside a `.pg__body` and splits them into
+  pages that fit the space actually available, recalculating on resize.
+- `fit()` is a safety net: if a composition still exceeds its box on an
+  unusually small screen, that box (never the page) scrolls internally
+  rather than cropping. QA treats any such fallback as a failure; none
+  occur at 1440×900, 1280×720, 1366×640, 390×844 or 375×667.
 
 ## The system
 
@@ -47,10 +74,11 @@ quality. Hierarchy comes only from size, weight, case, placement and space.
 punctuation: the Client Portal link, active-state underlines, record
 numbers, the base on the territory plate, the demo band. Never fills.
 
-**Structure.** A 12-column grid inside a 1440px measure; every section opens
-on a hairline with a number, a label and an aside. Rows are 42px. No
-rounded corners, shadows, gradients, carousels or scroll animation. The only
-motion on the site is the entry clock.
+**Structure.** A 12-column grid inside a 1440px measure, one viewport tall.
+Type sizes are clamped against both width and height so a composition
+holds on short laptop screens without becoming small. No rounded corners,
+shadows, gradients, carousels or animation; the only thing that changes on
+its own is the entry clock.
 
 **Afield's identity** within the system: the tan field of the Work Index
 reference, a single orange margin rule down the left edge (a notebook
@@ -111,7 +139,8 @@ That downloads ~76 images to `assets/photography/` and writes
   same shape from a real source.
 
 The HTML shells share a masthead and footer that are written out in each
-file. If the navigation changes, update all nine.
+file. If the navigation changes, update all nine; the mobile INDEX overlay
+is built from the masthead automatically.
 
 ## Known gaps
 

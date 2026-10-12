@@ -12,36 +12,32 @@
 </head>
 <body data-page="portal-gate" data-nav="portal">
 <a class="sr" href="#main">Skip to content</a>
-<header class="mast wrap">
-  <div class="mast__row">
-    <a class="mast__brand" href="index.html"><span class="name">FREEMAN GENERAL CONTRACTORS</span><span class="sub">Client Portal</span></a>
-    <nav class="nav" aria-label="Primary"><a class="brand" data-nav="company" href="freeman-gc.html">Freeman GC</a><span class="slash" aria-hidden="true">/</span><a data-nav="projects" href="projects.html">Projects</a><span class="slash" aria-hidden="true">/</span><a data-nav="afield" href="afield.html">Afield</a><span class="slash" aria-hidden="true">/</span><a data-nav="contact" href="contact.html">Contact</a><span class="slash" aria-hidden="true">/</span><a class="portal" data-nav="portal" href="portal.html">Client Portal</a></nav>
-  </div>
-</header>
-<main id="main" class="wrap">
+<div class="screen">
+  <header class="mast">
+    <div class="mast__brand"><a class="name" href="index.html">FREEMAN GENERAL CONTRACTORS</a><span class="sub">Client Portal</span></div>
+    <nav class="nav" aria-label="Primary"><a class="brand" data-nav="company" data-n="01" href="freeman-gc.html">Freeman GC</a><span class="slash" aria-hidden="true">/</span><a data-nav="projects" data-n="02" href="projects.html">Projects</a><span class="slash" aria-hidden="true">/</span><a data-nav="afield" data-n="03" href="afield.html">Afield</a><span class="slash" aria-hidden="true">/</span><a data-nav="contact" data-n="04" href="contact.html">Contact</a><span class="slash" aria-hidden="true">/</span><a class="portal" data-nav="portal" data-n="05" href="portal.html">Client Portal</a></nav>
+    <button type="button" class="menu-btn hl" aria-expanded="false" aria-controls="menu">Index</button>
+  </header>
+  <main id="main" class="stage">
 
-<section class="gate">
-  <div class="gate__l">
-    <p class="label signal" style="margin-bottom:22px">Client Portal</p>
-    <h1 class="display">A private record of your project.</h1>
-    <p class="lede">For Freeman clients during construction: progress, the schedule, dated field photographs, current documents, open decisions and correspondence — in one place, kept current by the project team.</p>
-  </div>
-  <div class="gate__r">
-    <div class="gate__opts">
-      <div class="gate__opt"><span class="n">01</span><div><h2>Sign in</h2><p>Client sign-in is not yet connected to this site. Access will be issued by Freeman to active clients.</p><span class="act" aria-disabled="true">Sign-in unavailable</span></div></div>
-      <div class="gate__opt"><span class="n">02</span><div><h2>Request access</h2><p>Current Freeman clients can ask the project team for portal access.</p><a class="act" href="mailto:gabe@freemangc.com?subject=Client%20portal%20access">Email gabe@freemangc.com →</a></div></div>
-      <div class="gate__opt"><span class="n">03</span><div><h2>View the demonstration</h2><p>A walk-through of the portal with clearly labelled sample data. No real client, project or schedule is shown.</p><a class="act act--signal" href="portal-demo.html">Open demonstration →</a></div></div>
+    <div class="gate fit">
+      <div class="gate__l">
+        <p class="label signal" style="margin-bottom:clamp(12px,2.4vh,22px)">Client Portal</p>
+        <h1 class="display">A private record of your project.</h1>
+        <p class="lede">Progress, schedule, dated field photographs, documents, open decisions and correspondence — kept current by the project team.</p>
+      </div>
+      <div class="gate__r">
+        <div class="gate__opt"><span class="n">01</span><div><h2>Sign in</h2><p>Client sign-in is not yet connected to this site. Access will be issued by Freeman to active clients.</p><span class="act" aria-disabled="true">Sign-in unavailable</span></div></div>
+        <div class="gate__opt"><span class="n">02</span><div><h2>Request access</h2><p>Current Freeman clients can ask the project team for portal access.</p><a class="act" href="mailto:gabe@freemangc.com?subject=Client%20portal%20access">Email gabe@freemangc.com →</a></div></div>
+        <div class="gate__opt"><span class="n">03</span><div><h2>View the demonstration</h2><p>A walk-through with clearly labelled sample data. No real client, project or schedule is shown.</p><a class="act act--signal" href="portal-demo.html">Open demonstration →</a></div></div>
+      </div>
     </div>
-  </div>
-</section>
-
-</main>
-<footer class="foot wrap">
-  <div class="foot__row">
-    <span><img class="mark" src="assets/img/fgc-mark-ink.svg" alt="" width="16" height="16">© <span data-year>2026</span> Freeman General Contractors · Cartersville, Georgia</span>
+  </main>
+  <footer class="foot">
+    <span><img class="mark" src="assets/img/fgc-mark-ink.svg" alt="" width="13" height="13">© <span data-year>2026</span> Freeman General Contractors · Cartersville, Georgia</span>
     <span class="r"><a href="tel:7062633348">Tel. 706.263.3348</a><a href="mailto:gabe@freemangc.com">gabe@freemangc.com</a><span>Built for Generations™</span></span>
-  </div>
-</footer>
+  </footer>
+</div>
 
 <script src="data/local-photography.js"></script>
 <script src="assets/js/site.js"></script>

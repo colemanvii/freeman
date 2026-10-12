@@ -12,52 +12,48 @@
 </head>
 <body data-page="contact" data-nav="contact">
 <a class="sr" href="#main">Skip to content</a>
-<header class="mast wrap">
-  <div class="mast__row">
-    <a class="mast__brand" href="index.html"><span class="name">FREEMAN GENERAL CONTRACTORS</span><span class="sub">Contact / Cartersville, Georgia</span></a>
-    <nav class="nav" aria-label="Primary"><a class="brand" data-nav="company" href="freeman-gc.html">Freeman GC</a><span class="slash" aria-hidden="true">/</span><a data-nav="projects" href="projects.html">Projects</a><span class="slash" aria-hidden="true">/</span><a data-nav="afield" href="afield.html">Afield</a><span class="slash" aria-hidden="true">/</span><a data-nav="contact" href="contact.html">Contact</a><span class="slash" aria-hidden="true">/</span><a class="portal" data-nav="portal" href="portal.html">Client Portal</a></nav>
-  </div>
-</header>
-<main id="main" class="wrap">
+<div class="screen">
+  <header class="mast">
+    <div class="mast__brand"><a class="name" href="index.html">FREEMAN GENERAL CONTRACTORS</a><span class="sub">Contact / Cartersville, Georgia</span></div>
+    <nav class="nav" aria-label="Primary"><a class="brand" data-nav="company" data-n="01" href="freeman-gc.html">Freeman GC</a><span class="slash" aria-hidden="true">/</span><a data-nav="projects" data-n="02" href="projects.html">Projects</a><span class="slash" aria-hidden="true">/</span><a data-nav="afield" data-n="03" href="afield.html">Afield</a><span class="slash" aria-hidden="true">/</span><a data-nav="contact" data-n="04" href="contact.html">Contact</a><span class="slash" aria-hidden="true">/</span><a class="portal" data-nav="portal" data-n="05" href="portal.html">Client Portal</a></nav>
+    <button type="button" class="menu-btn hl" aria-expanded="false" aria-controls="menu">Index</button>
+  </header>
+  <main id="main" class="stage">
 
-<section class="phead"><p class="label">Contact</p><h1 class="display" style="max-width:16ch">We would love to bring your vision to life.</h1></section>
-
-<div class="cblock">
-  <div class="cline"><span class="n">01</span><span class="label muted">Telephone</span><a class="v" href="tel:7062633348">706.263.3348</a></div>
-  <div class="cline"><span class="n">02</span><span class="label muted">Email</span><a class="v" href="mailto:gabe@freemangc.com">gabe@freemangc.com</a></div>
-  <div class="cline"><span class="n">03</span><span class="label muted">Base</span><span class="v">Cartersville, Georgia<small>34.165°N 84.800°W — municipal</small></span></div>
-  <div class="cline"><span class="n">04</span><span class="label muted">Work recorded in</span><span class="v" style="font-size:clamp(18px,2vw,28px)">Atlanta · Adairsville · Blue Ridge · Dalton, Georgia<br>Cleveland, Tennessee<small><a class="u" href="freeman-gc.html#territory">Territory</a> · <a class="u" href="projects.html">Projects</a></small></span></div>
-</div>
-
-<section class="section">
-  <div class="shead"><span class="label n">05</span><span class="label">Inquiry</span><span class="label aside">Prepared as an email</span></div>
-  <form class="form" data-inquiry novalidate>
-    <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" autocomplete="name" required></div>
-    <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email"></div>
-    <div class="field"><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" autocomplete="tel"></div>
-    <div class="field"><label for="f-where">Project location</label><input id="f-where" name="where" autocomplete="address-level2"></div>
-    <fieldset class="field field--full"><legend>Project type</legend>
-      <div class="choices">
-        <label><input type="radio" name="type" value="Residential">Residential</label>
-        <label><input type="radio" name="type" value="Commercial">Commercial</label>
-        <label><input type="radio" name="type" value="Other">Other</label>
+    <div class="ct">
+      <div class="ct__l">
+        <div><p class="label" style="margin-bottom:clamp(12px,2.4vh,24px)">Contact</p><h1 class="display">We would love to bring your vision to life.</h1></div>
+        <p class="micro end">Work recorded in Atlanta, Adairsville, Blue Ridge and Dalton, Georgia, and Cleveland, Tennessee.</p>
       </div>
-    </fieldset>
-    <div class="field field--full"><label for="f-msg">About the project</label><textarea id="f-msg" name="message" rows="5"></textarea></div>
-    <div class="form__foot">
-      <p data-status aria-live="polite">This form does not send anything by itself. It prepares an email to gabe@freemangc.com in your own email application, for you to review and send.</p>
-      <button class="act act--signal" type="submit">Prepare email →</button>
+      <div class="ct__r">
+        <div data-view="info">
+          <div class="cline"><span class="n">01</span><div><span class="micro k">Telephone</span><a class="v" href="tel:7062633348">706.263.3348</a></div></div>
+          <div class="cline"><span class="n">02</span><div><span class="micro k">Email</span><a class="v" href="mailto:gabe@freemangc.com">gabe@freemangc.com</a></div></div>
+          <div class="cline"><span class="n">03</span><div><span class="micro k">Base</span><span class="v">Cartersville, Georgia</span><small>34.165°N 84.800°W — municipal</small></div></div>
+          <div class="ct__acts"><button type="button" class="act act--signal hl" data-show="form">Write an inquiry →</button><a class="act" href="tel:7062633348">Call</a><a class="act" href="mailto:gabe@freemangc.com">Email</a></div>
+        </div>
+        <form class="form" data-view="form" data-inquiry novalidate hidden aria-label="Project inquiry">
+          <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" autocomplete="name"></div>
+          <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email"></div>
+          <div class="field"><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" autocomplete="tel"></div>
+          <div class="field"><label for="f-where">Project location</label><input id="f-where" name="where" autocomplete="address-level2"></div>
+          <fieldset class="field field--full"><legend>Project type</legend>
+            <div class="choices"><label><input type="radio" name="type" value="Residential">Residential</label><label><input type="radio" name="type" value="Commercial">Commercial</label><label><input type="radio" name="type" value="Other">Other</label></div>
+          </fieldset>
+          <div class="field field--full"><label for="f-msg">About the project</label><textarea id="f-msg" name="message"></textarea></div>
+          <div class="form__foot">
+            <p data-status aria-live="polite">Prepares an email to gabe@freemangc.com in your own email application. Nothing is sent from this page.</p>
+            <span style="display:flex;gap:24px"><button type="button" class="act hl" data-show="info">← Back</button><button type="submit" class="act act--signal hl">Prepare email →</button></span>
+          </div>
+        </form>
+      </div>
     </div>
-  </form>
-</section>
-
-</main>
-<footer class="foot wrap">
-  <div class="foot__row">
-    <span><img class="mark" src="assets/img/fgc-mark-ink.svg" alt="" width="16" height="16">© <span data-year>2026</span> Freeman General Contractors · Cartersville, Georgia</span>
+  </main>
+  <footer class="foot">
+    <span><img class="mark" src="assets/img/fgc-mark-ink.svg" alt="" width="13" height="13">© <span data-year>2026</span> Freeman General Contractors · Cartersville, Georgia</span>
     <span class="r"><a href="tel:7062633348">Tel. 706.263.3348</a><a href="mailto:gabe@freemangc.com">gabe@freemangc.com</a><span>Built for Generations™</span></span>
-  </div>
-</footer>
+  </footer>
+</div>
 <script src="data/company.js"></script>
 <script src="data/local-photography.js"></script>
 <script src="assets/js/site.js"></script>
