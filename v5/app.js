@@ -580,7 +580,7 @@
     if (route.kind === "fieldwork" && fw) {
       if (stayInFieldwork) fw.update(route, state);
       else fw.mount(root, route, state, fieldworkApi);
-      view = { kind: "fieldwork", detail: () => fw.isDetail(), key: (e) => fw.key(e), save: () => fw.save(), destroy: () => fw.destroy() };
+      view = { kind: "fieldwork", detail: () => fw.isDetail(), key: (e) => fw.key(e), save: () => fw.save(), resize: () => fw.resize(), destroy: () => fw.destroy() };
       document.title = fw.title() + " — Freeman GC";
     } else {
       galleryKey = null;
