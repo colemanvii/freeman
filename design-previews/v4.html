@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head><base href="https://cdn.jsdelivr.net/gh/colemanvii/freeman@v4-living-monograph/">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Freeman GC</title>
+<meta name="theme-color" content="#f4f4f1" />
+<style>
+:root{
+  --paper:#f4f4f1;
+  --ink:#242424;
+  --muted:#777873;
+  --slash:#a4a49f;
+  --accent:#e75a28;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:var(--paper);color:var(--ink)}
+body{
+  overflow:hidden;
+  font-family:Monaco,"Courier New",monospace;
+  -webkit-font-smoothing:antialiased;
+}
+.page{
+  min-height:100dvh;
+  position:relative;
+}
+.nav{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  display:flex;
+  align-items:baseline;
+  gap:13px;
+  white-space:nowrap;
+  font-size:14px;
+  line-height:1;
+  letter-spacing:-.025em;
+}
+.nav a{
+  color:inherit;
+  text-decoration:none;
+}
+.nav .brand{
+  font-weight:700;
+}
+.nav .portal{
+  color:var(--accent);
+}
+.slash{
+  color:var(--slash);
+}
+.footer-left,.footer-right{
+  position:absolute;
+  bottom:24px;
+  font-size:8px;
+  line-height:1.35;
+  letter-spacing:.07em;
+  color:var(--muted);
+  text-transform:uppercase;
+}
+.footer-left{left:30px}
+.footer-right{right:30px;text-align:right}
+@media(max-width:720px){
+  .nav{
+    width:calc(100vw - 36px);
+    justify-content:center;
+    flex-wrap:wrap;
+    row-gap:10px;
+    font-size:12px;
+  }
+  .footer-left,.footer-right{
+    bottom:16px;
+    font-size:7px;
+  }
+  .footer-left{left:16px}
+  .footer-right{right:16px}
+}
+</style>
+</head>
+<body>
+<main class="page">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/">FREEMAN GC</a>
+    <span class="slash">/</span>
+    <a href="#">COMPANY</a>
+    <span class="slash">/</span>
+    <a href="v3-study.html">WORK</a>
+    <span class="slash">/</span>
+    <a href="archive/">ARCHIVE</a>
+    <span class="slash">/</span>
+    <a class="portal" href="portal.html">CLIENT PORTAL</a>
+  </nav>
+
+  <div class="footer-left">FREEMAN GENERAL CONTRACTORS<br>CARTERSVILLE, GEORGIA</div>
+  <div class="footer-right">BUILT FOR GENERATIONS™<br>EST. IN GEORGIA</div>
+</main>
+</body>
+</html>
