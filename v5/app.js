@@ -223,9 +223,20 @@
       measure.append(node.cloneNode(true));
       if (fits()) { current.push(markup); continue; }
       measure.lastElementChild.remove();
+      // A heading never ends a sheet: it moves to the next sheet with the text it introduces.
+      const carry = [];
+      while (current.length > 1 && /^<h[12]\b/.test(current[current.length - 1])) carry.unshift(current.pop());
       flush();
+      carry.forEach((m) => {
+        const tpl = document.createElement("template");
+        tpl.innerHTML = m;
+        measure.append(tpl.content.firstElementChild);
+        current.push(m);
+      });
       measure.append(node.cloneNode(true));
       if (fits()) { current.push(markup); continue; }
+      // Too long for one sheet: split it; a carried heading stays with its first part.
+      let lead = [...measure.children].slice(0, carry.length);
       measure.replaceChildren();
       const remaining = node.textContent.split(/\s+/);
       while (remaining.length) {
@@ -233,12 +244,13 @@
         while (lo <= hi) {
           const mid = Math.floor((lo + hi) / 2), test = node.cloneNode(false);
           test.textContent = remaining.slice(0, mid).join(" ");
-          measure.replaceChildren(test);
+          measure.replaceChildren(...lead, test);
           if (fits()) { best = mid; lo = mid + 1; } else hi = mid - 1;
         }
         const part = node.cloneNode(false);
         part.textContent = remaining.splice(0, best || 1).join(" ");
-        current = [part.outerHTML];
+        current = [...(lead.length ? carry : []), part.outerHTML];
+        lead = [];
         flush();
       }
     }
@@ -280,8 +292,6 @@
       data("Residential", "High-end residential work, including La Cresta on Main in Blue Ridge."),
       block("h2", "People"),
       data("Gabe Freeman", "President"),
-      data("Kendall Hawkins", "Vice President"),
-      data("Bo Wright", "VP of Development & Construction"),
       block("p", "Roles as listed on Freeman’s public company page.", "micro"),
       block("h2", "Working together"),
       block("p", "Budget planning combines detailed estimating, expense monitoring and ongoing client communication. Project partners are coordinated through vetting, clear contracts and continuing conversation about quality and schedules."),
