@@ -279,27 +279,24 @@
 
   /* ---------- COMPANY: the company, as an editorial reading page ---------- */
   function company() {
-    const b = [
-      block("p", "01 / COMPANY", "micro"),
-      block("h1", "Constructing hospitality."),
-      block("p", "We see construction as a service industry. The experience of building matters as much as the place we leave behind."),
-      block("p", "Freeman General Contractors brings clients, architects, engineers and trades together around a shared project. Relationships are the foundation: respect, clear communication and care for the work."),
-      block("p", "From restaurant renovations to retail, healthcare and residential construction, the work begins with understanding how a place will be used."),
-      block("h2", "Services"),
-      data("Design + build", "Early collaboration aligns design decisions and construction planning."),
-      data("Construction management", "Oversight of schedule, costs, quality and team coordination."),
-      data("Commercial", "Restaurants, retail, healthcare and convenience stores."),
-      data("Residential", "High-end residential work, including La Cresta on Main in Blue Ridge."),
-      block("h2", "People"),
-      data("Gabe Freeman", "President"),
-      block("p", "Roles as listed on Freeman’s public company page.", "micro"),
-      block("h2", "Working together"),
-      block("p", "Budget planning combines detailed estimating, expense monitoring and ongoing client communication. Project partners are coordinated through vetting, clear contracts and continuing conversation about quality and schedules."),
-      link("BEGIN A CONVERSATION ↗", "contact.html", "text-link phrase"),
+    // One static view: headline and introduction; services, people and location. No sheets.
+    const services = [
+      ["Design + build", "Early collaboration aligns design decisions and construction planning."],
+      ["Construction management", "Oversight of schedule, costs, quality and team coordination."],
+      ["Commercial", "Restaurants, retail, healthcare and convenience stores."],
+      ["Residential", "High-end residential work, including La Cresta on Main in Blue Ridge."],
     ];
-    chrome({ title: "Company / Freeman General Contractors", section: "company" });
+    const row = (k, v, cls = "") => `<div class="co-row${cls}"><dt>${esc(k)}</dt>${v ? `<dd>${esc(v)}</dd>` : ""}</div>`;
+    chrome({ title: "Company / Freeman General Contracting", section: "company" });
     const vp = root.querySelector(".viewport");
-    showPages(vp, reading(vp, b));
+    // Centred in the page area; only a very small phone that cannot hold it scrolls (top never clipped).
+    vp.innerHTML = `<div class="co-frame"><div class="co"><section class="co-intro"><h2 class="co-head">Constructing hospitality.</h2><p>We see construction as a service industry. The experience of building matters as much as the place we leave behind.</p><p>Freeman General Contracting brings clients, architects, engineers and trades together around a shared project. Relationships are the foundation: respect, clear communication and care for the work.</p></section><section class="co-facts"><h3 class="co-label">Services</h3><dl class="co-list co-services">${services
+      .map(([k, v]) => row(k, v))
+      .join("")}</dl><div class="co-pair"><div><h3 class="co-label">People</h3><dl class="co-list">${row("Gabe Freeman", "President")}</dl></div><div><h3 class="co-label">Location</h3><dl class="co-list">${row("Cartersville, Georgia", "")}</dl></div></div></section></div></div>`;
+    words(vp);
+    pageCount = 1;
+    renderPage = () => {};
+    count();
   }
 
   /* ---------- Projects ---------- */
@@ -385,7 +382,7 @@
     },
   };
   function contact() {
-    chrome({ title: "Contact / Freeman General Contractors", section: "contact" });
+    chrome({ title: "Contact / Freeman General Contracting", section: "contact" });
     pageCount = 1;
     renderPage = () => {};
     const vp = root.querySelector(".viewport");
