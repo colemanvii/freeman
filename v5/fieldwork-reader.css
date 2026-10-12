@@ -39,3 +39,78 @@ html,body{overflow:hidden}
 @media(max-width:580px){.fw-frame{padding:16px 15px max(14px,env(safe-area-inset-bottom))}.fw-top{font-size:9px}.fw-mast{padding:20px 0 15px}.fw-title{font-size:30px}.fw-description{max-width:135px;font-size:9px}.fw-grid{grid-template-columns:95px minmax(0,1fr);gap:10px;padding-top:10px}.fw-menu button,.fw-related button{font-size:9px;padding:8px 2px}.fw-label{font-size:8px}.fw-record{grid-template-columns:42px minmax(0,1fr);gap:8px;min-height:80px}.fw-record .fw-number{display:none}.fw-thumb,.fw-thumb-placeholder{width:42px;height:50px}.fw-name{font-size:10px}.fw-meta{font-size:8px}.fw-search{font-size:9px;padding:0 6px}.fw-step{width:31px;height:35px}.fw-scrollcount{font-size:8px}.fw-foot{font-size:8px;gap:6px}.fw-foot .fw-muted{font-size:8px}.fw-side .fw-line{margin:10px 0}.fw-detail h2{font-size:19px}}
 @media(max-height:650px){.fw-mast{padding:13px 0}.fw-title{font-size:29px}.fw-record{min-height:69px;padding:7px 2px}.fw-thumb,.fw-thumb-placeholder{height:47px}.fw-foot{padding-top:9px}.fw-line{margin-top:11px}}
 @media(prefers-reduced-motion:reduce){.fw-scroller{scroll-behavior:auto}}
+
+/* V5 navigation refinement: Fieldwork shares the interior header/close/footer positions. */
+.fw-frame{height:100%;padding:28px max(30px,env(safe-area-inset-right)) max(21px,env(safe-area-inset-bottom)) max(30px,env(safe-area-inset-left))}
+.fw-crumb{margin:0;font-size:inherit;line-height:inherit;font-weight:400;letter-spacing:inherit}
+.fw-top{letter-spacing:.035em}
+.fw-top a,.fw-foot a{position:relative}
+.fw-sig{text-align:right}
+.fw-foot #fw-message{text-align:center}
+.fw-scroller{position:relative}
+.fw-record{position:relative}
+.fw-name::after{content:"";position:absolute;inset:0}
+.fw-name:focus-visible{outline:1px solid var(--orange);outline-offset:3px}
+.fw-record:hover .fw-name{background:var(--orange);color:var(--paper)}
+.fw-button,.fw-back{display:inline-block}
+a.fw-button{align-self:flex-start}
+.fw-toolbar-count{margin-left:auto;font-size:9px;padding-right:4px}
+.fw-relation{display:grid;grid-template-columns:150px minmax(0,1fr);gap:12px;align-items:baseline;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);padding:10px 0;margin:0 0 16px;font-size:11px;line-height:1.55}
+.fw-relation .fw-label{margin:0}
+.fw-relation-link{text-transform:uppercase}
+.fw-relation-link:hover{background:var(--orange);color:var(--paper)}
+.fw-facts{margin:0;font-size:10px;line-height:1.6;color:var(--muted)}
+.fw-facts div{display:grid;grid-template-columns:150px minmax(0,1fr);gap:12px;border-top:1px solid var(--hair);padding:8px 0}
+.fw-facts dt,.fw-facts dd{margin:0}
+.fw-side{min-height:0;overflow-y:auto;scrollbar-width:none}
+.fw-side::-webkit-scrollbar{display:none}
+@media (max-width:760px){
+  .fw-frame{padding:20px max(18px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left))}
+  .fw-top{font-size:9px}
+  .fw-close{font-size:10px}
+}
+@media (max-width:580px){
+  .fw-sig{display:none}
+  .fw-foot{justify-content:space-between}
+  .fw-relation,.fw-facts div{grid-template-columns:1fr;gap:4px}
+  .fw-toolbar-count{display:none}
+}
+/* Short landscape phones: keep the index usable by compacting the masthead. */
+@media (max-height:480px){
+  .fw-mast{padding:8px 0}
+  .fw-eyebrow,.fw-description{display:none}
+  .fw-title{font-size:22px}
+  .fw-line{margin-top:8px}
+  .fw-grid{padding-top:8px}
+  .fw-record{min-height:60px;padding:5px 2px}
+  .fw-thumb,.fw-thumb-placeholder{height:46px}
+  .fw-foot{padding-top:7px}
+  .fw-detail img{max-height:46vh}
+}
+/* Touch: 44px targets, 16px inputs (prevents iOS focus zoom), no hover-only states. */
+@media (pointer:coarse){
+  .fw-frame{cursor:auto}
+  .fw-close::after,.fw-top a::after,.fw-foot a::after{content:"";position:absolute;inset:-15px -8px}
+  .fw-menu button,.fw-related button{min-height:44px;align-items:center}
+  .fw-step{width:44px;height:44px}
+  .fw-search{height:44px;font-size:16px}
+  .fw-search::placeholder{font-size:10px}
+  .fw-back,.fw-relation-link,a.fw-button{min-height:44px;display:inline-flex;align-items:center}
+  .fw-draft input,.fw-draft textarea,.fw-draft select{font-size:16px}
+  .fw-record:hover .fw-name,.fw-top a:hover,.fw-foot a:hover,.fw-menu button:hover,.fw-related button:hover,.fw-back:hover,.fw-relation-link:hover{background:transparent;color:inherit}
+  .fw-menu button.active:hover{background:var(--ink);color:var(--paper)}
+  .fw-record:active .fw-name,.fw-top a:active,.fw-foot a:active,.fw-menu button:active,.fw-related button:active,.fw-back:active,.fw-relation-link:active{background:var(--orange);color:var(--paper)}
+}
+@media (pointer:coarse) and (max-width:580px){
+  .fw-menu button,.fw-related button{padding:6px 2px}
+  .fw-step{width:40px}
+}
+.fw-toolbar .fw-back{margin-right:auto}
+@media (pointer:coarse){
+  .fw-close::after,.fw-top a::after,.fw-foot a::after{inset:-17px -8px}
+  .fw-step{width:44px}
+}
+/* Constrain the three columns to the frame so only the record column scrolls (landscape phones). */
+.fw-grid{grid-template-rows:minmax(0,1fr)}
+.fw-status{min-height:0;overflow-y:auto;scrollbar-width:none}
+.fw-status::-webkit-scrollbar{display:none}
