@@ -212,7 +212,8 @@ window.FreemanFieldwork = (() => {
   function step(n) {
     const list = stepList();
     const i = list.findIndex((a) => a.slug === current.record.slug) + n;
-    if (i >= 0 && i < list.length) api.navigate(href(list[i]), { replace: true });
+    // Each record visited with ↑ ↓ is its own history step, so BACK retraces them.
+    if (i >= 0 && i < list.length) api.navigate(href(list[i]));
   }
   function renderDetail() {
     const a = current.record;

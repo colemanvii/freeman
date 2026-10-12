@@ -123,7 +123,7 @@
   function words(scope) {
     const walk = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT, {
       acceptNode(n) {
-        return n.parentElement.closest("script,style,textarea,select,option,button,.hover-word,.phrase,.center a") ||
+        return n.parentElement.closest("script,style,textarea,select,option,button,.hover-word,.phrase,.center a,.mobile-brand") ||
           !/[A-Za-z0-9]/.test(n.nodeValue)
           ? NodeFilter.FILTER_REJECT
           : NodeFilter.FILTER_ACCEPT;
@@ -428,7 +428,7 @@
   }
   function entrance() {
     const nav = (cl) => DESTINATIONS.map(([t, u, c]) => link(t, u, c, { "data-entry": "1" }));
-    root.innerHTML = `<nav class="center" aria-label="Main">${nav().join('<span class="sep">/</span>')}</nav><nav class="mobile-home-nav" aria-label="Main">${nav().join("")}</nav><div class="legal">FREEMAN GENERAL CONTRACTORS<br>CARTERSVILLE, GEORGIA</div><div class="mark">BUILT FOR GENERATIONS™<br>EST. IN GEORGIA</div>`;
+    root.innerHTML = `<nav class="center" aria-label="Main">${nav().join('<span class="sep">/</span>')}</nav><p class="mobile-brand">FREEMAN GC</p><nav class="mobile-home-nav" aria-label="Main">${nav().join("")}</nav><div class="legal">FREEMAN GENERAL CONTRACTORS<br>CARTERSVILLE, GEORGIA</div><div class="mark">BUILT FOR GENERATIONS™<br>EST. IN GEORGIA</div>`;
     words(root);
     paletteSelector();
   }
