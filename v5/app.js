@@ -488,19 +488,42 @@
     pageCount = 1;
     renderPage = () => {};
     const vp = root.querySelector(".viewport");
-    vp.innerHTML = `<div class="contact-layout"><div class="contact-sheet"><h2 class="contact-label">CONTACT INFORMATION</h2><p class="subtle">For new work, partnerships or general inquiries.</p>${link("gabe@freemangc.com ↗", "mailto:gabe@freemangc.com", "phrase")}${link("706.263.3348 ↗", "tel:+17062633348", "phrase")}<p class="subtle">GABE FREEMAN<br>CARTERSVILLE, GEORGIA</p></div><form class="contact-inquiry" id="contact-inquiry" novalidate><label class="contact-label" for="contact-message">WRITE A MESSAGE</label><textarea id="contact-message" name="message" maxlength="4000" placeholder="Tell us about your project."></textarea><button type="submit">OPEN EMAIL ↗</button><p class="contact-disclaimer">Opens your email application. Nothing is sent from this website.</p></form></div>`;
+    vp.innerHTML = `<div class="contact-layout"><div class="contact-sheet"><h2 class="contact-label">CONTACT INFORMATION</h2><p class="subtle">For new work, partnerships or general inquiries.</p>${link("gabe@freemangc.com ↗", "mailto:gabe@freemangc.com", "phrase")}${link("706.263.3348 ↗", "tel:+17062633348", "phrase")}<p class="subtle">GABE FREEMAN<br>CARTERSVILLE, GEORGIA</p></div><form class="contact-inquiry" id="contact-inquiry" novalidate><label class="contact-label" for="contact-message">WRITE A MESSAGE</label><textarea id="contact-message" name="message" maxlength="4000" placeholder="Tell us about your project." required></textarea><label class="contact-email-label" for="contact-email">YOUR EMAIL</label><input id="contact-email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required><input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" class="contact-honeypot"><button type="submit">SEND MESSAGE ↗</button><p class="contact-disclaimer" id="contact-status" role="status" aria-live="polite">Sends directly to Freeman. We'll reply by email.</p></form></div>`;
     const form = vp.querySelector("#contact-inquiry");
     const field = form.elements.message;
-    // The draft outlives re-renders (rotation, resize) and a return from the mail app.
+    const emailField = form.elements.email;
+    const button = form.querySelector('button[type="submit"]');
+    const status = vp.querySelector("#contact-status");
     field.value = contactDraft.read();
     field.addEventListener("input", () => contactDraft.write(field.value));
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
       const message = field.value.trim();
+      const email = emailField.value.trim();
       contactDraft.write(field.value);
-      const subject = encodeURIComponent("Freeman GC — New inquiry");
-      const body = message ? "&body=" + encodeURIComponent(message) : "";
-      window.location.href = "mailto:gabe@freemangc.com?subject=" + subject + body;
+      if (message.length < 3) { status.textContent = "Please write a message first."; field.focus(); return; }
+      if (!emailField.checkValidity()) { status.textContent = "Please enter a valid email address."; emailField.focus(); return; }
+      button.disabled = true;
+      button.textContent = "SENDING…";
+      status.textContent = "Sending your message…";
+      try {
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, message, website: form.elements.website.value })
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.ok) throw new Error(result.error || "Could not send your message.");
+        status.textContent = "MESSAGE SENT. THANK YOU.";
+        field.value = "";
+        emailField.value = "";
+        contactDraft.write("");
+      } catch (error) {
+        status.textContent = error.message || "Could not send. Please try again.";
+      } finally {
+        button.disabled = false;
+        button.textContent = "SEND MESSAGE ↗";
+      }
     });
     count();
   }
