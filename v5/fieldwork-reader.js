@@ -51,7 +51,7 @@ window.FreemanFieldwork = (() => {
   function detail(a) {
     current=a;
     root.innerHTML='<div class="fl-frame">'+header(true)+
-      '<div class="fl-heading"><span>FIELDWORK<span class="fl-dot">.</span></span><a class="fl-count" href="fieldwork.html">← INDEX</a></div>'+
+      '<div class="fl-detail-rule" aria-hidden="true"></div>' +
       '<main class="fl-detail"><div class="fl-detail-photo"><img src="'+escape(image(a))+'" alt=""></div>'+
       '<article class="fl-detail-text"><span class="fl-micro">'+escape(a.project)+' / '+escape(a.type)+'</span><h1>'+escape(a.title)+'</h1>'+
       '<p>'+escape(a.text||"")+'</p>'+
