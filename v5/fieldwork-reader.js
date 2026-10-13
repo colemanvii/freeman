@@ -49,6 +49,8 @@ window.FreemanFieldwork = (() => {
     key(e){if(current)return false;if(e.key==="ArrowRight"){e.preventDefault();lead=(lead+1)%archive.length;front();return true}if(e.key==="ArrowLeft"){e.preventDefault();lead=(lead+archive.length-1)%archive.length;front();return true}return false},
     save(){return {lfEdition:edition,lfLead:lead}},
     destroy(){},
+    isDetail(){return !!current},
+    resize(){show({record:current})},
     title(){return current?current.title:"Fieldwork"}
   };
 })();
