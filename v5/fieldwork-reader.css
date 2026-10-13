@@ -222,3 +222,8 @@ a.fw-button{align-self:flex-start}
   .fw-mast{padding-bottom:15px}
   .fw-title{letter-spacing:-.055em}
 }
+
+/* Thumbnail is a real record link, not decorative imagery. */
+.fw-image-link{display:block;width:100%;min-width:0}
+.fw-image-link:focus-visible{outline:1px solid var(--orange);outline-offset:3px}
+@media(min-width:901px){.fw-record .fw-image-link{order:0}.fw-record .fw-image-link .fw-thumb,.fw-record .fw-image-link .fw-thumb-placeholder{width:100%;display:block}.fw-record .fw-image-link .fw-thumb-placeholder{display:grid}}
