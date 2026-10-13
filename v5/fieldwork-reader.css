@@ -33,3 +33,23 @@
 @media(max-width:1000px){.lf-front{grid-template-columns:25% minmax(0,1fr)}.lf-rail{display:none}.lf-front{gap:20px}.lf-nameplate h1{font-size:40px}}
 @media(max-width:760px){.lf-frame{padding:19px 16px 15px}.lf-head{font-size:9px}.lf-head nav{gap:7px}.lf-nameplate{grid-template-columns:1fr 1fr;gap:9px;padding:17px 0 13px}.lf-nameplate h1{grid-column:1/-1;grid-row:1;text-align:left;font-size:37px}.lf-issue{grid-column:1;grid-row:2}.lf-updated{grid-column:2;grid-row:2}.lf-front{display:flex;flex-direction:column;gap:9px;padding-top:12px}.lf-side{flex:0 0 auto}.lf-side h2{font-size:22px;margin:4px 0 3px}.lf-side p,.lf-selector,.lf-side-bottom{display:none}.lf-feature{flex:1}.lf-hero-link{min-height:145px}.lf-hero-caption{min-height:78px}.lf-hero-title{font-size:15px}.lf-footer{font-size:8px}.lf-footer-middle{display:none}.lf-detail{grid-template-columns:1fr;grid-template-rows:minmax(0,45%) minmax(0,1fr);gap:18px;padding:20px 0}.lf-detail-copy{overflow:auto}.lf-detail-copy h1{font-size:24px}.lf-detail-copy p{font-size:11px}.lf-rail{display:none}}
 @media(max-height:680px) and (min-width:761px){.lf-nameplate{padding:14px 0 10px}.lf-front{padding-top:12px}.lf-side h2{margin:8px 0}.lf-selector{margin-top:12px}.lf-selector button{padding:6px 1px}.lf-brief-image{height:70px}}
+
+/* Editorial restraint / 13 OCT 2026: remove publication theater without changing the V5 composition. */
+.lf-nameplate{padding:20px 0 17px}
+.lf-nameplate h1{font-size:clamp(30px,3.2vw,48px);letter-spacing:-.07em}
+.lf-issue{visibility:hidden}
+.lf-updated{align-self:center;font-size:9px;color:var(--orange)}
+.lf-selector{margin-top:0;border-top:0;padding-top:0}
+.lf-selector>.lf-kicker{padding-bottom:9px}
+.lf-front{padding-top:24px}
+.lf-side-bottom{display:none}
+.lf-rail-note{display:none}
+.lf-footer-middle:empty,.lf-footer>span:last-child:empty{display:none}
+@media(max-width:760px){
+.lf-nameplate{grid-template-columns:1fr auto;gap:6px;padding:16px 0 13px}
+.lf-nameplate h1{grid-column:1;grid-row:1;font-size:33px}
+.lf-issue{display:none}
+.lf-updated{grid-column:2;grid-row:1;text-align:right}
+.lf-side{display:none}
+.lf-front{padding-top:14px}
+}
