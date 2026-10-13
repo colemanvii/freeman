@@ -14,7 +14,7 @@ window.FreemanFieldwork = (() => {
     return '<header class="lf-head"><nav aria-label="Freeman navigation"><a href="company.html">COMPANY</a><span>/</span><a href="projects.html">PROJECTS</a><span>/</span><a class="here" href="fieldwork.html">FIELDWORK</a><span>/</span><a href="contact.html">CONTACT</a></nav><a class="lf-close" href="'+(a?'fieldwork.html':'company.html')+'">× CLOSE</a></header>';
   }
   function footer() {
-    return '<footer class="lf-footer"><span>FREEMAN GENERAL CONTRACTING<br>CARTERSVILLE, GEORGIA</span><span class="lf-footer-middle">BUILT FOR GENERATIONS™</span><span>FIELDWORK / AN ONGOING RECORD</span></footer>';
+    return '<footer class="lf-footer"><span>FREEMAN GENERAL CONTRACTING<br>CARTERSVILLE, GEORGIA</span><span class="lf-footer-middle"></span><span></span></footer>';
   }
   function small(a,i) {
     return '<article class="lf-brief"><a href="'+url(a)+'" class="lf-brief-image"><img src="'+src(a)+'" alt=""></a><div class="lf-brief-meta">'+pad(i+1)+' / '+esc(a.type)+'</div><a href="'+url(a)+'" class="lf-brief-title">'+esc(a.title)+'</a><span class="lf-brief-project">'+esc(a.project)+'</span></article>';
@@ -24,11 +24,11 @@ window.FreemanFieldwork = (() => {
     const feature=archive[lead],others=archive.map((a,i)=>({a,i})).filter(x=>x.i!==lead);
     root.innerHTML='<div class="lf-frame">'+header(false)+
       '<div class="lf-rule"></div>'+
-      '<div class="lf-nameplate"><div class="lf-issue">A FREEMAN PUBLICATION<br><span>VOL. 001 / WORKING EDITION</span></div><h1>FIELDWORK<span>.</span></h1><div class="lf-updated">IN THE FIELD<br><span>AN ONGOING RECORD</span></div></div>'+
+      '<div class="lf-nameplate"><div class="lf-issue"></div><h1>FIELDWORK<span>.</span></h1><div class="lf-updated"><span>13 OCT 2026</span></div></div>'+
       '<div class="lf-rule"></div>'+
-      '<div class="lf-front"><div class="lf-side"><div class="lf-kicker">THE EDITION / '+pad(edition+1)+'</div><h2>What the work reveals.</h2><p>People, places, materials, and the things worth noticing along the way.</p><div class="lf-selector"><div class="lf-kicker">ON THIS PAGE</div>'+archive.map((a,i)=>'<button data-lead="'+i+'" class="'+(i===lead?'selected':'')+'"><span>'+pad(i+1)+'</span><span>'+esc(a.title)+'</span><span>↗</span></button>').join('')+'</div><div class="lf-side-bottom">SELECT A STORY TO CHANGE THE FRONT PAGE.</div></div>'+
-      '<div class="lf-feature"><div class="lf-kicker lf-feature-label">LEAD STORY / '+esc(feature.type.toUpperCase())+'</div><a href="'+url(feature)+'" class="lf-hero-link"><img class="lf-hero" src="'+src(feature)+'" alt=""></a><div class="lf-hero-caption"><div><div class="lf-hero-project">'+esc(feature.project)+' / '+esc(feature.type)+'</div><a href="'+url(feature)+'" class="lf-hero-title">'+esc(feature.title)+' ↗</a></div><button class="lf-next" type="button" aria-label="Show next lead story">NEXT STORY →</button></div></div>'+
-      '<div class="lf-rail"><div class="lf-rail-top"><span>ELSEWHERE IN FIELDWORK</span><span>'+pad(archive.length)+' RECORDS</span></div><div class="lf-briefs">'+others.slice(0,3).map(x=>small(x.a,x.i)).join('')+'</div><button class="lf-edition" type="button">RESHUFFLE THE EDITION ↗</button><div class="lf-rail-note">A selection from Freeman’s existing visual archive. Reference and illustrative imagery are identified in individual records.</div></div></div>'+
+      '<div class="lf-front"><div class="lf-side"><div class="lf-selector"><div class="lf-kicker">RECORDS</div>'+archive.map((a,i)=>'<button data-lead="'+i+'" class="'+(i===lead?'selected':'')+'"><span>'+pad(i+1)+'</span><span>'+esc(a.title)+'</span><span>↗</span></button>').join('')+'</div></div>'+
+      '<div class="lf-feature"><div class="lf-kicker lf-feature-label">'+esc(feature.type.toUpperCase())+'</div><a href="'+url(feature)+'" class="lf-hero-link"><img class="lf-hero" src="'+src(feature)+'" alt=""></a><div class="lf-hero-caption"><div><div class="lf-hero-project">'+esc(feature.project)+' / '+esc(feature.type)+'</div><a href="'+url(feature)+'" class="lf-hero-title">'+esc(feature.title)+' ↗</a></div><button class="lf-next" type="button" aria-label="Show next lead story">NEXT →</button></div></div>'+
+      '<div class="lf-rail"><div class="lf-rail-top"><span>MORE</span><span></span></div><div class="lf-briefs">'+others.slice(0,3).map(x=>small(x.a,x.i)).join('')+'</div><button class="lf-edition" type="button">CHANGE SELECTION ↗</button></div></div>'+
       footer()+'</div>';
     root.querySelectorAll('[data-lead]').forEach(b=>b.addEventListener('click',()=>{lead=Number(b.dataset.lead);front()}));
     root.querySelector('.lf-next').addEventListener('click',()=>{lead=(lead+1)%archive.length;front()});
