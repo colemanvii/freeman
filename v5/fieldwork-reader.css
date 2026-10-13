@@ -180,3 +180,45 @@ a.fw-button{align-self:flex-start}
  .fw-record:active .fw-name{background:var(--orange);color:var(--paper)}
  .fw-menu button:focus-visible,.fw-name:focus-visible,.fw-step:focus-visible,.fw-mobile-note:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
 }
+
+
+/* FIELDWORK / V5 EDITORIAL PASS — 13 OCT 2026
+   Same V5 typography, paper, navigation, palette, and close behavior.
+   Photo index replaces dashboard-like chrome; functionality remains underneath. */
+@media(min-width:901px){
+  .fw-frame{padding:28px 30px 23px}
+  .fw-frame>.fw-line:first-of-type{margin-top:17px}
+  .fw-mast{padding:24px 0 20px;align-items:end}
+  .fw-eyebrow{margin-bottom:9px;font-size:9px}
+  .fw-title{font-size:clamp(27px,3vw,42px);letter-spacing:-.06em}
+  .fw-description{display:none}
+  .fw-grid{display:block;position:relative;overflow:hidden;padding:15px 0 0}
+  .fw-side,.fw-status{display:none}
+  .fw-window{height:100%;width:100%}
+  .fw-toolbar{gap:12px;max-width:100%;padding-bottom:12px;justify-content:flex-end}
+  .fw-search{max-width:290px;height:29px;border:0;border-bottom:1px solid var(--hair);padding:0 3px;font-size:9px}
+  .fw-step{height:29px;width:29px;border:0;font-size:13px}
+  .fw-scroller{border:0;overflow-y:auto;min-height:0}
+  .fw-scroller:has(.fw-record){display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px 16px;align-content:start;padding:4px 1px 8px}
+  .fw-record{display:flex;flex-direction:column;align-items:stretch;justify-content:start;min-height:0;padding:0;gap:0;border:0;box-shadow:none!important}
+  .fw-record .fw-number{order:2;align-self:auto;padding:0;font-size:9px;line-height:1.4;color:var(--muted);margin-top:8px}
+  .fw-record .fw-thumb,.fw-record .fw-thumb-placeholder{display:block;width:100%;height:clamp(106px,16vh,190px);aspect-ratio:4/3;object-fit:cover;filter:saturate(.83) contrast(.97)}
+  .fw-record .fw-thumb-placeholder{display:grid;place-items:center;font-size:20px}
+  .fw-record>div{order:3;margin-top:3px}
+  .fw-record .fw-name{font-size:11px;line-height:1.5;padding:0}
+  .fw-record .fw-meta{font-size:9px;line-height:1.45;margin-top:2px}
+  .fw-record.is-current .fw-number{color:var(--orange)}
+  .fw-record:hover .fw-name{background:var(--orange);color:var(--paper)}
+  .fw-scrollcount{padding-top:10px}
+  .fw-foot{padding-top:12px}
+  .fw-detail{max-width:900px;width:100%;margin:auto}
+  .fw-detail img{max-height:48vh}
+}
+@media(min-width:901px) and (max-width:1180px){
+  .fw-scroller:has(.fw-record){grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:900px){
+  .fw-description,.fw-status{display:none}
+  .fw-mast{padding-bottom:15px}
+  .fw-title{letter-spacing:-.055em}
+}
