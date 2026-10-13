@@ -1,0 +1,35 @@
+/* FIELDWORK / LIVING FRONT PAGE / V5. No external framework. */
+.lf-frame{height:100dvh;overflow:hidden;background:var(--paper);color:var(--ink);padding:28px 30px 23px;display:flex;flex-direction:column;font-family:var(--mono)}
+.lf-head{display:flex;justify-content:space-between;align-items:center;min-height:20px;font-size:10px;line-height:1.5;letter-spacing:.025em}
+.lf-head nav{display:flex;align-items:center;gap:13px}.lf-head nav span{color:var(--muted)}.lf-head .here{color:var(--orange)}
+.lf-head a:hover,.lf-brief-title:hover,.lf-hero-title:hover,.lf-back:hover{background:var(--orange);color:var(--paper)}
+.lf-rule{border-top:1px solid var(--hair);margin-top:17px;flex-shrink:0}
+.lf-nameplate{display:grid;grid-template-columns:1fr 1.8fr 1fr;align-items:end;gap:12px;padding:25px 0 18px}
+.lf-nameplate h1{font:normal clamp(34px,4vw,62px)/1 var(--mono);letter-spacing:-.09em;text-align:center}.lf-nameplate h1 span{color:var(--orange)}
+.lf-issue,.lf-updated{font-size:9px;line-height:1.65}.lf-issue span,.lf-updated span{color:var(--muted)}.lf-updated{text-align:right}
+.lf-front{display:grid;grid-template-columns:23% minmax(0,1fr) 23%;gap:clamp(16px,2.3vw,38px);flex:1;min-height:0;padding:23px 0 14px}
+.lf-kicker{font-size:9px;line-height:1.6;letter-spacing:.025em;color:var(--orange);text-transform:uppercase}
+.lf-side{display:flex;flex-direction:column;min-height:0}
+.lf-side h2{font-size:clamp(21px,2.4vw,35px);line-height:1.1;letter-spacing:-.06em;margin:18px 0 16px}
+.lf-side p{font-size:11px;line-height:1.65;color:var(--muted);max-width:265px}
+.lf-selector{margin-top:clamp(23px,4vh,60px);border-top:1px solid var(--hair);padding-top:12px;min-height:0;overflow:auto}
+.lf-selector button{width:100%;display:grid;grid-template-columns:24px 1fr 10px;gap:6px;text-align:left;border-bottom:1px solid var(--hair);padding:11px 1px;font-size:10px;line-height:1.35}
+.lf-selector button span:first-child{font-size:9px;color:var(--muted)}.lf-selector button span:last-child{color:var(--orange);opacity:0}
+.lf-selector button.selected span:nth-child(2){color:var(--orange)}.lf-selector button.selected span:last-child,.lf-selector button:hover span:last-child{opacity:1}
+.lf-side-bottom{margin-top:auto;padding-top:15px;font-size:9px;color:var(--muted);line-height:1.5}
+.lf-feature{display:flex;flex-direction:column;min-height:0}.lf-feature-label{padding-bottom:9px}
+.lf-hero-link{min-height:0;flex:1;display:block;overflow:hidden;background:var(--hair)}.lf-hero{height:100%;width:100%;object-fit:cover;filter:saturate(.85) contrast(.96);transition:filter .2s}
+.lf-hero-link:hover .lf-hero{filter:saturate(1) contrast(1)}
+.lf-hero-caption{border-top:1px solid var(--hair);display:flex;align-items:end;justify-content:space-between;gap:10px;padding-top:12px;min-height:73px}
+.lf-hero-project{font-size:9px;line-height:1.5;color:var(--muted);text-transform:uppercase}.lf-hero-title{font-size:clamp(14px,1.6vw,24px);line-height:1.35;letter-spacing:-.05em;display:inline-block}
+.lf-next{font-size:9px;flex-shrink:0;white-space:nowrap;padding:6px 0}.lf-next:hover,.lf-edition:hover{color:var(--orange)}
+.lf-rail{display:flex;flex-direction:column;min-height:0}.lf-rail-top{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);gap:5px;padding-bottom:13px;border-bottom:1px solid var(--hair)}
+.lf-briefs{min-height:0;overflow:auto;flex:1}.lf-brief{padding:11px 0 13px;border-bottom:1px solid var(--hair)}
+.lf-brief-image{display:block;width:100%;height:clamp(65px,10vh,125px);overflow:hidden;background:var(--hair)}.lf-brief-image img{height:100%;width:100%;object-fit:cover;filter:saturate(.8)}
+.lf-brief-meta{font-size:9px;color:var(--orange);margin-top:8px}.lf-brief-title{font-size:11px;line-height:1.5;display:inline-block;margin-top:3px}.lf-brief-project{display:block;font-size:9px;color:var(--muted);margin-top:3px}
+.lf-edition{border-top:1px solid var(--hair);padding:14px 0;text-align:left;font-size:10px}.lf-rail-note{font-size:9px;line-height:1.45;color:var(--muted)}
+.lf-footer{display:flex;justify-content:space-between;gap:20px;font-size:9px;line-height:1.5;color:var(--muted);padding-top:12px;border-top:1px solid var(--hair)}.lf-footer-middle{align-self:end}
+.lf-detail{flex:1;min-height:0;display:grid;grid-template-columns:56% 1fr;gap:7vw;align-items:center;padding:32px 5vw}.lf-detail-image{height:100%;min-height:0;display:flex;align-items:center;justify-content:center}.lf-detail-image img{max-width:100%;max-height:100%;object-fit:contain}.lf-detail-copy h1{font-size:clamp(22px,2.5vw,39px);line-height:1.2;letter-spacing:-.065em;margin:13px 0 17px}.lf-detail-project{font-size:10px;color:var(--muted);margin-bottom:27px}.lf-detail-copy p{font-size:12px;line-height:1.65;max-width:460px}.lf-details-note,.lf-details-source{border-top:1px solid var(--hair);padding-top:11px;margin-top:22px;font-size:10px;line-height:1.6;color:var(--muted)}.lf-back{font-size:10px;display:inline-block;margin-top:28px}
+@media(max-width:1000px){.lf-front{grid-template-columns:25% minmax(0,1fr)}.lf-rail{display:none}.lf-front{gap:20px}.lf-nameplate h1{font-size:40px}}
+@media(max-width:760px){.lf-frame{padding:19px 16px 15px}.lf-head{font-size:9px}.lf-head nav{gap:7px}.lf-nameplate{grid-template-columns:1fr 1fr;gap:9px;padding:17px 0 13px}.lf-nameplate h1{grid-column:1/-1;grid-row:1;text-align:left;font-size:37px}.lf-issue{grid-column:1;grid-row:2}.lf-updated{grid-column:2;grid-row:2}.lf-front{display:flex;flex-direction:column;gap:9px;padding-top:12px}.lf-side{flex:0 0 auto}.lf-side h2{font-size:22px;margin:4px 0 3px}.lf-side p,.lf-selector,.lf-side-bottom{display:none}.lf-feature{flex:1}.lf-hero-link{min-height:145px}.lf-hero-caption{min-height:78px}.lf-hero-title{font-size:15px}.lf-footer{font-size:8px}.lf-footer-middle{display:none}.lf-detail{grid-template-columns:1fr;grid-template-rows:minmax(0,45%) minmax(0,1fr);gap:18px;padding:20px 0}.lf-detail-copy{overflow:auto}.lf-detail-copy h1{font-size:24px}.lf-detail-copy p{font-size:11px}.lf-rail{display:none}}
+@media(max-height:680px) and (min-width:761px){.lf-nameplate{padding:14px 0 10px}.lf-front{padding-top:12px}.lf-side h2{margin:8px 0}.lf-selector{margin-top:12px}.lf-selector button{padding:6px 1px}.lf-brief-image{height:70px}}
