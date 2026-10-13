@@ -44,15 +44,9 @@ window.FreemanFieldwork = (() => {
     current=null;
     const list=visible();
     root.innerHTML='<div class="fl-frame">'+header(false)+
-      '<div class="fl-heading"><span>FIELDWORK<span class="fl-dot">.</span></span><span class="fl-count">06 SOURCE RECORDS / '+pad(list.length)+' FRAGMENTS</span></div>'+
-      '<div class="fl-tools"><div class="fl-filters" aria-label="View type">'+
-      [['all','ALL'],['photo','PHOTOGRAPHS'],['note','NOTES']].map(([k,t])=>'<button type="button" data-mode="'+k+'" aria-pressed="'+(mode===k)+'">'+t+'</button>').join('')+
-      '</div><button type="button" class="fl-cycle" aria-label="Change arrangement" title="Change arrangement">↻ <span>REARRANGE</span></button></div>'+
       '<main class="fl-log" aria-label="Fieldwork archive"><div class="fl-grid">'+list.map(card).join('')+'</div></main>'+
       '<div class="fl-bottom"><span>PHOTOGRAPHS AND OBSERVATIONS FROM THE EXISTING FREEMAN ARCHIVE</span><span>SELECT ANY ENTRY ↗</span></div>'+
       footer+'</div>';
-    root.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;shift=0;front()});
-    root.querySelector('.fl-cycle').onclick=()=>{shift=(shift+3)%Math.max(visible().length,1);front()};
   }
   function detail(a) {
     current=a;
