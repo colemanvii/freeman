@@ -1,56 +1,63 @@
 "use strict";
-/* FIELDWORK — Living front page / experimental editorial direction.
-   Real V5 shell, real existing archive records, no fabricated capture dates.
-   Editions are compositions, not claims of newly published work. */
-window.FreemanFieldwork = (() => {
-  const archive = window.RECORDS.archive;
-  const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  const pad = n => String(n).padStart(2,"0");
-  const url = a => "fieldwork-"+a.slug+".html";
-  const src = a => "assets/"+a.image;
-  let root,router,edition=0,lead=0,current=null;
-  let editions = [0,3,2];
-  function header(a) {
-    return '<header class="lf-head"><nav aria-label="Freeman navigation"><a href="company.html">COMPANY</a><span>/</span><a href="projects.html">PROJECTS</a><span>/</span><a class="here" href="fieldwork.html">FIELDWORK</a><span>/</span><a href="contact.html">CONTACT</a></nav><a class="lf-close" href="'+(a?'fieldwork.html':'company.html')+'">× CLOSE</a></header>';
+/* Freeman Fieldwork — composed, interactive editorial surface.
+   Existing V5 navigation, archive imagery and source disclosures.
+   No fabricated reporting dates or claims of field documentation. */
+window.FreemanFieldwork=(()=>{
+  const archive=window.RECORDS.archive;
+  const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const pad=n=>String(n).padStart(2,"0");
+  const href=a=>"fieldwork-"+a.slug+".html";
+  const photo=a=>"assets/"+a.image;
+  let root,selected=0,current=null;
+  const note=a=>a.status&&/illustrative|ai.generated|reference/i.test(a.status)?"REFERENCE / STUDY":a.type.toUpperCase();
+  const nav=detail=>'<header class="ed-nav"><nav aria-label="Primary"><a href="company.html">COMPANY</a><span>/</span><a href="projects.html">PROJECTS</a><span>/</span><a href="fieldwork.html" class="ed-current">FIELDWORK</a><span>/</span><a href="contact.html">CONTACT</a></nav><a href="'+(detail?'fieldwork.html':'company.html')+'">× CLOSE</a></header>';
+  const foot='<footer class="ed-foot"><span>FREEMAN GENERAL CONTRACTING<br>CARTERSVILLE, GEORGIA</span><span>BUILT FOR GENERATIONS™</span></footer>';
+  function tile(i,variant){
+    const a=archive[i];
+    return '<article class="ed-tile '+variant+'"><button class="ed-pick" type="button" data-select="'+i+'" aria-label="Feature '+esc(a.title)+'"><img src="'+photo(a)+'" alt="" loading="'+(variant==="ed-feature"?"eager":"lazy")+'"><span class="ed-photo-index">'+pad(i+1)+'</span></button><div class="ed-tile-caption"><span>'+esc(a.project)+'</span><a href="'+href(a)+'">'+esc(a.title)+' <span aria-hidden="true">↗</span></a></div></article>';
   }
-  function footer() {
-    return '<footer class="lf-footer"><span>FREEMAN GENERAL CONTRACTING<br>CARTERSVILLE, GEORGIA</span><span class="lf-footer-middle"></span><span></span></footer>';
-  }
-  function small(a,i) {
-    return '<article class="lf-brief"><a href="'+url(a)+'" class="lf-brief-image"><img src="'+src(a)+'" alt=""></a><div class="lf-brief-meta">'+pad(i+1)+' / '+esc(a.type)+'</div><a href="'+url(a)+'" class="lf-brief-title">'+esc(a.title)+'</a><span class="lf-brief-project">'+esc(a.project)+'</span></article>';
-  }
-  function front() {
+  function front(){
     current=null;
-    const feature=archive[lead],others=archive.map((a,i)=>({a,i})).filter(x=>x.i!==lead);
-    root.innerHTML='<div class="lf-frame">'+header(false)+
-      '<div class="lf-rule"></div>'+
-      '<div class="lf-nameplate"><div class="lf-issue"></div><h1>FIELDWORK<span>.</span></h1><div class="lf-updated"><span>13 OCT 2026</span></div></div>'+
-      '<div class="lf-rule"></div>'+
-      '<div class="lf-front"><div class="lf-side"><div class="lf-selector"><div class="lf-kicker">RECORDS</div>'+archive.map((a,i)=>'<button data-lead="'+i+'" class="'+(i===lead?'selected':'')+'"><span>'+pad(i+1)+'</span><span>'+esc(a.title)+'</span><span>↗</span></button>').join('')+'</div></div>'+
-      '<div class="lf-feature"><div class="lf-kicker lf-feature-label">'+esc(feature.type.toUpperCase())+'</div><a href="'+url(feature)+'" class="lf-hero-link"><img class="lf-hero" src="'+src(feature)+'" alt=""></a><div class="lf-hero-caption"><div><div class="lf-hero-project">'+esc(feature.project)+' / '+esc(feature.type)+'</div><a href="'+url(feature)+'" class="lf-hero-title">'+esc(feature.title)+' ↗</a></div><button class="lf-next" type="button" aria-label="Show next lead story">NEXT →</button></div></div>'+
-      '<div class="lf-rail"><div class="lf-rail-top"><span>MORE</span><span></span></div><div class="lf-briefs">'+others.slice(0,3).map(x=>small(x.a,x.i)).join('')+'</div><button class="lf-edition" type="button">CHANGE SELECTION ↗</button></div></div>'+
-      footer()+'</div>';
-    root.querySelectorAll('[data-lead]').forEach(b=>b.addEventListener('click',()=>{lead=Number(b.dataset.lead);front()}));
-    root.querySelector('.lf-next').addEventListener('click',()=>{lead=(lead+1)%archive.length;front()});
-    root.querySelector('.lf-edition').addEventListener('click',()=>{edition=(edition+1)%editions.length;lead=editions[edition];front()});
+    const list=archive.map((a,i)=>i).filter(i=>i!==selected);
+    // Consistent but asymmetric visual hierarchy; selecting any item re-composes the page.
+    root.innerHTML='<div class="ed-frame">'+nav(false)+
+      '<section class="ed-heading"><div><span class="ed-small">FIELDWORK</span><span class="ed-tick" aria-hidden="true"></span></div><span class="ed-date">13 OCT 2026</span></section>'+
+      '<main class="ed-composition" aria-label="Fieldwork selections">'+
+        '<section class="ed-lead">'+
+          '<div class="ed-lead-label">'+pad(selected+1)+' / '+esc(note(archive[selected]))+'</div>'+
+          '<a class="ed-lead-photo" href="'+href(archive[selected])+'"><img src="'+photo(archive[selected])+'" alt=""></a>'+
+          '<div class="ed-lead-bottom"><div><div class="ed-subtle">'+esc(archive[selected].project)+'</div><a class="ed-lead-title" href="'+href(archive[selected])+'">'+esc(archive[selected].title)+' ↗</a></div><button class="ed-cycle" data-next type="button" aria-label="Feature next story">→</button></div>'+
+        '</section>'+
+        '<section class="ed-aside">'+
+          tile(list[0],"ed-secondary")+
+          '<div class="ed-aside-bottom"><span>'+pad(list[0]+1)+' — '+esc(archive[list[0]].type)+'</span><button data-select="'+list[1]+'" type="button" aria-label="Feature '+esc(archive[list[1]].title)+'">↗ '+esc(archive[list[1]].title)+'</button></div>'+
+        '</section>'+
+        '<section class="ed-bottom">'+
+          tile(list[2],"ed-bottom-photo")+
+          '<div class="ed-text-column"><span class="ed-small">'+pad(list[1]+1)+' / '+esc(archive[list[1]].type)+'</span><button data-select="'+list[1]+'" class="ed-text-title" type="button">'+esc(archive[list[1]].title)+'</button><span class="ed-subtle">'+esc(archive[list[1]].project)+'</span></div>'+
+          tile(list[3],"ed-bottom-photo")+
+          '<div class="ed-mini"><span class="ed-small">MORE</span>'+list.slice(4).map(i=>'<button data-select="'+i+'" type="button">'+pad(i+1)+' <span>'+esc(archive[i].title)+'</span> ↗</button>').join('')+'</div>'+
+        '</section>'+
+      '</main>'+foot+'</div>';
+    root.querySelectorAll('[data-select]').forEach(el=>el.onclick=()=>{selected=Number(el.dataset.select);front()});
+    root.querySelector('[data-next]').onclick=()=>{selected=(selected+1)%archive.length;front()};
   }
-  function detail(a) {
+  function detail(a){
     current=a;
-    root.innerHTML='<div class="lf-frame">'+header(true)+'<div class="lf-rule"></div><div class="lf-detail"><div class="lf-detail-image"><img src="'+src(a)+'" alt=""></div><div class="lf-detail-copy"><div class="lf-kicker">FIELDWORK / '+esc(a.type.toUpperCase())+'</div><h1>'+esc(a.title)+'</h1><div class="lf-detail-project">'+esc(a.project)+'</div><p>'+esc(a.text||"")+'</p><div class="lf-details-note">'+esc(a.note||"")+'</div><div class="lf-details-source">SOURCE / '+esc(a.source||"Unverified reference")+'</div><a class="lf-back" href="fieldwork.html">← RETURN TO FRONT PAGE</a></div></div>'+footer()+'</div>';
+    root.innerHTML='<div class="ed-frame">'+nav(true)+
+      '<section class="ed-heading"><span class="ed-small">FIELDWORK</span><a class="ed-date" href="fieldwork.html">← ALL RECORDS</a></section>'+
+      '<main class="ed-detail"><figure><img src="'+photo(a)+'" alt=""><figcaption>'+esc(a.project)+' / '+esc(a.type)+'</figcaption></figure><article><span class="ed-small">'+esc(note(a))+'</span><h1>'+esc(a.title)+'</h1><p>'+esc(a.text||"")+'</p><div class="ed-record-note">'+esc(a.note||"")+'</div><div class="ed-record-note">SOURCE / '+esc(a.source||"Unverified reference")+'</div><a href="fieldwork.html" class="ed-return">← FIELDWORK</a></article></main>'+foot+'</div>';
   }
-  function show(route) {
-    const a=route.record;
-    if(a)detail(a);else front();
-  }
+  const show=route=>route.record?detail(route.record):front();
   return {
-    mount(node,route,state,api){root=node;router=api;show(route)},
+    mount(node,route,state){root=node;if(state&&Number.isInteger(state.edSelected))selected=Math.max(0,Math.min(archive.length-1,state.edSelected));show(route)},
     update(route){show(route)},
-    closeTarget(){return current?{href:"fieldwork.html"}:{href:"company.html"}},
-    key(e){if(current)return false;if(e.key==="ArrowRight"){e.preventDefault();lead=(lead+1)%archive.length;front();return true}if(e.key==="ArrowLeft"){e.preventDefault();lead=(lead+archive.length-1)%archive.length;front();return true}return false},
-    save(){return {lfEdition:edition,lfLead:lead}},
+    key(e){if(current)return false;if(e.key==="ArrowRight"||e.key==="ArrowLeft"){e.preventDefault();selected=(selected+(e.key==="ArrowRight"?1:archive.length-1))%archive.length;front();return true}return false},
+    save(){return {edSelected:selected}},
     destroy(){},
     isDetail(){return !!current},
     resize(){show({record:current})},
+    closeTarget(){return {href:current?"fieldwork.html":"company.html"}},
     title(){return current?current.title:"Fieldwork"}
   };
 })();
