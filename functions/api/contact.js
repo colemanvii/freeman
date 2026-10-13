@@ -14,7 +14,7 @@ export async function onRequestPost({ request, env }) {
   if (data.website) return reply(200, { ok: true }); // Honeypot
   const email = typeof data.email === "string" ? data.email.trim() : "";
   const message = typeof data.message === "string" ? data.message.trim() : "";
-  if (email.length > 254 || !/^[^\\s@<>;,]+@[^\\s@<>;,]+\\.[^\\s@<>;,]+$/.test(email)) return reply(400, { error: "Please enter a valid email address." });
+  if (email.length > 254 || !/^[^\s@<>;,]+@[^\s@<>;,]+\.[^\s@<>;,]+$/.test(email)) return reply(400, { error: "Please enter a valid email address." });
   if (message.length < 3 || message.length > 4000) return reply(400, { error: "Please write a message between 3 and 4000 characters." });
   try {
     const response = await fetch("https://api.resend.com/emails", {
@@ -26,7 +26,7 @@ export async function onRequestPost({ request, env }) {
         cc: ["cole@freemangc.com"],
         reply_to: email,
         subject: "New inquiry — Freeman General Contracting",
-        text: "Reply to: " + email + "\\n\\n" + message
+        text: "Reply to: " + email + "\n\n" + message
       }),
       signal: AbortSignal.timeout(10000)
     });
