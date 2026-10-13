@@ -1,333 +1,54 @@
 "use strict";
-/*
- * Fieldwork — living index. Mounted by app.js; follows the same interior navigation rules:
- *   record / note / draft  → × CLOSE returns to the index (filters, scroll and position kept)
- *   index                  → × CLOSE returns to FREEMAN GC
- * Each record has its own URL (fieldwork-<slug>.html), so records deep-link, refresh and
- * work with Back/Forward. Filters live in the index URL (?category=&project=&q=).
- */
+/* FIELDWORK — Living front page / experimental editorial direction.
+   Real V5 shell, real existing archive records, no fabricated capture dates.
+   Editions are compositions, not claims of newly published work. */
 window.FreemanFieldwork = (() => {
-  const data = window.RECORDS;
-  if (!data || !Array.isArray(data.archive)) return null;
-  const esc = (s) =>
-    String(s ?? "").replace(
-      /[&<>"']/g,
-      (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
-    );
-  const pad = (n, l = 3) => String(n).padStart(l, "0");
-  const categories = ["All records", "Field", "Observation", "Material", "Process", "Artifact"];
-  const connected = [["", "All projects"], ...[...new Set(data.archive.filter((a) => a.link).map((a) => a.project))].map((p) => [p, p])];
-  const DRAFT_KEY = "freeman-fieldwork-local-drafts";
-
-  const mem = { category: "All records", project: "", q: "" };
-  let api = null, host = null, els = {}, current = { kind: "index" }, active = 0, qTimer = null;
-
-  let drafts = [];
-  try {
-    drafts = JSON.parse(localStorage.getItem(DRAFT_KEY) || "[]");
-    if (!Array.isArray(drafts)) drafts = [];
-  } catch (e) {
-    drafts = [];
+  const archive = window.RECORDS.archive;
+  const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const pad = n => String(n).padStart(2,"0");
+  const url = a => "fieldwork-"+a.slug+".html";
+  const src = a => "assets/"+a.image;
+  let root,router,edition=0,lead=0,current=null;
+  let editions = [0,3,2];
+  function header(a) {
+    return '<header class="lf-head"><nav aria-label="Freeman navigation"><a href="company.html">COMPANY</a><span>/</span><a href="projects.html">PROJECTS</a><span>/</span><a class="here" href="fieldwork.html">FIELDWORK</a><span>/</span><a href="contact.html">CONTACT</a></nav><a class="lf-close" href="'+(a?'fieldwork.html':'company.html')+'">× CLOSE</a></header>';
   }
-
-  /* ---------- Records ---------- */
-  const entries = () => [
-    ...drafts.map((d, i) => ({ ...d, slug: "draft-" + i, draftIndex: i, isDraft: true })),
-    ...data.archive,
-  ];
-  const href = (a) => (a.isDraft ? "fieldwork.html?draft=" + a.draftIndex : "fieldwork-" + a.slug + ".html");
-  const numberOf = (a) => (a.isDraft ? "D" + String(a.draftIndex + 1).padStart(2, "0") : pad(data.archive.indexOf(a) + 1));
-  const img = (a) => (a.isDraft ? null : "assets/" + a.image);
-  const projectFor = (a) => (a.link ? data.projects.find((p) => p.slug === a.link) : null);
-  const matches = (a) =>
-    (mem.category === "All records" || a.type === mem.category) &&
-    (!mem.project || a.project === mem.project) &&
-    (!mem.q || (a.title + " " + a.type + " " + a.project + " " + a.text).toLowerCase().includes(mem.q.toLowerCase()));
-  const filtered = () => entries().filter(matches);
-  const filterQuery = () => {
-    const p = new URLSearchParams();
-    if (mem.category !== "All records") p.set("category", mem.category);
-    if (mem.project) p.set("project", mem.project);
-    if (mem.q) p.set("q", mem.q);
-    const s = p.toString();
-    return "fieldwork.html" + (s ? "?" + s : "");
-  };
-  function readFilters(params) {
-    const c = params.get("category"), p = params.get("project");
-    mem.category = categories.includes(c) ? c : "All records";
-    mem.project = connected.some(([id]) => id && id === p) ? p : "";
-    mem.q = (params.get("q") || "").slice(0, 120);
+  function footer() {
+    return '<footer class="lf-footer"><span>FREEMAN GENERAL CONTRACTING<br>CARTERSVILLE, GEORGIA</span><span class="lf-footer-middle">BUILT FOR GENERATIONS™</span><span>FIELDWORK / AN ONGOING RECORD</span></footer>';
   }
-
-  /* Which view does a route describe? */
-  function resolve(route) {
-    if (route.record) return { kind: "detail", record: route.record };
-    const draft = route.params.get("draft");
-    if (draft != null) {
-      const d = entries().find((a) => a.isDraft && String(a.draftIndex) === draft);
-      if (d) return { kind: "detail", record: d };
-    }
-    if (route.params.get("note") === "new") return { kind: "note" };
-    return { kind: "index" };
+  function small(a,i) {
+    return '<article class="lf-brief"><a href="'+url(a)+'" class="lf-brief-image"><img src="'+src(a)+'" alt=""></a><div class="lf-brief-meta">'+pad(i+1)+' / '+esc(a.type)+'</div><a href="'+url(a)+'" class="lf-brief-title">'+esc(a.title)+'</a><span class="lf-brief-project">'+esc(a.project)+'</span></article>';
   }
-
-  /* ---------- Frame ---------- */
-  function frame() {
-    host.innerHTML = `<div class="fw-frame"><header class="fw-top"><h1 class="fw-crumb"><a class="fw-link" href="company.html"><strong>FREEMAN GC</strong></a> / <a class="fw-link fw-section" href="fieldwork.html">FIELDWORK</a><span class="fw-tail"></span></h1><a class="fw-close" href="company.html">× CLOSE</a></header><div class="fw-line"></div><div class="fw-mast"><div><div class="fw-eyebrow">ARCHIVE / ONGOING</div><div class="fw-title" role="heading" aria-level="2">Fieldwork<i>.</i></div></div><div class="fw-description">A working record of the things we build, observe, and learn.</div></div><div class="fw-grid"><aside class="fw-side"><div class="fw-label">BROWSE / INDEX</div><nav class="fw-menu" aria-label="Record categories"></nav><div class="fw-line"></div><div class="fw-label">CONNECTED WORK</div><nav class="fw-related" aria-label="Project filters"></nav></aside><section class="fw-window" id="fw-window" aria-label="Records"></section><aside class="fw-status"><div class="fw-label">ARCHIVE STATUS</div><div class="fw-stat-row"><span class="fw-muted">RECORDS</span><div class="fw-stat" id="fw-total"></div></div><div class="fw-stat-row"><span class="fw-muted">MODE</span><div style="padding-top:8px">OPEN / ONGOING</div></div><div class="fw-label" style="margin-top:26px">RECENT ACTIVITY</div><div class="fw-activity"><b>+</b><span>New observations can be prepared as drafts</span></div><div class="fw-activity"><b>↗</b><span>Records connect to finished projects</span></div><div class="fw-activity"><b>○</b><span>Unverified references remain identified</span></div><a class="fw-button" id="fw-new" href="fieldwork.html?note=new">+ ADD LOCAL FIELD NOTE ↗</a></aside></div><div class="fw-line"></div><footer class="fw-foot"><a class="fw-backlink fw-link" href="company.html">← FREEMAN GC</a><span class="fw-muted" id="fw-message" aria-live="polite"></span><span class="fw-sig">FREEMAN / BUILT FOR GENERATIONS™</span></footer></div>`;
-    els = {
-      window: host.querySelector("#fw-window"),
-      menu: host.querySelector(".fw-menu"),
-      related: host.querySelector(".fw-related"),
-      message: host.querySelector("#fw-message"),
-      tail: host.querySelector(".fw-tail"),
-      section: host.querySelector(".fw-section"),
-      close: host.querySelector(".fw-close"),
-      back: host.querySelector(".fw-backlink"),
-    };
-    els.menu.addEventListener("click", (e) => {
-      const b = e.target.closest("[data-cat]");
-      if (!b) return;
-      mem.category = b.dataset.cat;
-      mem.project = "";
-      filtersChanged();
-    });
-    els.related.addEventListener("click", (e) => {
-      const b = e.target.closest("[data-project]");
-      if (!b) return;
-      mem.project = b.dataset.project;
-      mem.category = "All records";
-      filtersChanged();
-    });
+  function front() {
+    current=null;
+    const feature=archive[lead],others=archive.map((a,i)=>({a,i})).filter(x=>x.i!==lead);
+    root.innerHTML='<div class="lf-frame">'+header(false)+
+      '<div class="lf-rule"></div>'+
+      '<div class="lf-nameplate"><div class="lf-issue">A FREEMAN PUBLICATION<br><span>VOL. 001 / WORKING EDITION</span></div><h1>FIELDWORK<span>.</span></h1><div class="lf-updated">IN THE FIELD<br><span>AN ONGOING RECORD</span></div></div>'+
+      '<div class="lf-rule"></div>'+
+      '<div class="lf-front"><div class="lf-side"><div class="lf-kicker">THE EDITION / '+pad(edition+1)+'</div><h2>What the work reveals.</h2><p>People, places, materials, and the things worth noticing along the way.</p><div class="lf-selector"><div class="lf-kicker">ON THIS PAGE</div>'+archive.map((a,i)=>'<button data-lead="'+i+'" class="'+(i===lead?'selected':'')+'"><span>'+pad(i+1)+'</span><span>'+esc(a.title)+'</span><span>↗</span></button>').join('')+'</div><div class="lf-side-bottom">SELECT A STORY TO CHANGE THE FRONT PAGE.</div></div>'+
+      '<div class="lf-feature"><div class="lf-kicker lf-feature-label">LEAD STORY / '+esc(feature.type.toUpperCase())+'</div><a href="'+url(feature)+'" class="lf-hero-link"><img class="lf-hero" src="'+src(feature)+'" alt=""></a><div class="lf-hero-caption"><div><div class="lf-hero-project">'+esc(feature.project)+' / '+esc(feature.type)+'</div><a href="'+url(feature)+'" class="lf-hero-title">'+esc(feature.title)+' ↗</a></div><button class="lf-next" type="button" aria-label="Show next lead story">NEXT STORY →</button></div></div>'+
+      '<div class="lf-rail"><div class="lf-rail-top"><span>ELSEWHERE IN FIELDWORK</span><span>'+pad(archive.length)+' RECORDS</span></div><div class="lf-briefs">'+others.slice(0,3).map(x=>small(x.a,x.i)).join('')+'</div><button class="lf-edition" type="button">RESHUFFLE THE EDITION ↗</button><div class="lf-rail-note">A selection from Freeman’s existing visual archive. Reference and illustrative imagery are identified in individual records.</div></div></div>'+
+      footer()+'</div>';
+    root.querySelectorAll('[data-lead]').forEach(b=>b.addEventListener('click',()=>{lead=Number(b.dataset.lead);front()}));
+    root.querySelector('.lf-next').addEventListener('click',()=>{lead=(lead+1)%archive.length;front()});
+    root.querySelector('.lf-edition').addEventListener('click',()=>{edition=(edition+1)%editions.length;lead=editions[edition];front()});
   }
-  const setMessage = (v) => { els.message.textContent = v; };
-
-  /* Header, × CLOSE and footer link always describe the parent of the current view. */
-  function updateChrome() {
-    const parent = current.kind === "index" ? { href: "company.html", text: "FREEMAN GC", label: "return to Freeman GC" } : { href: filterQuery(), text: "FIELDWORK", label: "return to the Fieldwork index" };
-    const focus = current.record ? current.record.slug : "";
-    els.close.setAttribute("href", parent.href);
-    els.close.setAttribute("aria-label", "Close — " + parent.label);
-    els.back.setAttribute("href", parent.href);
-    els.back.textContent = "← " + parent.text;
-    [els.close, els.back].forEach((a) => (focus ? a.setAttribute("data-focus", focus) : a.removeAttribute("data-focus")));
-    els.section.setAttribute("href", current.kind === "index" ? "fieldwork.html" : filterQuery());
-    if (focus) els.section.setAttribute("data-focus", focus);
-    else els.section.removeAttribute("data-focus");
-    if (current.kind === "index") els.section.setAttribute("aria-current", "page");
-    else els.section.removeAttribute("aria-current");
-    els.tail.textContent =
-      current.kind === "detail" ? " / " + numberOf(current.record) : current.kind === "note" ? " / NEW NOTE" : "";
+  function detail(a) {
+    current=a;
+    root.innerHTML='<div class="lf-frame">'+header(true)+'<div class="lf-rule"></div><div class="lf-detail"><div class="lf-detail-image"><img src="'+src(a)+'" alt=""></div><div class="lf-detail-copy"><div class="lf-kicker">FIELDWORK / '+esc(a.type.toUpperCase())+'</div><h1>'+esc(a.title)+'</h1><div class="lf-detail-project">'+esc(a.project)+'</div><p>'+esc(a.text||"")+'</p><div class="lf-details-note">'+esc(a.note||"")+'</div><div class="lf-details-source">SOURCE / '+esc(a.source||"Unverified reference")+'</div><a class="lf-back" href="fieldwork.html">← RETURN TO FRONT PAGE</a></div></div>'+footer()+'</div>';
   }
-
-  function renderNav() {
-    const all = entries();
-    els.menu.innerHTML = categories
-      .map((c) => `<button type="button" data-cat="${esc(c)}" class="${c === mem.category && !mem.project ? "active" : ""}" aria-pressed="${c === mem.category && !mem.project}"><span>${esc(c)}</span><span>${all.filter((a) => c === "All records" || a.type === c).length}</span></button>`)
-      .join("");
-    els.related.innerHTML = connected
-      .map(([id, name]) => `<button type="button" data-project="${esc(id)}" aria-pressed="${mem.project === id}">↗ ${esc(name)}</button>`)
-      .join("");
-    host.querySelector("#fw-total").textContent = pad(all.length);
+  function show(route) {
+    const a=route.record;
+    if(a)detail(a);else front();
   }
-
-  function filtersChanged() {
-    active = 0;
-    if (current.kind === "index") {
-      renderNav();
-      renderList();
-      api.replaceUrl(filterQuery());
-    } else {
-      api.navigate(filterQuery());
-    }
-  }
-
-  /* ---------- Index ---------- */
-  function renderIndex(state) {
-    els.window.innerHTML = `<div class="fw-toolbar"><input class="fw-search" type="search" enterkeyhint="search" autocomplete="off" placeholder="SEARCH FIELDWORK / MATERIALS / PEOPLE..." aria-label="Search field records"><button type="button" class="fw-step" id="fw-prev" aria-label="Previous record">↑</button><button type="button" class="fw-step" id="fw-next" aria-label="Next record">↓</button><a class="fw-mobile-note" href="fieldwork.html?note=new" aria-label="Create local field note">+ NOTE</a></div><div class="fw-scroller" tabindex="0" aria-label="Scrollable field records"></div><div class="fw-scrollcount"><span id="fw-listcount"></span><span>↑ ↓ TO ADVANCE · SCROLL TO BROWSE</span></div>`;
-    const input = els.window.querySelector(".fw-search");
-    input.value = mem.q;
-    // Only the list is redrawn while typing, so the input (and the iOS keyboard) stays put.
-    input.addEventListener("input", () => {
-      mem.q = input.value;
-      active = 0;
-      renderList();
-      clearTimeout(qTimer);
-      qTimer = setTimeout(() => api.replaceUrl(filterQuery()), 350);
-    });
-    els.window.querySelector("#fw-prev").onclick = () => move(-1);
-    els.window.querySelector("#fw-next").onclick = () => move(1);
-    const list = filtered();
-    const focusIndex = state && state.focus ? list.findIndex((a) => a.slug === state.focus) : -1;
-    if (focusIndex >= 0) active = focusIndex;
-    renderList();
-    const scroller = els.window.querySelector(".fw-scroller");
-    if (state && typeof state.fwScroll === "number") scroller.scrollTop = state.fwScroll;
-    if (focusIndex >= 0) reveal(focusIndex);
-  }
-  function renderList() {
-    const list = filtered();
-    active = Math.max(0, Math.min(active, list.length - 1));
-    const scroller = els.window.querySelector(".fw-scroller");
-    scroller.innerHTML =
-      list
-        .map((a, i) => {
-          const proj = projectFor(a);
-          return `<article class="fw-record ${i === active ? "is-current" : ""}" data-row="${i}"><span class="fw-number">${numberOf(a)}</span>${img(a) ? `<img class="fw-thumb" src="${esc(img(a))}" alt="" loading="lazy">` : `<span class="fw-thumb-placeholder" aria-hidden="true">✎</span>`}<div><a class="fw-name" href="${esc(href(a))}" data-slug="${esc(a.slug)}">${esc(a.title)}</a><div class="fw-meta">${proj ? "↗ " : ""}${esc(a.project)} / ${esc(a.type)}${a.isDraft ? " / LOCAL DRAFT" : ""}</div></div></article>`;
-        })
-        .join("") || '<div class="fw-empty">No matching records. Try another classification.</div>';
-    els.window.querySelector("#fw-listcount").textContent = `${list.length} RECORDS / ${mem.project || "ALL PROJECTS"}`;
-    renderNav();
-    updateSteps();
-    setMessage("SELECT A RECORD TO OPEN →");
-  }
-  /* Keep a row visible inside the scroller without scrolling the fixed page (iOS-safe). */
-  function reveal(i) {
-    const scroller = els.window.querySelector(".fw-scroller");
-    const row = scroller && scroller.querySelectorAll(".fw-record")[i];
-    if (!row) return;
-    const top = row.offsetTop, bottom = top + row.offsetHeight;
-    if (top < scroller.scrollTop) scroller.scrollTop = top;
-    else if (bottom > scroller.scrollTop + scroller.clientHeight) scroller.scrollTop = bottom - scroller.clientHeight;
-  }
-  function move(n) {
-    const nodes = [...els.window.querySelectorAll(".fw-record")];
-    if (!nodes.length) return;
-    active = Math.max(0, Math.min(nodes.length - 1, active + n));
-    nodes.forEach((el, i) => el.classList.toggle("is-current", i === active));
-    reveal(active);
-    setMessage(`RECORD ${pad(active + 1, 2)} / ${pad(nodes.length, 2)}`);
-    updateSteps();
-  }
-  function updateSteps() {
-    const list = current.kind === "detail" ? stepList() : filtered();
-    const i = current.kind === "detail" ? list.findIndex((a) => a.slug === current.record.slug) : active;
-    const prev = els.window.querySelector("#fw-prev"), next = els.window.querySelector("#fw-next");
-    if (prev) prev.disabled = i <= 0;
-    if (next) next.disabled = i < 0 || i >= list.length - 1;
-  }
-
-  /* ---------- Record ---------- */
-  // Step through the list the visitor came from; if the record is outside it, step through everything.
-  const stepList = () => {
-    const list = filtered();
-    return list.some((a) => a.slug === current.record.slug) ? list : entries();
-  };
-  function step(n) {
-    const list = stepList();
-    const i = list.findIndex((a) => a.slug === current.record.slug) + n;
-    if (i >= 0 && i < list.length) api.navigate(href(list[i]), { replace: true });
-  }
-  function renderDetail() {
-    const a = current.record;
-    const proj = projectFor(a);
-    const relation = proj
-      ? `<a class="fw-relation-link" href="project-${encodeURIComponent(proj.slug)}.html">P—${esc(proj.id)} / ${esc(proj.name)} ↗</a>`
-      : `<span>${esc(a.project)}</span><span class="fw-muted"> / no project relationship established</span>`;
-    els.window.innerHTML = `<div class="fw-toolbar"><a class="fw-back" href="${esc(filterQuery())}" data-focus="${esc(a.slug)}">← ALL RECORDS</a><span class="fw-toolbar-count fw-muted"></span><button type="button" class="fw-step" id="fw-prev" aria-label="Previous record">↑</button><button type="button" class="fw-step" id="fw-next" aria-label="Next record">↓</button></div><article class="fw-detail" tabindex="0" aria-label="${esc(a.title)}"><div class="fw-label">${numberOf(a)} / ${esc(a.type)} / ${esc(a.status || "LOCAL DRAFT")}</div><h2>${esc(a.title)}</h2><div class="fw-relation"><span class="fw-label">CONNECTED PROJECT</span><div>${relation}</div></div>${img(a) ? `<img src="${esc(img(a))}" alt="${esc(a.title)}" />` : ""}<p>${esc(a.text || "")}</p>${a.note ? `<p class="fw-note">${esc(a.note)}</p>` : ""}<div class="fw-tags"><span>${esc(a.type)}</span><span>${esc(a.project)}</span><span>${esc(a.status || "LOCAL DRAFT")}</span></div><dl class="fw-facts"><div><dt>CAPTURE DATE</dt><dd>${a.isDraft ? "Saved in this browser" : "Not established"}</dd></div><div><dt>SOURCE</dt><dd>${esc(a.source || "This browser only")}</dd></div></dl></article>`;
-    const list = stepList();
-    els.window.querySelector(".fw-toolbar-count").textContent = `${pad(list.findIndex((x) => x.slug === a.slug) + 1, 2)} / ${pad(list.length, 2)}`;
-    els.window.querySelector("#fw-prev").onclick = () => step(-1);
-    els.window.querySelector("#fw-next").onclick = () => step(1);
-    updateSteps();
-    renderNav();
-    setMessage(a.isDraft ? "LOCAL DRAFT / NOT PUBLISHED" : "ARCHIVE RECORD / " + (a.status || "REFERENCE"));
-  }
-
-  /* ---------- Local note (this browser only) ---------- */
-  function renderNote() {
-    els.window.innerHTML = `<div class="fw-toolbar"><a class="fw-back" href="${esc(filterQuery())}">← ALL RECORDS</a></div><div class="fw-detail"><div class="fw-label">NEW FIELD NOTE / THIS DEVICE ONLY</div><h2>Record an observation.</h2><form class="fw-draft" id="fw-form"><label for="fw-title-input">TITLE</label><input id="fw-title-input" required maxlength="100" placeholder="What caught your attention?"><label for="fw-project-input">CONNECTED PROJECT</label><select id="fw-project-input"><option>Unassigned reference</option>${data.projects.map((p) => `<option>${esc(p.name)}</option>`).join("")}</select><label for="fw-note-input">THE NOTE</label><textarea id="fw-note-input" required maxlength="2000" placeholder="Describe what you saw, why it matters, or what was decided."></textarea><button type="submit" class="fw-button">SAVE LOCAL DRAFT ↗</button></form><p class="fw-note" style="margin-top:18px">Drafts are kept only in this browser's local storage. Nothing is uploaded, shared, or published to Freeman. Production publishing will require an authenticated workflow.</p></div>`;
-    els.window.querySelector("#fw-form").onsubmit = (e) => {
-      e.preventDefault();
-      const title = els.window.querySelector("#fw-title-input").value.trim(),
-        note = els.window.querySelector("#fw-note-input").value.trim();
-      if (!title || !note) return;
-      drafts.unshift({
-        title,
-        text: note,
-        project: els.window.querySelector("#fw-project-input").value,
-        type: "Field",
-        status: "LOCAL DRAFT",
-        source: "Saved in this browser",
-        note: "Draft / not publicly published",
-      });
-      try {
-        localStorage.setItem(DRAFT_KEY, JSON.stringify(drafts));
-      } catch (err) {
-        drafts.shift();
-        setMessage("BROWSER STORAGE UNAVAILABLE / NOTE NOT SAVED");
-        return;
-      }
-      mem.q = "";
-      mem.category = "All records";
-      mem.project = "";
-      api.navigate("fieldwork.html", { replace: true, focus: "draft-0" });
-    };
-    renderNav();
-    setMessage("DRAFT ONLY / NOT PUBLISHED");
-  }
-
-  function show(route, state) {
-    current = resolve(route);
-    if (current.kind === "index") readFilters(route.params);
-    // A record reached from outside the active list resets the list context.
-    if (current.kind === "detail" && !current.record.isDraft && !filtered().some((a) => a.slug === current.record.slug)) {
-      mem.category = "All records";
-      mem.project = "";
-      mem.q = "";
-    }
-    updateChrome();
-    if (current.kind === "detail") renderDetail();
-    else if (current.kind === "note") renderNote();
-    else renderIndex(state);
-  }
-
   return {
-    mount(root, route, state, routerApi) {
-      api = routerApi;
-      host = root;
-      // Entering Fieldwork from another section starts from the URL, not stale memory.
-      mem.category = "All records";
-      mem.project = "";
-      mem.q = "";
-      active = 0;
-      frame();
-      show(route, state || {});
-    },
-    update(route, state) {
-      show(route, state || {});
-    },
-    closeTarget() {
-      if (current.kind === "index") return { href: "company.html", label: "Freeman GC" };
-      return { href: filterQuery(), focus: current.record ? current.record.slug : undefined };
-    },
-    title() {
-      return current.kind === "detail" ? current.record.title : current.kind === "note" ? "New field note" : "Fieldwork";
-    },
-    save() {
-      const scroller = els.window && els.window.querySelector(".fw-scroller");
-      return scroller ? { fwScroll: scroller.scrollTop, fwActive: active } : {};
-    },
-    key(e) {
-      if (current.kind === "index" && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
-        e.preventDefault();
-        move(e.key === "ArrowDown" ? 1 : -1);
-        return true;
-      }
-      if (current.kind === "index" && e.key === "Enter" && e.target.classList && e.target.classList.contains("fw-scroller")) {
-        const a = filtered()[active];
-        if (a) { e.preventDefault(); api.navigate(href(a)); return true; }
-      }
-      if (current.kind === "detail" && (e.key === "ArrowLeft" || e.key === "ArrowRight")) {
-        e.preventDefault();
-        step(e.key === "ArrowRight" ? 1 : -1);
-        return true;
-      }
-      return false;
-    },
-    destroy() {
-      clearTimeout(qTimer);
-      host = null;
-      els = {};
-    },
+    mount(node,route,state,api){root=node;router=api;show(route)},
+    update(route){show(route)},
+    closeTarget(){return current?{href:"fieldwork.html"}:{href:"company.html"}},
+    key(e){if(current)return false;if(e.key==="ArrowRight"){e.preventDefault();lead=(lead+1)%archive.length;front();return true}if(e.key==="ArrowLeft"){e.preventDefault();lead=(lead+archive.length-1)%archive.length;front();return true}return false},
+    save(){return {lfEdition:edition,lfLead:lead}},
+    destroy(){},
+    title(){return current?current.title:"Fieldwork"}
   };
 })();
