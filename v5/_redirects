@@ -4,7 +4,7 @@
 # Legacy Webflow URLs (www.freemangc.com, crawled 14 Oct 2026) → current routes, so existing
 # links and search results keep working after the domain moves to Cloudflare Pages.
 /about /company 301
-/sawdust /fieldwork 301
+/sawdust /projects 301
 /projects/barnsley-gardens /project-barnsley-gardens 301
 /projects/beetlecat-atlanta /project-beetlecat 301
 /projects/bocado-pizza /project-bocado-pizza 301
@@ -15,3 +15,8 @@
 /projects/savi-provisions-emory-village /project-savi-provisions 301
 /projects/the-optimist /project-the-optimist 301
 /projects/* /projects 301
+
+# Fieldwork is held back from the public soft launch; continue development privately.
+/fieldwork /projects 302
+/fieldwork.html /projects 302
+/fieldwork-* /projects 302
