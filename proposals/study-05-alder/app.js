@@ -14,8 +14,10 @@
   const chapter = (slug) => P.chapters.find((c) => c.slug === slug);
   const idAnchor = (id) => id.toLowerCase();
   const word = (t) => `<span class="word">${t}</span>`;
+  const arrow = (a) => `<span class="arrow" aria-hidden="true">${a || '→'}</span>`;
 
   // Resolve a cross-reference ID to its stable address in this proposal.
+  // IDs stay in the data and the DOM; readers see only plain-language labels.
   function ref(id) {
     const [kind, num] = id.split('-');
     const n = Number(num);
@@ -24,16 +26,19 @@
       case 'B': return url(`05-budget#${idAnchor(id)}`);
       case 'A': return url(`05-budget/allowances/${P.budget.allowances.find((a) => a.id === id).slug}`);
       case 'M': return url(`04-schedule#${idAnchor(id)}`);
+      case 'W': return url(`04-schedule#${idAnchor(id)}`);
       case 'C': return url(`04-schedule#${idAnchor(id)}`);
       case 'D': return url(`06-decisions#${idAnchor(id)}`);
       default: return BASE;
     }
   }
-  const xlink = ([id, label]) => `<a class="xref" href="${ref(id)}"><span class="xid">${esc(id)}</span> ${word(esc(label))}</a>`;
-  const xlinks = (list) => `<span class="xrefs">${list.map(xlink).join('')}</span>`;
+  const xlink = ([id, label]) => `<a class="xref" href="${ref(id)}" data-ref="${esc(id)}">${word(esc(label))}</a>`;
+  const xlinks = (list, lead) => `<p class="xrefs">${lead ? `<span class="xrefs-lead">${esc(lead)}</span>` : ''}${list.map(xlink).join('<span class="sep">, </span>')}</p>`;
 
   const author = () => P.issue.author || P.issue.authorPlaceholder;
   const mailto = () => `mailto:${P.contact.email}?subject=${encodeURIComponent(P.contact.subject)}&body=${encodeURIComponent(P.contact.body)}`;
+  // "Not yet documented. Record needed: the design requirement…" → "The design requirement…"
+  const recordNeeded = (t) => { const s = t.replace(/^Not yet (documented|received)\.\s*(Record needed:\s*)?/, ''); return s.charAt(0).toUpperCase() + s.slice(1); };
 
   function overlapText(row, rows) {
     const o = rows.filter((r) => r !== row && r.from <= row.to && r.to >= row.from);
@@ -45,8 +50,7 @@
   function rail(ch, opts) {
     return `
       <header class="rail">
-        <p class="micro chapter-id"><span class="num">${ch.n}</span> / ${esc(ch.label)}</p>
-        <p class="question">${esc(opts.question)}</p>
+        <p class="chapter-id"><span class="num">${ch.n}</span>${esc(ch.label)}</p>
         <h1 class="chapter-title" id="h-${ch.slug}" tabindex="-1">${esc(opts.heading)}</h1>
         ${opts.sub ? `<p class="sub">${esc(opts.sub)}</p>` : ''}
         ${opts.lead ? `<div class="lead">${[].concat(opts.lead).map((p) => `<p>${esc(p)}</p>`).join('')}</div>` : ''}
@@ -60,8 +64,8 @@
     const next = P.chapters[i + 1];
     return `
       <nav class="pager" aria-label="Chapter sequence">
-        ${prev ? `<a href="${url(prev.slug)}" rel="prev"><span class="arrow">←</span> ${word(`${prev.n} ${esc(prev.label)}`)}</a>` : `<a href="${BASE}"><span class="arrow">←</span> ${word('Opening')}</a>`}
-        ${next ? `<a href="${url(next.slug)}" rel="next" class="next">${word(`${next.n} ${esc(next.label)}`)} <span class="arrow">→</span></a>` : `<a href="${BASE}" class="next">${word('Contents')} <span class="arrow">→</span></a>`}
+        ${prev ? `<a href="${url(prev.slug)}" rel="prev">${arrow('←')} ${word(`${prev.n} ${esc(prev.label)}`)}</a>` : `<a href="${BASE}">${arrow('←')} ${word('Opening')}</a>`}
+        ${next ? `<a href="${url(next.slug)}" rel="next" class="next">${word(`${next.n} ${esc(next.label)}`)} ${arrow()}</a>` : `<a href="${BASE}" class="next">${word('Contents')} ${arrow()}</a>`}
       </nav>`;
   }
 
@@ -80,7 +84,7 @@
       kind: 'detail', chapter: ch, title: `${title} / ${ch.n} ${ch.label}`, parent: url(parentSlug),
       html: `
         <article class="detail">
-          <a class="back" href="${url(parentSlug)}" data-back><span class="arrow">←</span> ${word(`Back to ${esc(ch.label)}`)}</a>
+          <a class="back" href="${url(parentSlug)}" data-back>${arrow('←')} ${word(`Back to ${esc(ch.label)}`)}</a>
           ${html}
         </article>`
     };
@@ -91,12 +95,11 @@
   function opening() {
     const o = P.opening;
     const entries = P.chapters.map((c) => `
-      <li>
+      <li class="${c.path ? 'on-path' : 'supporting'}">
         <a href="${url(c.slug)}">
           <span class="num">${c.n}</span>
           <span class="entry-label">${word(esc(c.label))}</span>
           <span class="entry-summary">${esc(c.summary)}</span>
-          <span class="entry-note${c.flag ? ' flag' : ''}">${esc(c.note)}</span>
         </a>
       </li>`).join('');
 
@@ -108,9 +111,9 @@
             <p class="micro">${esc(P.client.preparedFor)}</p>
             <h1 id="client-name" class="client" tabindex="-1">${esc(P.client.name)}</h1>
             <p class="place">${esc(P.client.city)} / ${esc(P.client.type)}</p>
-            <p class="thesis">${o.thesis.map(esc).join('<br>')}</p>
+            <p class="thesis">${o.thesis.map((t) => `<span>${esc(t)}</span>`).join(' ')}</p>
             <p class="approach">${esc(o.approach)}</p>
-            <p class="condition"><span class="cap"><span class="mark" aria-hidden="true"></span>First condition</span>${esc(o.firstCondition)}</p>
+            <p class="condition">${esc(o.firstCondition)}</p>
             <div class="commercial">
               ${o.commercial.map((c) => `
                 <a class="cline" href="${url(c.to)}">
@@ -120,11 +123,12 @@
             </div>
             <div class="op-foot">
               <p class="caveat">${esc(P.issue.status)}</p>
-              <a class="primary" href="${url(P.chapters[0].slug)}">${word('Read the proposal')} <span class="arrow">→</span></a>
+              <a class="primary" href="${url(P.chapters[0].slug)}">${word('Read the proposal')} ${arrow()}</a>
             </div>
           </section>
-          <nav class="op-contents" aria-label="Contents">
-            <p class="micro">Contents / six chapters, read in any order</p>
+          <nav class="op-contents" aria-labelledby="contents-h">
+            <p class="micro" id="contents-h">Contents</p>
+            <p class="path-note">${esc(o.readingPath)}</p>
             <ol>${entries}</ol>
           </nav>
         </div>`
@@ -135,32 +139,32 @@
 
   function projectApproach() {
     const p = P.project;
-    const facts = P.client.facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('');
+    const facts = P.client.facts.map(([, v]) => esc(v)).join(' / ');
     const content = `
-      <div class="cols cols-5-3 cols-even">
+      <div class="cols cols-5-3">
         <div>
           <h2 class="cap">Three priorities</h2>
           <ol class="priorities">
-            ${p.priorities.map((x, i) => `<li><span class="num">0${i + 1}</span><div><p class="p-title">${esc(x.title)}</p><p class="p-text">${esc(x.text)}</p></div></li>`).join('')}
+            ${p.priorities.map((x, i) => `<li><span class="ord">${i + 1}</span><div><p class="p-title">${esc(x.title)}</p><p class="p-text">${esc(x.text)}</p></div></li>`).join('')}
           </ol>
-          <h2 class="cap">The two largest unknowns</h2>
+          <h2 class="cap">What we would confirm first</h2>
           <ul class="unknowns">
-            ${p.unknowns.map((u) => `<li id="${idAnchor(u.id)}"><a href="${ref(u.id)}"><span class="xid">${u.id}</span> ${word(esc(u.title))}</a><p>${esc(u.text)}</p></li>`).join('')}
+            ${p.unknowns.map((u) => `<li id="${idAnchor(u.id)}"><a href="${ref(u.id)}">${word(esc(u.title))} ${arrow()}</a><p>${esc(u.text)}</p></li>`).join('')}
           </ul>
         </div>
         <aside class="side">
-          <h2 class="cap">Basis of this interpretation</h2>
-          <dl class="kv">${p.basisSummary.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>
-          <a class="more" href="${url('01-project-approach/basis')}">${word('Basis of this proposal')} <span class="arrow">→</span></a>
           <h2 class="cap">How we would work</h2>
           <p class="statement">${esc(p.philosophy)}</p>
-          <p class="status-line">${esc(p.philosophyStatus)}</p>
           <ul class="actions-list">${p.actions.map((a) => `<li>${esc(a)}</li>`).join('')}</ul>
+          <p class="fine">${esc(p.philosophyStatus)}</p>
+          <h2 class="cap">Basis</h2>
+          <p class="statement">${esc(p.basis.note)}</p>
+          <a class="more" href="${url('01-project-approach/basis')}">${word('Basis of this proposal')} ${arrow()}</a>
         </aside>
       </div>`;
     return chapterView('01-project-approach', rail(chapter('01-project-approach'), {
-      question: p.question, heading: p.heading, lead: p.lead,
-      qual: `<dl class="kv tight">${facts}</dl><p class="fine">All project facts are illustrative inputs for this study.</p>`
+      heading: p.heading, lead: p.lead,
+      qual: `<p class="fine"><span class="ink">${facts}.</span> Illustrative inputs for this study.</p>`
     }), content);
   }
 
@@ -168,61 +172,66 @@
     const b = P.project.basis;
     return detailView('01-project-approach', b.title, `
       <h1 class="chapter-title" tabindex="-1">${esc(b.title)}</h1>
-      <p class="notice"><span class="mark" aria-hidden="true"></span>${esc(b.note)}</p>
+      <p class="notice">${esc(b.note)}</p>
       <table class="register">
         <caption class="sr">Basis of this proposal, as of ${esc(P.issue.date)}</caption>
         <thead><tr><th scope="col">Category</th><th scope="col">Item</th><th scope="col">Dated</th><th scope="col">Status</th></tr></thead>
-        <tbody>${b.rows.map((r) => `<tr><td data-label="Category">${esc(r.cat)}</td><td data-label="Item">${esc(r.item)}</td><td data-label="Dated" class="nowrap">${esc(r.date)}</td><td data-label="Status">${esc(r.status)}</td></tr>`).join('')}</tbody>
+        <tbody>${b.rows.map((r) => `<tr><td data-label="Category">${esc(r.cat)}</td><td data-label="Item">${esc(r.item)}</td><td data-label="Dated" class="nowrap">${esc(r.date)}</td><td data-label="Status">${esc(r.status.replace(/ \/ D-0\d$/, ''))}</td></tr>`).join('')}</tbody>
       </table>
-      <p class="fine">Issue ${P.issue.number} / ${esc(P.issue.date)}. Items marked “Not received” are release dependencies for a priced proposal.</p>`);
+      <p class="fine">Issue ${P.issue.number} / ${esc(P.issue.date)}. Items not yet received are release dependencies for a priced proposal.</p>`);
   }
 
   /* ---------- 02 relevant work ---------- */
 
-  function plate(t, n, kind, label, small) {
+  function plate(t, n, label) {
     return `
-      <figure class="plate${small ? ' small' : ''}" id="plate-${t.slug}-${n}">
-        <div class="frame" role="img" aria-label="${esc(label)}: evidence not yet received"><span>Not yet received</span></div>
+      <figure class="plate plate-${n}" id="plate-${t.slug}-${n}">
+        <div class="frame" role="img" aria-label="${esc(label)}. Photograph not yet supplied."></div>
         <figcaption>
-          <span class="cap">Plate 2.${n} / ${esc(kind)}</span>
-          <span>${esc(label)}</span>
-          <span class="src">Source, date, photographer, and permission required</span>
+          <span>Plate ${n} / ${esc(label)}</span>
+          <span class="src">Photograph, credit, and permission to be supplied</span>
         </figcaption>
       </figure>`;
   }
 
   function argument(t) {
     return `
-          <section class="argument" id="topic-${t.slug}" aria-label="${esc(t.title)}" aria-live="polite">
-            <dl class="five">
-              ${t.parts.map((x, i) => `<div><dt><span class="num">${i + 1}</span>${esc(x.k)}${x.status === 'unverified' ? '<span class="pending">To verify</span>' : ''}</dt><dd>${esc(x.text)}</dd></div>`).join('')}
-              <div class="relevance"><dt><span class="num">5</span>Relevance to Alder<span class="proposed">Proposed action</span></dt><dd>${esc(t.relevance)}${xlinks(t.links)}</dd></div>
-            </dl>
-          </section>`;
+      <section class="argument" id="topic-${t.slug}" aria-labelledby="topic-h-${t.slug}">
+        <h3 class="account-title" id="topic-h-${t.slug}" tabindex="-1">${esc(t.title)}</h3>
+        <p class="cap">For Alder</p>
+        <p class="alder-action">${esc(t.relevance.replace(/^For Alder, (\w)/, (m, c) => c.toUpperCase()))}</p>
+        ${xlinks(t.links, 'See ')}
+        <p class="cap record-h">What the record will show</p>
+        <dl class="record">
+          ${t.parts.map((x) => `<div><dt>${esc(x.k)}</dt><dd>${esc(recordNeeded(x.text))}</dd></div>`).join('')}
+        </dl>
+      </section>`;
   }
 
   function relevantWork(topicSlug) {
     const r = P.reference;
     const t = r.topics.find((x) => x.slug === topicSlug) || r.topics[0];
-    const tabs = r.topics.map((x) => `<li><a href="${url(`02-relevant-work/${x.slug}`)}" data-topic${x === t ? ' aria-current="true"' : ''}>${word(esc(x.title))}</a></li>`).join('');
+    const others = r.topics.filter((x) => x !== t)
+      .map((x) => `<a href="${url(`02-relevant-work/${x.slug}`)}" data-topic>${word(esc(x.title))}</a>`).join('<span class="sep"> / </span>');
     const content = `
       <div class="ref-head">
         <p class="micro">${esc(r.label)}</p>
         <h2 class="ref-title">${esc(r.title)}</h2>
       </div>
-      <nav aria-label="Evidence topics"><ul class="topics">${tabs}</ul></nav>
       <div class="cols cols-3-5 evidence">
         <div class="plates">
-          ${plate(t, 1, 'Finished work', t.plate.finished)}
-          ${plate(t, 2, 'Field record', t.plate.field, true)}
+          ${plate(t, 1, t.plate.finished)}
+          ${plate(t, 2, t.plate.field)}
         </div>
         <div class="account">
           ${argument(t)}
+          <p class="fine claim-note">${esc(r.claimNote)}</p>
+          <nav class="other-accounts" aria-label="Other accounts"><span>Other accounts, held until records support them: </span>${others}</nav>
         </div>
       </div>`;
     return chapterView('02-relevant-work', rail(chapter('02-relevant-work'), {
-      question: r.question, heading: 'Evidence before anecdote.', lead: r.lead,
-      qual: `<p class="notice"><span class="mark" aria-hidden="true"></span>${esc(r.releaseStatus)}</p><a class="more" href="${url('02-relevant-work/verification')}">${word('Verification register')} <span class="arrow">→</span></a>`
+      heading: r.heading, lead: r.lead,
+      qual: `<p class="fine"><span class="ink">Internal study.</span> ${esc(r.releaseStatus)}</p><a class="more" href="${url('02-relevant-work/verification')}">${word('Verification register')} ${arrow()}</a>`
     }), content, 'ch-evidence');
   }
 
@@ -239,7 +248,7 @@
         </div>
         <div>
           <h2 class="cap">Publicly confirmed context</h2>
-          <ul class="sources">${r.sources.map(([t, u]) => `<li><a href="${u}" rel="noopener" target="_blank">${word(esc(t))} <span class="arrow">↗</span></a><span class="src">${esc(u.replace('https://', ''))}</span></li>`).join('')}</ul>
+          <ul class="sources">${r.sources.map(([t, u]) => `<li><a href="${u}" rel="noopener" target="_blank">${word(esc(t))} ${arrow('↗')}</a><span class="src">${esc(u.replace('https://', ''))}</span></li>`).join('')}</ul>
           <p class="fine">${esc(r.sourcesNote)}</p>
           <h2 class="cap">Editorial template, not approved copy</h2>
           <p class="statement">${esc(r.template)}</p>
@@ -256,43 +265,43 @@
         <section aria-labelledby="team-h">
           <h2 class="cap" id="team-h">Proposed team</h2>
           <table class="records team">
-            <caption class="sr">Proposed roles, responsibilities, and appointment status</caption>
-            <thead><tr><th scope="col">Role</th><th scope="col">Responsibility</th><th scope="col">Status</th></tr></thead>
-            <tbody>${p.team.map((t) => `<tr${t.primary ? ' class="primary-contact"' : ''}><th scope="row" data-label="Role">${esc(t.role)}${t.primary ? '<span class="tag">Primary contact</span>' : ''}</th><td data-label="Responsibility">${esc(t.resp)}</td><td data-label="Status" class="status">${esc(t.status)}</td></tr>`).join('')}</tbody>
+            <caption class="sr">Proposed roles and responsibilities</caption>
+            <thead><tr><th scope="col">Role</th><th scope="col">Responsibility</th></tr></thead>
+            <tbody>${p.team.map((t) => `<tr><th scope="row" data-label="Role">${esc(t.role)}${t.primary ? '<span class="tag">Your primary contact</span>' : ''}</th><td data-label="Responsibility">${esc(t.resp)}</td></tr>`).join('')}</tbody>
           </table>
           <p class="fine">${esc(p.teamNote)}</p>
-          <h2 class="cap">Delivery approach</h2>
-          <ol class="stages">${p.stages.map(([a, b], i) => `<li><span class="num">${i + 1}</span><span><span class="ink">${esc(a)}</span> ${esc(b)}</span></li>`).join('')}</ol>
+          <h2 class="cap">How the work would proceed</h2>
+          <ol class="stages">${p.stages.map(([a, b]) => `<li><span><span class="ink">${esc(a)}</span> ${esc(b)}</span></li>`).join('')}</ol>
         </section>
         <aside class="side" aria-labelledby="scope-h">
           <h2 class="cap" id="scope-h">Proposed scope</h2>
-          <ul class="scope">${p.scope.map((s) => `<li id="${idAnchor(s.id)}"><span class="xid">${s.id}</span>${esc(s.item)}</li>`).join('')}</ul>
+          <ul class="scope">${p.scope.map((s) => `<li id="${idAnchor(s.id)}">${esc(s.item)}</li>`).join('')}</ul>
           <p class="fine">${esc(p.scopeNote)}</p>
           <h2 class="cap">Where responsibilities meet</h2>
-          <p class="worked"><span class="ink">Kitchen equipment.</span> Owner purchases; supplier installs and starts; Freeman coordinates access and priced utility connections. Exact limits confirmed before pricing.</p>
-          <a class="more" href="${url('03-people-scope/boundaries')}">${word('Responsibility boundaries')} <span class="arrow">→</span></a>
+          <p class="statement"><span class="ink">Kitchen equipment.</span> The owner purchases; the supplier installs and starts up; Freeman coordinates access and priced utility connections.</p>
+          <a class="more" href="${url('03-people-scope/boundaries')}">${word('Responsibility boundaries')} ${arrow()}</a>
         </aside>
       </div>`;
     return chapterView('03-people-scope', rail(chapter('03-people-scope'), {
-      question: p.question, heading: p.heading, lead: p.lead,
-      qual: `<p class="fine">No biographies or photographs are shown until each person’s participation and availability are confirmed.</p>`
+      heading: p.heading, lead: p.lead
     }), content);
   }
 
   function boundariesDetail() {
     const b = P.people.boundaries;
+    const decisionLabel = { 'D-01': 'Equipment boundary decision', 'D-02': 'Services investigation decision' };
     return detailView('03-people-scope', b.title, `
       <h1 class="chapter-title" tabindex="-1">${esc(b.title)}</h1>
-      <p class="notice"><span class="mark" aria-hidden="true"></span>${esc(b.note)}</p>
+      <p class="notice">${esc(b.note)}</p>
       <table class="register boundaries">
         <caption class="sr">Responsibility boundaries by scope item</caption>
         <thead><tr><th scope="col">Item</th><th scope="col">Included / Freeman</th><th scope="col">Owner or other party</th><th scope="col">Unresolved boundary</th></tr></thead>
         <tbody>${b.rows.map((r) => `
-          <tr id="${idAnchor(r.id)}"${r.worked ? ' class="worked-row"' : ''}>
-            <th scope="row" data-label="Item"><span class="xid">${r.id}</span>${esc(r.item)}${r.worked ? '<span class="tag">Worked example</span>' : ''}</th>
+          <tr id="${idAnchor(r.id)}">
+            <th scope="row" data-label="Item">${esc(r.item)}${r.worked ? '<span class="tag">Worked example</span>' : ''}</th>
             <td data-label="Included / Freeman">${esc(r.freeman)}</td>
             <td data-label="Owner or other party">${esc(r.other)}</td>
-            <td data-label="Unresolved boundary"><span>${esc(r.open)}${r.decision ? xlinks([[r.decision, 'Decision']]) : ''}${r.allowance ? xlinks([[r.allowance, 'Allowance']]) : ''}</span></td>
+            <td data-label="Unresolved boundary"><span>${esc(r.open)}${r.decision ? xlinks([[r.decision, decisionLabel[r.decision]]]) : ''}${r.allowance ? xlinks([[r.allowance, 'Millwork allowance']]) : ''}</span></td>
           </tr>`).join('')}</tbody>
       </table>`);
   }
@@ -303,53 +312,53 @@
     const s = P.schedule;
     const W = s.weeks;
     const sel = s.milestones.find((m) => m.id === selectedId) || s.milestones.find((m) => m.key);
-    const ticks = [1, 4, 8, 12, 16, 20, 24];
+    const ticks = [4, 8, 12, 16, 20, 24];
     const rows = s.rows.map((r) => {
       const on = sel.rows.includes(r.id);
       return `
-        <li class="g-row${on ? ' on' : ''}">
+        <li class="g-row${on ? ' on' : ''}" id="${idAnchor(r.id)}">
           <div class="g-label"><span class="g-name">${esc(r.label)}</span><span class="g-dep">${esc(r.dep)}</span><span class="g-ov">Weeks ${r.from}–${r.to} / ${esc(overlapText(r, s.rows))}</span></div>
-          <div class="g-range"><span class="sr">Weeks </span>${r.from}–${r.to}${on ? `<span class="sr"> (related to selected gate)</span>` : ''}</div>
-          <div class="g-track" aria-hidden="true"><span class="g-bar" style="--from:${r.from};--to:${r.to}"></span></div>
+          <div class="g-range"><span class="sr">Weeks </span>${r.from}–${r.to}${on ? `<span class="sr"> (depends on the selected gate)</span>` : ''}</div>
+          <div class="g-track" aria-hidden="true">${[4, 8, 12, 16, 20].map((w) => `<i class="g-line" style="--w:${w}"></i>`).join('')}<span class="g-bar" style="--from:${r.from};--to:${r.to}"></span></div>
         </li>`;
     }).join('');
-    const markers = s.milestones.map((m) => `<button type="button" class="g-mark${m === sel ? ' sel' : ''}" style="--w:${m.week}" data-ms="${m.id}" aria-pressed="${m === sel}" aria-controls="ms-panel" aria-label="Week ${m.week}: ${esc(m.label)}"><i aria-hidden="true"></i><b>W${m.week}</b></button>`).join('');
-    const msList = s.milestones.map((m) => `<li><button type="button" data-ms="${m.id}" aria-pressed="${m === sel}" aria-controls="ms-panel"><span class="ms-w">W${m.week}</span> ${word(esc(m.label))}</button></li>`).join('');
+    const markers = s.milestones.map((m) => `<button type="button" class="g-mark${m === sel ? ' sel' : ''}" style="--w:${m.week}" data-ms="${m.id}" aria-pressed="${m === sel}" aria-controls="ms-panel" aria-label="Week ${m.week}: ${esc(m.label)}"><i aria-hidden="true"></i><b>${m.week}</b></button>`).join('');
+    const msList = s.milestones.map((m) => `<li><button type="button" data-ms="${m.id}" aria-pressed="${m === sel}" aria-controls="ms-panel"><span class="ms-w">Week ${m.week}</span> ${word(esc(m.label))}</button></li>`).join('');
     const relatedRows = s.rows.filter((r) => sel.rows.includes(r.id)).map((r) => esc(r.label)).join('; ');
 
     const content = `
       <figure class="gantt" style="--weeks:${W};--sel:${sel.week}" aria-labelledby="gantt-cap">
-        <figcaption id="gantt-cap" class="cap">Gray: proposed activity / ◇ decision gate / orange: selected gate and dependent work</figcaption>
-        <div class="g-axis" aria-hidden="true"><div></div><div class="g-range">Wks</div><div class="g-track">${ticks.map((t) => `<span style="--w:${t}">${t}</span>`).join('')}</div></div>
+        <figcaption id="gantt-cap" class="sr">Six workstreams on a shared 24-week axis, with five decision gates. The selected gate and the work that depends on it are highlighted.</figcaption>
+        <div class="g-axis" aria-hidden="true"><div class="cap">Workstream</div><div class="g-range cap">Weeks</div><div class="g-track">${ticks.map((t) => `<span style="--w:${t}">${t}</span>`).join('')}</div></div>
         <ol class="g-rows">${rows}</ol>
-        <div class="g-gates" role="group" aria-label="Decision gates"><div class="g-gates-label cap">Decision gates</div><div class="g-range">Gates</div><div class="g-track">${markers}</div></div>
+        <div class="g-gates" role="group" aria-label="Decision gates"><div class="cap">Decision gates</div><div></div><div class="g-track">${markers}</div></div>
       </figure>
       <section class="ms" aria-labelledby="ms-h">
         <h2 class="sr" id="ms-h">Selected decision gate</h2>
         <ul class="ms-list-sm">${msList}</ul>
         <div id="ms-panel" class="ms-panel" aria-live="polite">
-          <p class="ms-head"><span class="xid">${sel.id}</span>Week ${sel.week} / ${esc(sel.label)}<span class="ms-hint">A delay at this gate requires a revised schedule</span></p>
+          <p class="ms-head" id="${idAnchor(sel.id)}">Week ${sel.week} / ${esc(sel.label)}</p>
           <dl class="ms-grid">
             <div><dt>Prerequisite</dt><dd>${esc(sel.prereq)}</dd></div>
             <div><dt>Responsible</dt><dd>${esc(sel.role)}</dd></div>
-            <div><dt>Workstreams</dt><dd>${relatedRows}</dd></div>
-            <div><dt>Affects</dt><dd>${xlinks(sel.affects)}</dd></div>
+            <div><dt>Depends on it</dt><dd>${relatedRows}</dd></div>
+            <div><dt>Affects</dt><dd>${sel.affects.map(xlink).join('<br>')}</dd></div>
           </dl>
         </div>
       </section>
       <section class="below-chart" aria-labelledby="cond-h">
-        <h2 class="cap" id="cond-h">Active conditions / always open until resolved</h2>
+        <h2 class="cap" id="cond-h">Three conditions open today</h2>
         <ol class="conditions">
           ${s.conditions.map((c) => `
             <li id="${idAnchor(c.id)}">
-              <p class="c-title"><span class="xid">${c.id}</span>${esc(c.title)}</p>
-              <p class="c-meta"><span class="k">Accountable</span>${esc(c.role)}</p>
-              <p class="c-meta"><span class="k">Next</span>${esc(c.next)}</p>
+              <p class="c-title">${esc(c.title)}</p>
+              <p class="c-role">${esc(c.role)}</p>
+              <p class="c-next">${esc(c.next)}</p>
             </li>`).join('')}
         </ol>
-      </div>`;
+      </section>`;
     return chapterView('04-schedule', rail(chapter('04-schedule'), {
-      question: s.question, heading: s.heading, sub: s.sub, lead: s.lead,
+      heading: s.heading, sub: s.sub, lead: s.lead,
       qual: `<p class="fine">${esc(s.note)}</p>`
     }), content, 'ch-schedule');
   }
@@ -360,38 +369,38 @@
     const b = P.budget;
     const rows = b.lines.map((l) => {
       const cls = l.total ? 'total' : l.subtotal ? 'subtotal' : '';
-      const main = `<tr id="${idAnchor(l.id)}" class="${cls}"><th scope="row"><span class="xid">${l.id}</span><span class="b-label">${esc(l.label)}</span><span class="b-status">${esc(l.status)}</span></th><td class="amt">${money(l.amount)}</td></tr>`;
+      const main = `<tr id="${idAnchor(l.id)}"${cls ? ` class="${cls}"` : ''}><th scope="row"><span class="b-label">${esc(l.label)}</span><span class="b-status">${esc(l.status)}</span></th><td class="amt">${money(l.amount)}</td></tr>`;
       if (!l.allowances) return main;
-      return main + b.allowances.map((a) => `<tr class="allowance" id="${idAnchor(a.id)}"><th scope="row"><a href="${url(`05-budget/allowances/${a.slug}`)}"><span class="xid">${a.id}</span>${word(esc(a.label))} <span class="arrow">→</span></a></th><td class="amt">${money(a.amount)}</td></tr>`).join('');
+      return main + b.allowances.map((a, i) => `<tr class="allowance${i === b.allowances.length - 1 ? ' last' : ''}" id="${idAnchor(a.id)}"><th scope="row"><a href="${url(`05-budget/allowances/${a.slug}`)}">${word(esc(a.label))} ${arrow()}</a></th><td class="amt">${money(a.amount)}</td></tr>`).join('');
     }).join('');
 
     const content = `
+      <div class="total-block">
+        <p class="cap" id="reg-h">${esc(b.totalLabel)} / illustrative</p>
+        <p class="total">${b.total}</p>
+        <p class="basis">${esc(b.totalBasis)}</p>
+      </div>
       <div class="cols cols-5-3">
         <section aria-labelledby="reg-h">
-          <div class="total-block">
-            <p class="cap" id="reg-h">${esc(b.totalLabel)}</p>
-            <p class="total">${b.total}</p>
-            <p class="basis">${esc(b.totalBasis)}</p>
-          </div>
           <table class="budget">
             <caption class="sr">Illustrative budget register; amounts in US dollars, rounded</caption>
-            <thead><tr><th scope="col">Component / pricing status</th><th scope="col" class="amt">Illustrative</th></tr></thead>
+            <thead><tr><th scope="col">Component</th><th scope="col" class="amt">Amount</th></tr></thead>
             <tbody>${rows}</tbody>
           </table>
           <p class="fine">${esc(b.allowancesNote)}</p>
-          <p class="terms-line"><span class="cap">Issued estimate will state</span>${b.terms.map(([k]) => esc(k)).join(' / ')}<span class="nb"> — not established in this study</span></p>
         </section>
         <aside class="side">
           <h2 class="cap">Outside this total</h2>
-          <ul class="excl">${b.exclusions.map((e) => `<li>${esc(e)}</li>`).join('')}</ul>
-          <p class="fine">${esc(b.exclusionsNote)}</p>
-          <h2 class="cap">Next pricing action</h2>
-          <p class="next-action">${esc(b.next)} ${xlinks([['D-01', 'Equipment boundary'], ['D-02', 'Services investigation']])}</p>
+          <ul class="plain">${b.exclusions.map((e) => `<li>${esc(e)}</li>`).join('')}</ul>
+          <p class="fine">${esc(b.exclusionsNote.replace(' (S-07)', ''))}</p>
+          <h2 class="cap">Next pricing step</h2>
+          <p class="statement">${esc(b.next.replace(' once D-01 and D-02 are resolved', ' once the equipment boundary and existing services are resolved'))}</p>
+          ${xlinks([['D-01', 'Equipment boundary'], ['D-02', 'Services investigation']], 'See ')}
         </aside>
       </div>`;
     return chapterView('05-budget', rail(chapter('05-budget'), {
-      question: b.question, heading: b.heading, lead: b.lead,
-      qual: `<h2 class="cap">Assumptions</h2><ul class="excl">${b.assumptions.map((e) => `<li>${esc(e)}</li>`).join('')}</ul><p class="notice rail-note"><span class="mark" aria-hidden="true"></span>${esc(b.disclaimer)}</p>`
+      heading: b.heading, lead: b.lead,
+      qual: `<h2 class="cap">Assumptions</h2><ul class="plain">${b.assumptions.map((e) => `<li>${esc(e)}</li>`).join('')}</ul><p class="fine">${esc(b.disclaimer)} The issued estimate will state its ${b.terms.map(([k]) => k.toLowerCase()).join(', ').replace(/, ([^,]*)$/, ', and $1')}; none is established here.</p>`
     }), content, 'ch-budget');
   }
 
@@ -402,22 +411,22 @@
     const ms = P.schedule.milestones.find((m) => m.id === a.milestone);
     const others = b.allowances.filter((x) => x !== a).map((x) => `<a href="${url(`05-budget/allowances/${x.slug}`)}">${word(esc(x.label))}</a>`).join('<span class="sep"> / </span>');
     return detailView('05-budget', `${a.label} allowance`, `
-      <p class="micro"><span class="xid">${a.id}</span>Allowance / within B-02 finish and fixture allowances</p>
+      <p class="micro">Allowance / within finish and fixture allowances</p>
       <h1 class="chapter-title" tabindex="-1">${esc(a.label)} allowance</h1>
-      <p class="total">${money(a.amount)}</p>
+      <p class="total total-detail">${money(a.amount)}</p>
       <p class="basis">Illustrative installed package / included once in the $1,500,000 planning total</p>
       <div class="cols cols-4-4">
         <div>
           <h2 class="cap">Inclusions</h2>
-          <ul class="excl">${a.includes.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
+          <ul class="plain">${a.includes.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
           <h2 class="cap">Basis</h2>
-          <p class="body13">${esc(a.basis)}</p>
+          <p class="statement">${esc(a.basis)}</p>
         </div>
         <div>
           <dl class="kv">
-            <div><dt>Unresolved selection</dt><dd>${esc(a.unresolved)}</dd></div>
+            <div><dt>Unresolved selection</dt><dd>${esc(a.unresolved.replace(' (S-11)', ''))}</dd></div>
             <div><dt>Responsible</dt><dd>${esc(a.responsible)}</dd></div>
-            <div><dt>Decision date</dt><dd>${esc(a.decision)}${xlinks([[ms.id, `W${ms.week} / ${ms.label}`]])}</dd></div>
+            <div><dt>Decision date</dt><dd>${esc(a.decision)}${xlinks([[ms.id, `Week ${ms.week}, ${ms.label.toLowerCase()}`]], 'See ')}</dd></div>
             <div><dt>Potential effect</dt><dd>Not yet priced</dd></div>
           </dl>
           <p class="fine">No cost change is shown until a selection is priced against a quotation.</p>
@@ -432,28 +441,27 @@
     const d = P.decisions;
     const content = `
       <table class="decisions">
-        <caption class="sr">Decisions before preconstruction</caption>
-        <thead><tr><th scope="col">Decision</th><th scope="col">Accountable</th><th scope="col">Needed by</th><th scope="col">State / consequence</th></tr></thead>
-        <tbody>${d.rows.map((r) => `
+        <caption class="cap">Three open decisions</caption>
+        <thead><tr><th scope="col">Decision</th><th scope="col">Who, and by when</th><th scope="col">Why it matters</th></tr></thead>
+        <tbody>${d.rows.map((r, i) => `
           <tr id="${idAnchor(r.id)}">
-            <th scope="row" data-label="Decision"><span class="xid">${r.id}</span><span class="d-title">${esc(r.title)}</span>${xlinks(r.links)}</th>
-            <td data-label="Accountable">${esc(r.role)}</td>
-            <td data-label="Needed by">${esc(r.by)}</td>
-            <td data-label="State / consequence"><span><span class="state">${esc(r.state)}</span> / ${esc(r.consequence)}</span></td>
+            <th scope="row" data-label="Decision"><div class="d-cell"><span class="ord">${i + 1}</span><div><span class="d-title">${esc(r.title)}</span>${xlinks(r.links, 'See ')}</div></div></th>
+            <td data-label="Who, and by when"><span>${esc(r.role)}<br><span class="ink">${esc(r.by)}</span></span></td>
+            <td data-label="Why it matters"><span>${esc(r.consequence)}</span></td>
           </tr>`).join('')}</tbody>
       </table>
-      <div class="cols cols-4-4 next-step">
+      <div class="next-step">
         <div class="act">
-          <a class="primary" href="${mailto()}">${word('Request a working session')} <span class="arrow">→</span></a>
-          <p class="fine">${esc(d.actionNote)} To: ${esc(P.contact.email)}</p>
+          <a class="primary" href="${mailto()}">${word('Request a working session')} ${arrow()}</a>
+          <p class="fine">${esc(d.actionNote)} To ${esc(P.contact.email)}.</p>
         </div>
         <div class="act">
-          <a class="secondary" href="${url('issue')}">${word('Download this issue')} <span class="arrow">↓</span></a>
-          <p class="fine">Printable record of Issue ${P.issue.number}, ${esc(P.issue.date)}, with every disclosure and caption.</p>
+          <a class="secondary" href="${url('issue')}">${word('Download this issue')} ${arrow('↓')}</a>
+          <p class="fine">Issue ${P.issue.number}, ${esc(P.issue.date)}, with every disclosure and caption.</p>
         </div>
       </div>`;
     return chapterView('06-decisions', rail(chapter('06-decisions'), {
-      question: d.question, heading: d.heading, lead: d.lead,
+      heading: d.heading, lead: d.lead,
       qual: `<p class="fine">${esc(d.after)}</p>`
     }), content, 'ch-decisions');
   }
@@ -467,14 +475,14 @@
     const parts = [
       part(projectApproach()), part(basisDetail(), true),
       part(relevantWork(topics[0].slug)),
-      ...topics.slice(1).map((t) => ({ title: `Relevant Work / ${t.title}`, detail: true, html: `<div class="cols cols-3-5 evidence"><div class="plates">${plate(t, 1, 'Finished work', t.plate.finished)}${plate(t, 2, 'Field record', t.plate.field, true)}</div><div class="account"><h2 class="ref-title">${esc(t.title)}</h2>${argument(t)}</div></div>` })),
+      ...topics.slice(1).map((t) => ({ title: `Relevant Work / ${t.title}`, detail: true, html: `<div class="cols cols-3-5 evidence"><div class="plates">${plate(t, 1, t.plate.finished)}${plate(t, 2, t.plate.field)}</div><div class="account">${argument(t)}</div></div>` })),
       part(verificationDetail(), true),
       part(peopleScope()), part(boundariesDetail(), true),
       part(scheduleView()),
       part(budget()), ...P.budget.allowances.map((a) => part(allowanceDetail(a.slug), true)),
       part(decisions())
     ];
-    const strip = (h) => h.replace(/<nav class="pager"[\s\S]*?<\/nav>/g, '').replace(/<a class="back"[\s\S]*?<\/a>/g, '').replace(/ tabindex="-1"/g, '').replace(/ aria-live="polite"/g, '');
+    const strip = (h) => h.replace(/<nav class="(pager|other-accounts)"[\s\S]*?<\/nav>/g, '').replace(/<a class="back"[\s\S]*?<\/a>/g, '').replace(/ tabindex="-1"/g, '').replace(/ aria-live="polite"/g, '').replace(/ id="[^"]*"/g, '');
     return {
       kind: 'issue', title: `Issue ${P.issue.number} / printable record`,
       html: `
@@ -483,13 +491,13 @@
             <p class="micro">Freeman GC / Private proposal / Issue ${P.issue.number} / ${esc(P.issue.date)}</p>
             <h1 class="client" tabindex="-1">${esc(P.client.name)}</h1>
             <p class="place">${esc(P.client.city)} / ${esc(P.client.type)}</p>
-            <p class="thesis">${P.opening.thesis.map(esc).join('<br>')}</p>
+            <p class="thesis">${P.opening.thesis.map((t) => `<span>${esc(t)}</span>`).join(' ')}</p>
             <p class="approach">${esc(P.opening.approach)}</p>
-            <p class="condition"><span class="cap"><span class="mark" aria-hidden="true"></span>First condition</span>${esc(P.opening.firstCondition)}</p>
+            <p class="condition">${esc(P.opening.firstCondition)}</p>
             <dl class="kv">${P.opening.commercial.map((c) => `<div><dt>${esc(c.label)}</dt><dd>${esc(c.value)}</dd></div>`).join('')}<div><dt>Status</dt><dd>${esc(P.issue.status)}</dd></div><div><dt>Prepared by</dt><dd>${esc(author())}</dd></div></dl>
             <div class="no-print issue-actions">
               <button type="button" class="primary" data-print>${word('Print or save as PDF')}</button>
-              <a class="secondary" href="/downloads/alder-issue-01.pdf" download>${word('Download PDF')} <span class="arrow">↓</span></a>
+              <a class="secondary" href="/downloads/alder-issue-01.pdf" download>${word('Download PDF')} ${arrow('↓')}</a>
               <a class="secondary" href="${url('06-decisions')}">${word('Back to Decisions')}</a>
             </div>
           </header>
@@ -674,7 +682,7 @@
       trigger: a.getAttribute('href'),
       returning: !!parentReturn,
       topic: a.hasAttribute('data-topic'),
-      keepFocus: a.hasAttribute('data-topic') ? `a[href="${a.getAttribute('href')}"]` : null
+      keepFocus: a.hasAttribute('data-topic') ? '.account-title' : null
     });
   });
 

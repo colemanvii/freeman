@@ -69,6 +69,7 @@ window.PROPOSAL = {
       'A kitchen planned for the pace behind it.'
     ],
     approach: 'Our starting point is the meeting of those two ambitions: protect the room’s character while resolving equipment, building services, and the sequence of work early.',
+    readingPath: 'For a first reading: Project & Approach, then Schedule, Budget, and Decisions. Relevant Work and People & Scope support them.',
     firstCondition: 'Before we establish an opening date, we recommend confirming the existing utilities and the kitchen exhaust route.',
     commercial: [
       { label: 'Working construction budget', value: '$1.50m, including $150k owner contingency', to: '05-budget' },
@@ -77,12 +78,12 @@ window.PROPOSAL = {
   },
 
   chapters: [
-    { n: '01', slug: '01-project-approach', label: 'Project & Approach', summary: 'The room, the kitchen, and what we resolve first', note: 'Two unknowns lead' },
+    { n: '01', slug: '01-project-approach', path: 1, label: 'Project & Approach', summary: 'The room, the kitchen, and what we resolve first', note: 'Two unknowns lead' },
     { n: '02', slug: '02-relevant-work', label: 'Relevant Work', summary: 'Little Rey / role and evidence pending verification', note: 'Internal: not ready for issue', flag: true },
     { n: '03', slug: '03-people-scope', label: 'People & Scope', summary: 'Who leads; who supplies; where responsibilities meet', note: 'Five roles / one open boundary' },
-    { n: '04', slug: '04-schedule', label: 'Schedule', summary: '24 illustrative weeks / start conditions unresolved', note: 'Three active conditions' },
-    { n: '05', slug: '05-budget', label: 'Budget', summary: '$1.50m construction planning total / exclusions apply', note: 'Five exclusions listed' },
-    { n: '06', slug: '06-decisions', label: 'Decisions', summary: 'Three questions before preconstruction', note: 'Next: a working session' }
+    { n: '04', slug: '04-schedule', path: 2, label: 'Schedule', summary: '24 illustrative weeks / start conditions unresolved', note: 'Three active conditions' },
+    { n: '05', slug: '05-budget', path: 3, label: 'Budget', summary: '$1.50m construction planning total / exclusions apply', note: 'Five exclusions listed' },
+    { n: '06', slug: '06-decisions', path: 4, label: 'Decisions', summary: 'Three questions before preconstruction', note: 'Next: a working session' }
   ],
 
   /* ---------- 01 Project & Approach ---------- */
@@ -137,6 +138,8 @@ window.PROPOSAL = {
     question: 'What have you actually done that matters here?',
     title: 'Little Rey / Rocket Farm Restaurants',
     label: 'Reference / Freeman role pending verification',
+    heading: 'Where the kitchen meets the room.',
+    claimNote: 'Each historical statement will be drawn from a dated record before this reference is issued.',
     lead: [
       'This reference will focus on the work Freeman can document: the assignment, the people involved, and the decisions made in the field.',
       'For Alder, the question is how that experience informs the coordination of a guest-facing room and a working kitchen.'
@@ -144,19 +147,6 @@ window.PROPOSAL = {
     releaseStatus: 'Not ready for client issue. Each historical field below must be filled from a record, or the topic removed.',
     template: 'At [location], [legal entity or named team member] was responsible for [documented scope] during [dates]. The record below shows [specific action].',
     topics: [
-      {
-        slug: 'material-junction',
-        title: 'A material junction',
-        plate: { finished: 'Finished photograph of the junction in use', field: 'Approved detail or field photograph of the same junction' },
-        parts: [
-          { k: 'Intent', status: 'unverified', text: 'Not yet documented. Record needed: the design requirement for a guest-facing junction, from the architect’s drawings.' },
-          { k: 'Condition', status: 'unverified', text: 'Not yet documented. Record needed: what the team encountered, with a dated field report or RFI.' },
-          { k: 'Freeman’s contribution', status: 'unverified', text: 'Not yet documented. Record needed: the action Freeman or a named team member took, credited separately from the architect and other builders.' },
-          { k: 'Evidence', status: 'unverified', text: 'Not yet received. An attributable photograph or approved detail, with photographer, date, and permission.' }
-        ],
-        relevance: 'Before ordering millwork, we would mock up the junction where the dining room’s finishes meet the open kitchen’s cleanable surfaces and review it with the architect.',
-        links: [['A-01', 'Millwork allowance'], ['S-02', 'Architectural build-out'], ['M-05', 'W5 / long-lead release']]
-      },
       {
         slug: 'equipment-coordination',
         title: 'Equipment coordination',
@@ -168,7 +158,20 @@ window.PROPOSAL = {
           { k: 'Evidence', status: 'unverified', text: 'Not yet received. A field record or approved drawing detail with permission to show it.' }
         ],
         relevance: 'For Alder, we would confirm who purchases, installs, and starts each piece of equipment, then overlay the equipment schedule on the utility rough-in before pricing.',
-        links: [['D-01', 'Decision: equipment boundary'], ['S-07', 'Kitchen equipment boundary'], ['M-21', 'W21 / equipment readiness']]
+        links: [['D-01', 'the equipment boundary decision'], ['S-07', 'the kitchen equipment boundary'], ['M-21', 'Week 21, equipment readiness']]
+      },
+      {
+        slug: 'material-junction',
+        title: 'A material junction',
+        plate: { finished: 'Finished photograph of the junction in use', field: 'Approved detail or field photograph of the same junction' },
+        parts: [
+          { k: 'Intent', status: 'unverified', text: 'Not yet documented. Record needed: the design requirement for a guest-facing junction, from the architect’s drawings.' },
+          { k: 'Condition', status: 'unverified', text: 'Not yet documented. Record needed: what the team encountered, with a dated field report or RFI.' },
+          { k: 'Freeman’s contribution', status: 'unverified', text: 'Not yet documented. Record needed: the action Freeman or a named team member took, credited separately from the architect and other builders.' },
+          { k: 'Evidence', status: 'unverified', text: 'Not yet received. An attributable photograph or approved detail, with photographer, date, and permission.' }
+        ],
+        relevance: 'Before ordering millwork, we would mock up the junction where the dining room’s finishes meet the open kitchen’s cleanable surfaces and review it with the architect.',
+        links: [['A-01', 'Millwork allowance'], ['S-02', 'Architectural build-out'], ['W-3', 'Long-lead procurement, weeks 5–16']]
       },
       {
         slug: 'field-decision',
@@ -181,7 +184,7 @@ window.PROPOSAL = {
           { k: 'Evidence', status: 'unverified', text: 'Not yet received. A field photograph or written record, attributed and permitted.' }
         ],
         relevance: 'For Alder, we would investigate the existing services and the exhaust route before the construction baseline, so that a concealed condition becomes a planned decision rather than a field surprise.',
-        links: [['D-02', 'Decision: services investigation'], ['C-02', 'Exhaust route condition'], ['M-08', 'W8 / construction start gate']]
+        links: [['D-02', 'the services investigation decision'], ['C-02', 'the exhaust route condition'], ['M-08', 'Week 8, construction start gate']]
       }
     ],
     verify: [
@@ -264,7 +267,7 @@ window.PROPOSAL = {
     milestones: [
       { id: 'M-04', week: 4, label: 'Brief and basis agreed', prereq: 'Founder brief confirmed; services and exhaust investigation reported', role: 'Founder, with project manager', rows: ['W-1', 'W-2'], affects: [['D-02', 'Services investigation'], ['B-01', 'Trade construction']] },
       { id: 'M-08', week: 8, label: 'Construction start gate', prereq: 'Building permit issued, possession of the premises, coordinated documents', role: 'Project manager, with architect', rows: ['W-2', 'W-4'], affects: [['C-01', 'Utility capacity'], ['C-02', 'Exhaust route'], ['B-01', 'Trade construction']], key: true },
-      { id: 'M-14', week: 14, label: 'Rough-in review', prereq: 'Rough-in inspections passed; equipment connection points confirmed', role: 'Superintendent', rows: ['W-4', 'W-5'], affects: [['S-07', 'Kitchen equipment boundary'], ['S-03', 'MEP and fire protection']] },
+      { id: 'M-14', week: 14, label: 'Rough-in review', prereq: 'Rough-in inspections passed; equipment connection points confirmed', role: 'Superintendent', rows: ['W-4', 'W-5'], affects: [['S-07', 'the kitchen equipment boundary'], ['S-03', 'MEP and fire protection']] },
       { id: 'M-21', week: 21, label: 'Equipment readiness', prereq: 'Owner equipment delivered; supplier available for set-in and startup', role: 'Founder’s equipment supplier, with project manager', rows: ['W-3', 'W-5'], affects: [['D-01', 'Equipment boundary'], ['C-03', 'Lead times']] },
       { id: 'M-24', week: 24, label: 'Target handover', prereq: 'Final inspections passed; punch list closed; operating documents issued', role: 'Project manager', rows: ['W-6'], affects: [['S-05', 'Inspections and turnover']] }
     ],
@@ -300,7 +303,7 @@ window.PROPOSAL = {
         basis: 'Illustrative installed package for an 80-seat room. No drawings, shop drawings, or fabricator quotation.',
         unresolved: 'Bar length and top material; whether the banquette is millwork or loose furniture (S-11).',
         responsible: 'Founder selects, with architect; project manager prices',
-        decision: 'Selections approved before W5 long-lead release',
+        decision: 'Selections approved before week 5, when long-lead orders are released',
         milestone: 'M-04'
       },
       {
@@ -309,7 +312,7 @@ window.PROPOSAL = {
         basis: 'Illustrative fixture-and-install package. Fixture selections and quantities not received.',
         unresolved: 'Fixture selections, counts, and lead times; dimming control approach.',
         responsible: 'Founder selects, with architect or lighting designer',
-        decision: 'Selections approved before W5 long-lead release',
+        decision: 'Selections approved before week 5, when long-lead orders are released',
         milestone: 'M-04'
       },
       {
@@ -318,7 +321,7 @@ window.PROPOSAL = {
         basis: 'Illustrative premium over base finishes carried in the trade line.',
         unresolved: 'Tile, wall, and floor selections; cleanability at the kitchen threshold.',
         responsible: 'Founder selects, with architect',
-        decision: 'Selections approved before W14 rough-in review',
+        decision: 'Selections approved before the week 14 rough-in review',
         milestone: 'M-14'
       }
     ],
@@ -353,9 +356,9 @@ window.PROPOSAL = {
     heading: 'The next step is a working session.',
     lead: 'We propose reviewing the kitchen responsibility boundary, the existing building services, and a defined preconstruction scope. Freeman would return with a written scope, fee, and deliverable schedule for review.',
     rows: [
-      { id: 'D-01', title: 'Confirm kitchen equipment purchasing and installation boundary', role: 'Founder, with PM recommendation', by: 'Before scope pricing', state: 'Open', consequence: 'Prevents omissions and double pricing', links: [['S-07', 'Responsibility boundary'], ['A-01', 'Millwork allowance'], ['M-21', 'W21 / equipment readiness']] },
-      { id: 'D-02', title: 'Authorize existing-services and exhaust investigation', role: 'Founder, with architect’s input', by: 'Before construction baseline', state: 'Open', consequence: 'Tests schedule and cost assumptions', links: [['C-01', 'Utility capacity'], ['C-02', 'Exhaust route'], ['M-08', 'W8 / start gate']] },
-      { id: 'D-03', title: 'Confirm preconstruction deliverables and fee', role: 'Founder, with Freeman principal', by: 'Before services begin', state: 'Open', consequence: 'Establishes the next engagement', links: [['B-03', 'General conditions and fee'], ['M-04', 'W4 / basis agreed']] }
+      { id: 'D-01', title: 'Confirm kitchen equipment purchasing and installation boundary', role: 'Founder, with PM recommendation', by: 'Before scope pricing', state: 'Open', consequence: 'Prevents omissions and double pricing', links: [['S-07', 'Responsibility boundary'], ['A-01', 'Millwork allowance'], ['M-21', 'Week 21, equipment readiness']] },
+      { id: 'D-02', title: 'Authorize existing-services and exhaust investigation', role: 'Founder, with architect’s input', by: 'Before construction baseline', state: 'Open', consequence: 'Tests schedule and cost assumptions', links: [['C-01', 'Utility capacity'], ['C-02', 'Exhaust route'], ['M-08', 'Week 8, start gate']] },
+      { id: 'D-03', title: 'Confirm preconstruction deliverables and fee', role: 'Founder, with Freeman principal', by: 'Before services begin', state: 'Open', consequence: 'Establishes the next engagement', links: [['B-03', 'General conditions and fee'], ['M-04', 'Week 4, basis agreed']] }
     ],
     after: 'Construction authorization would follow a separate agreement. Reading or acknowledging this proposal does not authorize work.',
     actionNote: 'Opens a draft in your email application. Nothing is sent until you send it.'
