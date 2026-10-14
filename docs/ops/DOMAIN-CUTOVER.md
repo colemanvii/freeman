@@ -1,6 +1,16 @@
 # freemangc.com → Cloudflare Pages: cutover checklist
 
-Status: **ready for go-ahead. No DNS, nameserver or domain changes have been made.**
+Status: **Phase A underway (nameservers changed); phase B not started.**
+
+## Cutover log
+| When (ET) | Event | Verified |
+|---|---|---|
+| 14 Oct, before 4:42 PM | DNSSEC confirmed **off**; 12 records imported into Cloudflare (8 inventoried below + 2 Cloudflare NS + `_domainconnect` CNAME → `_domainconnect.domains.squarespace.com` + `email` CNAME → `email.secureserver.net`, both legacy and harmless, left unchanged) | Cloudflare answers match the Squarespace zone record for record, all **DNS only**, TTL 300 |
+| 14 Oct, 4:42 PM | Squarespace confirmed nameservers → `aaron.ns.cloudflare.com`, `zainab.ns.cloudflare.com` (by Cole) | .com registry delegates only to those two; no DS |
+| 14 Oct, evening | Email records checked through Cloudflare and through 1.1.1.1, 8.8.8.8 and 9.9.9.9 (8.8.8.8 still caching the old nameservers; same answers either way) | MX `0 freemangc-com.mail.protection.outlook.com`, `autodiscover` → `autodiscover.outlook.com`, Resend DKIM, `send` CNAME all resolve |
+| 14 Oct, evening | PR #9 (legacy URL redirects) live, commit `1f41b6b`, deployment `fe86f84c` | `/about`, `/sawdust`, `/projects/*` → 301, query strings preserved |
+
+**Phase B prerequisite found:** Webflow serves custom domains through Cloudflare for SaaS, so Webflow may still hold `freemangc.com` / `www.freemangc.com` as custom hostnames. If a Pages custom domain stays in *Verifying* / reports the hostname is in use, remove the custom domain in Webflow → Site settings → Publishing (the site stays published on its `webflow.io` address; Webflow hosting is **not** cancelled). Connect the apex first (it returns 403 today, so nothing visible can break) to find out before touching `www`.
 Goal: serve the site from Cloudflare Pages (project `freeman`) on freemangc.com; Squarespace
 stays registrar; Microsoft 365 email uninterrupted; rollback in minutes.
 
@@ -50,7 +60,7 @@ apex is broken), so existing links, signatures and search results keep the same 
 - `freeman-d6f.pages.dev` stays reachable tonight; a redirect to www can follow later.
 
 ## Phase A — DNS to Cloudflare, nothing visible changes (email risk only)
-Needs your go-ahead at **A6**. Steps A1–A5 change nothing live.
+**A1–A6 done 14 Oct (see log). A7–A8 in progress.**
 
 - [ ] **A1** Squarespace → Domains → freemangc.com → DNS settings: screenshot or export every record, including any "Microsoft 365" preset group.
 - [ ] **A2** Check DNSSEC is off in Squarespace (expected; see above).
@@ -68,7 +78,7 @@ Needs your go-ahead at **A6**. Steps A1–A5 change nothing live.
   - `www.freemangc.com` still shows the Webflow site.
 
 ## Phase B — point the web at Cloudflare Pages
-Needs your go-ahead at **B1**. Requires phase A Active and PR #9 merged.
+Requires the zone **Active** in Cloudflare. PR #9 is merged. Order: apex first (B2 before B1), then `www`, then the redirect rule.
 
 - [ ] **B1 (go-ahead)** Workers & Pages → `freeman` → *Custom domains* → *Set up a custom domain* → `www.freemangc.com` → *Activate domain*. Cloudflare replaces the `www` CNAME with a proxied CNAME to `freeman-d6f.pages.dev`; status → **Active** with certificate (minutes).
 - [ ] **B2** Same for `freemangc.com` (apex). This replaces the Webflow A records with a proxied record for Pages.
