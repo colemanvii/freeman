@@ -1,5 +1,7 @@
 # Freeman GC — V5 Fieldwork / fixed-screen site
 
+> **Layout.** `v5/` is the Cloudflare Pages output and contains only files served to visitors. Sources and tooling live here in `v5-source/` and are never deployed: edit `v5-source/content.json`, then run `python3 v5-source/generate.py` (it writes the route files and `records.js` into `v5/`). QA lives in `qa/` (see `qa/README.md`); `tools/navigation-qa.py` here is superseded.
+
 Four public destinations: **Company / Projects / Fieldwork / Contact**.
 
 Based on Astra's fixed-viewport edition, with no page scrolling and record-by-record previous/next navigation. Crosshair cursor and instantaneous orange word highlights (no underlining animation).
