@@ -223,6 +223,8 @@ with sync_playwright() as p:
             r = pg.goto(BASE + path); pg.wait_for_selector("main")
             ok = r.status == 200 and pg.evaluate("location.pathname") == path and "unavailable" not in pg.title().lower()
             check(f"{tag} alder direct link {path}", ok, (r.status, pg.url, pg.title()))
+            body = pg.inner_text("body")
+            check(f"{tag} alder {path} no undefined/null text", not BAD_TEXT.search(body), BAD_TEXT.search(body))
             for l in pg.eval_on_selector_all("a[href^='/p/alder/']", "as => as.map(a => a.getAttribute('href').split('#')[0])"):
                 if l not in seen and l.count("/") <= 5: queue.append(l)
         check(f"{tag} alder crawled interior links ({len(seen)})", len(seen) >= len(CHAPTERS))
