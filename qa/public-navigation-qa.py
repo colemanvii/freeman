@@ -4,12 +4,12 @@ Replaces v5/tools/navigation-qa.py, which predates the approved Projects index (
 current CLOSE semantics. Read-only: never submits the contact form.
 Usage: python3 qa/public-navigation-qa.py <base_url> [result.json]
 """
-import json, re, sys
+import json, pathlib, re, sys
 from playwright.sync_api import sync_playwright
 
 BASE = (sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8788").rstrip("/")
 OUT = sys.argv[2] if len(sys.argv) > 2 else None
-RECORDS = json.loads(open(__file__.rsplit("/qa/", 1)[0] + "/v5/content.json").read())
+RECORDS = json.loads((pathlib.Path(__file__).resolve().parent.parent / "v5" / "content.json").read_text())
 ROUTES = ["/", "/company", "/projects", "/fieldwork", "/contact"] + \
     [f"/project-{p['slug']}" for p in RECORDS["projects"]] + [f"/fieldwork-{a['slug']}" for a in RECORDS["archive"]]
 BAD_TEXT = re.compile(r"\bundefined\b|\bNaN\b|\[object ")
