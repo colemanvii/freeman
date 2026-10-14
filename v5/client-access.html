@@ -222,7 +222,6 @@ h2.eyebrow{font-weight:400;margin-top:0}
   $('code-form').addEventListener('submit', (e) => {
     e.preventDefault();
     const c = $('code-entry').value.trim().toUpperCase().replace(/\s+/g, ' ');
-    if (c === 'ALDER') { location.assign('/p/alder'); return; }
     if (CODES[c]) { $('code-entry').value = ''; go({ role: CODES[c], step: -1 }); return; }
     $('code-status').textContent = c ? 'Code not recognized in this study.' : 'Enter a code.';
   });
