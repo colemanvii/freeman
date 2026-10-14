@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: ["freeman-v5-consolidation"]
   push:
-    branches: ["freeman-v5-consolidation", "fix/**"]
+    branches: ["freeman-v5-consolidation", "fix/**", "feature/**"]
   workflow_dispatch:
 
 permissions:
