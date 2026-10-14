@@ -473,7 +473,6 @@ body[data-kind="issue"] .foot .demo { display: none; }
   a .word { background: none !important; color: inherit !important; }
   .g-bar, .mark, .g-mark i, .num, .xid { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
-}
 
 /* gates are the milestone controls */
 .ms-list-sm { display: none; margin-bottom: 12px; }
