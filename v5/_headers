@@ -1,0 +1,32 @@
+# Cloudflare Pages response headers.
+#
+# Confidential paths (private proposals and their content) must never be stored by a shared
+# cache: once an edge cache holds a response, a later deployment that removes or gates the file
+# does not evict it (seen 14 Oct 2026 with deleted internal files on freeman-d6f.pages.dev).
+# Confidential content is never published as a static .json/.txt/.pdf file; it is served only
+# by a Function behind the access gate (docs/access/PHASE-TWO-RUNBOOK.md).
+
+/p
+  Cache-Control: private, no-store
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/p/*
+  Cache-Control: private, no-store
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/proposal-alder
+  Cache-Control: private, no-store
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/proposal-assets/data/*
+  Cache-Control: private, no-store
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+# Reserved prefixes for future private material (project-specific ACCESS, staff tools).
+/a/*
+  Cache-Control: private, no-store
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/admin/*
+  Cache-Control: private, no-store
+  X-Robots-Tag: noindex, nofollow, noarchive
