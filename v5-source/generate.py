@@ -1,7 +1,9 @@
 import json, pathlib
 
-root = pathlib.Path(__file__).resolve().parent
-records = json.loads((root / 'content.json').read_text())
+# Source files live in v5-source/ (never deployed); generated files are written to v5/ (the Cloudflare output).
+src = pathlib.Path(__file__).resolve().parent
+root = src.parent / 'v5'
+records = json.loads((src / 'content.json').read_text())
 (root / 'records.js').write_text('window.RECORDS=' + json.dumps(records).replace('</', '<\\/') + ';')
 
 # Every route is a real file with the same shell; app.js renders the route in place and

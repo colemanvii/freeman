@@ -1,6 +1,6 @@
 """Freeman public site navigation QA (Chromium via Playwright), per the rules in v5/README.md.
 
-Replaces v5/tools/navigation-qa.py, which predates the approved Projects index (.pi-row) and
+Replaces v5-source/tools/navigation-qa.py, which predates the approved Projects index (.pi-row) and
 current CLOSE semantics. Read-only: never submits the contact form.
 Usage: python3 qa/public-navigation-qa.py <base_url> [result.json]
 """
@@ -9,9 +9,13 @@ from playwright.sync_api import sync_playwright
 
 BASE = (sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8788").rstrip("/")
 OUT = sys.argv[2] if len(sys.argv) > 2 else None
-RECORDS = json.loads((pathlib.Path(__file__).resolve().parent.parent / "v5" / "content.json").read_text())
+RECORDS = json.loads((pathlib.Path(__file__).resolve().parent.parent / "v5-source" / "content.json").read_text())
 ROUTES = ["/", "/company", "/projects", "/fieldwork", "/contact"] + \
     [f"/project-{p['slug']}" for p in RECORDS["projects"]] + [f"/fieldwork-{a['slug']}" for a in RECORDS["archive"]]
+# Sources and tooling must never be served (they live in v5-source/).
+INTERNAL = ["/README.md", "/content.json", "/generate.py", "/image-dimensions.json", "/validation.json", "/mobile-validation.json",
+            "/navigation-validation.json", "/tools/navigation-qa.py", "/_preserved-portal/sample-brief.txt", "/_preserved-portal/portal.html",
+            "/_preserved-portal/portal"]
 BAD_TEXT = re.compile(r"\bundefined\b|\bNaN\b|\[object ")
 results = []
 
@@ -38,6 +42,10 @@ with sync_playwright() as p:
             body = pg.inner_text("body")
             check(f"{tag} direct {r} loads", resp.status == 200 and "Record not found" not in body, resp.status)
             check(f"{tag} direct {r} no undefined text", not BAD_TEXT.search(body), BAD_TEXT.search(body))
+        if w == 1440:
+            for internal in INTERNAL:
+                st = pg.request.get(BASE + internal, max_redirects=0).status
+                check(f"internal file not served: {internal}", st == 404, st)
         check(f"{tag} entrance links to ACCESS", pg.goto(BASE + "/") and pg.get_attribute(".client-access-entry", "href") == "client-access.html")
 
         # Entrance → Projects → project → CLOSE → Projects (selection restored) → Back/Forward.
