@@ -73,9 +73,26 @@
       try { return history.state && typeof history.state === "object" ? history.state : {}; } catch (e) { return {}; }
     },
     write(method, state, url) {
-      try { history[method](state, "", url); return true; } catch (e) { return false; }
+      try { history[method](state, "", extensionless(url)); return true; } catch (e) { return false; }
     },
   };
+  /* Cloudflare Pages serves extensionless URLs and 308-redirects "x.html" to "x"; that redirect
+     drops history.state, so a refresh would lose the visit depth (CLOSE) and saved view state.
+     Where the host behaves that way, write the extensionless form; plain file servers keep ".html". */
+  const httpHost = /^https?:$/.test(location.protocol);
+  let pretty = httpHost && /[^/]$/.test(location.pathname) && !/\.html$/.test(location.pathname);
+  if (httpHost && !pretty && window.fetch) {
+    fetch("company.html", { method: "HEAD", redirect: "manual", cache: "no-store" })
+      .then((r) => { if (r.type === "opaqueredirect") pretty = true; })
+      .catch(() => {});
+  }
+  function extensionless(url) {
+    if (!pretty || url == null) return url;
+    const u = new URL(url, location.href);
+    if (u.origin !== location.origin) return url;
+    u.pathname = u.pathname.replace(/(^|\/)index\.html$/, "$1").replace(/\.html$/, "");
+    return u.href;
+  }
   const dirOf = (path) => path.replace(/[^/]*$/, "");
 
   /* ---------- Routes ---------- */
