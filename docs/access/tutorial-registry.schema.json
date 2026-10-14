@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Freeman ACCESS instruction module",
+  "type": "object",
+  "required": ["id", "title", "audiences", "scope", "procedure_version", "status", "owner", "steps"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "title": { "type": "string" },
+    "audiences": { "type": "array", "minItems": 1, "items": { "enum": ["client", "architect", "trade"] } },
+    "pathway_steps": { "type": "array", "description": "ACCESS steps that show this module, e.g. 'architect/2'", "items": { "type": "string", "pattern": "^(client|architect|trade)/[1-9]$" } },
+    "scope": { "enum": ["organization", "person", "engagement"] },
+    "platform": { "enum": ["procore", "buildingconnected", "none"] },
+    "procedure_version": { "type": "string", "description": "Bump when Freeman's procedure changes; completed person-scope items are re-requested on a major change" },
+    "status": { "enum": ["needs-policy", "needs-content", "draft", "approved", "retired"] },
+    "owner": { "type": "string", "description": "Freeman person responsible for accuracy" },
+    "reviewed_on": { "type": ["string", "null"], "format": "date" },
+    "review_every_days": { "type": "integer", "minimum": 30 },
+    "steps": { "type": "array", "items": { "type": "string" }, "description": "Written instructions; always present so the page works without video" },
+    "video": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["provider", "id", "visibility"],
+      "properties": {
+        "provider": { "const": "loom" },
+        "id": { "type": "string" },
+        "visibility": { "enum": ["unlisted-generic", "authenticated-only"] },
+        "duration_seconds": { "type": "integer" },
+        "transcript": { "type": "string" },
+        "captions": { "type": "boolean" }
+      }
+    },
+    "open_questions": { "type": "array", "items": { "type": "string" } }
+  }
+}
