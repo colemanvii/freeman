@@ -318,7 +318,15 @@
         return `<li class="pi-row${here ? " is-current" : ""}"><a class="pi-link" href="project-${esc(p.slug)}.html" data-slug="${esc(p.slug)}"><span class="pi-no">${pad(i + 1, 3)}</span><span class="pi-name">${esc(p.name)}</span>${cell("pi-client", credit(p, "Client"), "Client")}${cell("pi-arch", designCredit(p), "Design")}${cell("pi-date", p.date || "", "Date")}</a></li>`;
       })
       .join("");
-    vp.innerHTML = `<div class="pi"><div class="pi-head" aria-hidden="true"><span>No.</span><span>Project</span><span>Client</span><span>Design</span><span class="pi-head-date">Date</span></div><div class="pi-scroller"><ol class="pi-list" aria-label="Projects">${rows}</ol></div></div>`;
+    const inProgress = [
+      ["Barnsley Branded Residential", "Adairsville, Georgia", "Residential"],
+      ["Magnolia Commons Retail Center", "Calhoun, Georgia", "Retail"],
+      ["Little Rey", "Dunwoody, Georgia", "Hospitality"],
+    ];
+    const activeRows = inProgress.map(([name, place, type]) =>
+      `<li class="pi-row pi-progress"><div class="pi-link pi-progress-line"><span class="pi-no">—</span><span class="pi-name">${esc(name)}</span><span class="pi-client">${esc(place)}</span><span class="pi-arch">${esc(type)}</span><span class="pi-date">IN PROGRESS</span></div></li>`
+    ).join("");
+    vp.innerHTML = `<div class="pi"><div class="pi-head" aria-hidden="true"><span>No.</span><span>Project</span><span>Client</span><span>Design</span><span class="pi-head-date">Date</span></div><div class="pi-scroller"><div class="pi-section-label">IN PROGRESS / CURRENT WORK</div><ol class="pi-list" aria-label="In progress projects">${activeRows}</ol><div class="pi-section-label pi-completed-label">SELECTED WORK / COMPLETED</div><ol class="pi-list" aria-label="Completed projects">${rows}</ol></div></div>`;
     const scroller = vp.querySelector(".pi-scroller");
     // The project a visitor opens is the selection they return to.
     scroller.addEventListener("click", (e) => {
