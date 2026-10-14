@@ -10,14 +10,19 @@ from playwright.sync_api import sync_playwright
 BASE = (sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8788").rstrip("/")
 OUT = sys.argv[2] if len(sys.argv) > 2 else None
 RECORDS = json.loads((pathlib.Path(__file__).resolve().parent.parent / "v5-source" / "content.json").read_text())
-ROUTES = ["/", "/company", "/projects", "/fieldwork", "/contact"] + \
-    [f"/project-{p['slug']}" for p in RECORDS["projects"]] + [f"/fieldwork-{a['slug']}" for a in RECORDS["archive"]]
+ROUTES = ["/", "/company", "/projects", "/contact"] + [f"/project-{p['slug']}" for p in RECORDS["projects"]]
+# Fieldwork is withdrawn from the public site (v5-source/generate.py --fieldwork): every old URL is a
+# temporary redirect to Projects, and its reader, images and records are not served.
+WITHDRAWN = ["/fieldwork", "/fieldwork.html"] + [f"/fieldwork-{a['slug']}{x}" for a in RECORDS["archive"] for x in ("", ".html")]
 # Sources and tooling must never be served (they live in v5-source/).
 INTERNAL = ["/README.md", "/content.json", "/generate.py", "/image-dimensions.json", "/validation.json", "/mobile-validation.json",
             "/navigation-validation.json", "/tools/navigation-qa.py", "/_preserved-portal/sample-brief.txt", "/_preserved-portal/portal.html",
-            "/_preserved-portal/portal"]
+            "/_preserved-portal/portal", "/fieldwork-reader.js", "/fieldwork-reader.css", "/fieldwork/fieldwork-reader.js", "/alder/README.md"] + \
+    sorted({"/assets/" + a["image"].split("/")[-1] for a in RECORDS["archive"]})
+# records.js ships to every visitor: only rendered fields, never source-only data.
+UNPUBLISHED = re.compile(r"Budget|Total sq\. ft|\"Complete\"|\"quote\"|website-files\.com|\$\d|AI-generated|visual archive")
 # Old Webflow URLs that must keep working after the domain cutover (v5/_redirects).
-LEGACY = {"/about": "/company", "/sawdust": "/fieldwork", "/projects/barnsley-gardens": "/project-barnsley-gardens",
+LEGACY = {"/about": "/company", "/sawdust": "/projects", "/projects/barnsley-gardens": "/project-barnsley-gardens",
           "/projects/beetlecat-atlanta": "/project-beetlecat", "/projects/bocado-pizza": "/project-bocado-pizza",
           "/projects/cleveland-surgery-center": "/project-cleveland-surgery-center", "/projects/dalton-surgery-center": "/project-dalton-surgery-center",
           "/projects/la-cresta-on-main": "/project-la-cresta-on-main", "/projects/o-ku-atlanta": "/project-o-ku-atlanta",
@@ -58,7 +63,8 @@ with sync_playwright() as p:
                 r = pg.request.get(BASE + old, max_redirects=0)
                 loc = r.headers.get("location", "")
                 target = pg.request.get(BASE + new)
-                check(f"legacy {old} → 301 {new}", r.status == 301 and loc.split("?")[0].rstrip("/").endswith(new) and target.status == 200, (r.status, loc, target.status))
+                code = 302 if old == "/sawdust" else 301  # Sawdust became Fieldwork, which is withdrawn for now
+                check(f"legacy {old} → {code} {new}", r.status == code and loc.split("?")[0].rstrip("/").endswith(new) and target.status == 200, (r.status, loc, target.status))
         check(f"{tag} entrance links to ACCESS", pg.goto(BASE + "/") and pg.get_attribute(".client-access-entry", "href") == "client-access.html")
 
         # Entrance → Projects → project → CLOSE → Projects (selection restored) → Back/Forward.
@@ -87,13 +93,18 @@ with sync_playwright() as p:
         tap(".panel-head .close"); pg.wait_for_selector(".client-access-entry")
         check(f"{tag} CLOSE on direct arrival → entrance", path(pg) == "/", pg.url)
 
-        # Fieldwork record and back.
-        pg.goto(BASE + "/fieldwork"); pg.wait_for_selector(".fl-item-title")
-        first = pg.get_attribute(".fl-item-title", "href").replace(".html", "")
-        tap(".fl-item-title"); pg.wait_for_function(f"location.pathname.includes('{first}')")
-        check(f"{tag} Fieldwork record opens", path(pg) == "/" + first, pg.url)
-        pg.go_back(); pg.wait_for_selector(".fl-item-title")
-        check(f"{tag} Back returns to Fieldwork", path(pg) == "/fieldwork", pg.url)
+        # Fieldwork withdrawn: no link or label on any public page, old URLs land on Projects.
+        for r in ["/", "/company", "/projects", "/contact"] + [f"/project-{p['slug']}" for p in RECORDS["projects"]]:
+            pg.goto(BASE + r); pg.wait_for_selector("#main > *", state="attached")
+            n = pg.locator("a[href*='fieldwork' i]").count(); label = re.search(r"fieldwork", pg.inner_text("body"), re.I)
+            check(f"{tag} {r} has no Fieldwork link or label", n == 0 and not label, (n, label))
+        if w == 1440:
+            for old in WITHDRAWN:
+                r = pg.request.get(BASE + old, max_redirects=0)
+                check(f"withdrawn {old} → 302 /projects", r.status == 302 and r.headers.get("location", "").split("?")[0].endswith("/projects"), (r.status, r.headers.get("location")))
+            js = pg.request.get(BASE + "/records.js").text()
+            check("records.js carries no unpublished fields", not UNPUBLISHED.search(js), UNPUBLISHED.search(js))
+            check("records.js carries no Fieldwork records", '"archive": []' in js or '"archive":[]' in js)
 
         # Contact form present (not submitted).
         pg.goto(BASE + "/contact"); pg.wait_for_selector("#contact-inquiry")

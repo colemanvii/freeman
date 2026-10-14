@@ -103,7 +103,9 @@
     file = file.replace(/\.html$/, "") || "index";
     const r = { file, url, params: url.searchParams, kind: "notfound" };
     if (file === "index") r.kind = "entrance";
-    else if (["company", "projects", "contact", "fieldwork"].includes(file)) r.kind = file;
+    else if (["company", "projects", "contact"].includes(file)) r.kind = file;
+    // Fieldwork exists only in local --fieldwork builds (see v5-source/generate.py); publicly it is not found.
+    else if (file === "fieldwork" && window.FreemanFieldwork) r.kind = file;
     else if (file.startsWith("project-")) {
       r.item = projects.find((p) => "project-" + p.slug === file);
       if (r.item) r.kind = "project";

@@ -4,6 +4,8 @@
 
 Four public destinations: **Company / Projects / Fieldwork / Contact**.
 
+> **Public build (14 Oct 2026).** Fieldwork is withdrawn from the public site while it is developed: `python3 generate.py` builds Company / Projects / Contact only, ships no Fieldwork pages, reader, images or records, and old Fieldwork URLs 302 to `/projects` (`v5/_redirects`). Its reader and images live in `fieldwork/`; `python3 generate.py --fieldwork` builds the full site into `v5/` for local work (never deploy that build; run the plain command before committing). `records.js` carries only the fields the pages render; budgets, square footage, completion years, quotes and scraped URLs stay in `content.json`. The Alder proposal is kept in `alder/`, not deployed.
+
 Based on Astra's fixed-viewport edition, with no page scrolling and record-by-record previous/next navigation. Crosshair cursor and instantaneous orange word highlights (no underlining animation).
 
 ## Preview
