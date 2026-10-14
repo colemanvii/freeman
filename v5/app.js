@@ -299,18 +299,20 @@
   function company() {
     // One static view: headline and introduction; services, people and location. No sheets.
     const services = [
-      ["Design + build", "Early collaboration aligns design decisions and construction planning."],
-      ["Construction management", "Oversight of schedule, costs, quality and team coordination."],
-      ["Commercial", "Restaurants, retail, healthcare and convenience stores."],
-      ["Residential", "High-end residential work, including La Cresta on Main in Blue Ridge."],
+      ["General Contracting", ""],
+      ["Construction Management", ""],
+      ["Preconstruction", ""],
+      ["Hospitality", ""],
+      ["Commercial", ""],
+      ["Residential", ""],
     ];
     const row = (k, v, cls = "") => `<div class="co-row${cls}"><dt>${esc(k)}</dt>${v ? `<dd>${esc(v)}</dd>` : ""}</div>`;
     chrome({ title: "Company / Freeman General Contracting", section: "company" });
     const vp = root.querySelector(".viewport");
     // Centred in the page area; only a very small phone that cannot hold it scrolls (top never clipped).
-    vp.innerHTML = `<div class="co-frame"><div class="co"><section class="co-intro"><h2 class="co-head">The work begins with people.</h2><p>We see construction as a service industry. The experience of building matters as much as the place we leave behind.</p><p>Freeman General Contracting brings clients, architects, engineers and trades together around a shared project. Clear communication and careful coordination carry the design intent through construction, with attention to the people who will use the place.</p></section><section class="co-facts"><h3 class="co-label">Services</h3><dl class="co-list co-services">${services
+    vp.innerHTML = `<div class="co-frame"><div class="co"><section class="co-intro"><h2 class="co-head">Built for generations.</h2><p>Freeman General Contracting is an independent builder based in Cartersville, Georgia.</p><p>We believe how something is built matters as much as what is built. That good work requires trust, judgment, and the willingness to care about details long after they\u2019re concealed.</p><p>We work with people who believe the same.</p></section><section class="co-facts"><h3 class="co-label">Practice / Work</h3><dl class="co-list co-services">${services
       .map(([k, v]) => row(k, v))
-      .join("")}</dl><div class="co-pair"><div><h3 class="co-label">People</h3><dl class="co-list">${row("Gabe Freeman", "President")}</dl></div><div><h3 class="co-label">Location</h3><dl class="co-list">${row("Cartersville, Georgia", "")}</dl></div></div></section></div></div>`;
+      .join("")}</dl><div class="co-pair"><div><h3 class="co-label">Founder</h3><dl class="co-list">${row("Gabe Freeman", "President")}</dl></div><div><h3 class="co-label">Based in</h3><dl class="co-list">${row("Cartersville, Georgia", "")}</dl></div></div></section></div></div>`;
     words(vp);
     pageCount = 1;
     renderPage = () => {};
