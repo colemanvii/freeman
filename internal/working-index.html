@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Freeman / Working Index</title>
+<style>
+:root{--bg:#f3f1ec;--ink:#201e1b;--muted:#817d76;--line:#cec9c0;--orange:#ff5500}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Monaco,Menlo,Consolas,'Courier New',monospace;letter-spacing:-.045em}
+body{cursor:crosshair}button,input,textarea,select{font:inherit;border-radius:0}button{border:0;background:none;color:inherit;cursor:crosshair}button:hover{background:var(--orange);color:var(--bg)}
+.shell{padding:clamp(18px,2.7vw,44px);height:100dvh;min-height:610px;display:flex;flex-direction:column;overflow:hidden}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid var(--ink);padding-bottom:16px}.identity{font-size:clamp(12px,.95vw,15px)}.identity i{display:inline-block;width:5px;height:5px;background:var(--orange);margin-left:6px;vertical-align:2px}.control{display:flex;align-items:center;gap:clamp(10px,1.8vw,26px);font-size:11px;white-space:nowrap}.control button{padding:4px}.muted{color:var(--muted)}
+.reminder{padding:12px 0 13px;display:flex;gap:12px;align-items:baseline;border-bottom:1px solid var(--line);font-size:clamp(11px,.9vw,14px)}.reminder .arrow{color:var(--orange);font-size:18px}.reminder input{border:0;outline:0;width:100%;background:transparent;color:var(--ink);letter-spacing:inherit}.reminder input:focus{background:#ebe7e0}
+.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));flex:1;min-height:0;border-bottom:1px solid var(--ink)}.lane{min-width:0;display:flex;flex-direction:column;border-right:1px solid var(--line)}.lane:last-child{border-right:0}.lanehead{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--ink);padding:21px 14px 13px;font-size:clamp(12px,1vw,16px)}.lane:first-child .lanehead,.lane:first-child .entry,.lane:first-child .add{padding-left:0}.count{color:var(--muted);font-size:10px}.entries{flex:1;min-height:0;overflow:auto;scrollbar-width:thin}.entry{padding:17px 14px 18px;border-bottom:1px solid var(--line);cursor:crosshair}.entry:hover{background:#eae6df}.entry.dragging{opacity:.3}.entry-title{font-size:clamp(12px,.97vw,16px);line-height:1.3;margin-bottom:8px}.entry-detail{font-size:clamp(10px,.78vw,13px);line-height:1.55;color:var(--muted)}.entry-status{font-size:10px;margin-top:13px;color:var(--muted)}.entry-status.hot{color:var(--orange)}.add{padding:11px 14px;color:var(--muted);text-align:left;font-size:11px;border-top:1px solid var(--line);flex-shrink:0}
+.footer{display:flex;justify-content:space-between;align-items:center;min-height:35px;font-size:10px;color:var(--muted)}.footer-right{display:flex;gap:16px;align-items:center}.overlay{position:fixed;inset:0;background:#1b1917a8;display:none;justify-content:center;align-items:center;padding:16px}.overlay.show{display:flex}.dialog{width:min(460px,100%);background:var(--bg);border:1px solid var(--ink);padding:25px}.dialog h2{font-size:18px;font-weight:400;margin:0 0 22px}.field{display:block;font-size:11px;color:var(--muted);margin:15px 0}.field input,.field textarea,.field select{display:block;width:100%;margin-top:9px;background:transparent;border:1px solid var(--line);padding:12px;color:var(--ink);font-size:13px}.field textarea{min-height:100px;resize:vertical}.actions{display:flex;justify-content:space-between;margin-top:20px}.actions button{padding:8px}.right{display:flex;gap:12px}.presentation .editonly{display:none!important}
+@media(max-width:850px){.shell{height:auto;min-height:100dvh;overflow:visible;padding:20px}.board{grid-template-columns:repeat(2,minmax(0,1fr));flex:none}.lane{min-height:330px}.lane:nth-child(2){border-right:0}.lane:nth-child(-n+2){border-bottom:1px solid var(--ink)}.entries{overflow:visible}.entry-title{font-size:14px}.entry-detail{font-size:12px}}
+@media(max-width:550px){.top{align-items:flex-start}.control{gap:6px;font-size:10px}.help{display:none}.board{grid-template-columns:1fr}.lane{min-height:0;border-right:0!important;border-bottom:1px solid var(--ink)}.lane:last-child{border-bottom:0}.lanehead,.lane:first-child .lanehead{padding:17px 0 12px}.entry,.lane:first-child .entry{padding:15px 0}.add,.lane:first-child .add{padding-left:0}.footer{padding:8px 0}}
+</style></head><body>
+<div class="shell"><header class="top"><span class="identity">FREEMAN GENERAL CONTRACTING<i></i></span><div class="control"><span class="muted help">14 OCT 2026</span><button id="view">PRESENT ↗</button><button id="reset" class="editonly">RESET</button></div></header>
+<div class="reminder"><span class="arrow">↗</span><input id="reminder" aria-label="Reminder" value="Camera arriving today / archive + tripod bundle"></div>
+<main class="board" id="board" aria-label="Current Freeman work priorities"></main>
+<footer class="footer"><span id="summary"></span><div class="footer-right"><span class="help">CLICK TO EDIT · DRAG TO MOVE</span><button class="editonly" id="export">EXPORT ↓</button></div></footer></div>
+<div class="overlay" id="overlay"><form class="dialog" id="form"><h2 id="dialogTitle">WORK ITEM</h2><label class="field">TITLE<input id="title" maxlength="80" required></label><label class="field">DETAIL<textarea id="detail" maxlength="250"></textarea></label><label class="field">STATUS<input id="status" maxlength="25"></label><label class="field">COLUMN<select id="lane"><option value="now">NOW</option><option value="next">NEXT</option><option value="consider">CONSIDER</option><option value="later">LATER</option></select></label><div class="actions"><button type="button" id="remove">DELETE</button><div class="right"><button type="button" id="cancel">CANCEL</button><button type="submit">SAVE ↗</button></div></div></form></div>
+<script>
+const K='freeman-working-index-v3',R='freeman-working-index-reminder',IDs=['now','next','consider','later'],NAMES=['NOW','NEXT','CONSIDER','LATER'];
+const initial=[
+['f1','now','FIELD / 001','Photograph the first jobsite. Make a usable field record.','TODAY'],
+['site','now','FREEMAN SITE','Company / Projects / Fieldwork / Contact. Real evidence, not placeholders.','ACTIVE'],
+['archive','now','PROJECT ARCHIVE','One complete project record with photos and decisions.','THIS WEEK'],
+['os','next','FREEMANOS','Make the work ledger useful to Gabe and the team.',''],
+['proposal','next','PRIVATE PROPOSALS','A simple, project-specific proposal experience.',''],
+['maintenance','next','MAINTENANCE','Review V1 workflow and open operating decisions.',''],
+['intelligence','consider','FIELD INTELLIGENCE','Photos + voice notes → reviewed project record.',''],
+['private','consider','CLIENT PROJECT VIEW','Progress, decisions, and updates for owners.',''],
+['passport','consider','BUILDING PASSPORT','A useful record of the building after handover.',''],
+['tools','later','MORE TOOLS','Wait until the underlying field workflow proves valuable.',''],
+['polish','later','MORE WEBSITE POLISH','Capture and publish meaningful project work first.','']
+].map(([id,lane,title,detail,status])=>({id,lane,title,detail,status}));
+const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let data=initial.map(x=>({...x})),editing=null,present=false;
+try{let stored=JSON.parse(localStorage.getItem(K));if(Array.isArray(stored))data=stored}catch(e){}
+function save(){try{localStorage.setItem(K,JSON.stringify(data))}catch(e){}}
+function render(){
+$('board').innerHTML=IDs.map((id,i)=>{const arr=data.filter(x=>x.lane===id);return '<section class="lane"><header class="lanehead">'+NAMES[i]+' <span class="count">'+String(arr.length).padStart(2,'0')+'</span></header><div class="entries" data-lane="'+id+'">'+arr.map(x=>'<article class="entry" draggable="'+!present+'" tabindex="0" data-id="'+esc(x.id)+'"><div class="entry-title">'+esc(x.title)+'</div><div class="entry-detail">'+esc(x.detail)+'</div>'+(x.status?'<div class="entry-status '+(x.status==='TODAY'?'hot':'')+'">'+esc(x.status)+'</div>':'')+'</article>').join('')+'</div><button class="add editonly" data-add="'+id+'">+ ADD</button></section>'}).join('');
+$('summary').textContent=data.length+' ITEMS / '+data.filter(x=>x.lane==='now').length+' NOW';
+document.querySelectorAll('.entry').forEach(el=>{el.onclick=()=>{if(!present)open(el.dataset.id)};el.onkeydown=e=>{if(e.key==='Enter'&&!present)open(el.dataset.id)};el.ondragstart=e=>{if(present){e.preventDefault();return}e.dataTransfer.setData('text/plain',el.dataset.id);el.classList.add('dragging')};el.ondragend=()=>el.classList.remove('dragging')});
+document.querySelectorAll('.entries').forEach(el=>{el.ondragover=e=>{if(!present)e.preventDefault()};el.ondrop=e=>{e.preventDefault();let x=data.find(x=>x.id===e.dataTransfer.getData('text/plain'));if(x){x.lane=el.dataset.lane;save();render()}}});
+document.querySelectorAll('[data-add]').forEach(el=>el.onclick=()=>open(null,el.dataset.add))}
+function open(id,lane){editing=id;let x=data.find(x=>x.id===id);$('dialogTitle').textContent=x?'EDIT ITEM':'NEW ITEM';$('title').value=x?.title||'';$('detail').value=x?.detail||'';$('status').value=x?.status||'';$('lane').value=x?.lane||lane||'now';$('remove').style.visibility=x?'visible':'hidden';$('overlay').classList.add('show');$('title').focus()}
+function close(){$('overlay').classList.remove('show')}
+$('form').onsubmit=e=>{e.preventDefault();let o={title:$('title').value.trim(),detail:$('detail').value.trim(),status:$('status').value.trim().toUpperCase(),lane:$('lane').value};if(!o.title)return;if(editing)Object.assign(data.find(x=>x.id===editing),o);else data.push({id:'i'+Date.now(),...o});save();close();render()};
+$('remove').onclick=()=>{if(editing&&confirm('Delete this item?')){data=data.filter(x=>x.id!==editing);save();close();render()}};
+$('cancel').onclick=close;$('overlay').onclick=e=>{if(e.target===$('overlay'))close()};document.onkeydown=e=>{if(e.key==='Escape')close()};
+$('view').onclick=()=>{present=!present;document.body.classList.toggle('presentation',present);$('view').textContent=present?'EDIT ↗':'PRESENT ↗';$('reminder').readOnly=present;render()};
+$('reset').onclick=()=>{if(confirm('Reset the working index on this device?')){data=initial.map(x=>({...x}));save();render()}};
+try{$('reminder').value=localStorage.getItem(R)||$('reminder').value}catch(e){}
+$('reminder').oninput=e=>{try{localStorage.setItem(R,e.target.value)}catch(e){}};
+$('export').onclick=()=>{let s=IDs.map((id,i)=>NAMES[i]+'\n'+data.filter(x=>x.lane===id).map(x=>'- '+x.title+(x.status?' ['+x.status+']':'')+'\n  '+x.detail).join('\n')).join('\n\n');let b=new Blob([$('reminder').value+'\n\n'+s],{type:'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='freeman-working-index.txt';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+render();
+</script></body></html>
