@@ -16,6 +16,13 @@ ROUTES = ["/", "/company", "/projects", "/fieldwork", "/contact"] + \
 INTERNAL = ["/README.md", "/content.json", "/generate.py", "/image-dimensions.json", "/validation.json", "/mobile-validation.json",
             "/navigation-validation.json", "/tools/navigation-qa.py", "/_preserved-portal/sample-brief.txt", "/_preserved-portal/portal.html",
             "/_preserved-portal/portal"]
+# Old Webflow URLs that must keep working after the domain cutover (v5/_redirects).
+LEGACY = {"/about": "/company", "/sawdust": "/fieldwork", "/projects/barnsley-gardens": "/project-barnsley-gardens",
+          "/projects/beetlecat-atlanta": "/project-beetlecat", "/projects/bocado-pizza": "/project-bocado-pizza",
+          "/projects/cleveland-surgery-center": "/project-cleveland-surgery-center", "/projects/dalton-surgery-center": "/project-dalton-surgery-center",
+          "/projects/la-cresta-on-main": "/project-la-cresta-on-main", "/projects/o-ku-atlanta": "/project-o-ku-atlanta",
+          "/projects/savi-provisions-emory-village": "/project-savi-provisions", "/projects/the-optimist": "/project-the-optimist",
+          "/projects/unknown-old-slug": "/projects"}
 BAD_TEXT = re.compile(r"\bundefined\b|\bNaN\b|\[object ")
 results = []
 
@@ -46,6 +53,12 @@ with sync_playwright() as p:
             for internal in INTERNAL:
                 st = pg.request.get(BASE + internal, max_redirects=0).status
                 check(f"internal file not served: {internal}", st == 404, st)
+        if w == 1440:
+            for old, new in LEGACY.items():
+                r = pg.request.get(BASE + old, max_redirects=0)
+                loc = r.headers.get("location", "")
+                target = pg.request.get(BASE + new)
+                check(f"legacy {old} → 301 {new}", r.status == 301 and loc.split("?")[0].rstrip("/").endswith(new) and target.status == 200, (r.status, loc, target.status))
         check(f"{tag} entrance links to ACCESS", pg.goto(BASE + "/") and pg.get_attribute(".client-access-entry", "href") == "client-access.html")
 
         # Entrance → Projects → project → CLOSE → Projects (selection restored) → Back/Forward.

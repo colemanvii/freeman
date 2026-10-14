@@ -1,2 +1,17 @@
 /p/alder /proposal-alder 200
 /p/alder/* /proposal-alder 200
+
+# Legacy Webflow URLs (www.freemangc.com, crawled 14 Oct 2026) → current routes, so existing
+# links and search results keep working after the domain moves to Cloudflare Pages.
+/about /company 301
+/sawdust /fieldwork 301
+/projects/barnsley-gardens /project-barnsley-gardens 301
+/projects/beetlecat-atlanta /project-beetlecat 301
+/projects/bocado-pizza /project-bocado-pizza 301
+/projects/cleveland-surgery-center /project-cleveland-surgery-center 301
+/projects/dalton-surgery-center /project-dalton-surgery-center 301
+/projects/la-cresta-on-main /project-la-cresta-on-main 301
+/projects/o-ku-atlanta /project-o-ku-atlanta 301
+/projects/savi-provisions-emory-village /project-savi-provisions 301
+/projects/the-optimist /project-the-optimist 301
+/projects/* /projects 301
