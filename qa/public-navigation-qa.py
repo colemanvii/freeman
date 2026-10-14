@@ -5,7 +5,12 @@ current CLOSE semantics. Read-only: never submits the contact form.
 Usage: python3 qa/public-navigation-qa.py <base_url> [result.json]
 """
 import json, pathlib, re, sys
+import os
 from playwright.sync_api import sync_playwright
+
+# Protected previews (S5): pass a Cloudflare Access service token via CF_ACCESS_CLIENT_ID / CF_ACCESS_CLIENT_SECRET.
+ACCESS_HEADERS = {"CF-Access-Client-Id": os.environ["CF_ACCESS_CLIENT_ID"], "CF-Access-Client-Secret": os.environ["CF_ACCESS_CLIENT_SECRET"]} \
+    if os.environ.get("CF_ACCESS_CLIENT_ID") else None
 
 BASE = (sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8788").rstrip("/")
 OUT = sys.argv[2] if len(sys.argv) > 2 else None
@@ -29,7 +34,7 @@ with sync_playwright() as p:
     for (w, h) in [(1440, 900), (390, 844)]:
         tag = f"{w}x{h}"
         touch = w < 500
-        ctx = br.new_context(viewport={"width": w, "height": h}, is_mobile=touch, has_touch=touch)
+        ctx = br.new_context(extra_http_headers=ACCESS_HEADERS, viewport={"width": w, "height": h}, is_mobile=touch, has_touch=touch)
         ctx.add_init_script("try{sessionStorage.setItem('fgc-intro-seen','1')}catch(e){}")
         pg = ctx.new_page()
         errors = []

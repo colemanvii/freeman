@@ -7,7 +7,12 @@ Run against a server that applies Cloudflare Pages routing (redirects, pretty UR
 Exits non-zero when any check fails.
 """
 import json, re, sys
+import os
 from playwright.sync_api import sync_playwright
+
+# Protected previews (S5): pass a Cloudflare Access service token via CF_ACCESS_CLIENT_ID / CF_ACCESS_CLIENT_SECRET.
+ACCESS_HEADERS = {"CF-Access-Client-Id": os.environ["CF_ACCESS_CLIENT_ID"], "CF-Access-Client-Secret": os.environ["CF_ACCESS_CLIENT_SECRET"]} \
+    if os.environ.get("CF_ACCESS_CLIENT_ID") else None
 
 BASE = (sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8788").rstrip("/")
 OUT = sys.argv[2] if len(sys.argv) > 2 else None
@@ -51,7 +56,7 @@ with sync_playwright() as p:
 
     def page(w=1440, h=900):
         touch = min(w, h) <= 500
-        ctx = browser.new_context(viewport={"width": w, "height": h}, is_mobile=touch, has_touch=touch)
+        ctx = browser.new_context(extra_http_headers=ACCESS_HEADERS, viewport={"width": w, "height": h}, is_mobile=touch, has_touch=touch)
         pg = ctx.new_page()
         pg.errors = []
         pg.on("pageerror", lambda e: pg.errors.append(str(e)))
