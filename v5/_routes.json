@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "description": "Only the contact relay and confidential paths invoke Functions; everything else is served as static files.",
+  "include": ["/api/*", "/p", "/p/*", "/proposal-alder", "/proposal-alder.html", "/proposal-assets/data/*"],
+  "exclude": []
+}
