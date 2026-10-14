@@ -1,73 +1,103 @@
 # freemangc.com → Cloudflare Pages: cutover checklist
 
-Status: plan only. **No DNS or domain changes have been made.**
-Goal: serve the site from Cloudflare Pages (`freeman` project) on `freemangc.com`, keep Squarespace
-as registrar, keep Microsoft 365 email working throughout, and keep a fast rollback.
+Status: **ready for go-ahead. No DNS, nameserver or domain changes have been made.**
+Goal: serve the site from Cloudflare Pages (project `freeman`) on freemangc.com; Squarespace
+stays registrar; Microsoft 365 email uninterrupted; rollback in minutes.
 
-## Current state (public DNS lookup, 14 Oct 2026)
+## Verified 14 Oct 2026 (read-only lookups)
 
-A lookup cannot list every record. **Export the full zone from Squarespace before step 1.**
+**Delegation.** The .com registry lists 8 nameservers: `ns01–04.squarespacedns.com` and
+`dns1–4.p08.nsone.net` (Squarespace's NS1 back end). Both sets return identical answers.
 
-| Record | Value | Purpose | Keep? |
-|---|---|---|---|
-| NS | `ns01–04.squarespacedns.com` (NS1-backed `dns1–4.p08.nsone.net`) | Squarespace DNS | replaced by Cloudflare NS in phase A |
-| DS (DNSSEC) | none found | — | nothing to disable first; re-check in Squarespace |
-| `@` A | `75.2.70.75`, `99.83.190.102` | Webflow. **The apex returns 403 today**; only `www` serves the site | replaced in phase B |
-| `www` CNAME | `cdn.webflow.com` | Webflow | replaced in phase B |
-| `@` MX | `0 freemangc-com.mail.protection.outlook.com` | Microsoft 365 mail | **preserve exactly** |
-| `autodiscover` CNAME | `autodiscover.outlook.com` | Outlook setup | **preserve**, DNS only |
-| `resend._domainkey` TXT | `p=MIGfMA0…` (DKIM key) | Resend: contact form sends as `contact@freemangc.com` | **preserve**, DNS only |
-| `send` | resolves via `send.forge.rmta.net` (SPF + MX `feedback.forge.rmta.net`) | Bounce/SPF domain for sending service | **preserve as exported** (confirm record type in the export) |
-| `@` TXT | `"198.202.211.1"` | Unknown. Looks like an IP pasted into a TXT record | preserve; ask who added it |
+**DNSSEC.** No DS record at the .com parent and no DNSKEY published, so DNSSEC is **off**.
+No action is needed before changing nameservers. Re-check the Squarespace panel on the night: if
+DNSSEC shows *on*, turn it off and wait 24 h before step A6.
 
-Not found (pre-existing gaps; **do not change during the cutover**, fix separately afterwards):
-no SPF at the apex (`v=spf1 include:spf.protection.outlook.com …`), no DMARC (`_dmarc`), no
-Microsoft 365 DKIM (`selector1/selector2._domainkey`), no CAA. These affect email deliverability,
-not the cutover.
+**All records found (TTL 14400 s = 4 h):**
 
-## Decisions before starting
-- [ ] **Canonical host.** Recommended: `freemangc.com`, with `www` → 301 to the apex (the apex is broken today, so no links depend on it working). Alternative: keep `www` canonical.
-- [ ] **Old Webflow URLs.** Export Webflow's 301 list and `https://www.freemangc.com/sitemap.xml`; map any old page URLs that should survive into `v5/_redirects` (PR + QA as usual).
-- [ ] **Webflow features in use.** Forms, CMS and analytics on Webflow stop at cutover. The new contact form already relays through `/api/contact` (Resend).
-- [ ] **Window.** Business hours, with someone who can test Outlook on desktop and phone.
+| Name | Type | Value | Role | In Cloudflare |
+|---|---|---|---|---|
+| `freemangc.com` | MX | `0 freemangc-com.mail.protection.outlook.com` | **Microsoft 365 inbound mail** | copy exactly · DNS only |
+| `autodiscover` | CNAME | `autodiscover.outlook.com` | **Outlook account setup** | copy exactly · DNS only |
+| `resend._domainkey` | TXT | `p=MIGfMA0GCSq…IDAQAB` (full key in export) | Contact-form DKIM (Resend, `contact@freemangc.com`) | copy exactly |
+| `send` | CNAME | `send.forge.rmta.net` | Contact-form bounce/SPF domain | copy exactly · **DNS only** |
+| `freemangc.com` | TXT | `"198.202.211.1"` | unknown (an IP stored as text) | copy as-is; ask who added it |
+| `freemangc.com` | A | `75.2.70.75`, `99.83.190.102` | Webflow (apex currently returns **403**) | copy · DNS only (phase A) |
+| `www` | CNAME | `cdn.webflow.com` | Webflow (live site) | copy · DNS only (phase A) |
 
-## Phase A — move DNS to Cloudflare with no visible change (email risk only)
-1. [ ] Squarespace → Domains → freemangc.com → DNS: export or screenshot **every** record, including Microsoft 365 presets.
-2. [ ] Lower TTLs on `@` and `www` to 300 s (if Squarespace allows) at least 24 h ahead.
-3. [ ] Cloudflare → Add a site → `freemangc.com` → Free plan. Compare the auto-imported records **line by line** with the export; add anything missing.
-4. [ ] Set proxy status:
-   - `@` A and `www` CNAME still pointing at Webflow, **DNS only** (grey cloud) for now.
-   - MX, `autodiscover`, `resend._domainkey`, `send`, and all TXT: **DNS only**.
-5. [ ] SSL/TLS: mode **Full (strict)**, *Always Use HTTPS* on, minimum TLS 1.2, *Automatic HTTPS Rewrites* on. **Leave HSTS off** until the cutover has been stable for at least two weeks.
-6. [ ] Squarespace → Domains → freemangc.com → Nameservers → **use custom nameservers** → the two Cloudflare nameservers. Registration stays at Squarespace.
-   **Do not delete the Squarespace DNS records**; they are the rollback.
-7. [ ] Wait for Cloudflare to show the zone as **Active** (minutes to a few hours).
-8. [ ] Verify nothing changed:
-   - `dig +short MX freemangc.com` → `0 freemangc-com.mail.protection.outlook.com.`
-   - `dig +short CNAME autodiscover.freemangc.com` → `autodiscover.outlook.com.`
-   - Send and receive mail with an external address.
-   - Outlook desktop and phone still sync.
-   - Contact form sends (Resend).
-   - `www.freemangc.com` still serves Webflow.
+Not present: SPF, DMARC, Microsoft 365 DKIM (`selector1/2._domainkey`), Teams/Skype (`sip`,
+`lyncdiscover`, SRV), Intune (`enterpriseregistration/enrollment`), CAA. Email works today without
+them, so **do not add or change any during the cutover**; fix email authentication separately
+afterwards. A lookup can miss records, so **export the Squarespace zone first (A1)** and treat it
+as the source of truth.
+
+**Current site URLs** (crawl of www.freemangc.com; no sitemap published): 14 pages. The 11 that
+don't exist on Pages get 301s in PR #9 (`/about` → `/company`, `/sawdust` → `/fieldwork`,
+`/projects/<slug>` → `/project-<slug>`). **Merge PR #9 before phase B.**
+
+**Production health (deployment `6f123fd7`, commit `47d20d2`).** All routes 200; unknown path 404;
+contact relay answers (validation only, no email sent), including for the `www.freemangc.com`
+origin. Production suites: ACCESS + Alder 1216/1216; public 111/117 (the six stale `pages.dev`
+cache entries, which expire by 21 Oct). The stale entries are bound to `freeman-d6f.pages.dev`
+only and do not carry over to freemangc.com.
+
+## Canonical host and redirect
+
+**Canonical: `https://www.freemangc.com`.** It is the address that works and is indexed today (the
+apex is broken), so existing links, signatures and search results keep the same host.
+- `freemangc.com/*` → 301 → `https://www.freemangc.com/<same path and query>` (Cloudflare Redirect Rule).
+- `http://` → `https://` (Always Use HTTPS).
+- `freeman-d6f.pages.dev` stays reachable tonight; a redirect to www can follow later.
+
+## Phase A — DNS to Cloudflare, nothing visible changes (email risk only)
+Needs your go-ahead at **A6**. Steps A1–A5 change nothing live.
+
+- [ ] **A1** Squarespace → Domains → freemangc.com → DNS settings: screenshot or export every record, including any "Microsoft 365" preset group.
+- [ ] **A2** Check DNSSEC is off in Squarespace (expected; see above).
+- [ ] **A3** Cloudflare dashboard → *Add a domain* → `freemangc.com` → Free → **Quick scan**. Compare with A1 line by line. Every record above must be present and **DNS only** (grey cloud), *including* the apex A and `www` CNAME, which still point at Webflow.
+- [ ] **A4** SSL/TLS → Overview: **Full (strict)**. Edge Certificates: *Always Use HTTPS* **on**, *Minimum TLS* 1.2, *Automatic HTTPS Rewrites* on, **HSTS off**.
+- [ ] **A5** Note the two Cloudflare nameservers shown (e.g. `xxx.ns.cloudflare.com`).
+- [ ] **A6 (go-ahead)** Squarespace → Domains → freemangc.com → Nameservers → *Use custom nameservers* → enter the two Cloudflare nameservers → save. **Leave the Squarespace DNS records in place** (rollback).
+- [ ] **A7** Wait for Cloudflare to show **Active** (usually under an hour; up to 24 h). Old answers can persist for up to the 4 h TTL.
+- [ ] **A8** Verify through Cloudflare's nameservers (`dig @<cloudflare-ns>`) and public resolvers:
+  - `dig +short MX freemangc.com` → `0 freemangc-com.mail.protection.outlook.com.`
+  - `dig +short CNAME autodiscover.freemangc.com` → `autodiscover.outlook.com.`
+  - `dig +short CNAME send.freemangc.com` → `send.forge.rmta.net.`
+  - `dig +short TXT resend._domainkey.freemangc.com` → the same key
+  - Send and receive mail between a Freeman mailbox and an outside address; Outlook desktop and phone sync.
+  - `www.freemangc.com` still shows the Webflow site.
 
 ## Phase B — point the web at Cloudflare Pages
-9. [ ] Workers & Pages → `freeman` → Custom domains → add `freemangc.com`, then `www.freemangc.com`. Accept Cloudflare's proposed records: proxied CNAMEs to `freeman-d6f.pages.dev`, replacing the Webflow `@` A and `www` CNAME. Wait for both to be **Active** with certificates issued.
-10. [ ] Redirect (Rules → Redirect Rules): `www.freemangc.com/*` → `https://freemangc.com/${1}`, 301, preserve query string. Reverse it if `www` is chosen as canonical.
-11. [ ] Verify:
-    - `https://freemangc.com` and `https://www.freemangc.com` have valid certificates; `www` redirects (301); `http` → `https`.
-    - QA against the new host: `python3 qa/access-alder-qa.py https://freemangc.com`, `python3 qa/public-navigation-qa.py https://freemangc.com`, and `python3 qa/public-visual-diff.py https://freeman-d6f.pages.dev https://freemangc.com`.
-    - The contact form works from `https://freemangc.com`. Both hosts are already in the allowed origins in `functions/api/contact.js`.
-    - Repeat the email checks from step 8.
-12. [ ] Cache safety on the new zone (Caching → Cache Rules): **Bypass cache** for `/p*`, `/proposal-assets/data/*`, `/a/*`, `/admin/*`. Owning the zone also allows per-URL cache purges, which is impossible on `pages.dev`.
-13. [ ] Keep the Webflow site published on its `webflow.io` address and leave the custom domain attached in Webflow for 30 days (fast rollback). Then remove it and cancel Webflow hosting.
+Needs your go-ahead at **B1**. Requires phase A Active and PR #9 merged.
+
+- [ ] **B1 (go-ahead)** Workers & Pages → `freeman` → *Custom domains* → *Set up a custom domain* → `www.freemangc.com` → *Activate domain*. Cloudflare replaces the `www` CNAME with a proxied CNAME to `freeman-d6f.pages.dev`; status → **Active** with certificate (minutes).
+- [ ] **B2** Same for `freemangc.com` (apex). This replaces the Webflow A records with a proxied record for Pages.
+- [ ] **B3** Rules → *Redirect Rules* → *Create rule* "apex to www":
+  - If: *Hostname* equals `freemangc.com`
+  - Then: *Dynamic* · expression `concat("https://www.freemangc.com", http.request.uri.path)` · status **301** · *Preserve query string* on
+- [ ] **B4** Caching → *Cache Rules* → "never cache private": If *URI Path* equals `/p` **or** starts with `/p/`, `/proposal-alder`, `/proposal-assets/data/`, `/a/`, `/admin/` → **Bypass cache**. (Not just `/p`, which would also match `/projects`. Belt and braces with `v5/_headers` `no-store`.)
+- [ ] **B5** Verify:
+  - `curl -sI https://freemangc.com/projects` → `301` to `https://www.freemangc.com/projects`
+  - `curl -sI http://www.freemangc.com/` → `301` to `https://www.freemangc.com/`
+  - `curl -sI https://www.freemangc.com/about` → `301` to `/company` (PR #9)
+  - Certificate valid on both hosts
+  - `python3 qa/public-navigation-qa.py https://www.freemangc.com` and `python3 qa/access-alder-qa.py https://www.freemangc.com` (expect all checks to pass; no stale cache on the new host)
+  - `python3 qa/public-visual-diff.py https://freeman-d6f.pages.dev https://www.freemangc.com` → identical
+  - Contact form: send one real test message and confirm it arrives (gabe@, cc cole@)
+  - Repeat the A8 email checks
+- [ ] **B6** Leave the Webflow site published and its custom domain attached for 30 days (rollback), then remove it and cancel Webflow hosting.
 
 ## Rollback
-- **Fast (minutes, after phase B).** In Cloudflare DNS, remove the Pages custom-domain records and restore `@` A `75.2.70.75` + `99.83.190.102` and `www` CNAME `cdn.webflow.com` (DNS only). This works only while the domain is still attached in Webflow (step 13).
-- **Full (hours, after phase A).** Squarespace → Nameservers → back to Squarespace defaults. The untouched Squarespace records take over again as caches expire. Email is unaffected in either direction as long as the MX and `autodiscover` records match.
-- **Site content.** Independent of DNS: roll back via Cloudflare Pages → Deployments (see the PR #5 pre-merge report).
 
-## After the cutover (separate, each by PR or a deliberate change)
-- Email authentication: SPF, DMARC (start at `p=none`), Microsoft 365 DKIM.
-- S3 activation can target `freemangc.com` paths directly (runbook step 2 no longer depends on `pages.dev` support).
-- Consider redirecting `freeman-d6f.pages.dev` to `freemangc.com` so there is one public address.
-- HSTS, after two stable weeks.
+| Situation | Action | Time to effect |
+|---|---|---|
+| Website problem after phase B | Pages → Custom domains → remove `www` and apex; in DNS restore `www` CNAME `cdn.webflow.com` and apex A `75.2.70.75` + `99.83.190.102`, **DNS only**; disable the redirect rule | minutes (records are new and proxied, so no long TTL) |
+| Bad deployment, domain fine | Pages → Deployments → previous production → *Rollback to this deployment* | seconds |
+| Email or DNS problem after phase A | First compare Cloudflare records with the A1 export and fix the difference (fastest). If needed: Squarespace → Nameservers → *Use Squarespace nameservers* | fix: minutes; nameserver revert: up to 24 h |
+
+Email only stops if the MX record is wrong. It is the one record to check first in any incident.
+
+## After launch (separate changes)
+SPF (`v=spf1 include:spf.protection.outlook.com -all`, after confirming no other senders use the
+apex), DMARC starting at `p=none`, Microsoft 365 DKIM; S3 access gate on freemangc.com paths;
+HSTS after two stable weeks; optional redirect of `freeman-d6f.pages.dev` to www.
