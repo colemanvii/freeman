@@ -559,7 +559,7 @@
     const nav = (cl) => DESTINATIONS.map(([t, u, c]) => link(t, u, c, { "data-entry": "1" }));
     // FREEMAN GC is the brand, not a link: part of the centred group so brand and navigation centre together.
     const brand = '<span class="brand-id">FREEMAN GC</span>';
-    root.innerHTML = `<nav class="center" aria-label="Main">${brand}${nav().join('<span class="sep">/</span>')}</nav><nav class="mobile-home-nav" aria-label="Main">${brand}${nav().join("")}</nav><div class="legal">FREEMAN GENERAL CONTRACTING<br>CARTERSVILLE, GEORGIA</div><div class="mark">BUILT FOR GENERATIONS™<br>EST. IN GEORGIA</div>`;
+    root.innerHTML = `<nav class="center" aria-label="Main">${brand}${nav().join('<span class="sep">/</span>')}</nav><nav class="mobile-home-nav" aria-label="Main">${brand}${nav().join("")}</nav><a class="client-access-entry phrase" href="client-access.html" aria-label="Client access">CLIENT ACCESS ↗</a><div class="legal">FREEMAN GENERAL CONTRACTING<br>CARTERSVILLE, GEORGIA</div><div class="mark">BUILT FOR GENERATIONS™<br>EST. IN GEORGIA</div>`;
     words(root);
     paletteSelector();
   }
