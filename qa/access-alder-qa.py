@@ -1,4 +1,4 @@
-"""Freeman ACCESS + Alder proposal QA (Chromium via Playwright).
+"""Freeman ACCESS QA, plus proof that the withdrawn Alder proposal is not served (Chromium via Playwright).
 
 Run against a server that applies Cloudflare Pages routing (redirects, pretty URLs), e.g.
     npx wrangler pages dev v5 --port 8788
@@ -153,9 +153,8 @@ with sync_playwright() as p:
     check("unknown code shows status", "not recognized" in pg.inner_text("#code-status"))
     pg.fill("#code-entry", "trade"); pg.keyboard.press("Enter")
     check("TRADE code opens Trade Partners", pg.evaluate("location.hash") == "#trade")
-    pg.goto(ACCESS); pg.fill("#code-entry", "alder"); pg.keyboard.press("Enter"); pg.wait_for_url(re.compile(r"/p/alder$"))
-    pg.wait_for_selector("main h1")
-    check("ALDER code opens the proposal at /p/alder", pg.evaluate("location.pathname") == "/p/alder" and "unavailable" not in pg.title().lower(), pg.url)
+    pg.goto(ACCESS); pg.fill("#code-entry", "alder"); pg.keyboard.press("Enter"); pg.wait_for_timeout(300)
+    check("ALDER code is not recognized (proposal withdrawn)", pg.evaluate("location.pathname") == "/client-access" and "not recognized" in pg.inner_text("#code-status"), pg.url)
     check("keyboard/codes: no JS errors", not pg.errors, pg.errors)
     ctx.close()
 
@@ -206,54 +205,18 @@ with sync_playwright() as p:
         check(f"contrast {sel} ≥ 4.5:1", ratio >= 4.5, round(ratio, 2))
     ctx.close()
 
-    # ---------- Alder proposal ----------
-    for (w, h) in [(1440, 900), (390, 844)]:
-        tag = f"{w}x{h}"
-        ctx, pg = page(w, h)
-        r = pg.goto(BASE + "/p/alder"); pg.wait_for_selector("main h1, main .chapter-title, main")
-        check(f"{tag} alder /p/alder loads without redirect", r.status == 200 and pg.evaluate("location.pathname") == "/p/alder", (r.status, pg.url))
-        check(f"{tag} alder opening is not the unavailable view", "unavailable" not in pg.title().lower(), pg.title())
-        links = sorted(set(pg.eval_on_selector_all("a[href^='/p/alder/']", "as => as.map(a => a.getAttribute('href').split('#')[0])")))
-        check(f"{tag} alder opening links every chapter", all(any(l.startswith(f"/p/alder/{c}") for l in links) for c in CHAPTERS[:6]), links)
-        seen, queue = set(), [f"/p/alder/{c}" for c in CHAPTERS]
-        while queue:
-            path = queue.pop(0)
-            if path in seen: continue
-            seen.add(path)
-            r = pg.goto(BASE + path); pg.wait_for_selector("main")
-            ok = r.status == 200 and pg.evaluate("location.pathname") == path and "unavailable" not in pg.title().lower()
-            check(f"{tag} alder direct link {path}", ok, (r.status, pg.url, pg.title()))
-            body = pg.inner_text("body")
-            check(f"{tag} alder {path} no undefined/null text", not BAD_TEXT.search(body), BAD_TEXT.search(body))
-            for l in pg.eval_on_selector_all("a[href^='/p/alder/']", "as => as.map(a => a.getAttribute('href').split('#')[0])"):
-                if l not in seen and l.count("/") <= 5: queue.append(l)
-        check(f"{tag} alder crawled interior links ({len(seen)})", len(seen) >= len(CHAPTERS))
-        # In-app navigation, history and refresh.
-        pg.goto(BASE + "/p/alder"); pg.wait_for_selector("main")
-        pg.click("main a[href='/p/alder/05-budget']") if pg.locator("main a[href='/p/alder/05-budget']").count() else pg.goto(BASE + "/p/alder/05-budget")
-        pg.wait_for_function("location.pathname === '/p/alder/05-budget'")
-        check(f"{tag} alder chapter opens in place", "Budget" in pg.title(), pg.title())
-        pg.go_back(); pg.wait_for_function("location.pathname === '/p/alder'")
-        check(f"{tag} alder Back → opening", "unavailable" not in pg.title().lower(), pg.title())
-        pg.go_forward(); pg.wait_for_function("location.pathname === '/p/alder/05-budget'")
-        check(f"{tag} alder Forward → budget", "Budget" in pg.title(), pg.title())
-        pg.reload(); pg.wait_for_selector("main")
-        check(f"{tag} alder refresh keeps budget", pg.evaluate("location.pathname") == "/p/alder/05-budget" and "Budget" in pg.title(), (pg.url, pg.title()))
-        if w == 1440:
-            # Confidential responses must never be stored by shared caches; public pages keep normal caching.
-            for path in ["/p/alder", "/p/alder/05-budget", "/proposal-alder", "/proposal-assets/data/alder.js"]:
-                cc = pg.request.get(BASE + path, max_redirects=0).headers.get("cache-control", "")
-                check(f"confidential {path} is no-store", "no-store" in cc and "private" in cc, cc)
-            for path in ["/", "/client-access", "/company", "/proposal-assets/app.js", "/proposal-assets/styles.css"]:
-                cc = pg.request.get(BASE + path).headers.get("cache-control", "")
-                check(f"public {path} not marked no-store", "no-store" not in cc, cc)
-        pg.goto(BASE + "/proposal-alder"); pg.wait_for_selector("main")
-        check(f"{tag} alder /proposal-alder canonicalizes to /p/alder", pg.evaluate("location.pathname") == "/p/alder")
-        errors_before = list(pg.errors)
-        pg.goto(BASE + "/p/alder/not-a-chapter"); pg.wait_for_selector("main")
-        check(f"{tag} alder unknown chapter shows the unavailable view", "unavailable" in pg.title().lower(), pg.title())
-        check(f"{tag} alder: no JS errors", not errors_before, errors_before)
-        ctx.close()
+    # ---------- Alder proposal: withdrawn from the public build (v5-source/alder/README.md) ----------
+    ctx, pg = page()
+    for path in ["/p/alder", "/p/alder/05-budget", "/p/alder/issue", "/proposal-alder", "/proposal-alder.html",
+                 "/proposal-assets/data/alder.js", "/proposal-assets/app.js", "/proposal-assets/styles.css", "/downloads/alder-issue-01.pdf"]:
+        r = pg.request.get(BASE + path, max_redirects=0)
+        check(f"alder withdrawn: {path} is 404", r.status == 404 and "alder" not in r.text().lower(), r.status)
+    html = pg.request.get(ACCESS).text()
+    check("ACCESS page source has no Alder reference", "alder" not in html.lower())
+    for path in ["/", "/client-access", "/company"]:
+        cc = pg.request.get(BASE + path).headers.get("cache-control", "")
+        check(f"public {path} not marked no-store", "no-store" not in cc, cc)
+    ctx.close()
 
     browser.close()
 
