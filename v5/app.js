@@ -331,7 +331,6 @@
     "Savi Provisions": "https://www.saviprovisions.com/",
     "O-Ku Atlanta": "https://www.o-kusushi.com/location/o-ku-atlanta/",
     "Interventional Pain Consultants": "https://www.ipc-pain.com/",
-    "Freeman GC": "https://freeman-d6f.pages.dev/",
     "Jared Swafford": "https://www.flickr.com/photos/jaredswafford/"
   };
   const creditLink = (name, cls = "") => {
@@ -702,7 +701,7 @@
       goBack();
       return;
     }
-    const url = new URL(a.getAttribute("href"), location.href);
+    const url = new URL(a.getAttribute("href"), document.baseURI);
     if (!isAppUrl(url)) return;
     e.preventDefault();
     navigate(url.href, { focus: a.dataset.focus });

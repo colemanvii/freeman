@@ -19,12 +19,25 @@ palette = ('<script>(function(){try{var f=location.pathname.split("/").pop().rep
            'var s=history.state||{},p=(f===""||f==="index")?"chalk":(s.palette||sessionStorage.getItem("freeman-palette"));'
            'if(/^(chalk|sand|umber)$/.test(p))document.documentElement.dataset.palette=p}catch(e){}})()</script>')
 
+SITE = 'https://www.freemangc.com'  # canonical host; the apex redirects here
+
+def route(name):
+    return '/' if name == 'index.html' else '/' + name[:-len('.html')]
+
 for name, title in pages.items():
+    # 404.html is served at any unknown path, including nested ones, so it resolves assets from the root.
+    head = '<base href="/">' if name == '404.html' else f'<link rel="canonical" href="{SITE}{route(name)}">'
     (root / name).write_text(
         f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
-        f'<meta name="theme-color" content="#f4f4f0"><title>{title} — Freeman GC</title><link rel="icon" href="favicon.svg">{palette}'
+        f'<meta name="theme-color" content="#f4f4f0"><title>{title} — Freeman GC</title>{head}<link rel="icon" href="favicon.svg">{palette}'
         f'<link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="fieldwork-reader.css">'
         f'<script defer src="records.js"></script><script defer src="fieldwork-reader.js"></script><script defer src="app.js"></script></head>'
-        f'<body><div id="site"><main id="main"></main></div><noscript>This prototype needs JavaScript for its fixed-page navigation. '
+        f'<body><div id="site"><main id="main"></main></div><noscript>This site needs JavaScript. '
         f'Contact Freeman at gabe@freemangc.com or 706.263.3348.</noscript></body></html>'
     )
+
+# Public routes only: private paths (/p/, proposals, ACCESS) are never listed.
+urls = ''.join(f'<url><loc>{SITE}{route(n)}</loc></url>' for n in pages if n != '404.html')
+(root / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
+    f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>\n')
+(root / 'robots.txt').write_text(f'User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n')
