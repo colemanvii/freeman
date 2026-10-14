@@ -694,7 +694,7 @@
   // Normalise the root to the proposal's address.
   // Cloudflare Pages may expose the physical HTML filename after an asset rewrite.
   // Canonicalize that entry point before the router runs; retain chapter deep links.
-  if (['/', '/index.html', '/proposal-alder.html', '/p/alder/index.html'].includes(location.pathname)) {
+  if (['/', '/index.html', '/proposal-alder', '/proposal-alder.html', '/p/alder/index.html'].includes(location.pathname)) {
     history.replaceState(history.state || {}, '', BASE + location.search + location.hash);
   }
   render({ initial: true });
