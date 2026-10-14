@@ -310,7 +310,7 @@
     chrome({ title: "Company / Freeman General Contracting", section: "company" });
     const vp = root.querySelector(".viewport");
     // Centred in the page area; only a very small phone that cannot hold it scrolls (top never clipped).
-    vp.innerHTML = `<div class="co-frame"><div class="co"><section class="co-intro"><h2 class="co-head">Built for generations.</h2><p>Freeman General Contracting is an independent builder based in Cartersville, Georgia.</p><p>We believe how something is built matters as much as what is built. That good work requires trust, judgment, and the willingness to care about details long after they\u2019re concealed.</p><p>We work with people who believe the same.</p></section><section class="co-facts"><h3 class="co-label">Practice / Work</h3><dl class="co-list co-services">${services
+    vp.innerHTML = `<div class="co-frame"><div class="co"><section class="co-intro"><h2 class="co-head">Built for generations.</h2><p>Freeman General Contracting is an independent builder based in Cartersville, Georgia.</p><p>We believe how something is built matters as much as what is built. Good work requires trust, judgment, and attention to every detail.</p><p>We work with people who believe the same.</p></section><section class="co-facts"><h3 class="co-label">WHAT WE DO</h3><dl class="co-list co-services">${services
       .map(([k, v]) => row(k, v))
       .join("")}</dl><div class="co-pair"><div><h3 class="co-label">Founder</h3><dl class="co-list">${row("Gabe Freeman", "President")}</dl></div><div><h3 class="co-label">Based in</h3><dl class="co-list">${row("Cartersville, Georgia", "")}</dl></div></div></section></div></div>`;
     words(vp);
