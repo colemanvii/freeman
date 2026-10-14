@@ -239,6 +239,14 @@ with sync_playwright() as p:
         check(f"{tag} alder Forward → budget", "Budget" in pg.title(), pg.title())
         pg.reload(); pg.wait_for_selector("main")
         check(f"{tag} alder refresh keeps budget", pg.evaluate("location.pathname") == "/p/alder/05-budget" and "Budget" in pg.title(), (pg.url, pg.title()))
+        if w == 1440:
+            # Confidential responses must never be stored by shared caches; public pages keep normal caching.
+            for path in ["/p/alder", "/p/alder/05-budget", "/proposal-alder", "/proposal-assets/data/alder.js"]:
+                cc = pg.request.get(BASE + path, max_redirects=0).headers.get("cache-control", "")
+                check(f"confidential {path} is no-store", "no-store" in cc and "private" in cc, cc)
+            for path in ["/", "/client-access", "/company", "/proposal-assets/app.js", "/proposal-assets/styles.css"]:
+                cc = pg.request.get(BASE + path).headers.get("cache-control", "")
+                check(f"public {path} not marked no-store", "no-store" not in cc, cc)
         pg.goto(BASE + "/proposal-alder"); pg.wait_for_selector("main")
         check(f"{tag} alder /proposal-alder canonicalizes to /p/alder", pg.evaluate("location.pathname") == "/p/alder")
         errors_before = list(pg.errors)
