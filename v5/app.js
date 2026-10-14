@@ -398,9 +398,7 @@
     const vp = root.querySelector(".viewport");
     vp.innerHTML = `<div class="pg"><header class="pg-info"><h2 class="pg-name">${esc(p.name)}</h2><p class="pg-place">${esc(p.location)}</p><dl class="pg-credits">${credits
       .map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${creditLink(v)}</dd></div>`)
-      .join("")}</dl>${related
-      .map((a) => link(`Fieldwork ${pad(archive.indexOf(a) + 1, 3)} ↗`, "fieldwork-" + a.slug + ".html", "pg-related phrase"))
-      .join("")}</header><section class="pg-stage" aria-roledescription="gallery" aria-label="${esc(p.name)} photographs"><div class="pg-frame" tabindex="0" aria-label="Photographs — use the left and right arrow keys"><div class="pg-track">${photos
+      .join("")}</dl></header><section class="pg-stage" aria-roledescription="gallery" aria-label="${esc(p.name)} photographs"><div class="pg-frame" tabindex="0" aria-label="Photographs — use the left and right arrow keys"><div class="pg-track">${photos
       .map((g, i) => `<figure class="pg-slide" aria-hidden="true"><img data-src="${esc(g.src)}" width="${g.w}" height="${g.h}" alt="${esc(p.name)} — photograph ${i + 1} of ${photos.length}" draggable="false"></figure>`)
       .join("")}</div></div><div class="pg-controls"><button type="button" class="pg-arrow" data-step="-1" aria-label="Previous photograph">←</button><p class="pg-count" aria-live="polite"></p><button type="button" class="pg-arrow" data-step="1" aria-label="Next photograph">→</button></div></section></div>`;
     const frame = vp.querySelector(".pg-frame"), track = vp.querySelector(".pg-track");
@@ -496,13 +494,6 @@
         .filter(([k, v]) => ["Client", "Photography", "Interior Design"].includes(k) && v !== "Interior Designer")
         .map(([k, v]) => data(k, v)),
       data("Source", "Freeman published portfolio"),
-      ...related.map((a) =>
-        link(
-          `RELATED FIELDWORK / ${pad(archive.indexOf(a) + 1, 3)} ${a.title.toUpperCase()} ↗`,
-          "fieldwork-" + a.slug + ".html",
-          "text-link phrase",
-        ),
-      ),
     ];
     chrome({
       title: "Projects / " + p.name,
