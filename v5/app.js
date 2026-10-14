@@ -305,17 +305,38 @@
   // only from an explicit, verified `date` field. The scraped "Complete: 2024" credit is not used.
   const credit = (p, key) => ((p.credits || []).find(([k]) => k === key) || [])[1] || "";
   const designCredit = (p) => (credit(p, "Interior Design") === "Interior Designer" ? "" : credit(p, "Interior Design"));
+  // Only publish a destination when the organization's or creator's page can be identified.
+  // Keep the credited name verbatim; this map affects links, not project attribution.
+  const creditSites = {
+    "Rocket Farm Restaurants": "https://www.rocketfarmrestaurants.com/",
+    "Chuck Marie Studio": "https://www.chuckmariestudio.com/",
+    "Barnsley Resorts": "https://www.barnsleyresort.com/",
+    "Bocado Pizza": "https://bocadopizza.com/",
+    "Savi Provisions": "https://www.saviprovisions.com/",
+    "O-Ku Atlanta": "https://www.o-kusushi.com/location/o-ku-atlanta/",
+    "Interventional Pain Consultants": "https://www.ipc-pain.com/",
+    "Freeman GC": "https://freeman-d6f.pages.dev/",
+    "Jared Swafford": "https://www.flickr.com/photos/jaredswafford/"
+  };
+  const creditLink = (name, cls = "") => {
+    if (!name) return "";
+    const href = creditSites[name];
+    return href
+      ? `<a class="${cls} credit-external" href="${esc(href)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(name)} — visit website in new tab">${esc(name)}<span aria-hidden="true" class="credit-arrow"> ↗</span></a>`
+      : `<span class="${cls}">${esc(name)}</span>`;
+  };
+
   function projectsIndex(state) {
     chrome({ title: "Projects / Selected work", section: "projects" });
     const vp = root.querySelector(".viewport");
     const cell = (cls, value, label) =>
       value
-        ? `<span class="${cls}"><span class="sr-only">${label} </span>${esc(value)}</span>`
+        ? creditLink(value, cls)
         : `<span class="${cls} pi-empty"><span class="sr-only">${label} not yet verified</span><span aria-hidden="true">—</span></span>`;
     const rows = projects
       .map((p, i) => {
         const here = p.slug === state.focus;
-        return `<li class="pi-row${here ? " is-current" : ""}"><a class="pi-link" href="project-${esc(p.slug)}.html" data-slug="${esc(p.slug)}"><span class="pi-no">${pad(i + 1, 3)}</span><span class="pi-name">${esc(p.name)}</span>${cell("pi-client", credit(p, "Client"), "Client")}${cell("pi-arch", designCredit(p), "Design")}${cell("pi-date", p.date || "", "Date")}</a></li>`;
+        return `<li class="pi-row${here ? " is-current" : ""}"><div class="pi-link"><span class="pi-no">${pad(i + 1, 3)}</span><a class="pi-name pi-project-link" href="project-${esc(p.slug)}.html" data-slug="${esc(p.slug)}">${esc(p.name)}</a>${cell("pi-client", credit(p, "Client"), "Client")}${cell("pi-arch", designCredit(p), "Design")}${p.date ? `<span class="pi-date">${esc(p.date)}</span>` : `<span class="pi-date pi-empty" aria-hidden="true">—</span>`}</div></li>`;
       })
       .join("");
     const inProgress = [
@@ -360,7 +381,7 @@
     const photos = p.gallery;
     const vp = root.querySelector(".viewport");
     vp.innerHTML = `<div class="pg"><header class="pg-info"><h2 class="pg-name">${esc(p.name)}</h2><p class="pg-place">${esc(p.location)}</p><dl class="pg-credits">${credits
-      .map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`)
+      .map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${creditLink(v)}</dd></div>`)
       .join("")}</dl>${related
       .map((a) => link(`Fieldwork ${pad(archive.indexOf(a) + 1, 3)} ↗`, "fieldwork-" + a.slug + ".html", "pg-related phrase"))
       .join("")}</header><section class="pg-stage" aria-roledescription="gallery" aria-label="${esc(p.name)} photographs"><div class="pg-frame" tabindex="0" aria-label="Photographs — use the left and right arrow keys"><div class="pg-track">${photos
