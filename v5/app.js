@@ -311,9 +311,19 @@
     chrome({ title: "Company / Freeman General Contracting", section: "company" });
     const vp = root.querySelector(".viewport");
     // Centred in the page area; only a very small phone that cannot hold it scrolls (top never clipped).
-    vp.innerHTML = `<div class="co-frame"><div class="co"><section class="co-intro"><h2 class="co-head">Built for generations.</h2><p>Freeman General Contracting is an independent builder based in Cartersville, Georgia.</p><p>We believe how something is built matters as much as what is built. Good work requires trust, judgment, and attention to every detail.</p><p>We work with people who believe the same.</p></section><section class="co-facts"><h3 class="co-label">WHAT WE DO</h3><dl class="co-list co-services">${services
-      .map(([k, v]) => row(k, v))
-      .join("")}</dl><div class="co-pair"><div><h3 class="co-label">Founder</h3><dl class="co-list">${row("Gabe Freeman", "President")}</dl></div><div><h3 class="co-label">Based in</h3><dl class="co-list">${row("Cartersville, Georgia", "")}</dl></div></div><div class="co-team"><h3 class="co-label">People</h3><div class="co-people">${[["Gabe Freeman","Founder / President"],["Cameron Dombi","Superintendent"],["Mac Thompson","Superintendent"],["Jimmy Jennings","Superintendent"]].map(([name,role])=>`<div class="co-person"><div class="co-portrait" role="img" aria-label="Portrait forthcoming"></div><div class="co-person-name">${esc(name)}</div><div class="co-person-role">${esc(role)}</div></div>`).join("")}</div></div></section></div></div>`;
+    const people = [["Gabe Freeman", "Founder / President"], ["Cameron Dombi", "Superintendent"], ["Mac Thompson", "Superintendent"], ["Jimmy Jennings", "Superintendent"]];
+    vp.innerHTML = `<div class="co-frame"><div class="co"><section class="co-intro"><h2 class="co-head">Built for generations.</h2><p>Freeman General Contracting is an independent builder based in Cartersville, Georgia.</p><p>We believe how something is built matters as much as what is built. Good work requires trust, judgment, and attention to every detail.</p><p>We work with people who believe the same.</p></section><section class="co-facts"><h3 class="co-label">WHAT WE DO</h3><dl class="co-list co-services">${services.map(([k,v]) => row(k,v)).join("")}</dl><div class="co-team"><div class="co-team-heading"><h3 class="co-label">PEOPLE</h3><span class="co-location">CARTERSVILLE, GEORGIA</span></div><div class="co-people" id="co-people">${people.map(([name,role], i) => `<button class="co-person" type="button" data-person="${i}" aria-label="View ${esc(name)} profile"><span class="co-portrait" aria-hidden="true"></span><span class="co-person-name">${esc(name)}</span><span class="co-person-role">${esc(role)}</span></button>`).join("")}</div><div class="co-detail" id="co-detail" hidden aria-live="polite"></div></div></section></div></div>`;
+    const index = vp.querySelector("#co-people");
+    const detail = vp.querySelector("#co-detail");
+    function showPerson(i) {
+      const [name, role] = people[i];
+      if (!name) return;
+      index.hidden = true;
+      detail.hidden = false;
+      detail.innerHTML = `<div class="co-detail-photo" aria-hidden="true"></div><div class="co-detail-copy"><div class="co-detail-top"><span class="co-detail-index">0${i+1} / 04</span><button class="co-detail-back" type="button" aria-label="Back to people">← ALL PEOPLE</button></div><h4>${esc(name)}</h4><div class="co-detail-role">${esc(role)}</div><div class="co-detail-note">Portrait and profile forthcoming.</div></div>`;
+      detail.querySelector(".co-detail-back").addEventListener("click", () => { detail.hidden = true; index.hidden = false; index.querySelector('[data-person="${i}"]').focus(); });
+    }
+    index.querySelectorAll("[data-person]").forEach(button => button.addEventListener("click", () => showPerson(Number(button.dataset.person))));
     words(vp);
     pageCount = 1;
     renderPage = () => {};
