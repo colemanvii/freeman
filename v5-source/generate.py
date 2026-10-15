@@ -71,3 +71,6 @@ urls = ''.join(f'<url><loc>{SITE}{route(n)}</loc></url>' for n in pages if n != 
 (root / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
     f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>\n')
 (root / 'robots.txt').write_text(f'User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n')
+
+# Public Record stories retain their own fixed-viewport reader and construction study.
+shutil.copy(src / "stories" / "record.html", root / "record.html")
