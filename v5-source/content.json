@@ -17,10 +17,6 @@
           "Jared Swafford"
         ],
         [
-          "Interior Design",
-          "Chuck Marie Studio"
-        ],
-        [
           "Total sq. ft.",
           "2,000+"
         ],
@@ -112,7 +108,7 @@
       ]
     },
     {
-      "name": "Barnsley Gardens",
+      "name": "Barnsley Lazy River Pool",
       "location": "Adairsville, Georgia",
       "type": "Hospitality",
       "summary": "This Barnsley project defined by subtlety, sequencing, and respect for place. Freeman approached construction with a focus on precision and care, allowing materials, landscape, and structure to work together seamlessly. The result is an environment that feels settled and enduring, shaped as much by restraint as by craftsmanship.",
@@ -126,10 +122,6 @@
         [
           "Photography",
           "Jared Swafford"
-        ],
-        [
-          "Interior Design",
-          "Chuck Marie Studio"
         ],
         [
           "Total sq. ft.",
@@ -163,6 +155,82 @@
           "h": 1312
         }
       ]
+    },
+    {
+      "name": "Muchacho Decatur",
+      "location": "Decatur, Georgia",
+      "type": "Hospitality",
+      "summary": "",
+      "details": "",
+      "credits": [
+        [
+          "Client",
+          "Electric Hospitality"
+        ],
+        [
+          "Interior Design",
+          "Blur Workshop"
+        ]
+      ],
+      "slug": "muchacho-decatur",
+      "id": "10"
+    },
+    {
+      "name": "Brewhouse Cafe",
+      "location": "Atlanta, Georgia",
+      "type": "Hospitality",
+      "summary": "",
+      "details": "",
+      "credits": [
+        [
+          "Client",
+          "South Downtown"
+        ],
+        [
+          "Interior Design",
+          "Gentle Works"
+        ]
+      ],
+      "slug": "brewhouse-cafe",
+      "id": "11"
+    },
+    {
+      "name": "Mule Train Atlanta",
+      "location": "Atlanta, Georgia",
+      "type": "Hospitality",
+      "summary": "",
+      "details": "",
+      "credits": [
+        [
+          "Client",
+          "South Downtown"
+        ],
+        [
+          "Interior Design",
+          "NO Architecture"
+        ]
+      ],
+      "slug": "mule-train-atlanta",
+      "id": "12"
+    },
+    {
+      "name": "Broad Street BBQ",
+      "location": "Atlanta, Georgia",
+      "type": "Hospitality",
+      "summary": "",
+      "details": "",
+      "credits": [
+        [
+          "Client",
+          "South Downtown"
+        ],
+        [
+          "Architect",
+          "Wright Gardner Architects"
+        ]
+      ],
+      "slug": "broad-street-bbq",
+      "id": "13"
     },
     {
       "name": "Bocado Pizza",
@@ -246,7 +314,7 @@
       "credits": [
         [
           "Client",
-          "O-Ku Atlanta"
+          "Indigo Road Hospitality"
         ],
         [
           "Photography",
@@ -254,7 +322,7 @@
         ],
         [
           "Interior Design",
-          "Chuck Marie Studio"
+          "David Thompson Studio"
         ],
         [
           "Total sq. ft.",
@@ -303,42 +371,6 @@
       "slug": "la-cresta-on-main",
       "id": "07",
       "image": "assets/project-6.jpg"
-    },
-    {
-      "name": "Cleveland Surgery Center",
-      "location": "Cleveland, Tennessee",
-      "type": "Healthcare",
-      "summary": "Designed to support both clinical precision and patient comfort, Cleveland Surgery Center was constructed with care at every level. Freeman approached the project with a focus on coordination, durability, and long-term performance\u2014creating a space that functions seamlessly behind the scenes.",
-      "details": "",
-      "quote": "",
-      "credits": [
-        [
-          "Client",
-          "Interventional Pain Consultants"
-        ],
-        [
-          "Budget",
-          "$1.1M"
-        ],
-        [
-          "Interior Design",
-          "Chuck Marie Studio"
-        ],
-        [
-          "Location",
-          "Cleveland, TN"
-        ],
-        [
-          "Complete",
-          "2024"
-        ]
-      ],
-      "images": [
-        "https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/692db51e0255304cdedbe097_Cleveland%20Surgery%20Center_FGC.jpeg"
-      ],
-      "slug": "cleveland-surgery-center",
-      "id": "08",
-      "image": "assets/project-7.jpg"
     },
     {
       "name": "Dalton Surgery Center",
