@@ -44,6 +44,9 @@ jobs:
       - name: FreemanOS password gate
         if: always()
         run: python qa/team-os-gate-qa.py http://localhost:8788 qa/results/team-os-gate.json qa-demo-password
+      - name: FreemanOS Study 07 workspaces
+        if: always()
+        run: python qa/freeman-os-study07-qa.py http://127.0.0.1:8788 qa-demo-password
       - uses: actions/upload-artifact@v4
         if: always()
         with:

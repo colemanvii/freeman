@@ -172,11 +172,68 @@ html,body{height:100%;overflow:hidden}
   .below .m,.week li .m,.feed li .m,.mine li .m{font-size:10px}
   .foot{font-size:9px;gap:12px}
 }
+
+/* Study 07 / Connected Operations. Static shell, editorial rows, no dashboard cards. */
+.wrap{grid-template-rows:auto auto auto minmax(0,1fr) auto}
+.os-nav{display:flex;gap:clamp(15px,2.7vw,42px);border-bottom:1px solid var(--hair);margin-top:14px;padding-bottom:10px;white-space:nowrap;overflow-x:auto;scrollbar-width:none}
+.os-nav::-webkit-scrollbar{display:none}
+.os-nav button{font:11px/1.5 var(--mono);color:var(--muted);letter-spacing:.01em;min-height:25px;position:relative}
+.os-nav button span{font-size:9px;margin-left:6px;opacity:.75}
+.os-nav button[aria-current=page]{color:var(--ink)}
+.os-nav button[aria-current=page]:after{content:"";position:absolute;height:2px;background:var(--orange);bottom:-11px;left:0;right:0}
+.os-nav button:hover{color:var(--orange-ink)}
+body[data-os-workspace]:not([data-os-workspace=overview]) .wrap{grid-template-rows:auto auto minmax(0,1fr) auto}
+body[data-os-workspace]:not([data-os-workspace=overview]) .wrap>.summary,
+body[data-os-workspace]:not([data-os-workspace=overview]) .wrap>main{display:none}
+.os-workspace[hidden],.os-detail-backdrop[hidden]{display:none!important}
+.os-workspace{min-height:0;padding-top:clamp(20px,3.1vh,36px);display:grid;grid-template-rows:auto minmax(0,1fr);gap:clamp(18px,3.3vh,38px)}
+.os-intro{display:flex;justify-content:space-between;align-items:flex-end;gap:22px;border-bottom:1px solid var(--ink);padding-bottom:clamp(17px,2.5vh,28px)}
+.os-eyebrow{color:var(--muted);font-size:11px;display:block;margin-bottom:9px}
+.os-title{font-weight:400;letter-spacing:-.045em;line-height:1.12;font-size:clamp(26px,3vw,43px)}
+.os-intro p{color:var(--muted);font-size:12px;max-width:42ch;margin-top:12px}
+.os-sources{font-size:10px;line-height:1.8;text-align:right;color:var(--muted);flex:none}
+.os-sources b{color:var(--ink);font-weight:400}
+.os-columns{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1.05fr) minmax(0,.78fr);gap:clamp(22px,3vw,44px);min-height:0;overflow:hidden}
+.os-col{min-width:0;min-height:0;overflow:auto;scrollbar-width:thin}
+.os-col h2{font-size:12px;font-weight:400;border-bottom:1px solid var(--ink);padding:0 0 10px;margin:0 0 3px;display:flex;justify-content:space-between;gap:10px}
+.os-col h2 small{font-size:10px;font-weight:400;color:var(--muted)}
+.os-line{width:100%;display:flex;gap:12px;align-items:flex-start;text-align:left;padding:clamp(9px,1.5vh,14px) 0;border-bottom:1px solid var(--hair);font-size:13px;line-height:1.4}
+.os-line:hover .os-line-title{color:var(--orange-ink)}
+.os-line-body{flex:1;min-width:0}
+.os-line-title{display:block}
+.os-line-meta{color:var(--muted);font-size:11px;display:block;margin-top:4px}
+.os-line-right{font-size:11px;white-space:nowrap;color:var(--muted);align-self:start}
+.os-marker{color:var(--orange-ink);font-size:10px;min-width:9px}
+.os-col-note{font-size:12px;color:var(--muted);margin-top:15px;line-height:1.6}
+.os-source-line{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:13px 0;border-bottom:1px solid var(--hair);font-size:13px}
+.os-source-line span{font-size:11px;color:var(--muted)}
+.os-empty{font-size:12px;color:var(--muted);padding-top:14px}
+.os-detail-backdrop{position:fixed;inset:0;z-index:200;background:color-mix(in srgb,var(--ink) 30%,transparent);display:grid;place-items:center;padding:clamp(12px,5vw,52px)}
+.os-detail{background:var(--paper);color:var(--ink);width:min(760px,100%);max-height:min(85dvh,820px);overflow:auto;border:1px solid var(--ink);padding:clamp(24px,4vw,42px);position:relative}
+.os-detail-close{display:block;margin:0 0 36px auto;font-size:11px;min-height:44px;color:var(--orange-ink)}
+.os-detail h2{font-size:clamp(24px,3vw,40px);letter-spacing:-.04em;font-weight:400;margin:0 0 12px}
+.os-detail p{font-size:13px;line-height:1.75;max-width:60ch;margin:14px 0}
+.os-detail dl{margin:25px 0 0;border-top:1px solid var(--ink)}
+.os-detail dl div{border-bottom:1px solid var(--hair);display:grid;grid-template-columns:120px 1fr;gap:14px;padding:11px 0}
+.os-detail dt{font-size:11px;color:var(--muted)}
+.os-detail dd{font-size:12px;margin:0}
+.os-demo-label{color:var(--orange-ink);font-size:10px;margin-top:20px}
+@media(max-height:730px) and (min-width:901px){.os-workspace{padding-top:15px;gap:15px}.os-intro{padding-bottom:12px}.os-intro p{margin-top:6px}.os-line{padding:8px 0}.os-col h2{padding-bottom:7px}.os-title{font-size:30px}}
+@media(max-width:900px){.os-nav{gap:18px;margin-top:8px}.os-nav button span{display:none}.os-workspace{padding-top:15px;gap:15px}.os-title{font-size:24px}.os-intro p{font-size:11px}.os-columns{grid-template-columns:1fr 1fr;gap:15px}.os-col:last-child{display:none}.os-sources{font-size:9px}.os-line{font-size:12px;padding:10px 0}}
+@media(max-width:540px){.os-nav{gap:13px}.os-nav button{font-size:10px}.os-intro{align-items:start}.os-sources{display:none}.os-columns{grid-template-columns:1fr 1fr;gap:13px}.os-line{font-size:11px}.os-line-meta{font-size:10px}.os-line-right{font-size:10px}.os-col h2{font-size:11px}.os-intro p{line-height:1.45}}
+
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="top"><span><span class="brand">FREEMAN GC</span></span><span class="r"><span class="sim" id="sim"></span><span id="today"></span><span>Demo, fictional data</span></span></header>
+
+<nav class="os-nav" aria-label="FreemanOS workspaces">
+  <button type="button" data-os-tab="overview" aria-current="page">OVERVIEW</button>
+  <button type="button" data-os-tab="projects">PROJECTS <span>PROCORE</span></button>
+  <button type="button" data-os-tab="finance">FINANCE <span>RAMP / QUICKBOOKS</span></button>
+  <button type="button" data-os-tab="relationships">RELATIONSHIPS</button>
+</nav>
   <p class="summary" id="summary"></p>
   <main>
     <ol class="jobs" id="jobs"></ol>
@@ -186,6 +243,8 @@ html,body{height:100%;overflow:hidden}
       <section><h2>Yours to decide</h2><ol class="mine" id="mine"></ol></section>
     </div>
   </main>
+  <section class="os-workspace" id="os-workspace" aria-live="polite" aria-label="Selected workspace" hidden></section>
+  <div class="os-detail-backdrop" id="os-detail-backdrop" hidden><section class="os-detail" role="dialog" aria-modal="true" aria-labelledby="os-detail-title"><button class="os-detail-close" id="os-detail-close" aria-label="Close detail">× CLOSE</button><div id="os-detail-content"></div></section></div>
   <footer class="foot"><span>Built for generations</span><span>Every name, date and event is fictional. Nothing is saved or sent.</span></footer>
 </div>
 <script>(function(){// FreemanOS — DEMO DATA. Every project, client, person, company, date and event
@@ -657,6 +716,73 @@ window.FOS_createLedger=createLedger;})();
   document.addEventListener("keydown", e => { if (e.key === "Escape") { S.open = null; render(); } else if (e.key === "u" || e.key === "U") undo(); });
   try { const p = localStorage.getItem("fos-palette"); if (p) { document.documentElement.dataset.palette = p; document.documentElement.dataset.theme = p === "umber" ? "dark" : "light"; } } catch (_) {}
   render();
+})();
+</script>
+
+<script>
+/* Study 07: a fictional, self-contained interface. No APIs, telemetry or persistence. */
+(() => {
+ "use strict";
+ const $=id=>document.getElementById(id);
+ const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+ const records={
+  rfi:{title:"Kitchen ceiling coordination",source:"PROCORE / RFI 041",kind:"PROJECTS",description:"Fictional example: a design response is needed before ceiling framing proceeds. In a connected system this item would link to its source record, owner, and required response date.",rows:[["Project","Ember Street Tavern"],["Responsible","Project manager + design team"],["Next step","Review the response in Procore"],["Evidence","Demo only; no Procore account connected"]]},
+  submittal:{title:"Custom millwork approval",source:"PROCORE / SUBMITTAL 018",kind:"PROJECTS",description:"Fictional example: confirm that an approved shop drawing will be available before the fabrication slot. FreemanOS would identify the dependency without replacing the Procore approval workflow.",rows:[["Project","The Halyard"],["Impact","Fabrication sequence"],["Next step","Open the source submittal in Procore"],["Evidence","Demo record; no live integration"]]},
+  field:{title:"Field log received",source:"PROCORE / DAILY LOG",kind:"PROJECTS",description:"Example of how a superintendent's verified daily log could become a concise project signal rather than another long report.",rows:[["Project","Hollins Gap / Cottage Row"],["Owner","Superintendent"],["Next step","Review log and site photographs"],["Evidence","Fictional for this prototype"]]},
+  delivery:{title:"Kitchen equipment delivery",source:"PROJECT SCHEDULE",kind:"PROJECTS",description:"A sample milestone connecting vendor delivery to installation and inspection. Dates and commitments are fictional.",rows:[["Project","Ember Street Tavern"],["Window","Next 7 days"],["Dependency","Site ready to receive"],["Source","Schedule, not connected"]]},
+  invoice:{title:"Vendor invoice needs coding",source:"QUICKBOOKS / ACCOUNTS PAYABLE",kind:"FINANCE",description:"Fictional example for Macee: one invoice awaiting project and cost-code review. Actual invoices and financial balances never appear in this prototype.",rows:[["Owner","Macee / Controller"],["Status","Coding requested"],["Action","Review in QuickBooks"],["Access","Finance-authorized users only when connected"]]},
+  receipt:{title:"Missing transaction receipt",source:"RAMP / CARD ACTIVITY",kind:"FINANCE",description:"Fictional example of a missing receipt requiring employee follow-up, not a leadership-level alert.",rows:[["Owner","Macee / Controller"],["Category","Field purchase"],["Action","Request receipt in Ramp"],["Evidence","No real card data loaded"]]},
+  approval:{title:"Spend approval waiting",source:"RAMP / APPROVALS",kind:"FINANCE",description:"Fictional example. Macee owns the proposed finance workflow; FreemanOS should link to Ramp rather than duplicate approval and accounting controls.",rows:[["Owner","Macee / Controller"],["Status","Pending finance review"],["Action","Review in Ramp"],["Evidence","Demo only"]]},
+  reconcile:{title:"Expense reconciliation",source:"RAMP × QUICKBOOKS",kind:"FINANCE",description:"An illustrative cross-system exception: a coded card transaction is waiting to be reconciled. A future integration would require explicit permissions and precise matching rules.",rows:[["Primary","Ramp spending record"],["Ledger","QuickBooks accounting record"],["Next step","Check sync and coding"],["Evidence","No actual reconciliation performed"]]},
+  rocket:{title:"Hospitality group conversation",source:"RELATIONSHIPS / BUSINESS DEVELOPMENT",kind:"RELATIONSHIPS",description:"Illustrative BD follow-up for a hospitality group. Not a confirmed active project, opportunity, or meeting.",rows:[["Owner","Creative / BD"],["Next step","Prepare a relevant project story"],["Status","Concept only"],["Record","Not connected to a CRM"]]},
+  architect:{title:"Architect introduction",source:"RELATIONSHIPS / NETWORK",kind:"RELATIONSHIPS",description:"A fictional relationship record capturing why the introduction matters, where it began, and what a thoughtful follow-up could include.",rows:[["Owner","Creative / BD"],["Next step","Share relevant built work"],["Status","Sample follow-up"],["Record","Fictional"]]},
+  story:{title:"Project story in development",source:"COMPANY RECORD / EDITORIAL",kind:"RELATIONSHIPS",description:"An editorial artifact can connect project evidence with hospitality-focused business development. This is a placeholder for a reviewed Freeman case study.",rows:[["Owner","Creative direction"],["Format","Conversation + field evidence"],["Next step","Gather approved material"],["Status","Concept only"]]}
+ };
+ const W={
+ projects:{title:"The work in motion.",eyebrow:"PROJECT OPERATIONS / PROCORE",subtitle:"A read-only view of field updates, design coordination, and the next commitments.",sources:[["PROCORE","Not connected"],["SCHEDULE","Sample only"],["PROJECTS","03 illustrated"]],columns:[
+  {name:"NEEDS A RESPONSE",count:"02 ITEMS",rows:[["rfi","Kitchen ceiling coordination","Ember · RFI 041","Response due"],["submittal","Custom millwork approval","Halyard · Submittal 018","Review"]]},
+  {name:"FIELD & MILESTONES",count:"02 SIGNALS",rows:[["field","Field log received","Cottage Row · Superintendent","Today"],["delivery","Kitchen equipment delivery","Ember · Next 7 days","Upcoming"]]},
+  {name:"INSTRUMENTS",count:"READ-ONLY",note:"When authorized, each item should open its originating Procore record. FreemanOS won't replace RFIs, submittals, or daily logs."}
+ ]},
+ finance:{title:"The financial picture.",eyebrow:"FINANCE / MACEE · CONTROLLER",subtitle:"Review exceptions across company spending and accounting. Detailed figures stay with authorized finance users.",sources:[["RAMP","Not connected"],["QUICKBOOKS","Not connected"],["OWNER","Macee"]],columns:[
+  {name:"NEEDS REVIEW",count:"02 ITEMS",rows:[["approval","Spend approval waiting","Ramp · Finance review","Pending"],["invoice","Vendor invoice needs coding","QuickBooks · Payables","Review"]]},
+  {name:"RECONCILIATION",count:"02 ITEMS",rows:[["receipt","Missing transaction receipt","Ramp · Employee follow-up","Open"],["reconcile","Expense reconciliation","Ramp × QuickBooks","Check"]]},
+  {name:"FINANCIAL CONTROL",count:"PROPOSED",note:"Macee remains the controller of record. Live financial amounts, permissions, and accounting workflows require an approved integration."}
+ ]},
+ relationships:{title:"The people behind the work.",eyebrow:"RELATIONSHIPS / CREATIVE & BD",subtitle:"A disciplined record of people, conversations, pursuits, and stories worth following through.",sources:[["CONTACTS","Demo records"],["EDITORIAL","In development"],["PIPELINE","Not connected"]],columns:[
+  {name:"FOLLOW THROUGH",count:"02 ITEMS",rows:[["rocket","Hospitality group conversation","Hospitality · Proposed outreach","Next"],["architect","Architect introduction","Design community · Sample","Follow up"]]},
+  {name:"BUILD THE RECORD",count:"01 STUDY",rows:[["story","Project story in development","Field evidence · Editorial","Draft"]]},
+  {name:"A LONGER VIEW",count:"WORK IN PROGRESS",note:"Keep relationships and company evidence together, without pretending that conversations are signed contracts."}
+ ]}
+ };
+ let current="overview",lastFocus=null;
+ const tabs=Array.from(document.querySelectorAll("[data-os-tab]"));
+ const panel=$("os-workspace"),backdrop=$("os-detail-backdrop"),detail=$("os-detail-content");
+ const line=([id,title,subtitle,side])=>'<button type="button" class="os-line" data-os-detail="'+esc(id)+'"><span class="os-marker" aria-hidden="true">↗</span><span class="os-line-body"><span class="os-line-title">'+esc(title)+'</span><span class="os-line-meta">'+esc(subtitle)+'</span></span><span class="os-line-right">'+esc(side)+'</span></button>';
+ function renderWorkspace(){
+  if(current==="overview"){panel.hidden=true;return;}
+  const w=W[current];panel.hidden=false;
+  panel.innerHTML='<header class="os-intro"><div><span class="os-eyebrow">'+esc(w.eyebrow)+'</span><h1 class="os-title">'+esc(w.title)+'</h1><p>'+esc(w.subtitle)+'</p></div><div class="os-sources">FICTIONAL DEMONSTRATION<br>NO LIVE CONNECTIONS</div></header><div class="os-columns">'+w.columns.map(col=>'<section class="os-col"><h2>'+esc(col.name)+'<small>'+esc(col.count)+'</small></h2>'+(col.rows||[]).map(line).join("")+(col.note?'<p class="os-col-note">'+esc(col.note)+'</p>':'')+(col.name==="INSTRUMENTS"||col.name==="FINANCIAL CONTROL"||col.name==="A LONGER VIEW"?w.sources.map(x=>'<div class="os-source-line">'+esc(x[0])+'<span>'+esc(x[1])+'</span></div>').join(""):'')+'</section>').join("")+'</div>';
+ }
+ function select(name){
+  if(name!=="overview"&&!W[name])return;
+  close();current=name;document.body.dataset.osWorkspace=name;
+  tabs.forEach(t=>{if(t.dataset.osTab===name)t.setAttribute("aria-current","page");else t.removeAttribute("aria-current");});
+  renderWorkspace();
+ }
+ function open(id){
+  const r=records[id];if(!r)return;
+  lastFocus=document.activeElement;
+  detail.innerHTML='<div class="os-eyebrow">'+esc(r.source)+'</div><h2 id="os-detail-title">'+esc(r.title)+'</h2><p>'+esc(r.description)+'</p><dl>'+r.rows.map(([k,v])=>'<div><dt>'+esc(k)+'</dt><dd>'+esc(v)+'</dd></div>').join("")+'</dl><div class="os-demo-label">FICTIONAL DEMONSTRATION / NOTHING SAVED OR SENT</div>';
+  backdrop.hidden=false;document.body.style.overflow="hidden";$("os-detail-close").focus();
+ }
+ function close(){backdrop.hidden=true;document.body.style.overflow="";if(lastFocus&&lastFocus.isConnected)lastFocus.focus();lastFocus=null;}
+ tabs.forEach(t=>t.addEventListener("click",()=>select(t.dataset.osTab)));
+ panel.addEventListener("click",e=>{const row=e.target.closest("[data-os-detail]");if(row)open(row.dataset.osDetail);});
+ $("os-detail-close").addEventListener("click",close);
+ backdrop.addEventListener("click",e=>{if(e.target===backdrop)close();});
+ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!backdrop.hidden){e.stopImmediatePropagation();close();}else if(e.key==="Tab"&&!backdrop.hidden){const closeButton=$("os-detail-close");if(e.shiftKey||e.target!==closeButton){e.preventDefault();closeButton.focus();}}},true);
+ select("overview");
 })();
 </script>
 </body>
