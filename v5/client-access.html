@@ -13,7 +13,7 @@ h2.eyebrow{font-weight:400;margin-top:0}.relationship-heading{display:flex;align
 @media(min-width:761px) and (max-height:820px){.choice{padding:9px 0}.choice .desc{max-width:none;line-height:1.5}.right .eyebrow{margin-bottom:18px}.actions{margin-top:18px}.note{margin-top:16px}.left h1{margin:18px 0 20px}}
 @media(max-height:500px) and (orientation:landscape){.frame{padding:12px 24px 10px;gap:8px}.stage{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);grid-template-rows:minmax(0,1fr);gap:28px;align-items:center}.left{border:0;padding:0}.left h1,body[data-view=step] .left h1{font-size:clamp(26px,5vw,40px);margin:6px 0 8px}.left p{font-size:11px;line-height:1.5;margin:0}.right{align-self:stretch;justify-content:center;max-width:none}.right .eyebrow{margin:0 0 6px}.choice,body[data-view=overview] .choice{padding:0}.choice .desc{display:none}.choice .name{font-size:13px}.step{padding:5px 0}.step strong{font-size:12px}.step small{font-size:10px;margin-top:2px;line-height:1.5}.actions{margin-top:6px}.note{margin-top:4px;font-size:10px;line-height:1.5}.code-form{margin-top:6px;padding-top:4px}.code-line input{padding:4px 0;font-size:12px}#code-status{min-height:0}.footer{padding-top:6px;font-size:9px}}
 body[data-view=home] .left h1{font-size:clamp(28px,3.8vw,60px);color:var(--orange)}
-</style></head><body data-view="home"><main class="frame"><header class="top"><span>FREEMAN GC</span><span class="muted">ACCESS / <a class="close" id="close" href="/" aria-label="Close Access and return to the previous page">× CLOSE</a></span></header><section class="stage"><div class="left"><div class="eyebrow" id="kicker">FREEMAN / ACCESS</div><h1 id="heading" tabindex="-1">Welcome.</h1><p id="intro">One place to begin working together.</p></div><div class="right"><div class="relationship-heading"><h2 class="eyebrow" id="section">YOUR RELATIONSHIP</h2><a class="team-entry" id="team-entry" href="team-os.html">TEAM ACCESS ↗</a></div><div id="body"></div><div class="actions"><button type="button" id="back" class="hidden">← BACK</button><button type="button" id="next" class="hidden">NEXT STEP ↗</button></div><form id="code-form" class="code-form"><label for="code-entry">HAVE AN ACCESS CODE?</label><div class="code-line"><input id="code-entry" type="text" autocomplete="off" spellcheck="false" autocapitalize="characters" placeholder="Enter code" maxlength="64"><button type="submit" aria-label="Submit code">↗</button></div><span id="code-status" role="status"></span></form><p class="note" id="note">SELECT A RELATIONSHIP OR ENTER A STUDY CODE.</p></div></section><footer class="footer"><span>BUILT FOR GENERATIONS</span><span>FREEMAN GENERAL CONTRACTING / PRIVATE</span></footer></main><p id="announce" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+</style></head><body data-view="home"><main class="frame"><header class="top"><span>FREEMAN GC</span><span class="muted">ACCESS / <a class="close" id="close" href="/" aria-label="Close Access and return to the previous page">× CLOSE</a></span></header><section class="stage"><div class="left"><div class="eyebrow" id="kicker">FREEMAN / ACCESS</div><h1 id="heading" tabindex="-1">Welcome.</h1><p id="intro">One place to begin working together.</p></div><div class="right"><h2 class="eyebrow" id="section">YOUR RELATIONSHIP</h2><div id="body"></div><div class="actions"><button type="button" id="back" class="hidden">← BACK</button><button type="button" id="next" class="hidden">NEXT STEP ↗</button></div><p class="note" id="note">SELECT A RELATIONSHIP TO CONTINUE.</p></div></section><footer class="footer"><span>BUILT FOR GENERATIONS</span><span>FREEMAN GENERAL CONTRACTING / PRIVATE</span></footer></main><p id="announce" class="sr-only" aria-live="polite" aria-atomic="true"></p>
 <script>
 (() => {
   'use strict';
@@ -161,8 +161,6 @@ body[data-view=home] .left h1{font-size:clamp(28px,3.8vw,60px);color:var(--orang
     const s = p && v.step >= 0 ? p.steps[v.step] : null;
     document.body.dataset.view = s ? 'step' : p ? 'overview' : 'home';
 
-    $('team-entry').classList.toggle('hidden', !!p);
-    $('code-form').classList.toggle('hidden', !!p);
     $('back').classList.toggle('hidden', !p);
     $('next').classList.toggle('hidden', !p || v.step >= p.steps.length - 1);
     $('next').textContent = s ? 'NEXT STEP ↗' : 'BEGIN ↗';
@@ -174,7 +172,7 @@ body[data-view=home] .left h1{font-size:clamp(28px,3.8vw,60px);color:var(--orang
       $('heading').textContent = 'Welcome.';
       $('intro').textContent = 'One place to begin working together.';
       $('section').textContent = 'YOUR RELATIONSHIP';
-      $('body').innerHTML = `<ol class="list">${Object.entries(PATHWAYS).map(([id, pw], i) => choice(`data-role="${id}"`, pad(i + 1), pw.name, pw.summary)).join('')}</ol>`;
+      $('body').innerHTML = `<ol class="list">${Object.entries(PATHWAYS).map(([id, pw], i) => choice(`data-role="${id}"`, pad(i + 1), pw.name, pw.summary)).join('') + choice('data-team="true"', '04', 'TEAM ACCESS', 'Freeman OS / Mission Control.')}</ol>`;
       $('note').textContent = 'SELECT A RELATIONSHIP OR ENTER A STUDY CODE.';
     } else if (!s) {
       $('kicker').textContent = p.name + ' / ONBOARDING';
@@ -192,7 +190,7 @@ body[data-view=home] .left h1{font-size:clamp(28px,3.8vw,60px);color:var(--orang
       $('note').textContent = 'DEMONSTRATION ONLY / NO ACCESS GRANTED, NO MEETING BOOKED, NO DOCUMENTS SUBMITTED.';
     }
     $('body').scrollTop = 0;
-    $('code-status').textContent = o.invalid ? 'That address is no longer available. Showing the nearest page.' : '';
+    if (o.invalid) $('note').textContent = 'THAT ADDRESS IS NO LONGER AVAILABLE.';
     if (o.invalid && p) $('note').textContent = 'THAT ADDRESS IS NO LONGER AVAILABLE. SHOWING THE ' + p.name + ' OVERVIEW.';
 
     if (o.focus) {
@@ -208,6 +206,7 @@ body[data-view=home] .left h1{font-size:clamp(28px,3.8vw,60px);color:var(--orang
   $('body').addEventListener('click', (e) => {
     const r = e.target.closest('[data-role]');
     const st = e.target.closest('[data-step]');
+    if (e.target.closest('[data-team]')) { location.assign('team-os.html'); return; }
     if (r) go({ role: r.dataset.role, step: -1 });
     else if (st) go({ role: view.role, step: Number(st.dataset.step) });
   });
@@ -220,12 +219,6 @@ body[data-view=home] .left h1{font-size:clamp(28px,3.8vw,60px);color:var(--orang
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape' || e.defaultPrevented || /^(INPUT|TEXTAREA)$/.test(e.target.tagName)) return;
     if (view.role) { e.preventDefault(); back(); }
-  });
-  $('code-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const c = $('code-entry').value.trim().toUpperCase().replace(/\s+/g, ' ');
-    if (CODES[c]) { $('code-entry').value = ''; go({ role: CODES[c], step: -1 }); return; }
-    $('code-status').textContent = c ? 'Code not recognized in this study.' : 'Enter a code.';
   });
 
   route({ focus: false });

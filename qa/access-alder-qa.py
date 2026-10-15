@@ -149,13 +149,12 @@ with sync_playwright() as p:
     pg.focus("#next"); pg.keyboard.press("Enter"); pg.keyboard.press("Enter")
     check("keyboard: NEXT keeps focus for repeated steps", pg.evaluate("location.hash") == "#architect/2" and pg.evaluate("document.activeElement.id") == "next")
     pg.keyboard.press("Escape"); check("Escape steps back", pg.evaluate("location.hash") == "#architect/1", pg.evaluate("location.hash"))
-    pg.goto(ACCESS); pg.fill("#code-entry", "nope"); pg.keyboard.press("Enter")
-    check("unknown code shows status", "not recognized" in pg.inner_text("#code-status"))
-    pg.fill("#code-entry", "trade"); pg.keyboard.press("Enter")
-    check("TRADE code opens Trade Partners", pg.evaluate("location.hash") == "#trade")
-    pg.goto(ACCESS); pg.fill("#code-entry", "alder"); pg.keyboard.press("Enter"); pg.wait_for_timeout(300)
-    check("ALDER code is not recognized (proposal withdrawn)", pg.evaluate("location.pathname") == "/client-access" and "not recognized" in pg.inner_text("#code-status"), pg.url)
-    check("keyboard/codes: no JS errors", not pg.errors, pg.errors)
+    pg.goto(ACCESS); pg.wait_for_selector("[data-team]")
+    check("TEAM ACCESS is fourth relationship", pg.locator("#body .choice").count() == 4 and pg.locator("[data-team]").count() == 1)
+    check("access code removed", pg.locator("#code-entry").count() == 0)
+    pg.locator("[data-team]").click()
+    check("Team Access opens Freeman OS", "team-os" in pg.url, pg.url)
+    check("keyboard/team: no JS errors", not pg.errors, pg.errors)
     ctx.close()
 
     # ---------- ACCESS: layout at every viewport and state ----------
@@ -169,7 +168,7 @@ with sync_playwright() as p:
       return {
         hscroll: document.documentElement.scrollWidth > innerWidth,
         footerInView: foot.bottom <= innerHeight + 0.5,
-        actionsClear: below('.actions'), noteClear: below('#note'), formClear: below('#code-form'),
+        actionsClear: below('.actions'), noteClear: below('#note'), formClear: true,
         h1Fits: h1.scrollWidth <= h1.clientWidth + 1,
         bodyScrolls: body.scrollHeight > body.clientHeight + 1,
         bodyReachable: body.scrollHeight <= body.clientHeight + 1 || getComputedStyle(body).overflowY === 'auto',
