@@ -1,137 +1,599 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#f4f4f0"><title>Freeman OS / Study 01</title><link rel="icon" href="favicon.svg">
-<style>
-:root{--paper:#f4f4f0;--ink:#30312f;--muted:#70716c;--line:#cfd1cb;--accent:#c2431a}
-*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;background:var(--paper);color:var(--ink);overflow:hidden}
-body,button,input,select{font:12px/1.5 Monaco,"SFMono-Regular",Consolas,monospace;-webkit-font-smoothing:antialiased}
-button,select,input{color:inherit}button{border:0;background:transparent;cursor:pointer;text-align:left;padding:0}button:hover,button[aria-current="page"]{color:var(--accent)}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:1px solid var(--accent);outline-offset:4px}
-a{color:inherit;text-decoration:none}a:hover{color:var(--accent)}
-.frame{height:100dvh;display:grid;grid-template-rows:auto minmax(0,1fr) auto;padding:30px 40px 22px;gap:23px}
-header,footer{display:flex;justify-content:space-between;gap:24px;align-items:center}
-header{font-size:11px}footer{padding-top:15px;border-top:1px solid var(--line);font-size:10px;color:var(--muted)}
-.muted,.eyebrow,.secondary{color:var(--muted)}.eyebrow{font-size:10px}.right-header{display:flex;align-items:center;gap:24px}
-select{background:transparent;border:0;cursor:pointer;font-size:11px;padding:7px 0}
-.main{display:grid;grid-template-columns:minmax(230px,.92fr) minmax(0,1.18fr);gap:clamp(35px,8vw,140px);align-items:center;min-height:0}
-h1{font-size:clamp(47px,6vw,94px);line-height:1.12;letter-spacing:-.08em;font-weight:400;margin:22px 0 26px}
-.subtitle{font-size:14px;line-height:1.85;max-width:29ch;margin:0}
-.left-actions{margin-top:32px;display:flex;gap:22px;flex-wrap:wrap;font-size:10px}
-.left-actions button{text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:6px}
-.right{width:100%;max-width:700px;justify-self:end;min-height:0}
-.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
-.rule-list{margin:0;padding:0;list-style:none;border-bottom:1px solid var(--line)}
-.item{display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:12px;align-items:center;border-top:1px solid var(--line);min-height:54px;padding:9px 0}
-.num{font-size:10px;color:var(--accent)}.item-title{font-size:clamp(12px,1.15vw,16px);overflow-wrap:anywhere}
-.item-sub{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.5}
-.tag{font-size:10px;color:var(--muted);text-align:right;white-space:nowrap}
-.item button{display:contents}.item button:hover .item-title{color:var(--accent)}
-.bar{display:flex;align-items:center;border-bottom:1px solid var(--line);margin-top:24px;gap:12px}
-.bar label{color:var(--accent);font-size:15px}.bar input{flex:1;min-width:0;border:0;background:none;outline:none;padding:12px 0;font-size:12px}
-.bar button{font-size:17px;min-width:44px;min-height:44px;text-align:right}
-.response{min-height:46px;color:var(--muted);font-size:10px;margin-top:12px;max-width:60ch}
-.response strong{color:var(--ink);font-weight:400}.response a{text-decoration:underline;text-underline-offset:3px}
-.flags{display:flex;gap:20px;flex-wrap:wrap;align-items:center}
-.flag{font-size:10px;white-space:nowrap}.flag::before{content:"";display:inline-block;width:5px;height:5px;background:var(--accent);margin-right:8px;vertical-align:middle}
-.mobile-label{display:none}
-@media(max-width:760px){.frame{padding:18px 20px 16px;gap:10px}.main{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);gap:22px;align-items:start}.left{border-bottom:1px solid var(--line);padding-bottom:16px}h1{font-size:clamp(39px,10vw,57px);margin:8px 0 12px}.subtitle{font-size:11px;line-height:1.6}.left-actions{margin-top:12px}.right{max-width:none;align-self:start}.section-head{margin-bottom:10px}.item{min-height:43px;padding:5px 0}.item-title{font-size:12px}.item-sub{font-size:9px}.tag{font-size:9px}.bar{margin-top:10px}.response{min-height:0;margin-top:7px;font-size:9px}.flags{display:none}.mobile-label{display:inline}}
-@media(max-width:760px) and (max-height:670px){.left{padding-bottom:8px}h1{font-size:36px;margin:5px 0}.subtitle{display:none}.left-actions{margin-top:7px}.main{gap:10px}.item{min-height:37px}.item-sub{display:none}.response{max-height:30px;overflow:hidden}.frame{gap:7px}}
-@media(max-height:510px) and (orientation:landscape){.frame{padding:10px 24px;gap:6px}.main{grid-template-columns:1fr 1.4fr;grid-template-rows:1fr;gap:25px;align-items:center}.left{border:0}.left h1{font-size:33px}.subtitle{display:none}.item{min-height:31px;padding:3px 0}.item-sub{display:none}.bar{margin-top:5px}.response{margin-top:4px}footer{padding-top:5px}}
-</style></head>
-<body><div class="frame">
-<header><span>FREEMAN GC</span><div class="right-header"><label for="persona" class="muted">VIEW AS <span class="mobile-label">↗</span></label><select id="persona" aria-label="Preview role"><option value="gabe">GABE</option><option value="field">FIELD</option><option value="creative">CREATIVE</option></select><a href="client-access.html">× CLOSE</a></div></header>
-<main class="main">
-<section class="left"><div class="eyebrow">FREEMAN / INTERNAL</div><h1>Freeman<br>OS.</h1><p class="subtitle" id="intro">One place for the work behind the work.</p><div class="left-actions"><button id="home" type="button">OVERVIEW</button><button id="records" type="button">ALL RECORDS ↗</button></div></section>
-<section class="right"><div class="section-head"><span class="eyebrow" id="label">GABE / OVERVIEW</span><span class="eyebrow" id="mode">STUDY 01</span></div><ol class="rule-list" id="list"></ol>
-<form class="bar" id="question"><label for="ask">↗</label><input id="ask" type="text" maxlength="200" placeholder="Ask about the work…" autocomplete="off" aria-label="Ask about demo records"><button type="submit" aria-label="Search demo records">↗</button></form>
-<div class="response" id="answer" role="status" aria-live="polite">Explore the sample records, or ask a question. This is a local demonstration—not live AI.</div></section></main>
-<footer><span>BUILT FOR GENERATIONS</span><span class="flags"><span class="flag">DESIGN STUDY</span><span>NO LIVE CONNECTIONS</span></span><span>FREEMAN GENERAL CONTRACTING / PRIVATE</span></footer>
-</div>
-<script>
-(function(){
-"use strict";
-const $=id=>document.getElementById(id);
-const data=[
-{key:"projects",title:"PROJECTS",summary:"The work currently on the board",records:[
-["Woodlands at Barnsley Resort","South Street Partners","Project reference"],
-["Dugan's Pub","South Street Partners","Project reference"],
-["Barnsley Family Pool","South Street Partners","Project reference"],
-["Azalea Marketplace","Savi Provisions","Project reference"],
-["Brewhouse Cafe","South Downtown","Project reference"]]},
-{key:"decisions",title:"DECISIONS",summary:"Items awaiting a clear answer",records:[
-["Sample: Confirm upcoming project review","Not assigned","Illustrative only"],
-["Sample: Review field photography plan","Not assigned","Illustrative only"]]},
-{key:"documents",title:"DOCUMENTS",summary:"Information, available in one place",records:[
-["Project files","Connect approved company storage","Not connected"],
-["Meeting records","Connect approved meeting source","Not connected"],
-["Company reference library","Connect approved knowledge source","Not connected"]]},
-{key:"people",title:"PEOPLE",summary:"The people carrying the work",records:[
-["Cameron Dumbi","Superintendent","Team reference"],
-["Mac Thompson","Superintendent","Team reference"],
-["James (Jimmy) Smith","Superintendent","Team reference"]]},
-{key:"field",title:"FIELD NOTES",summary:"What is happening on site",records:[
-["Site observations","Awaiting approved field source","Not connected"],
-["Progress photography","Awaiting approved image library","Not connected"]]},
-{key:"stories",title:"STORIES",summary:"The evidence behind the finished work",records:[
-["Freeman × Rocket Farm","Story concept","Editorial planning"],
-["Same Place, Different Day","Construction progression concept","Editorial planning"]]}
-];
-const views={
-gabe:["projects","decisions","documents","people"],
-field:["projects","field","documents","people"],
-creative:["stories","field","projects","documents"]
-};
-let role="gabe",section=null;
-function safe(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
-function row(n,title,sub,tag,key){return '<li class="item"><span class="num">'+String(n).padStart(2,"0")+'</span><button type="button" data-key="'+safe(key)+'"><span><span class="item-title">'+safe(title)+'</span><span class="item-sub">'+safe(sub)+'</span></span><span class="tag">'+safe(tag)+'</span></button></li>';}
-function render(){
-const current=data.find(d=>d.key===section);
-$("label").textContent=role.toUpperCase()+" / "+(current?current.title:"OVERVIEW");
-$("mode").textContent="STUDY 01 / DEMO";
-$("intro").textContent=current?current.summary:"One place for the work behind the work.";
-if(current){$("list").innerHTML=current.records.map((r,i)=>row(i+1,r[0],r[1],r[2],"noop")).join("");}
-else{$("list").innerHTML=views[role].map((key,i)=>{const d=data.find(v=>v.key===key);return row(i+1,d.title,d.summary,"↗",d.key)}).join("");}
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Freeman OS</title>
+<style>/* FreemanOS / Operations Floor / Study 03.
+   Tokens and patterns are carried over from v5/styles.css and v5/team-os.html:
+   paper / ink / muted / hair / orange, Monaco, hairline rules, uppercase 9–10px labels,
+   orange-square flags, orange hover highlight, crosshair cursor, chalk / sand / umber palettes. */
+
+:root{
+  --paper:#f4f4f0; --ink:#30312f; --muted:#70716c; --hair:#cfd1cb;
+  --orange:#f05a28;      /* marks, fills, highlight (site) */
+  --orange-ink:#c2431a;  /* orange text on paper (OS study) */
+  --dim:.2;
+  --mono:Monaco,"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  --cursor-crosshair:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='21' height='21' viewBox='0 0 21 21'%3E%3Cpath d='M10.5 1v19M1 10.5h19' stroke='%2330312f' stroke-width='1'/%3E%3Crect x='9' y='9' width='3' height='3' fill='%23f05a28'/%3E%3C/svg%3E") 10 10,crosshair;
+  --cursor-orange:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='21' height='21' viewBox='0 0 21 21'%3E%3Cpath d='M10.5 1v19M1 10.5h19' stroke='%23f05a28' stroke-width='1'/%3E%3Crect x='8.5' y='8.5' width='4' height='4' fill='%23f05a28'/%3E%3C/svg%3E") 10 10,crosshair;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
-$("list").addEventListener("click",e=>{const el=e.target.closest("[data-key]");if(!el)return;if(el.dataset.key==="noop")return;section=el.dataset.key;render();$("answer").textContent="REFERENCE DATA ONLY / NOT CONNECTED TO FREEMAN SYSTEMS.";});
-$("persona").addEventListener("change",e=>{role=e.target.value;section=null;render();$("answer").textContent="Viewing the "+(role==="gabe"?"leadership":role==="field"?"field":"creative")+" layout. Role permissions are not yet implemented.";});
-$("home").addEventListener("click",()=>{section=null;render();});
-$("records").addEventListener("click",()=>{section=null;$("list").innerHTML=data.map((d,i)=>row(i+1,d.title,d.summary,"↗",d.key)).join("");$("label").textContent="ALL RECORDS / INDEX";});
-$("question").addEventListener("submit",e=>{
-e.preventDefault();const q=$("ask").value.trim().toLowerCase();if(!q){$("answer").textContent="Enter a project, person, document, or subject to search the demonstration.";return;}
-const hits=[];for(const d of data){for(const r of d.records){if(r.join(" ").toLowerCase().includes(q)||d.title.toLowerCase().includes(q)){hits.push({key:d.key,text:r[0]});}}}
-if(!hits.length){$("answer").textContent="No sample records match. Live company search will require an authorized data connection.";return;}
-$("answer").innerHTML="<strong>"+hits.length+" DEMO MATCH"+(hits.length===1?"":"ES")+"</strong> / "+hits.slice(0,3).map(h=>safe(h.text)).join(" · ")+(hits.length>3?" …":"")+"<br>Sample records only. No AI or external data was queried.";
-});
-render();
-})();
-</script><style>
-#station-gate{position:fixed;inset:0;z-index:50;background:#f4f4f0;color:#30312f;display:grid;grid-template-rows:auto 1fr auto;padding:32px 40px 22px;font:12px/1.6 Monaco,monospace}
-#station-gate.closed{display:none}#station-gate .g-top,#station-gate .g-foot{display:flex;justify-content:space-between;gap:20px;font-size:11px}#station-gate .g-foot{border-top:1px solid #cfd1cb;padding-top:14px;color:#70716c;font-size:10px}
-#station-gate .g-body{display:grid;grid-template-columns:1fr 1fr;gap:9vw;align-items:center}
-#station-gate h1{font-size:clamp(52px,7vw,110px);font-weight:400;line-height:1.05;letter-spacing:-.085em;margin:24px 0}
-#station-gate .g-eyebrow{font-size:10px;color:#70716c}#station-gate .g-intro{font-size:14px}
-#station-gate .station{border-top:1px solid #cfd1cb;padding:18px 0;width:100%;display:flex;align-items:center;gap:20px}
-#station-gate .station:last-of-type{border-bottom:1px solid #cfd1cb}#station-gate .station strong{font-size:19px;font-weight:400;flex:1}
-#station-gate .station:hover strong{color:#c2431a}#station-gate .station small{color:#70716c;font-size:10px}#station-gate .g-orange{color:#c2431a}
-#station-gate .g-warning{color:#70716c;font-size:10px;margin-top:24px;max-width:47ch}
-#station-exit{font-size:10px;color:#c2431a;cursor:pointer}
-body[data-station="active"] .frame{height:100dvh}
-@media(max-width:760px){#station-gate{padding:20px}#station-gate .g-body{grid-template-columns:1fr;gap:25px;align-content:center}#station-gate h1{font-size:64px;margin:12px 0}#station-gate .station{padding:13px 0}}
+:root[data-palette="sand"]{--paper:#d9c5a7;--ink:#302820;--muted:#766757;--hair:#b8a388;--orange:#ba4e2d;--orange-ink:#9c3f22;color-scheme:light}
+:root[data-palette="umber"],:root[data-theme="dark"]{--paper:#51453b;--ink:#f5eddf;--muted:#c9bcae;--hair:#817063;--orange:#ec7950;--orange-ink:#f08a66;--dim:.28;color-scheme:dark}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--paper:#51453b;--ink:#f5eddf;--muted:#c9bcae;--hair:#817063;--orange:#ec7950;--orange-ink:#f08a66;--dim:.28;color-scheme:dark}
+}
+/* FreemanOS / First screen. Calm: progress first, urgency only when it's earned. */
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--paper);color:var(--ink)}
+body{font:14px/1.55 var(--mono);-webkit-font-smoothing:antialiased;cursor:var(--cursor-crosshair)}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;text-align:left;cursor:var(--cursor-orange)}
+button:focus-visible{outline:1px solid var(--orange);outline-offset:4px}
+h1,h2,p,ol{margin:0;font-weight:400}ol{list-style:none;padding:0}
+.m{color:var(--muted)}
+.dot{display:inline-block;width:6px;height:6px;background:var(--orange);vertical-align:2px;margin-right:10px;flex:none}
+
+.wrap{min-height:100%;display:grid;grid-template-rows:auto auto 1fr auto;max-width:1280px;margin:0 auto;padding:30px clamp(24px,5vw,72px) 28px}
+.top{display:flex;justify-content:space-between;align-items:baseline;font-size:13px}
+.top .brand{font-weight:700;letter-spacing:.01em}
+.top .r{display:flex;gap:28px;align-items:baseline;color:var(--muted)}
+.sim{display:none;gap:18px;color:var(--ink)}.sim.on{display:flex}
+.sim button{text-decoration:underline;text-decoration-color:var(--orange);text-underline-offset:5px}
+
+.summary{margin:clamp(24px,4.2vh,56px) 0 clamp(22px,3.2vh,36px);font-size:clamp(17px,1.35vw,20px);line-height:1.5;max-width:62ch}
+.summary .m{display:block;font-size:14px;margin-bottom:8px}
+
+/* Projects: living bodies of work */
+.jobs{border-top:1px solid var(--ink)}
+.job{border-bottom:1px solid var(--hair)}
+.job>button{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,6fr) minmax(0,3fr);column-gap:clamp(24px,3vw,48px);width:100%;padding:clamp(16px,2.6vh,26px) 0;align-items:start}
+.name{font-size:clamp(19px,1.55vw,23px);line-height:1.25;letter-spacing:-.02em}
+.who{display:block;font-size:13px;color:var(--muted);margin-top:4px}
+.job>button:hover .name{color:var(--orange-ink)}
+.journey{padding-top:9px}
+.track{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
+.track i{height:2px;background:var(--hair);position:relative}
+.track i.done{background:var(--ink)}
+.track i b{position:absolute;left:0;top:0;bottom:0;background:var(--ink)}
+.stages{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;font-size:12px;color:var(--muted);margin-top:7px}
+.stages span.now{color:var(--ink)}
+.notes{margin-top:14px;font-size:13px;display:grid;grid-template-columns:auto 1fr;gap:3px 14px}
+.notes dt{color:var(--muted)}.notes dd{margin:0}
+.when{text-align:right}
+.days{font-size:clamp(26px,2.3vw,34px);line-height:1;letter-spacing:-.05em}
+.days small{font-size:13px;letter-spacing:0;color:var(--muted);margin-left:6px}
+.date{display:block;font-size:13px;color:var(--muted);margin-top:8px}
+.flag{display:flex;justify-content:flex-end;align-items:baseline;font-size:13px;margin-top:12px;color:var(--orange-ink)}
+
+/* Opened job: the work between now and opening */
+.more{display:none;grid-template-columns:minmax(0,3fr) minmax(0,6fr) minmax(0,3fr);column-gap:clamp(24px,3vw,48px);padding:0 0 28px}
+.job.open .more{display:grid}
+.ahead{grid-column:2}
+.ahead h3,.side h3{font-size:12px;color:var(--muted);font-weight:400;margin:0 0 8px}
+.ahead li{display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:14px;padding:5px 0;font-size:13px;border-top:1px solid var(--hair)}
+.ahead li .m{font-size:12px}
+.ahead li.flagged span:nth-child(2)::after{content:"";display:inline-block;width:5px;height:5px;background:var(--orange);margin-left:9px;vertical-align:2px}
+.ahead li.note span:nth-child(2)::after{content:"";display:inline-block;width:5px;height:5px;border:1px solid var(--muted);margin-left:9px;vertical-align:1px}
+.side{grid-column:3;font-size:13px}
+.side p{margin-bottom:10px}
+.acts{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin:8px 0 18px}
+.act{text-decoration:underline;text-decoration-color:var(--hair);text-underline-offset:5px}
+.act:hover{text-decoration-color:var(--orange);color:var(--orange-ink)}
+.quiet{color:var(--muted);font-size:12px}
+
+/* Below: the week, what changed, what's yours */
+.below{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,3fr) minmax(0,3fr);column-gap:clamp(24px,3vw,48px);margin-top:clamp(26px,4vh,44px);align-content:start}
+.below h2{font-size:13px;color:var(--muted);padding-bottom:10px;border-bottom:1px solid var(--ink);margin-bottom:12px}
+.week li{display:grid;grid-template-columns:110px minmax(0,1fr) auto;gap:16px;font-size:13px;padding:6px 0;border-bottom:1px solid var(--hair)}
+.week li:first-child{padding-top:0}
+.week li .m{font-size:12px}
+.day .d{font-size:12px;color:var(--muted);display:block;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--hair)}
+.day.today .d{color:var(--ink);border-bottom-color:var(--ink)}
+.day li{font-size:12px;line-height:1.4;margin-bottom:9px}
+.day li .m{display:block;font-size:11px}
+.feed li,.mine li{font-size:13px;line-height:1.45;margin-bottom:10px}
+.feed li .m,.mine li .m{display:block;font-size:12px}
+.mine li button{display:block;width:100%}
+.mine li button:hover .t{color:var(--orange-ink)}
+.mine .t{display:flex;align-items:baseline}
+.feed .more-link{color:var(--muted);font-size:12px}
+
+.foot{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:28px;padding-top:12px;border-top:1px solid var(--hair)}
+
+@media (max-width:900px){
+  .job>button,.more,.below{grid-template-columns:1fr;row-gap:16px}
+  .ahead,.side{grid-column:1}.when{text-align:left}.flag{justify-content:flex-start}
+  .week{grid-template-columns:repeat(4,1fr)}
+}
+@media (pointer:coarse){body{cursor:auto}}
 </style>
-<section id="station-gate" aria-label="Freeman OS demo station selection">
-<div class="g-top"><span>FREEMAN GC</span><span>TEAM ACCESS / STUDY 02</span></div>
-<div class="g-body"><div><div class="g-eyebrow">FREEMAN / MISSION CONTROL</div><h1>Freeman<br>OS<span class="g-orange">.</span></h1><div class="g-intro">One company. One operating picture.</div></div>
-<div><div class="g-eyebrow" style="margin-bottom:20px">ENTER SIMULATION / SELECT STATION</div>
-<button class="station" data-station-role="gabe"><span class="g-orange">01</span><strong>COMMAND</strong><small>LEADERSHIP ↗</small></button>
-<button class="station" data-station-role="field"><span class="g-orange">02</span><strong>FIELD</strong><small>OPERATIONS ↗</small></button>
-<button class="station" data-station-role="creative"><span class="g-orange">03</span><strong>CREATIVE</strong><small>DOCUMENTATION ↗</small></button>
-<div class="g-warning">OPEN DEMO / NO PASSWORD REQUIRED. ALL CONTENT IS ILLUSTRATIVE OR PUBLIC PROJECT REFERENCE. NO COMPANY SYSTEMS ARE CONNECTED.</div></div></div>
-<div class="g-foot"><span>BUILT FOR GENERATIONS</span><span>NOT AN AUTHENTICATED EMPLOYEE PORTAL</span></div>
-</section>
-<script>
-(function(){
-const gate=document.getElementById('station-gate'),persona=document.getElementById('persona');
-function close(){gate.classList.add('closed');document.body.dataset.station='active';}
-document.querySelectorAll('[data-station-role]').forEach(b=>b.addEventListener('click',()=>{persona.value=b.dataset.stationRole;persona.dispatchEvent(new Event('change',{bubbles:true}));close();}));
-const head=document.querySelector('header .right-header');
-if(head){const btn=document.createElement('button');btn.type='button';btn.id='station-exit';btn.textContent='SWITCH STATION ↗';btn.addEventListener('click',()=>{gate.classList.remove('closed');document.body.dataset.station='';});head.prepend(btn);}
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><span><span class="brand">FREEMAN GC</span></span><span class="r"><span class="sim" id="sim"></span><span id="today"></span><span>Demo, fictional data</span></span></header>
+  <p class="summary" id="summary"></p>
+  <main>
+    <ol class="jobs" id="jobs"></ol>
+    <div class="below">
+      <section><h2>The week ahead</h2><ol class="week" id="week"></ol></section>
+      <section><h2>Since yesterday</h2><ol class="feed" id="feed"></ol></section>
+      <section><h2>Yours to decide</h2><ol class="mine" id="mine"></ol></section>
+    </div>
+  </main>
+  <footer class="foot"><span>Built for generations</span><span>Every name, date and event is fictional. Nothing is saved or sent.</span></footer>
+</div>
+<script>(function(){// FreemanOS — DEMO DATA. Every project, client, person, company, date and event
+// below is fictional. Nothing here describes an actual Freeman project, client,
+// schedule, problem, or financial figure.
+//
+// Dates are integer day offsets from "today" (0). The UI resolves them against
+// the viewer's clock, so the demo always reads as current without claiming to be live.
+
+const DEMO = true;
+
+const parties = {
+  you:        { name: 'You (Leadership)',          kind: 'freeman' },
+  pm_rc:      { name: 'R. Castellanos / PM',        kind: 'freeman' },
+  pm_jw:      { name: 'J. Whitfield / PM',          kind: 'freeman' },
+  su_do:      { name: 'D. Ortiz / Superintendent',  kind: 'freeman' },
+  su_to:      { name: 'T. Okafor / Superintendent', kind: 'freeman' },
+  freeman:    { name: 'Freeman GC',                 kind: 'freeman' },
+
+  wren:       { name: 'Wren & Alder Hospitality',   kind: 'client',    record: [14, 15] },
+  hollins:    { name: 'Hollins Gap Resort',         kind: 'client',    record: [22, 24] },
+  tallow:     { name: 'Tallow House Hotels',        kind: 'client',    record: [9, 11] },
+
+  halcyon:    { name: 'Halcyon Studio / Design',    kind: 'designer',  record: [9, 11] },
+  norrell:    { name: 'Norrell Architects',         kind: 'architect', record: [31, 33] },
+
+  corbin:     { name: 'Corbin Foodservice',         kind: 'vendor',    record: [6, 9] },
+  vass:       { name: 'Atelier Vass / Lighting',    kind: 'vendor',    record: [4, 4] },
+  tessera:    { name: 'Tessera Tile (import)',      kind: 'vendor',    record: [7, 8] },
+  clearline:  { name: 'Clearline Glass Rail',       kind: 'vendor',    record: [3, 3] },
+
+  arcline:    { name: 'Arcline Mechanical',         kind: 'sub',       record: [41, 44] },
+  limehand:   { name: 'Lime & Hand Plaster',        kind: 'sub',       record: [12, 12] },
+  overland:   { name: 'Overland Roofing',           kind: 'sub',       record: [18, 21] },
+  keystone:   { name: 'Keystone Fire Protection',   kind: 'sub',       record: [25, 25] },
+
+  health:     { name: 'County Health Dept.',        kind: 'authority' },
+  firemar:    { name: 'Fire Marshal',               kind: 'authority' },
+};
+
+// Resources that can only be in one place at a time.
+const resources = {
+  'arcline-crew-a': { name: 'Arcline refrigeration crew A', party: 'arcline' },
+  su_do: { name: 'D. Ortiz', party: 'su_do' },
+  su_to: { name: 'T. Okafor', party: 'su_to' },
+};
+
+const projects = [
+  { id: 'ember', no: 'D-2614',   name: 'Ember Street Tavern',  client: 'wren',    type: 'Restaurant / interior build-out in historic shell', stage: 'Finishes',     pm: 'pm_rc', super: 'su_do' },
+  { id: 'hollins', no: 'D-2609', name: 'Hollins Gap / Cottage Row', client: 'hollins', type: 'Resort renovation / operating property', stage: 'Envelope', pm: 'pm_jw', super: 'su_to' },
+  { id: 'halyard', no: 'D-2621', name: 'The Halyard',          client: 'tallow',  type: 'Rooftop bar / boutique hotel', stage: 'Structure',     pm: 'pm_rc', super: 'su_to' },
+  { id: 'palmer', no: 'D-2630',  name: 'Palmer & Vine',        client: 'wren',    type: 'Restaurant / second location', stage: 'Preconstruction', pm: 'pm_jw', pursuit: true },
+  { id: 'spa', no: 'D-2633',     name: 'Hollins Gap / Spa',    client: 'hollins', type: 'Resort spa addition', stage: 'Pursuit', pm: 'pm_jw', pursuit: true },
+];
+
+// Windows during which certain work can't happen (operating-property constraints).
+const windows = [
+  { id: 'w-wedding', project: 'hollins', start: 9, end: 10, rule: 'no-noise', label: 'Wedding weekend, no exterior or noisy work', short: 'Wedding weekend' },
+];
+
+// The Ledger. Each commitment is a promise: `by` promises `to` that `title` happens
+// between `start` and `due`. `deps` are promises that must be kept first (lag default 1 day).
+// `slot` = a fabrication/production slot that is lost if the work can't start by `latest`.
+const commitments = [
+  // ── EMBER STREET TAVERN / opening +38 ─────────────────────────────────────────
+  { id: 'e-mockup', ref: 'L-0411', short: 'Plaster mockup approval',   project: 'ember', kind: 'approval',   by: 'halcyon',  to: 'freeman', start: 2,  due: 4,  title: 'Approve bar plaster mockup' },
+  { id: 'e-plaster', ref: 'L-0412', short: 'Plaster bar & walls',  project: 'ember', kind: 'work',       by: 'limehand', to: 'freeman', start: 5,  due: 14, title: 'Plaster bar face & dining walls', deps: ['e-mockup'] },
+  { id: 'e-tiledec', ref: 'L-0413', short: 'Tile alternate decision',  project: 'ember', kind: 'decision',   by: 'you',      to: 'wren',    start: 0,  due: 8,  title: 'Decide bar-face tile alternate (owner budget request)' },
+  { id: 'e-tilepo', ref: 'L-0414', short: 'Tile PO release',   project: 'ember', kind: 'release',    by: 'pm_rc',    to: 'tessera', start: 6,  due: 6,  title: 'Release tile PO', deps: ['e-tiledec'] },
+  { id: 'e-tileship', ref: 'L-0415', short: 'Imported tile arrives', project: 'ember', kind: 'delivery',   by: 'tessera',  to: 'freeman', start: 7,  due: 32, title: 'Imported tile delivered', deps: ['e-tilepo'] },
+  { id: 'e-tileset', ref: 'L-0416', short: 'Bar tile set',  project: 'ember', kind: 'work',       by: 'freeman',  to: 'wren',    start: 33, due: 34, title: 'Set bar-face tile', deps: ['e-tileship'] },
+  { id: 'e-walkin', ref: 'L-0417', short: 'Walk-in arrives',   project: 'ember', kind: 'delivery',   by: 'corbin',   to: 'freeman', start: 21, due: 21, title: 'Owner-furnished walk-in cooler delivered', ownerFurnished: true },
+  { id: 'e-walkset', ref: 'L-0418', short: 'Walk-in set',  project: 'ember', kind: 'work',       by: 'arcline',  to: 'freeman', start: 22, due: 24, title: 'Set & connect walk-in', deps: ['e-walkin'], onsite: ['arcline-crew-a'] },
+  { id: 'e-hood', ref: 'L-0419', short: 'Hood test',     project: 'ember', kind: 'inspection', by: 'keystone', to: 'freeman', start: 15, due: 15, title: 'Hood suppression test', onsite: ['su_do'] },
+  { id: 'e-health', ref: 'L-0420', short: 'Health inspection',   project: 'ember', kind: 'inspection', by: 'health',   to: 'wren',    start: 19, due: 19, title: 'Health Dept. pre-opening inspection', deps: ['e-walkset', 'e-hood'], onsite: ['su_do'] },
+  { id: 'e-pendship', ref: 'L-0421', short: 'Pendants arrive', project: 'ember', kind: 'delivery',   by: 'vass',     to: 'freeman', start: 30, due: 30, title: 'Custom pendants delivered' },
+  { id: 'e-pendset', ref: 'L-0422', short: 'Hang pendants',  project: 'ember', kind: 'work',       by: 'freeman',  to: 'wren',    start: 31, due: 33, title: 'Hang & aim pendants', deps: ['e-pendship'] },
+  { id: 'e-firefin', ref: 'L-0423', short: 'Fire final',  project: 'ember', kind: 'inspection', by: 'firemar',  to: 'freeman', start: 28, due: 28, title: 'Fire final', onsite: ['su_do'] },
+  { id: 'e-co', ref: 'L-0424', short: 'C.O.',       project: 'ember', kind: 'inspection', by: 'firemar',  to: 'wren',    start: 30, due: 30, title: 'Certificate of occupancy', deps: ['e-firefin'] },
+  { id: 'e-punch', ref: 'L-0425', short: 'Punch walk',    project: 'ember', kind: 'work',       by: 'freeman',  to: 'wren',    start: 36, due: 37, title: 'Punch walk with owner & designer', deps: ['e-tileset', 'e-pendset', 'e-plaster'], onsite: ['su_do'] },
+  { id: 'e-open', ref: 'L-0426', short: 'Opening',     project: 'ember', kind: 'opening',    by: 'freeman',  to: 'wren',    start: 38, due: 38, title: 'Turn over for opening', deps: ['e-punch', 'e-health', 'e-co'] },
+
+  // ── HOLLINS GAP / COTTAGE ROW / re-open +52 (operating resort) ────────────────
+  { id: 'h-roof', ref: 'L-0427', short: 'Roof tear-off 4–6',     project: 'hollins', kind: 'work',     by: 'overland', to: 'freeman', start: 8,  due: 11, title: 'Tear-off & dry-in, Cottages 4–6', noisy: true, onsite: ['su_to'] },
+  { id: 'h-windows', ref: 'L-0428', short: 'Windows',  project: 'hollins', kind: 'work',     by: 'freeman',  to: 'hollins', start: 13, due: 17, title: 'Window replacement', deps: ['h-roof'] },
+  { id: 'h-firewalk', ref: 'L-0429', short: 'Fire marshal walk', project: 'hollins', kind: 'inspection', by: 'firemar', to: 'freeman', start: 19, due: 19, title: 'Fire marshal rough walkthrough', onsite: ['su_to'] },
+  { id: 'h-mech', ref: 'L-0430', short: 'Mech rough',     project: 'hollins', kind: 'work',     by: 'arcline',  to: 'freeman', start: 21, due: 25, title: 'Mechanical rough, Cottages 4–6', deps: ['h-windows'], onsite: ['arcline-crew-a'] },
+  { id: 'h-drywall', ref: 'L-0431', short: 'Drywall',  project: 'hollins', kind: 'work',     by: 'freeman',  to: 'hollins', start: 26, due: 34, title: 'Drywall & tape', deps: ['h-mech', 'h-firewalk'] },
+  { id: 'h-finish', ref: 'L-0432', short: 'Finishes',   project: 'hollins', kind: 'work',     by: 'freeman',  to: 'hollins', start: 35, due: 46, title: 'Finishes', deps: ['h-drywall'] },
+  { id: 'h-ffe', ref: 'L-0433', short: 'Owner FF&E',      project: 'hollins', kind: 'work',     by: 'hollins',  to: 'freeman', start: 47, due: 49, title: 'Owner FF&E install', deps: ['h-finish'], ownerFurnished: true },
+  { id: 'h-punch', ref: 'L-0434', short: 'Punch & clean',    project: 'hollins', kind: 'work',     by: 'freeman',  to: 'hollins', start: 50, due: 50, title: 'Punch & guest-ready clean', deps: ['h-ffe'], onsite: ['su_to'] },
+  { id: 'h-open', ref: 'L-0435', short: 'Re-open to guests',     project: 'hollins', kind: 'opening',  by: 'freeman',  to: 'hollins', start: 52, due: 52, title: 'Return cottages to guest inventory', deps: ['h-punch'] },
+
+  // ── THE HALYARD / opening +86 ────────────────────────────────────────────────
+  { id: 'y-steel', ref: 'L-0436', short: 'Steel inspection',    project: 'halyard', kind: 'inspection', by: 'norrell', to: 'freeman', start: -1, due: -1, title: 'Structural steel inspection', status: 'kept' },
+  { id: 'y-raildec', ref: 'L-0437', short: 'Glass rail decision',  project: 'halyard', kind: 'decision', by: 'you',      to: 'tallow',  start: 0,  due: 12, title: 'Approve glass-rail alternate' },
+  { id: 'y-railpo', ref: 'L-0438', short: 'Rail PO release',   project: 'halyard', kind: 'release',  by: 'pm_rc',    to: 'clearline', start: 10, due: 10, title: 'Release glass-rail PO', deps: ['y-raildec'] },
+  { id: 'y-railfab', ref: 'L-0439', short: 'Rail fabrication',  project: 'halyard', kind: 'delivery', by: 'clearline', to: 'freeman', start: 11, due: 52, title: 'Glass rail fabrication & delivery', deps: ['y-railpo'], slot: { latest: 11, next: 53 } },
+  { id: 'y-railset', ref: 'L-0440', short: 'Install rail',  project: 'halyard', kind: 'work',     by: 'freeman',  to: 'tallow',  start: 53, due: 56, title: 'Install glass rail', deps: ['y-railfab'], onsite: ['su_to'] },
+  { id: 'y-punch', ref: 'L-0441', short: 'Punch',    project: 'halyard', kind: 'work',     by: 'freeman',  to: 'tallow',  start: 80, due: 82, title: 'Punch', deps: ['y-railset'] },
+  { id: 'y-open', ref: 'L-0442', short: 'Opening',     project: 'halyard', kind: 'opening',  by: 'freeman',  to: 'tallow',  start: 86, due: 86, title: 'Turn over for opening', deps: ['y-punch'] },
+
+  // ── PURSUITS / RELATIONSHIPS ─────────────────────────────────────────────────
+  { id: 'p-mepprice', ref: 'L-0443', short: 'MEP pricing in', project: 'palmer', kind: 'delivery',  by: 'arcline',  to: 'freeman', start: -1, due: -1, title: 'MEP pricing received', status: 'kept' },
+  { id: 'p-gmp', ref: 'L-0444', short: 'GMP proposal',      project: 'palmer', kind: 'proposal',  by: 'freeman',  to: 'wren',    start: 14, due: 21, title: 'GMP proposal to Wren & Alder', deps: ['p-mepprice'] },
+  { id: 's-walk', ref: 'L-0445', short: 'Site walk with GM',     project: 'spa',    kind: 'meeting',   by: 'freeman',  to: 'hollins', start: 6,  due: 6,  title: 'Site walk with resort GM' },
+];
+
+// What changed since yesterday. `hoursAgo` relative to now.
+const events = [
+  { hoursAgo: 3,  type: 'slipped', commitment: 'e-walkin',   text: 'Corbin moved walk-in delivery', from: 15, to: 21, carried: { 'e-walkset': [16, 17] } },
+  { hoursAgo: 5,  type: 'window',  window: 'w-wedding',      text: 'Hollins Gap added a wedding weekend to the event calendar' },
+  { hoursAgo: 7,  type: 'slipped', commitment: 'e-mockup',   text: 'Halcyon moved plaster mockup approval', from: 2, to: 4 },
+  { hoursAgo: 9,  type: 'kept',    commitment: 'y-steel',    text: 'Structural steel inspection passed' },
+  { hoursAgo: 11, type: 'kept',    commitment: 'p-mepprice', text: 'Arcline delivered Palmer & Vine MEP pricing a week early' },
+  { hoursAgo: 14, type: 'note',    project: 'ember', party: 'wren', text: 'Wren & Alder ownership toured Ember; asked about timing for a third concept' },
+  { hoursAgo: 16, type: 'kept',    project: 'ember', party: 'you', text: 'Banquette fabric approved' },
+  { hoursAgo: 20, type: 'made',    commitment: 'e-pendship', text: 'Atelier Vass confirmed pendant ship date' },
+  { hoursAgo: 22, type: 'field',   text: '9 daily logs / 41 photos across 3 sites' },
+];
+
+window.FOS_DATA={DEMO,parties,resources,projects,windows,commitments,events};})();
+(function(){// FreemanOS — Ledger of Promises engine. Framework-agnostic; no UI, no network.
+// Everything the Operations Floor and The Line show is derived from here.
+
+const DEFAULT_LAG = 1;
+
+function createLedger({ projects, parties, resources, commitments, windows = [], events = [] }) {
+  const byId = new Map(commitments.map(c => [c.id, c]));
+  const dur = c => c.due - c.start;
+  const lag = c => c.lag ?? DEFAULT_LAG;
+
+  // Reverse edges: who depends on me?
+  const dependents = new Map(commitments.map(c => [c.id, []]));
+  for (const c of commitments) for (const d of c.deps ?? []) dependents.get(d)?.push(c.id);
+
+  function downstream(id, seen = new Set()) {
+    for (const n of dependents.get(id) ?? []) if (!seen.has(n)) { seen.add(n); downstream(n, seen); }
+    return seen;
+  }
+  function upstream(id, seen = new Set()) {
+    for (const n of byId.get(id)?.deps ?? []) if (!seen.has(n)) { seen.add(n); upstream(n, seen); }
+    return seen;
+  }
+
+  // Forward pass. Only commitments in `moveSet` are allowed to move (null = all);
+  // `overrides` forces a start date (e.g. "what if the roof waits for the wedding").
+  function forward(moveSet = null, overrides = {}) {
+    const memo = new Map();
+    const visit = id => {
+      if (memo.has(id)) return memo.get(id);
+      const c = byId.get(id);
+      let start = overrides[id] ?? c.start;
+      const movable = c.status !== 'kept' && (!moveSet || moveSet.has(id));
+      if (movable) {
+        for (const d of c.deps ?? []) start = Math.max(start, visit(d).finish + lag(c));
+        if (c.slot && start > c.slot.latest) start = Math.max(start, c.slot.next);
+      }
+      const r = { start, finish: start + dur(c) };
+      memo.set(id, r);
+      return r;
+    };
+    for (const c of commitments) visit(c.id);
+    return memo;
+  }
+
+  // Apply a replan: everything downstream of the roots moves to its earliest feasible dates.
+  function replan(rootIds, overrides = {}) {
+    const moveSet = new Set(rootIds);
+    for (const r of rootIds) downstream(r, moveSet);
+    const plan = forward(moveSet, overrides);
+    return commitments.map(c => {
+      const p = plan.get(c.id);
+      return p.start !== c.start ? { ...c, start: p.start, due: p.finish } : c;
+    });
+  }
+
+  const openingOf = pid => commitments.find(c => c.project === pid && c.kind === 'opening');
+
+  // Consequence of letting `rootIds` (and everything downstream) move.
+  function consequence(rootIds, overrides = {}) {
+    const moveSet = new Set(rootIds);
+    for (const r of rootIds) downstream(r, moveSet);
+    const plan = forward(moveSet, overrides);
+    const openings = [];
+    for (const p of projects) {
+      const o = openingOf(p.id);
+      if (!o || !moveSet.has(o.id)) continue;
+      const slip = plan.get(o.id).finish - o.due;
+      openings.push({ project: p.id, slip });
+    }
+    const moved = [...moveSet]
+      .map(id => ({ id, shift: plan.get(id).start - byId.get(id).start }))
+      .filter(m => m.shift > 0);
+    return { openings, moved, threatensOpening: openings.some(o => o.slip > 0) };
+  }
+
+  function collisions() {
+    const out = [];
+
+    // 1 · Sequence: a promise scheduled before the promise it depends on is kept.
+    for (const c of commitments) {
+      if (c.status === 'kept') continue;
+      for (const d of c.deps ?? []) {
+        const dep = byId.get(d);
+        const gap = dep.due + lag(c) - c.start;
+        if (gap > 0) out.push({
+          type: 'sequence', ids: [dep.id, c.id], project: c.project, gap,
+          summary: `${c.title} is scheduled ${gap}d before ${dep.title.toLowerCase()} allows`,
+          consequence: consequence([c.id]),
+        });
+      }
+    }
+
+    // 2 · Window: work that violates an operating-property constraint.
+    for (const w of windows) for (const c of commitments) {
+      if (c.project !== w.project || w.rule !== 'no-noise' || !c.noisy) continue;
+      if (c.start <= w.end && c.due >= w.start) out.push({
+        type: 'window', ids: [c.id], window: w.id, project: c.project,
+        summary: `${c.title} overlaps ${w.label.toLowerCase()}`,
+        consequence: consequence([c.id], { [c.id]: w.end + 1 }),
+      });
+    }
+
+    // 3 · Resource: one crew or person promised to two places at once.
+    for (const rid of Object.keys(resources)) {
+      const uses = commitments.filter(c => c.status !== 'kept' && (c.onsite ?? []).includes(rid));
+      for (let i = 0; i < uses.length; i++) for (let j = i + 1; j < uses.length; j++) {
+        const [a, b] = [uses[i], uses[j]];
+        if (a.project === b.project || a.start > b.due || b.start > a.due) continue;
+        // Two ways to resolve: either one waits for the other. Show both.
+        const options = [[a, b], [b, a]].map(([first, waits]) => ({
+          waits: waits.id,
+          ...consequence([waits.id], { [waits.id]: first.due + 1 }),
+        }));
+        out.push({
+          type: 'resource', ids: [a.id, b.id], resource: rid, projects: [a.project, b.project],
+          summary: `${resources[rid].name} is promised to two sites at once`,
+          options,
+          consequence: options.reduce((x, y) => (worst(y) < worst(x) ? y : x)), // least-bad option
+        });
+      }
+    }
+
+    // Rank: threatens an opening > conflicts; then by size of slip.
+    out.sort((x, y) => worst(y.consequence) - worst(x.consequence) || (y.gap ?? 0) - (x.gap ?? 0));
+    out.forEach((k, i) => { k.key = k.type + ':' + k.ids.join('+'); k.rank = i + 1; });
+    return out;
+  }
+  const worst = cons => Math.max(0, ...cons.openings.map(o => o.slip)) + (cons.threatensOpening ? 1000 : 0);
+
+  // Decisions waiting on leadership, each with its fuse: the last day it can be made
+  // without moving anything downstream.
+  function decisions() {
+    return commitments.filter(c => c.kind === 'decision' && c.status !== 'kept').map(c => {
+      const next = (dependents.get(c.id) ?? []).map(id => byId.get(id));
+      const fuse = Math.min(...next.map(n => n.start - lag(n)));
+      return { ...c, fuse, late: c.due > fuse, next: next.map(n => n.id), consequence: consequence([...next.map(n => n.id)]) };
+    });
+  }
+
+  // Opening-aligned view: every commitment as T-minus its project's opening.
+  function tMinus(id) {
+    const c = byId.get(id), o = openingOf(c.project);
+    return o ? { start: c.start - o.due, due: c.due - o.due } : null;
+  }
+
+  // What changed, linked to the collisions each change created.
+  function since(hours = 24) {
+    const cols = collisions();
+    return events.filter(e => e.hoursAgo <= hours).map(e => ({
+      ...e, i: events.indexOf(e),
+      caused: cols.filter(k => (e.window && k.window === e.window) ||
+        (e.commitment && k.ids.some(id => id === e.commitment || upstream(id).has(e.commitment)))),
+      exposed: e.commitment ? atRisk().filter(r => r.ids[0] === e.commitment) : [],
+    }));
+  }
+
+  // Promises with zero slack to the next promise: not yet a collision, one slip away.
+  function atRisk() {
+    const out = [];
+    for (const c of commitments) {
+      if (c.status === 'kept') continue;
+      for (const d of c.deps ?? []) {
+        const dep = byId.get(d);
+        if (dep.status === 'kept') continue;
+        if (dep.kind === 'delivery' && c.kind === 'work') continue; // delivered-then-installed is normal sequencing
+        const slack = c.start - (dep.due + lag(c));
+        if (slack === 0) out.push({ ids: [d, c.id], project: c.project, summary: `${dep.title} has no slack before ${c.title.toLowerCase()}` });
+      }
+    }
+    return out;
+  }
+
+  // Everything connected to a selection — drives linked selection across zones.
+  function related(sel) {
+    if (sel.project) return commitments.filter(c => c.project === sel.project).map(c => c.id);
+    if (sel.party) return commitments.filter(c => c.by === sel.party || c.to === sel.party || (c.onsite ?? []).includes(sel.party)).map(c => c.id);
+    if (sel.resource) return commitments.filter(c => (c.onsite ?? []).includes(sel.resource)).map(c => c.id);
+    if (sel.commitment) return [sel.commitment, ...upstream(sel.commitment), ...downstream(sel.commitment)];
+    return [];
+  }
+
+  return { byId, forward, downstream, upstream, consequence, collisions, decisions, atRisk, replan, dependents, tMinus, since, related, openingOf };
+}
+
+window.FOS_createLedger=createLedger;})();
+/* FreemanOS / First screen. Same DEMO ledger and engine; a calmer reading of it. */
+(() => {
+  "use strict";
+  const D = window.FOS_DATA, createLedger = window.FOS_createLedger;
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  const T0 = new Date(); T0.setHours(0, 0, 0, 0);
+  const DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], DAY = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], MONTH = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const dt = d => { const x = new Date(T0); x.setDate(x.getDate() + d); return x; };
+  const fd = d => { const x = dt(d); return `${DOW[x.getDay()]} ${x.getDate()} ${MON[x.getMonth()]}`; };
+  const WORDS = ["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
+  const word = n => WORDS[n] ?? String(n), lw = n => word(n).toLowerCase();
+  const pl = (n, s) => n === 1 ? s : s + "s";
+  const lc1 = t => /^[A-Z][a-z]/.test(t) ? t[0].toLowerCase() + t.slice(1) : t;
+
+  const P = Object.fromEntries(D.projects.map(p => [p.id, p]));
+  const PSHORT = { ember: "Ember", hollins: "Cottage Row", halyard: "Halyard", palmer: "Palmer & Vine", spa: "Spa" };
+  const party = id => D.parties[id] ?? D.resources[id] ?? { name: id };
+  const pname = id => party(id).name.split(" · ")[0].split(" / ")[0];
+  const STAGES = ["Precon", "Structure", "Envelope", "MEP", "Finishes", "Turnover"];
+  const ACTIVE = D.projects.filter(p => !p.pursuit);
+
+  const BASE = D.commitments.map(c => ({ ...c }));
+  const PROMISED = Object.fromEntries(BASE.filter(c => c.kind === "opening").map(c => [c.project, c.due]));
+  const build = list => { const L = createLedger({ ...D, commitments: list }); return { L, cols: L.collisions(), decs: L.decisions(), since: L.since(), byId: L.byId }; };
+  const BASEM = build(BASE);
+  let M = BASEM;
+  const S = { cur: BASE, stack: [], open: null, last: null };
+  const C = id => M.byId.get(id);
+  const openDue = pid => M.L.openingOf(pid)?.due;
+  const slip = cons => Math.max(0, ...cons.openings.map(o => o.slip));
+
+  /* Urgency is earned: only what would move an opening, or already has. */
+  function urgent(pid) {
+    const out = [];
+    const late = openDue(pid) - PROMISED[pid];
+    if (late > 0) out.push({ text: `Opening has moved ${late} ${pl(late, "day")}`, key: null });
+    for (const k of M.cols) {
+      if (!k.consequence.threatensOpening || !k.consequence.openings.some(o => o.project === pid && o.slip > 0)) continue;
+      const [a, b] = k.ids.map(C);
+      if (k.type === "sequence" && a.kind === "decision") { const d = M.decs.find(x => x.id === a.id); out.push({ text: `Decision needed by ${fd(d.fuse)}`, long: `The ${lc1(a.short)} is needed by ${fd(d.fuse)}`, key: k.key, dec: a.id }); }
+      else out.push({ text: `${b?.short ?? a.short} needs re-sequencing`, key: k.key });
+    }
+    return out;
+  }
+  const notes = pid => M.cols.filter(k => !k.consequence.threatensOpening && k.ids.some(id => C(id).project === pid));
+  function lately(pid) {
+    const e = M.since.find(e => (e.type === "kept" || e.type === "made") && (C(e.commitment)?.project === pid || e.project === pid));
+    if (e) return e.type === "made" ? e.text : e.text;
+    const k = S.cur.filter(c => c.project === pid && c.start <= 0 && c.due >= 0 && c.kind === "work")[0];
+    return k ? `${k.short} underway` : null;
+  }
+  const nextUp = pid => S.cur.filter(c => c.project === pid && c.status !== "kept" && c.start >= 0 && !["decision", "release"].includes(c.kind)).sort((a, b) => a.start - b.start)[0];
+
+  /* Actions */
+  let ACTS = [];
+  const act = (label, fn) => { ACTS.push(fn); return `<button class="act" data-act="${ACTS.length - 1}">${esc(label)}</button>`; };
+  const setDates = (id, s, d) => S.cur.map(c => c.id === id ? { ...c, start: s, due: d } : c);
+  function simulate(label, next) {
+    const before = M;
+    S.stack.push({ label, cur: S.cur }); S.cur = next; M = build(S.cur);
+    const moved = ACTIVE.map(p => ({ p, b: before.L.openingOf(p.id).due, a: openDue(p.id) })).filter(o => o.a !== o.b);
+    S.last = { label, text: moved.length ? moved.map(o => `${o.p.name} would open ${fd(o.a)}${o.a > PROMISED[o.p.id] ? `, ${o.a - PROMISED[o.p.id]} days past its promise` : ""}.`).join(" ") : "Every opening holds." };
+    render();
+  }
+  function undo() { if (!S.stack.length) return; S.cur = S.stack.pop().cur; M = build(S.cur); S.last = null; render(); }
+  function reset() { S.stack = []; S.cur = BASE; M = BASEM; S.last = null; render(); }
+
+  function decisionActs(decId) {
+    const d = M.decs.find(x => x.id === decId); if (!d) return "";
+    const c = C(decId);
+    return act("Simulate deciding today", () => simulate(`Decided the ${lc1(c.short)} today`, setDates(decId, 0, 0))) +
+      (d.late ? act(`Simulate deciding ${fd(c.due)}`, () => simulate(`Decided the ${lc1(c.short)} ${fd(c.due)}`, M.L.replan(d.next))) : "");
+  }
+
+  /* Summary: progress first */
+  function summary() {
+    const n = ACTIVE.length;
+    const holding = ACTIVE.filter(p => !urgent(p.id).length).length;
+    const decs = M.cols.filter(k => k.consequence.threatensOpening && k.type === "sequence" && C(k.ids[0]).kind === "decision");
+    const late = ACTIVE.filter(p => openDue(p.id) > PROMISED[p.id]);
+    let s = `${word(n)} jobs are moving forward`;
+    if (late.length) s += `. ${late.map(p => p.name).join(" and ")} ${late.length > 1 ? "have" : "has"} moved past ${late.length > 1 ? "their" : "its"} promised opening.`;
+    else s += `, and every opening is on schedule.${decs.length ? ` ${word(decs.length)} ${pl(decs.length, "decision")} from you keep${decs.length === 1 ? "s" : ""} it that way.` : ""}`;
+    return s;
+  }
+
+  function renderJobs() {
+    $("jobs").innerHTML = ACTIVE.map(p => {
+      const od = openDue(p.id), late = od - PROMISED[p.id], si = STAGES.indexOf(p.stage);
+      const u = urgent(p.id), lt = lately(p.id), nx = nextUp(p.id), open = S.open === p.id;
+      const track = STAGES.map((_, i) => i < si ? `<i class="done"></i>` : i === si ? `<i><b style="width:50%"></b></i>` : `<i></i>`).join("");
+      const ahead = open ? S.cur.filter(c => c.project === p.id && c.status !== "kept" && c.due >= 0 && c.kind !== "release").sort((a, b) => (a.kind === "decision" ? a.due : a.start) - (b.kind === "decision" ? b.due : b.start)).slice(0, 7) : [];
+      const flagged = new Set(M.cols.filter(k => k.consequence.threatensOpening).flatMap(k => k.ids));
+      const noted = new Set(notes(p.id).flatMap(k => k.ids));
+      return `<li class="job${open ? " open" : ""}"><button data-job="${p.id}" aria-expanded="${open}">
+        <span><span class="name">${esc(p.name.split(" / ").pop())}</span><span class="who">${esc(pname(p.client))}</span></span>
+        <span class="journey"><span class="track">${track}</span><span class="stages">${STAGES.map((s, i) => `<span class="${i === si ? "now" : ""}">${i === si ? s : i === 0 || i === 5 ? s : ""}</span>`).join("")}</span>
+          <dl class="notes">${lt ? `<dt>Lately</dt><dd>${esc(lt)}</dd>` : ""}${nx ? `<dt>Next</dt><dd>${esc(nx.kind === "opening" ? "Opening" : nx.short)}, ${fd(nx.start)}</dd>` : ""}</dl></span>
+        <span class="when"><span class="days">${od}<small>days</small></span><span class="date">Opens ${fd(od)}${late > 0 ? `, ${late} late` : ""}</span>
+          ${u.map(x => `<span class="flag"><span class="dot"></span>${esc(x.text)}</span>`).join("")}</span></button>
+        <div class="more">
+          <div class="ahead"><h3>Between now and opening</h3><ol>${ahead.map(c => `<li class="${flagged.has(c.id) ? "flagged" : noted.has(c.id) ? "note" : ""}"><span class="m">${fd(c.kind === "decision" ? c.due : c.start)}</span><span>${esc(c.kind === "opening" ? "Opening" : c.short)}</span><span class="m">${esc(pname(c.by))}</span></li>`).join("")}</ol></div>
+          <div class="side">${u.filter(x => x.dec).map(x => { const d = M.decs.find(y => y.id === x.dec); return `<h3>Yours</h3><p>${esc(x.long)}. After that, ${esc(lc1(C(d.next[0]).short))} slips and the opening moves ${slip(d.consequence)} days.</p><div class="acts">${decisionActs(x.dec)}</div>`; }).join("")}
+            ${notes(p.id).length ? `<h3>Sequencing notes</h3>${notes(p.id).map(k => `<p class="quiet">${esc(noteText(k))}</p>`).join("")}<p class="quiet">None of these move the opening.</p>` : ""}
+            ${S.last ? `<h3>Simulation</h3><p>${esc(S.last.text)}</p><div class="acts">${act("Undo", undo)}</div>` : ""}</div>
+        </div></li>`;
+    }).join("");
+  }
+  function noteText(k) {
+    const [a, b] = k.ids.map(C);
+    if (k.type === "sequence") return `${b.short} is booked before the ${lc1(a.short)}.`;
+    if (k.type === "window") return `${a.short} overlaps a wedding weekend.`;
+    return `${D.resources[k.resource].name.replace(/ refrigeration crew a$/i, " crew A")} is booked on two jobs from ${fd(Math.max(a.start, b.start))}.`;
+  }
+
+  function renderWeek() {
+    const rows = [];
+    for (const d of M.decs) if (d.fuse >= 0 && d.fuse <= 6) rows.push({ d: d.fuse, t: `Last day for the ${lc1(d.short)}`, p: d.project, hot: d.late });
+    for (const c of S.cur) if (c.status !== "kept" && c.start >= 0 && c.start <= 6 && !["decision", "release"].includes(c.kind)) rows.push({ d: c.start, t: c.short, p: c.project });
+    rows.sort((a, b) => a.d - b.d || (b.hot ? 1 : 0) - (a.hot ? 1 : 0));
+    $("week").innerHTML = rows.length ? rows.map(r => `<li><span class="m">${r.d === 0 ? "Today" : fd(r.d)}</span><span>${r.hot ? `<span class="dot"></span>` : ""}${esc(r.t)}</span><span class="m">${esc(PSHORT[r.p])}</span></li>`).join("") : `<li class="m">A quiet week.</li>`;
+  }
+  function renderFeed() {
+    // Progress first, then opportunity, then the rest.
+    const rank = e => e.type === "kept" ? 0 : e.type === "note" ? 1 : e.type === "made" ? 2 : 3;
+    const items = M.since.filter(e => e.type !== "field").slice().sort((a, b) => rank(a) - rank(b) || a.hoursAgo - b.hoursAgo).slice(0, 3);
+    const line = e => {
+      const c = e.commitment && C(e.commitment);
+      if (e.type === "slipped" && c) return [`${c.short.replace(/ arrives$/, "")} moved ${e.to - e.from} days`, `${PSHORT[c.project]}, opening unaffected`];
+      if (e.type === "note") return [`${pname(e.party).replace(/ Hospitality$/, "")} asked about a third concept`, "Relationship"];
+      if (e.type === "window") return ["Wedding weekend added", PSHORT[D.windows.find(w => w.id === e.window).project]];
+      return [e.text.replace("Arcline delivered Palmer & Vine MEP pricing a week early", "MEP pricing arrived a week early"), PSHORT[c?.project ?? e.project] ?? ""];
+    };
+    $("feed").innerHTML = items.map(e => { const [t, m] = line(e); return `<li>${esc(t)}<span class="m">${esc(m)}, ${e.hoursAgo}h ago</span></li>`; }).join("") + `<li class="more-link">${M.since.length - items.length} more updates</li>`;
+  }
+  function renderMine() {
+    const decs = M.decs.slice().sort((a, b) => a.fuse - b.fuse);
+    $("mine").innerHTML = decs.map(d => `<li><button data-job="${d.project}"><span class="t">${d.late ? `<span class="dot"></span>` : ""}${esc(d.short.replace(/ decision$/, ""))}</span><span class="m">${esc(P[d.project].name)}, by ${fd(d.fuse)}</span></button></li>`).join("") || `<li class="m">Nothing is waiting on you.</li>`;
+  }
+
+  function render() {
+    ACTS = [];
+    const x = dt(0);
+    $("today").textContent = `${DAY[x.getDay()]} ${x.getDate()} ${MONTH[x.getMonth()]}`;
+    $("summary").innerHTML = `<span class="m">${new Date().getHours() < 12 ? "Good morning." : new Date().getHours() < 18 ? "Good afternoon." : "Good evening."}</span>${esc(summary())}`;
+    const n = S.stack.length;
+    $("sim").className = "sim" + (n ? " on" : "");
+    $("sim").innerHTML = n ? `<span>Simulating ${n} ${pl(n, "change")}</span>${act("Undo", undo)}${act("Reset", reset)}` : "";
+    $("sim").querySelectorAll(".act").forEach(b => b.classList.remove("act"));
+    renderJobs(); renderWeek(); renderFeed(); renderMine();
+  }
+
+  document.addEventListener("click", e => {
+    const a = e.target.closest("[data-act]"); if (a) { const fn = ACTS[+a.dataset.act]; if (fn) fn(); return; }
+    const j = e.target.closest("[data-job]"); if (j) { S.open = S.open === j.dataset.job ? null : j.dataset.job; render(); if (S.open) document.querySelector(`.job.open`)?.scrollIntoView({ block: "nearest", behavior: "smooth" }); }
+  });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") { S.open = null; render(); } else if (e.key === "u" || e.key === "U") undo(); });
+  try { const p = localStorage.getItem("fos-palette"); if (p) { document.documentElement.dataset.palette = p; document.documentElement.dataset.theme = p === "umber" ? "dark" : "light"; } } catch (_) {}
+  render();
 })();
-</script></body></html>
+</script>
+</body>
+</html>
