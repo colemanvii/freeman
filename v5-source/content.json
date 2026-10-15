@@ -1,12 +1,50 @@
 {
   "projects": [
     {
+      "name": "Woodlands at Barnsley Resort",
+      "location": "Adairsville, Georgia",
+      "type": "Hospitality",
+      "summary": "",
+      "details": "",
+      "credits": [
+        [
+          "Client",
+          "South Street Partners"
+        ],
+        [
+          "Interior Design",
+          "David Thompson Architecture"
+        ]
+      ],
+      "slug": "woodlands-at-barnsley-resort",
+      "id": "15"
+    },
+    {
+      "name": "Dugan\u2019s Pub",
+      "location": "Adairsville, Georgia",
+      "type": "Hospitality",
+      "summary": "",
+      "details": "",
+      "credits": [
+        [
+          "Client",
+          "South Street Partners"
+        ],
+        [
+          "Interior Design",
+          "David Thompson Architecture"
+        ]
+      ],
+      "slug": "dugans-pub",
+      "id": "16"
+    },
+    {
       "name": "Beetlecat",
       "location": "Atlanta, Georgia",
       "type": "Hospitality",
-      "summary": "Designed as a warm, layered hospitality space, Beetlecat required a balance of precision and personality. Freeman GC led construction with a focus on collaboration, sequencing, and detail—bringing together materials, systems, and finishes in a way that feels cohesive and lived-in. The result is a space that enhances the rhythm of service while inviting guests to linger.",
+      "summary": "Designed as a warm, layered hospitality space, Beetlecat required a balance of precision and personality. Freeman GC led construction with a focus on collaboration, sequencing, and detail\u2014bringing together materials, systems, and finishes in a way that feels cohesive and lived-in. The result is a space that enhances the rhythm of service while inviting guests to linger.",
       "details": "",
-      "quote": "Freeman treated our project like it mattered — and it showed in the finished work.",
+      "quote": "Freeman treated our project like it mattered \u2014 and it showed in the finished work.",
       "credits": [
         [
           "Client",
@@ -287,7 +325,7 @@
       "name": "Savi Provisions",
       "location": "Emory Village, Atlanta",
       "type": "Retail",
-      "summary": "At Savi Provisions, construction plays a supporting role in the customer experience. Freeman worked closely with the project team to execute a space that balances durability with refinement—allowing materials, layout, and flow to work together naturally.",
+      "summary": "At Savi Provisions, construction plays a supporting role in the customer experience. Freeman worked closely with the project team to execute a space that balances durability with refinement\u2014allowing materials, layout, and flow to work together naturally.",
       "details": "",
       "quote": "",
       "credits": [
@@ -391,7 +429,7 @@
       "name": "Dalton Surgery Center",
       "location": "Dalton, Georgia",
       "type": "Healthcare",
-      "summary": "Designed to support both clinical precision and patient comfort, Dalton Surgery Center was constructed with care at every level. Freeman approached the project with a focus on coordination, durability, and long-term performance—creating a space that functions seamlessly behind the scenes.",
+      "summary": "Designed to support both clinical precision and patient comfort, Dalton Surgery Center was constructed with care at every level. Freeman approached the project with a focus on coordination, durability, and long-term performance\u2014creating a space that functions seamlessly behind the scenes.",
       "details": "",
       "quote": "",
       "credits": [
@@ -433,7 +471,7 @@
       "project": "The Optimist",
       "link": "the-optimist",
       "status": "Portfolio / detail crop",
-      "text": "A close reading of the Oyster Bar refresh. Freeman’s project account identifies a custom radius window, curved tile around the oven, custom millwork and stainless steel work. Together, these describe a project whose small scope contains several distinct trades.",
+      "text": "A close reading of the Oyster Bar refresh. Freeman\u2019s project account identifies a custom radius window, curved tile around the oven, custom millwork and stainless steel work. Together, these describe a project whose small scope contains several distinct trades.",
       "note": "This is a crop of an existing portfolio photograph, not a separate field visit.",
       "source": "The Optimist published project account"
     },
@@ -467,7 +505,7 @@
       "project": "Barnsley Gardens",
       "link": "barnsley-gardens",
       "status": "Portfolio photograph",
-      "text": "Freeman’s account of Barnsley Gardens emphasizes sequencing and respect for place. The portfolio photograph brings the built environment and its surrounding landscape into the same frame. This entry pairs that image with its project record.",
+      "text": "Freeman\u2019s account of Barnsley Gardens emphasizes sequencing and respect for place. The portfolio photograph brings the built environment and its surrounding landscape into the same frame. This entry pairs that image with its project record.",
       "note": "Existing portfolio image; no additional site visit or field findings are implied. Photography credited by Freeman to Jared Swafford.",
       "source": "Barnsley Gardens published project account"
     },
@@ -490,7 +528,7 @@
       "project": "Illustrative study",
       "status": "SAMPLE / AI-generated imagery",
       "text": "A sample record demonstrates how a future construction sequence could preserve an opening from exposed structure through installation and completion. Each state is kept in the same frame so the change can be read without animation.",
-      "note": "All four frames are AI-generated images inherited from the repository’s earlier study. They are not photographs of Freeman work. No real project or dates are assigned.",
+      "note": "All four frames are AI-generated images inherited from the repository\u2019s earlier study. They are not photographs of Freeman work. No real project or dates are assigned.",
       "source": "Existing repository / field-notes-assets/README.md"
     }
   ]
