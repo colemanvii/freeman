@@ -131,7 +131,7 @@ with sync_playwright() as p:
         check(f"{tag} tap just above a project name opens it", path(pg).startswith("/project-"), path(pg))
         gallery = next(p["slug"] for p in RECORDS["projects"] if p.get("gallery"))
         pg.goto(BASE + f"/project-{gallery}"); pg.wait_for_selector(".pg-credits .credit-external")
-        ctx.route(re.compile(r"^https?://(?!127\.0\.0\.1|localhost)"), lambda r: r.abort())
+        ctx.route(lambda u: not u.startswith(BASE), lambda r: r.abort())  # credit links open external sites; keep them offline
         credit = pg.locator(".pg-credits .credit-external").first
         credit.tap(); pg.wait_for_timeout(300)
         bg = credit.evaluate("e => getComputedStyle(e).backgroundColor")
