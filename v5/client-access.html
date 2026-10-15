@@ -206,7 +206,7 @@ body[data-view=home] .left h1{font-size:clamp(28px,3.8vw,60px);color:var(--orang
   $('body').addEventListener('click', (e) => {
     const r = e.target.closest('[data-role]');
     const st = e.target.closest('[data-step]');
-    if (e.target.closest('[data-team]')) { location.assign('team-os.html'); return; }
+    if (e.target.closest('[data-team]')) { location.assign('/team-os?entry=1'); return; }
     if (r) go({ role: r.dataset.role, step: -1 });
     else if (st) go({ role: view.role, step: Number(st.dataset.step) });
   });
