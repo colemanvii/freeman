@@ -368,7 +368,7 @@
       .join("");
     const inProgress = [
       ["Barnsley Branded Residential", "Adairsville, Georgia", "Residential"],
-      ["Magnolia Commons Retail Center", "Calhoun, Georgia", "Retail"],
+      ["Magnolia Commons Retail Center", "Cumming, GA", "Retail"],
       ["Little Rey", "Dunwoody, Georgia", "Hospitality"],
     ];
     const activeRows = inProgress.map(([name, place, type]) =>
