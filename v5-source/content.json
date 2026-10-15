@@ -176,6 +176,25 @@
       "id": "10"
     },
     {
+      "name": "Brewhouse Cafe",
+      "location": "Atlanta, Georgia",
+      "type": "Hospitality",
+      "summary": "",
+      "details": "",
+      "credits": [
+        [
+          "Client",
+          "South Downtown"
+        ],
+        [
+          "Interior Design",
+          "Gentle Works"
+        ]
+      ],
+      "slug": "brewhouse-cafe",
+      "id": "11"
+    },
+    {
       "name": "Bocado Pizza",
       "location": "Atlanta, Georgia",
       "type": "Commercial",

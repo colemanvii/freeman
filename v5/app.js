@@ -330,6 +330,8 @@
   const creditSites = {
     "Rocket Farm Restaurants": "https://www.rocketfarmrestaurants.com/",
     "Indigo Road Hospitality": "https://www.theindigoroad.com/",
+    "South Downtown": "https://www.southdowntownatl.com/",
+    "Gentle Works": "https://gentle.works/",
     "Electric Hospitality": "https://www.electric-hospitality.com/",
     "Blur Workshop": "https://www.blurworkshop.com/",
     "David Thompson Studio": "https://dthompsonarchitect.com/",
