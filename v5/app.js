@@ -333,6 +333,8 @@
     "Wright Gardner Architects": "https://www.wrightgardnerarchitect.com/",
     "NO Architecture": "https://www.no-arch.com/",
     "Azalea Marketplace": "https://azaleamarket.com/",
+    "South Street Partners": "https://southstreetpartners.com/",
+    "David Thompson Architecture": "https://dthompsonarchitect.com/",
     "South Downtown": "https://www.southdowntownatl.com/",
     "Gentle Works": "https://gentle.works/",
     "Electric Hospitality": "https://www.electric-hospitality.com/",

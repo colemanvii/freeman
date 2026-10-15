@@ -1,6 +1,44 @@
 {
   "projects": [
     {
+      "name": "Woodlands at Barnsley Resort",
+      "location": "Adairsville, Georgia",
+      "type": "Hospitality",
+      "summary": "",
+      "details": "",
+      "credits": [
+        [
+          "Client",
+          "South Street Partners"
+        ],
+        [
+          "Interior Design",
+          "David Thompson Architecture"
+        ]
+      ],
+      "slug": "woodlands-at-barnsley-resort",
+      "id": "15"
+    },
+    {
+      "name": "Dugan’s Pub",
+      "location": "Adairsville, Georgia",
+      "type": "Hospitality",
+      "summary": "",
+      "details": "",
+      "credits": [
+        [
+          "Client",
+          "South Street Partners"
+        ],
+        [
+          "Interior Design",
+          "David Thompson Architecture"
+        ]
+      ],
+      "slug": "dugans-pub",
+      "id": "16"
+    },
+    {
       "name": "Beetlecat",
       "location": "Atlanta, Georgia",
       "type": "Hospitality",
@@ -108,7 +146,7 @@
       ]
     },
     {
-      "name": "Barnsley Lazy River Pool",
+      "name": "Barnsley Family Pool",
       "location": "Adairsville, Georgia",
       "type": "Hospitality",
       "summary": "This Barnsley project defined by subtlety, sequencing, and respect for place. Freeman approached construction with a focus on precision and care, allowing materials, landscape, and structure to work together seamlessly. The result is an environment that feels settled and enduring, shaped as much by restraint as by craftsmanship.",
@@ -117,7 +155,7 @@
       "credits": [
         [
           "Client",
-          "Barnsley Resorts"
+          "South Street Partners"
         ],
         [
           "Photography",
@@ -195,7 +233,7 @@
       "id": "11"
     },
     {
-      "name": "Mule Train Atlanta",
+      "name": "Mule Train",
       "location": "Atlanta, Georgia",
       "type": "Hospitality",
       "summary": "",
