@@ -25,7 +25,7 @@ def raw(method,path,body=None,headers=None):
     return status,headers,data
 
 marker="Every name, date and event is fictional"
-gate="Enter the team password"
+gate="IDENTIFICATION REQUIRED"
 paths=["/team-os","/team-os.html","/team-os/","/team%2Dos","/%74eam-os","//team-os","///team-os","/%2Fteam-os","/\\team-os","/./team-os","/x/../team-os","/team-os%2Ehtml","/team-os.ht%6dl","/team%252Dos","/TEAM-OS"]
 for path in paths:
     for method in ["GET","HEAD"]:
@@ -49,19 +49,24 @@ status,headers,data=raw("GET","/team-os",headers={"Cookie":"fos_session=garbage"
 check("invalid cookie rejected",status==200 and gate in data)
 status,headers,data=raw("HEAD","/team-os.html")
 check("legacy .html redirects",status==308 and headers.get("location")=="/team-os")
+status,headers,data=raw("GET","/team-os?entry=1",headers={"Cookie":session})
+check("entry route prompts despite session",status==200 and gate in data and marker not in data)
+check("entry route expires old session",headers.get("set-cookie","").find("Max-Age=0")>=0)
 with sync_playwright() as p:
     b=p.chromium.launch()
     for name,settings in [("desktop",{"viewport":{"width":1440,"height":900}}),("mobile",{"viewport":{"width":390,"height":844},"is_mobile":True,"has_touch":True})]:
         context=b.new_context(**settings);page=context.new_page()
         page.goto(BASE+"/client-access");page.locator("[data-team]").click()
-        page.wait_for_url("**/team-os")
+        page.wait_for_url("**/team-os?entry=1")
         check(name+" enters gate",gate in page.content())
         check(name+" no horizontal overflow",page.evaluate("document.documentElement.scrollWidth <= innerWidth"))
         page.locator("#password").fill(PASSWORD);page.locator("button[type=submit]").click()
         page.wait_for_url("**/team-os")
         check(name+" can log in",marker in page.content())
-        page.goto(BASE+"/client-access");page.locator("[data-team]").click();page.wait_for_url("**/team-os")
-        check(name+" return visit stays logged in",marker in page.content())
+        page.goto(BASE+"/client-access");page.locator("[data-team]").click();page.wait_for_url("**/team-os?entry=1")
+        check(name+" return visit requires reauthentication",gate in page.content() and marker not in page.content())
+        page.locator("#password").fill(PASSWORD);page.locator("button[type=submit]").click();page.wait_for_url("**/team-os")
+        check(name+" reauthentication grants access",marker in page.content())
         context.close()
     b.close()
 import os
