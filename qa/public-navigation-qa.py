@@ -153,6 +153,19 @@ with sync_playwright() as p:
             }""")
             check(f"{tag} {r} tap areas do not overlap", not clashes, clashes)
         ctx.close()
+
+    # Credit links read as one name: every word (and the arrow) shares the link's colour, desktop and phone.
+    for (w, h, touch) in [(1440, 900, False), (375, 667, True)]:
+        ctx = br.new_context(viewport={"width": w, "height": h}, is_mobile=touch, has_touch=touch)
+        ctx.add_init_script("try{sessionStorage.setItem('fgc-intro-seen','1')}catch(e){}")
+        pg = ctx.new_page()
+        for p in RECORDS["projects"]:
+            r = f"/project-{p['slug']}"
+            pg.goto(BASE + r); pg.wait_for_selector("#main > *", state="attached")
+            mixed = pg.evaluate("""() => [...document.querySelectorAll('.credit-external')].filter((a) =>
+              new Set([...a.querySelectorAll('.hover-word,.credit-arrow')].map((s) => getComputedStyle(s).color)).size > 1).map((a) => a.textContent.trim())""")
+            check(f"{w}x{h} {r} credit links are one colour", not mixed, mixed)
+        ctx.close()
     br.close()
 
 failed = [r for r in results if not r["ok"]]

@@ -303,6 +303,8 @@ body[data-route="contact"] .viewport{display:flex}
 /* Contact: when the form cannot fit (short phones, Safari toolbars showing), the page area scrolls
    like Company instead of cutting off the email field and SEND. Auto margins keep the top in view. */
 @media(max-width:760px){body[data-route="contact"] .viewport{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}body[data-route="contact"] .viewport::-webkit-scrollbar{display:none}}
+/* The label span inside credit links keeps the link colour (".reading .data span:first-child" mutes label cells). */
+.reading .data a .tap-label{color:inherit}
 @media(pointer:coarse){
  /* Highlights hug the label as on desktop. Boxes keep their size (44px entrance rows, 28px project and
     credit links); the pressed highlight paints the inline label inside them, and ::after adds hit area. */
@@ -314,6 +316,7 @@ body[data-route="contact"] .viewport{display:flex}
  .palette-chip{position:relative}.palette-chip::after{content:"";position:absolute;inset:-11px -8px}
  .contact-sheet>a{position:relative}.contact-sheet>a::after{content:"";position:absolute;inset:-7px -4px}
  /* A tap must not leave a sticky hover highlight (iOS keeps :hover until the next tap); show it while pressed. */
+ .credit-external:hover,.credit-external:active{background:transparent;color:inherit}
  .mobile-home-nav a:hover,.mobile-home-nav a:active,.site-nav a:hover,.contact-inquiry button:hover,.pg-credits .credit-external:hover,.pg-credits .credit-external:active{background:transparent;color:var(--ink)}
  .site-nav a.is-current:hover{color:var(--orange)}
  .client-access-entry:hover,.pi-client.credit-external:hover,.pi-arch.credit-external:hover,.pi-client.credit-external:active,.pi-arch.credit-external:active{background:transparent;color:var(--muted)}
