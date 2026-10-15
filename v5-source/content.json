@@ -233,6 +233,21 @@
       "id": "13"
     },
     {
+      "name": "Azalea Marketplace",
+      "location": "Atlanta, Georgia",
+      "type": "Retail",
+      "summary": "",
+      "details": "",
+      "credits": [
+        [
+          "Client",
+          "Azalea Marketplace"
+        ]
+      ],
+      "slug": "azalea-marketplace",
+      "id": "14"
+    },
+    {
       "name": "Bocado Pizza",
       "location": "Atlanta, Georgia",
       "type": "Commercial",
