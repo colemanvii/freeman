@@ -715,6 +715,8 @@
     if (PALETTES.includes(state.palette) && state.palette !== palette) applyPalette(state.palette);
     render(parse(location.href), state, { nav: true });
   });
+  // iOS Safari applies :active (the touch highlight) only when a touch listener exists.
+  document.addEventListener("touchstart", () => {}, { passive: true });
   // Safari restores pages from the back/forward cache without re-running scripts.
   window.addEventListener("pageshow", (e) => {
     if (e.persisted) document.querySelectorAll(".freeman-intro").forEach((s) => s.remove());

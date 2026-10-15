@@ -290,3 +290,28 @@ body[data-route="contact"] .viewport{display:flex}
 .pg-credits .credit-external{display:inline-block;overflow-wrap:anywhere}
 .pg-credits .credit-external:hover,.pg-credits .credit-external:focus-visible{background:var(--orange);color:var(--paper)}
 @media(pointer:coarse){.credit-external{min-height:28px}.pi-project-link{min-height:28px}}
+
+/* Phone usability (fix/freeman-mobile). Touch and phone widths only; the desktop reference is unchanged. */
+/* Contact: when the form cannot fit (short phones, Safari toolbars showing), the page area scrolls
+   like Company instead of cutting off the email field and SEND. Auto margins keep the top in view. */
+@media(max-width:760px){body[data-route="contact"] .viewport{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}body[data-route="contact"] .viewport::-webkit-scrollbar{display:none}}
+@media(pointer:coarse){
+ /* Highlights hug the label as on desktop; the 44px row pitch and tap area come from margin and ::after. */
+ .mobile-home-nav>a{display:block;min-height:0;line-height:1.2;margin:calc((44px - 1.2em)/2) 0;position:relative}
+ .mobile-home-nav>a::after{content:"";position:absolute;inset:calc((1.2em - 44px)/2) -8px}
+ .pi-project-link,.credit-external{position:relative;min-height:0}
+ .pi-project-link{margin-bottom:calc(28px - 1.45em)}
+ .pi-project-link::after{content:"";position:absolute;inset:-16px -8px calc(-2px - (28px - 1.45em))}
+ .credit-external{margin-bottom:calc(28px - 1.5em)}
+ .credit-external::after{content:"";position:absolute;inset:-4px -4px -10px}
+ /* Small controls: larger invisible hit areas, same drawing. */
+ .client-access-entry::after{content:"";position:absolute;inset:-15px -8px}
+ .palette-chip{position:relative}.palette-chip::after{content:"";position:absolute;inset:-10px -7px}
+ .contact-sheet>a{position:relative}.contact-sheet>a::after{content:"";position:absolute;inset:-7px -4px}
+ /* A tap must not leave a sticky hover highlight (iOS keeps :hover until the next tap); show it while pressed. */
+ .mobile-home-nav a:hover,.site-nav a:hover,.contact-inquiry button:hover,.pg-credits .credit-external:hover{background:transparent;color:var(--ink)}
+ .site-nav a.is-current:hover{color:var(--orange)}
+ .client-access-entry:hover,.pi-client.credit-external:hover,.pi-arch.credit-external:hover{background:transparent;color:var(--muted)}
+ .pi-project-link:hover{background:transparent!important;color:var(--ink)!important}
+ .mobile-home-nav a:active,.site-nav a:active,.client-access-entry:active,.credit-external:active,.contact-inquiry button:active,.pi-project-link:active{background:var(--orange)!important;color:var(--paper)!important}
+}
