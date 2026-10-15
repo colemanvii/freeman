@@ -296,6 +296,14 @@
   }
 
   /* ---------- COMPANY: the company, as an editorial reading page ---------- */
+  // Leadership biographies and original portraits: brutalist/data/company.js.
+  // Superintendent names and titles supplied by Freeman, 15 October 2026.
+  const companyPeople = [
+    { id: "gabe-freeman", name: "Gabe Freeman", role: "President", photo: "assets/people/gabe-freeman.jpg", bio: "Gabe leads Freeman General Contracting, bringing a background in project management and hands-on, ground-up construction." },
+    { id: "cameron-dumbi", name: "Cameron Dumbi", role: "Superintendent" },
+    { id: "mac-thompson", name: "Mac Thompson", role: "Superintendent" },
+    { id: "jimmy-smith", name: "Jimmy Smith", role: "Superintendent" },
+  ];
   function company() {
     // One static view: headline and introduction; services, people and location. No sheets.
     const services = [
@@ -313,7 +321,32 @@
     vp.innerHTML = `<div class="co-frame"><div class="co"><section class="co-intro"><h2 class="co-head">Built for generations.</h2><p>Freeman General Contracting is an independent builder based in Cartersville, Georgia.</p><p>We believe how something is built matters as much as what is built. Good work requires trust, judgment, and attention to every detail.</p><p>We work with people who believe the same.</p></section><section class="co-facts"><h3 class="co-label">WHAT WE DO</h3><dl class="co-list co-services">${services
       .map(([k, v]) => row(k, v))
       .join("")}</dl><div class="co-pair"><div><h3 class="co-label">Founder</h3><dl class="co-list">${row("Gabe Freeman", "President")}</dl></div><div><h3 class="co-label">Based in</h3><dl class="co-list">${row("Cartersville, Georgia", "")}</dl></div></div></section></div></div>`;
-    words(vp);
+    const overview = vp.innerHTML;
+    const params = new URL(location.href).searchParams;
+    let person = companyPeople.find((p) => p.id === params.get("person")) || companyPeople[0];
+    let about = params.get("view") === "about";
+    function drawCompany() {
+      vp.classList.add("company-viewport");
+      vp.innerHTML = `<div class="co-shell"><nav class="co-switch" aria-label="Company views"><button type="button" data-company-view="about" aria-pressed="${about}"><span class="phrase">ABOUT</span></button><button type="button" data-company-view="people" aria-pressed="${!about}"><span class="phrase">PEOPLE</span></button></nav><div class="co-content">${about ? overview : `<div class="co-people"><div class="co-person-left"><nav class="co-roster" aria-label="Our people">${companyPeople.map((p) => `<button type="button" data-person="${p.id}" aria-pressed="${p.id === person.id}"><span class="phrase">${esc(p.name)}</span></button>`).join("")}</nav><label class="co-person-select">Our people<select aria-label="Choose a team member">${companyPeople.map((p) => `<option value="${p.id}"${p.id === person.id ? " selected" : ""}>${esc(p.name)}</option>`).join("")}</select></label><article class="co-person-detail" aria-live="polite" aria-atomic="true"><h2>${esc(person.name)}</h2><p class="co-person-role">${esc(person.role)}</p>${person.bio ? `<p class="co-person-bio">${esc(person.bio)}</p>` : ""}</article></div><figure class="co-portrait">${person.photo ? `<img src="${esc(person.photo)}" alt="${esc(person.name)}" decoding="async">` : `<div class="co-portrait-pending"><span>Portrait forthcoming</span></div>`}<figcaption>${esc(person.name)}</figcaption></figure></div>`}</div></div>`;
+      vp.querySelectorAll("[data-company-view]").forEach((button) => {
+        button.onclick = () => { about = button.dataset.companyView === "about"; updateCompany(); vp.querySelector(`[data-company-view="${about ? "about" : "people"}"]`).focus({ preventScroll: true }); };
+      });
+      vp.querySelectorAll("[data-person]").forEach((button) => {
+        button.onclick = () => { person = companyPeople.find((p) => p.id === button.dataset.person); updateCompany(); vp.querySelector(`[data-person="${person.id}"]`).focus({ preventScroll: true }); };
+      });
+      const select = vp.querySelector(".co-person-select select");
+      if (select) select.onchange = () => { person = companyPeople.find((p) => p.id === select.value); updateCompany(); vp.querySelector(".co-person-select select").focus({ preventScroll: true }); };
+      words(vp);
+    }
+    function updateCompany() {
+      const url = new URL(location.href);
+      url.searchParams.delete("sheet");
+      if (about) { url.searchParams.set("view", "about"); url.searchParams.delete("person"); }
+      else { url.searchParams.delete("view"); url.searchParams.set("person", person.id); }
+      hist.write("replaceState", { ...hist.state }, url.href);
+      drawCompany();
+    }
+    drawCompany();
     pageCount = 1;
     renderPage = () => {};
     count();
