@@ -17,10 +17,6 @@
           "Jared Swafford"
         ],
         [
-          "Interior Design",
-          "Chuck Marie Studio"
-        ],
-        [
           "Total sq. ft.",
           "2,000+"
         ],
@@ -126,10 +122,6 @@
         [
           "Photography",
           "Jared Swafford"
-        ],
-        [
-          "Interior Design",
-          "Chuck Marie Studio"
         ],
         [
           "Total sq. ft.",
@@ -254,7 +246,7 @@
         ],
         [
           "Interior Design",
-          "Chuck Marie Studio"
+          "David Thompson Studio"
         ],
         [
           "Total sq. ft.",
@@ -303,42 +295,6 @@
       "slug": "la-cresta-on-main",
       "id": "07",
       "image": "assets/project-6.jpg"
-    },
-    {
-      "name": "Cleveland Surgery Center",
-      "location": "Cleveland, Tennessee",
-      "type": "Healthcare",
-      "summary": "Designed to support both clinical precision and patient comfort, Cleveland Surgery Center was constructed with care at every level. Freeman approached the project with a focus on coordination, durability, and long-term performance\u2014creating a space that functions seamlessly behind the scenes.",
-      "details": "",
-      "quote": "",
-      "credits": [
-        [
-          "Client",
-          "Interventional Pain Consultants"
-        ],
-        [
-          "Budget",
-          "$1.1M"
-        ],
-        [
-          "Interior Design",
-          "Chuck Marie Studio"
-        ],
-        [
-          "Location",
-          "Cleveland, TN"
-        ],
-        [
-          "Complete",
-          "2024"
-        ]
-      ],
-      "images": [
-        "https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/692db51e0255304cdedbe097_Cleveland%20Surgery%20Center_FGC.jpeg"
-      ],
-      "slug": "cleveland-surgery-center",
-      "id": "08",
-      "image": "assets/project-7.jpg"
     },
     {
       "name": "Dalton Surgery Center",

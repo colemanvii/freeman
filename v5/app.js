@@ -329,6 +329,7 @@
   // Keep the credited name verbatim; this map affects links, not project attribution.
   const creditSites = {
     "Rocket Farm Restaurants": "https://www.rocketfarmrestaurants.com/",
+    "David Thompson Studio": "https://dthompsonarchitect.com/",
     "Chuck Marie Studio": "https://www.chuckmariestudio.com/",
     "Barnsley Resorts": "https://www.barnsleyresort.com/",
     "Bocado Pizza": "https://bocadopizza.com/",
