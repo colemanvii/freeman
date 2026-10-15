@@ -299,6 +299,54 @@ body[data-route="contact"] .viewport{display:flex}
 @media(max-width:760px){.co-team{margin-top:14px}.co-team p{font-size:10px}}
 @media(max-height:540px) and (orientation:landscape){.co-team{margin-top:10px}}
 
+/* Company / people: a quiet editorial index that expands without a second page. */
+.co-team{margin-top:20px}
+.co-team-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px}
+.co-team-heading .co-label{margin:0}
+.co-location{font-size:9px;letter-spacing:.035em;color:var(--muted)}
+.co-people{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.co-people[hidden],.co-detail[hidden]{display:none!important}
+.co-person{display:block;min-width:0;width:100%;padding:0;border:0;background:none;color:var(--ink);text-align:left;font:inherit;cursor:pointer;border-radius:0}
+.co-portrait{display:block;aspect-ratio:4/5;background:color-mix(in srgb,var(--ink) 5%,transparent);border:1px solid var(--hair);transition:background .16s}
+.co-person:hover .co-portrait,.co-person:focus-visible .co-portrait{background:color-mix(in srgb,var(--ink) 10%,transparent)}
+.co-person:focus-visible{outline:1px solid var(--orange);outline-offset:3px}
+.co-person-name{display:block;font-size:10px;line-height:1.45;margin-top:7px}
+.co-person-role{display:block;color:var(--muted);font-size:9px;line-height:1.4;margin-top:2px}
+.co-detail{min-height:130px;display:grid;grid-template-columns:115px minmax(0,1fr);gap:19px;align-items:stretch;border-top:1px solid var(--hair);padding-top:12px}
+.co-detail-photo{background:color-mix(in srgb,var(--ink) 5%,transparent);border:1px solid var(--hair);aspect-ratio:4/5}
+.co-detail-copy{min-width:0}
+.co-detail-top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.co-detail-index{color:var(--muted);font-size:9px}
+.co-detail-back{border:0;padding:0;background:transparent;color:var(--muted);font:inherit;font-size:9px;cursor:pointer}
+.co-detail-back:hover,.co-detail-back:focus-visible{color:var(--orange);outline-offset:3px}
+.co-detail h4{font-weight:400;font-size:19px;line-height:1.25;margin:12px 0 4px}
+.co-detail-role{font-size:11px}
+.co-detail-note{font-size:10px;color:var(--muted);margin-top:13px}
+@media(max-width:760px){.co-team{margin-top:14px}.co-people{gap:8px}.co-person-name{font-size:9px}.co-person-role{font-size:8px}.co-portrait{aspect-ratio:1/1}.co-detail{grid-template-columns:90px minmax(0,1fr);min-height:100px}.co-detail h4{font-size:16px;margin-top:7px}.co-detail-note{margin-top:8px}}
+@media(max-width:360px){.co-people{grid-template-columns:repeat(2,minmax(0,1fr))}.co-portrait{aspect-ratio:2/1}.co-location{font-size:8px}}
+@media(max-height:540px) and (orientation:landscape){.co-portrait{aspect-ratio:2/1}.co-people{gap:8px}.co-detail-photo{aspect-ratio:1/1}}
+
+/* Lock Company to the portrait-index geometry during profile selection.
+   Hiding the index must never collapse the height of the centred composition. */
+.co-person-stage{position:relative}
+.co-person-stage .co-people[hidden]{display:grid!important;visibility:hidden;pointer-events:none}
+.co-person-stage .co-detail:not([hidden]){position:absolute;top:0;left:0;right:0;margin:0}
+
+
+/* Company names-only edition: typographic team index, no empty portrait slots. */
+.co-people{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}
+.co-person{display:flex;flex-direction:column;justify-content:center;min-height:65px;border-top:1px solid var(--hair);padding:10px 0 9px}
+.co-person:nth-last-child(-n+2){border-bottom:1px solid var(--hair)}
+.co-person-name{font-size:13px;line-height:1.4;margin:0;transition:color .15s}
+.co-person-role{font-size:10px;line-height:1.5;margin-top:3px}
+.co-person:hover .co-person-name,.co-person:focus-visible .co-person-name{color:var(--orange)}
+.co-detail{display:block;min-height:130px;padding-top:12px}
+.co-detail h4{font-size:22px;margin:14px 0 7px}
+.co-detail-note{margin-top:14px}
+@media(max-width:760px){.co-people{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}.co-person{min-height:60px;padding:8px 0}.co-person-name{font-size:11px}.co-person-role{font-size:9px}.co-detail{min-height:120px}.co-detail h4{font-size:18px}}
+@media(max-width:360px){.co-people{grid-template-columns:repeat(2,minmax(0,1fr))}.co-person{min-height:55px}.co-person-name{font-size:10px}}
+@media(max-height:540px) and (orientation:landscape){.co-person{min-height:42px;padding:4px 0}.co-detail{min-height:84px}.co-detail h4{margin:5px 0;font-size:17px}}
+
 /* Phone usability (fix/freeman-mobile). Touch and phone widths only; the desktop reference is unchanged. */
 /* Contact: when the form cannot fit (short phones, Safari toolbars showing), the page area scrolls
    like Company instead of cutting off the email field and SEND. Auto margins keep the top in view. */
