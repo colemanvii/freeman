@@ -1,49 +1,105 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="robots" content="noindex,nofollow">
-<meta name="theme-color" content="#f4f4f0">
-<title>Freeman OS — Concept</title>
-<link rel="icon" href="favicon.svg">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#f4f4f0"><title>Freeman OS / Study 01</title><link rel="icon" href="favicon.svg">
 <style>
-:root{--paper:#f4f4f0;--ink:#30312f;--muted:#6c6e69;--rule:#cfd1cb;--orange:#c2431a}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--paper);color:var(--ink)}
-body{font:12px/1.6 Monaco,"SFMono-Regular",Consolas,monospace;-webkit-font-smoothing:antialiased}
-a{color:inherit;text-decoration:none}a:hover,a:focus-visible{color:var(--orange)}a:focus-visible{outline:1px solid var(--orange);outline-offset:5px}
-.frame{min-height:100dvh;padding:32px 40px;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:20px}
-header,footer{display:flex;justify-content:space-between;align-items:center;gap:20px}
-header{font-size:11px}footer{font-size:10px;color:var(--muted);padding-top:15px;border-top:1px solid var(--rule)}
-.muted,.eyebrow{color:var(--muted)}.main{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(45px,8vw,150px);align-items:center}
-h1{font-size:clamp(48px,7vw,110px);font-weight:400;letter-spacing:-.085em;line-height:1.04;margin:25px 0 28px}
-.intro{font-size:15px;line-height:1.8;max-width:34ch}
-.eyebrow{font-size:11px}.right{max-width:570px;width:100%;justify-self:end}
-.list{list-style:none;padding:0;margin:25px 0 0;border-bottom:1px solid var(--rule)}
-.list li{border-top:1px solid var(--rule);display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:12px;align-items:baseline;padding:16px 0}
-.number{color:var(--orange);font-size:11px}.name{font-size:clamp(15px,1.45vw,20px)}.state{color:var(--muted);font-size:10px}
-.note{margin-top:24px;color:var(--muted);font-size:10px;max-width:49ch}
-.return{display:inline-flex;align-items:center;min-height:44px}
-@media(max-width:760px){.frame{padding:20px 20px 18px;gap:12px}.main{grid-template-columns:1fr;gap:26px;align-content:center}.right{max-width:none}.intro{font-size:12px}.list{margin-top:12px}.list li{padding:13px 0}.name{font-size:15px}.state{font-size:9px}h1{font-size:clamp(55px,13vw,78px);margin:12px 0 20px}footer{font-size:9px}}
-@media(max-width:760px) and (max-height:700px){.frame{min-height:100dvh;height:auto}.main{align-content:start}.list li{padding:10px 0}h1{font-size:48px;margin:8px 0 10px}.intro{margin:0}.note{margin-top:12px}}
-</style>
-</head>
-<body>
-<div class="frame">
-<header><span>FREEMAN GC</span><span class="muted">TEAM ACCESS / <a class="return" href="client-access.html">× CLOSE</a></span></header>
+:root{--paper:#f4f4f0;--ink:#30312f;--muted:#70716c;--line:#cfd1cb;--accent:#c2431a}
+*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;background:var(--paper);color:var(--ink);overflow:hidden}
+body,button,input,select{font:12px/1.5 Monaco,"SFMono-Regular",Consolas,monospace;-webkit-font-smoothing:antialiased}
+button,select,input{color:inherit}button{border:0;background:transparent;cursor:pointer;text-align:left;padding:0}button:hover,button[aria-current="page"]{color:var(--accent)}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:1px solid var(--accent);outline-offset:4px}
+a{color:inherit;text-decoration:none}a:hover{color:var(--accent)}
+.frame{height:100dvh;display:grid;grid-template-rows:auto minmax(0,1fr) auto;padding:30px 40px 22px;gap:23px}
+header,footer{display:flex;justify-content:space-between;gap:24px;align-items:center}
+header{font-size:11px}footer{padding-top:15px;border-top:1px solid var(--line);font-size:10px;color:var(--muted)}
+.muted,.eyebrow,.secondary{color:var(--muted)}.eyebrow{font-size:10px}.right-header{display:flex;align-items:center;gap:24px}
+select{background:transparent;border:0;cursor:pointer;font-size:11px;padding:7px 0}
+.main{display:grid;grid-template-columns:minmax(230px,.92fr) minmax(0,1.18fr);gap:clamp(35px,8vw,140px);align-items:center;min-height:0}
+h1{font-size:clamp(47px,6vw,94px);line-height:1.12;letter-spacing:-.08em;font-weight:400;margin:22px 0 26px}
+.subtitle{font-size:14px;line-height:1.85;max-width:29ch;margin:0}
+.left-actions{margin-top:32px;display:flex;gap:22px;flex-wrap:wrap;font-size:10px}
+.left-actions button{text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:6px}
+.right{width:100%;max-width:700px;justify-self:end;min-height:0}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.rule-list{margin:0;padding:0;list-style:none;border-bottom:1px solid var(--line)}
+.item{display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:12px;align-items:center;border-top:1px solid var(--line);min-height:54px;padding:9px 0}
+.num{font-size:10px;color:var(--accent)}.item-title{font-size:clamp(12px,1.15vw,16px);overflow-wrap:anywhere}
+.item-sub{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.5}
+.tag{font-size:10px;color:var(--muted);text-align:right;white-space:nowrap}
+.item button{display:contents}.item button:hover .item-title{color:var(--accent)}
+.bar{display:flex;align-items:center;border-bottom:1px solid var(--line);margin-top:24px;gap:12px}
+.bar label{color:var(--accent);font-size:15px}.bar input{flex:1;min-width:0;border:0;background:none;outline:none;padding:12px 0;font-size:12px}
+.bar button{font-size:17px;min-width:44px;min-height:44px;text-align:right}
+.response{min-height:46px;color:var(--muted);font-size:10px;margin-top:12px;max-width:60ch}
+.response strong{color:var(--ink);font-weight:400}.response a{text-decoration:underline;text-underline-offset:3px}
+.flags{display:flex;gap:20px;flex-wrap:wrap;align-items:center}
+.flag{font-size:10px;white-space:nowrap}.flag::before{content:"";display:inline-block;width:5px;height:5px;background:var(--accent);margin-right:8px;vertical-align:middle}
+.mobile-label{display:none}
+@media(max-width:760px){.frame{padding:18px 20px 16px;gap:10px}.main{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);gap:22px;align-items:start}.left{border-bottom:1px solid var(--line);padding-bottom:16px}h1{font-size:clamp(39px,10vw,57px);margin:8px 0 12px}.subtitle{font-size:11px;line-height:1.6}.left-actions{margin-top:12px}.right{max-width:none;align-self:start}.section-head{margin-bottom:10px}.item{min-height:43px;padding:5px 0}.item-title{font-size:12px}.item-sub{font-size:9px}.tag{font-size:9px}.bar{margin-top:10px}.response{min-height:0;margin-top:7px;font-size:9px}.flags{display:none}.mobile-label{display:inline}}
+@media(max-width:760px) and (max-height:670px){.left{padding-bottom:8px}h1{font-size:36px;margin:5px 0}.subtitle{display:none}.left-actions{margin-top:7px}.main{gap:10px}.item{min-height:37px}.item-sub{display:none}.response{max-height:30px;overflow:hidden}.frame{gap:7px}}
+@media(max-height:510px) and (orientation:landscape){.frame{padding:10px 24px;gap:6px}.main{grid-template-columns:1fr 1.4fr;grid-template-rows:1fr;gap:25px;align-items:center}.left{border:0}.left h1{font-size:33px}.subtitle{display:none}.item{min-height:31px;padding:3px 0}.item-sub{display:none}.bar{margin-top:5px}.response{margin-top:4px}footer{padding-top:5px}}
+</style></head>
+<body><div class="frame">
+<header><span>FREEMAN GC</span><div class="right-header"><label for="persona" class="muted">VIEW AS <span class="mobile-label">↗</span></label><select id="persona" aria-label="Preview role"><option value="gabe">GABE</option><option value="field">FIELD</option><option value="creative">CREATIVE</option></select><a href="client-access.html">× CLOSE</a></div></header>
 <main class="main">
-<section class="left"><div class="eyebrow">FREEMAN / INTERNAL</div><h1>Freeman<br>OS.</h1><p class="intro">One place for the work behind the work.</p></section>
-<section class="right" aria-label="Freeman OS areas"><div class="eyebrow">WORKSPACE / INDEX</div>
-<ol class="list">
-<li><span class="number">01</span><span class="name">PROJECTS</span><span class="state">PLANNED</span></li>
-<li><span class="number">02</span><span class="name">DOCUMENTS</span><span class="state">PLANNED</span></li>
-<li><span class="number">03</span><span class="name">DECISIONS</span><span class="state">PLANNED</span></li>
-<li><span class="number">04</span><span class="name">PEOPLE</span><span class="state">PLANNED</span></li>
-</ol>
-<p class="note">DESIGN STUDY / NOT AN AUTHENTICATED EMPLOYEE PORTAL. NO COMPANY DATA OR APPLICATION ACCESS IS CONNECTED.</p>
-</section>
-</main>
-<footer><span>BUILT FOR GENERATIONS</span><span>FREEMAN GENERAL CONTRACTING / PRIVATE</span></footer>
+<section class="left"><div class="eyebrow">FREEMAN / INTERNAL</div><h1>Freeman<br>OS.</h1><p class="subtitle" id="intro">One place for the work behind the work.</p><div class="left-actions"><button id="home" type="button">OVERVIEW</button><button id="records" type="button">ALL RECORDS ↗</button></div></section>
+<section class="right"><div class="section-head"><span class="eyebrow" id="label">GABE / OVERVIEW</span><span class="eyebrow" id="mode">STUDY 01</span></div><ol class="rule-list" id="list"></ol>
+<form class="bar" id="question"><label for="ask">↗</label><input id="ask" type="text" maxlength="200" placeholder="Ask about the work…" autocomplete="off" aria-label="Ask about demo records"><button type="submit" aria-label="Search demo records">↗</button></form>
+<div class="response" id="answer" role="status" aria-live="polite">Explore the sample records, or ask a question. This is a local demonstration—not live AI.</div></section></main>
+<footer><span>BUILT FOR GENERATIONS</span><span class="flags"><span class="flag">DESIGN STUDY</span><span>NO LIVE CONNECTIONS</span></span><span>FREEMAN GENERAL CONTRACTING / PRIVATE</span></footer>
 </div>
-</body>
-</html>
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const data=[
+{key:"projects",title:"PROJECTS",summary:"The work currently on the board",records:[
+["Woodlands at Barnsley Resort","South Street Partners","Project reference"],
+["Dugan's Pub","South Street Partners","Project reference"],
+["Barnsley Family Pool","South Street Partners","Project reference"],
+["Azalea Marketplace","Savi Provisions","Project reference"],
+["Brewhouse Cafe","South Downtown","Project reference"]]},
+{key:"decisions",title:"DECISIONS",summary:"Items awaiting a clear answer",records:[
+["Sample: Confirm upcoming project review","Not assigned","Illustrative only"],
+["Sample: Review field photography plan","Not assigned","Illustrative only"]]},
+{key:"documents",title:"DOCUMENTS",summary:"Information, available in one place",records:[
+["Project files","Connect approved company storage","Not connected"],
+["Meeting records","Connect approved meeting source","Not connected"],
+["Company reference library","Connect approved knowledge source","Not connected"]]},
+{key:"people",title:"PEOPLE",summary:"The people carrying the work",records:[
+["Cameron Dumbi","Superintendent","Team reference"],
+["Mac Thompson","Superintendent","Team reference"],
+["James (Jimmy) Smith","Superintendent","Team reference"]]},
+{key:"field",title:"FIELD NOTES",summary:"What is happening on site",records:[
+["Site observations","Awaiting approved field source","Not connected"],
+["Progress photography","Awaiting approved image library","Not connected"]]},
+{key:"stories",title:"STORIES",summary:"The evidence behind the finished work",records:[
+["Freeman × Rocket Farm","Story concept","Editorial planning"],
+["Same Place, Different Day","Construction progression concept","Editorial planning"]]}
+];
+const views={
+gabe:["projects","decisions","documents","people"],
+field:["projects","field","documents","people"],
+creative:["stories","field","projects","documents"]
+};
+let role="gabe",section=null;
+function safe(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function row(n,title,sub,tag,key){return '<li class="item"><span class="num">'+String(n).padStart(2,"0")+'</span><button type="button" data-key="'+safe(key)+'"><span><span class="item-title">'+safe(title)+'</span><span class="item-sub">'+safe(sub)+'</span></span><span class="tag">'+safe(tag)+'</span></button></li>';}
+function render(){
+const current=data.find(d=>d.key===section);
+$("label").textContent=role.toUpperCase()+" / "+(current?current.title:"OVERVIEW");
+$("mode").textContent="STUDY 01 / DEMO";
+$("intro").textContent=current?current.summary:"One place for the work behind the work.";
+if(current){$("list").innerHTML=current.records.map((r,i)=>row(i+1,r[0],r[1],r[2],"noop")).join("");}
+else{$("list").innerHTML=views[role].map((key,i)=>{const d=data.find(v=>v.key===key);return row(i+1,d.title,d.summary,"↗",d.key)}).join("");}
+}
+$("list").addEventListener("click",e=>{const el=e.target.closest("[data-key]");if(!el)return;if(el.dataset.key==="noop")return;section=el.dataset.key;render();$("answer").textContent="REFERENCE DATA ONLY / NOT CONNECTED TO FREEMAN SYSTEMS.";});
+$("persona").addEventListener("change",e=>{role=e.target.value;section=null;render();$("answer").textContent="Viewing the "+(role==="gabe"?"leadership":role==="field"?"field":"creative")+" layout. Role permissions are not yet implemented.";});
+$("home").addEventListener("click",()=>{section=null;render();});
+$("records").addEventListener("click",()=>{section=null;$("list").innerHTML=data.map((d,i)=>row(i+1,d.title,d.summary,"↗",d.key)).join("");$("label").textContent="ALL RECORDS / INDEX";});
+$("question").addEventListener("submit",e=>{
+e.preventDefault();const q=$("ask").value.trim().toLowerCase();if(!q){$("answer").textContent="Enter a project, person, document, or subject to search the demonstration.";return;}
+const hits=[];for(const d of data){for(const r of d.records){if(r.join(" ").toLowerCase().includes(q)||d.title.toLowerCase().includes(q)){hits.push({key:d.key,text:r[0]});}}}
+if(!hits.length){$("answer").textContent="No sample records match. Live company search will require an authorized data connection.";return;}
+$("answer").innerHTML="<strong>"+hits.length+" DEMO MATCH"+(hits.length===1?"":"ES")+"</strong> / "+hits.slice(0,3).map(h=>safe(h.text)).join(" · ")+(hits.length>3?" …":"")+"<br>Sample records only. No AI or external data was queried.";
+});
+render();
+})();
+</script></body></html>
