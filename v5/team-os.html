@@ -110,6 +110,68 @@ h1,h2,p,ol{margin:0;font-weight:400}ol{list-style:none;padding:0}
   .week{grid-template-columns:repeat(4,1fr)}
 }
 @media (pointer:coarse){body{cursor:auto}}
+
+/* FreemanOS fixed command surface: the opening composition occupies one viewport. */
+html,body{height:100%;overflow:hidden}
+.wrap{height:100dvh;min-height:0;grid-template-rows:auto auto minmax(0,1fr) auto;padding-top:clamp(12px,2vh,24px);padding-bottom:clamp(10px,1.4vh,20px)}
+.wrap>main{min-height:0;overflow:hidden;display:flex;flex-direction:column}
+.summary{margin:clamp(12px,2.2vh,26px) 0 clamp(12px,2vh,22px);font-size:clamp(16px,1.3vw,19px);line-height:1.4}
+.summary .m{margin-bottom:4px;font-size:12px}
+.job>button{padding:clamp(9px,1.55vh,16px) 0}
+.journey{padding-top:5px}
+.notes{margin-top:7px;gap:2px 12px}
+.stages{margin-top:5px}
+.flag{margin-top:6px}
+.date{margin-top:5px}
+.below{min-height:0;margin-top:clamp(12px,2.3vh,24px);grid-auto-rows:minmax(0,1fr)}
+.below>section{min-height:0;overflow:hidden}
+.below h2{padding-bottom:6px;margin-bottom:8px}
+.week li{padding:4px 0;gap:12px}
+.feed li,.mine li{margin-bottom:7px}
+.foot{margin-top:8px;padding-top:8px}
+/* Project expansion lives in a contained detail sheet, never below the fold. */
+.job.open .more{position:fixed;z-index:20;display:grid;top:10vh;bottom:10vh;left:max(24px,8vw);right:max(24px,8vw);max-width:1240px;margin:auto;overflow:auto;overscroll-behavior:contain;background:var(--paper);border:1px solid var(--ink);padding:clamp(24px,3vw,48px);align-content:start;box-shadow:0 0 0 100vmax color-mix(in srgb,var(--ink) 25%,transparent)}
+.more .detail-close{position:sticky;top:0;grid-column:1/-1;justify-self:end;min-height:44px;margin:-22px -8px 12px 0;color:var(--orange-ink);z-index:1}
+@media(max-height:720px) and (min-width:901px){
+  .wrap{padding-top:10px;padding-bottom:8px}
+  .summary{margin:8px 0 10px;font-size:16px}
+  .job>button{padding:7px 0}
+  .name{font-size:19px}.days{font-size:26px}
+  .who,.notes,.date,.flag{font-size:12px}
+  .below{margin-top:10px}.below h2{margin-bottom:5px}
+  .week li{padding:3px 0}
+  .feed li,.mine li{font-size:12px;margin-bottom:5px}
+}
+@media(max-width:900px){
+  .wrap{padding:14px 18px 10px}
+  .top{font-size:11px}.top .r{gap:12px;flex-wrap:wrap;justify-content:flex-end}
+  .summary{margin:14px 0}
+  .job>button{display:grid;grid-template-columns:1fr auto;gap:6px 16px;padding:10px 0}
+  .job>button>span:first-child{grid-column:1}
+  .journey{grid-column:1/-1;grid-row:2}
+  .when{grid-column:2;grid-row:1;text-align:right}
+  .flag{justify-content:flex-end}
+  .below{grid-template-columns:1fr 1fr;column-gap:16px;row-gap:10px}
+  .below>section:first-child{grid-column:1/-1}
+  .below>section{overflow:auto}
+  .job.open .more{left:12px;right:12px;top:6vh;bottom:6vh;grid-template-columns:1fr}
+  .ahead,.side{grid-column:1}
+}
+@media(max-width:540px){
+  .wrap{padding:12px 14px 8px}
+  .summary{font-size:14px;line-height:1.35;margin:9px 0}
+  .summary .m{font-size:11px}
+  .name{font-size:16px}.who{font-size:11px}
+  .days{font-size:22px}.days small,.date,.flag{font-size:11px}
+  .notes{font-size:11px}
+  .job>button{padding:7px 0}
+  .below{margin-top:10px;grid-template-columns:1fr 1fr}
+  .below h2{font-size:11px}
+  .week li,.feed li,.mine li{font-size:11px}
+  .week li{grid-template-columns:72px 1fr auto;gap:7px}
+  .below .m,.week li .m,.feed li .m,.mine li .m{font-size:10px}
+  .foot{font-size:9px;gap:12px}
+}
 </style>
 </head>
 <body>
@@ -534,7 +596,8 @@ window.FOS_createLedger=createLedger;})();
           <dl class="notes">${lt ? `<dt>Lately</dt><dd>${esc(lt)}</dd>` : ""}${nx ? `<dt>Next</dt><dd>${esc(nx.kind === "opening" ? "Opening" : nx.short)}, ${fd(nx.start)}</dd>` : ""}</dl></span>
         <span class="when"><span class="days">${od}<small>days</small></span><span class="date">Opens ${fd(od)}${late > 0 ? `, ${late} late` : ""}</span>
           ${u.map(x => `<span class="flag"><span class="dot"></span>${esc(x.text)}</span>`).join("")}</span></button>
-        <div class="more">
+        <div class="more" role="region" aria-label="${esc(p.name)} details">
+          <button type="button" class="detail-close" data-close-detail aria-label="Close project details">× CLOSE</button>
           <div class="ahead"><h3>Between now and opening</h3><ol>${ahead.map(c => `<li class="${flagged.has(c.id) ? "flagged" : noted.has(c.id) ? "note" : ""}"><span class="m">${fd(c.kind === "decision" ? c.due : c.start)}</span><span>${esc(c.kind === "opening" ? "Opening" : c.short)}</span><span class="m">${esc(pname(c.by))}</span></li>`).join("")}</ol></div>
           <div class="side">${u.filter(x => x.dec).map(x => { const d = M.decs.find(y => y.id === x.dec); return `<h3>Yours</h3><p>${esc(x.long)}. After that, ${esc(lc1(C(d.next[0]).short))} slips and the opening moves ${slip(d.consequence)} days.</p><div class="acts">${decisionActs(x.dec)}</div>`; }).join("")}
             ${notes(p.id).length ? `<h3>Sequencing notes</h3>${notes(p.id).map(k => `<p class="quiet">${esc(noteText(k))}</p>`).join("")}<p class="quiet">None of these move the opening.</p>` : ""}
@@ -587,8 +650,9 @@ window.FOS_createLedger=createLedger;})();
   }
 
   document.addEventListener("click", e => {
+    if (e.target.closest("[data-close-detail]")) { S.open = null; render(); return; }
     const a = e.target.closest("[data-act]"); if (a) { const fn = ACTS[+a.dataset.act]; if (fn) fn(); return; }
-    const j = e.target.closest("[data-job]"); if (j) { S.open = S.open === j.dataset.job ? null : j.dataset.job; render(); if (S.open) document.querySelector(`.job.open`)?.scrollIntoView({ block: "nearest", behavior: "smooth" }); }
+    const j = e.target.closest("[data-job]"); if (j) { S.open = S.open === j.dataset.job ? null : j.dataset.job; render();  }
   });
   document.addEventListener("keydown", e => { if (e.key === "Escape") { S.open = null; render(); } else if (e.key === "u" || e.key === "U") undo(); });
   try { const p = localStorage.getItem("fos-palette"); if (p) { document.documentElement.dataset.palette = p; document.documentElement.dataset.theme = p === "umber" ? "dark" : "light"; } } catch (_) {}
