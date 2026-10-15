@@ -324,12 +324,14 @@
   // "Interior Designer" template placeholder is not a credit) from the project credits, and a date
   // only from an explicit, verified `date` field. The scraped "Complete: 2024" credit is not used.
   const credit = (p, key) => ((p.credits || []).find(([k]) => k === key) || [])[1] || "";
-  const designCredit = (p) => (credit(p, "Interior Design") === "Interior Designer" ? "" : credit(p, "Interior Design"));
+  const designCredit = (p) => credit(p, "Architect") || (credit(p, "Interior Design") === "Interior Designer" ? "" : credit(p, "Interior Design"));
   // Only publish a destination when the organization's or creator's page can be identified.
   // Keep the credited name verbatim; this map affects links, not project attribution.
   const creditSites = {
     "Rocket Farm Restaurants": "https://www.rocketfarmrestaurants.com/",
     "Indigo Road Hospitality": "https://www.theindigoroad.com/",
+    "Wright Gardner Architects": "https://www.wrightgardnerarchitect.com/",
+    "NO Architecture": "https://www.no-arch.com/",
     "South Downtown": "https://www.southdowntownatl.com/",
     "Gentle Works": "https://gentle.works/",
     "Electric Hospitality": "https://www.electric-hospitality.com/",
@@ -400,7 +402,7 @@
       section: "projects",
       parent: { href: "projects.html", focus: p.slug },
     });
-    const credits = [["Client", credit(p, "Client")], ["Interior design", credit(p, "Interior Design")], ["Photography", credit(p, "Photography")]]
+    const credits = [["Client", credit(p, "Client")], ["Architect", credit(p, "Architect")], ["Interior design", credit(p, "Interior Design")], ["Photography", credit(p, "Photography")]]
       .filter(([, v]) => v && v !== "Interior Designer");
     const related = archive.filter((a) => a.link === p.slug);
     const photos = p.gallery;
@@ -500,8 +502,8 @@
       ...(p.details ? [block("p", p.details)] : []),
       block("h2", "Project record"),
       ...p.credits
-        .filter(([k, v]) => ["Client", "Photography", "Interior Design"].includes(k) && v !== "Interior Designer")
-        .map(([k, v]) => data(k, v)),
+        .filter(([k, v]) => ["Client", "Photography", "Interior Design", "Architect"].includes(k) && v !== "Interior Designer")
+        .map(([k, v]) => `<div class="data"><span>${esc(k)}</span><span>${creditLink(v)}</span></div>`),
       ...(p.image ? [data("Source", "Freeman published portfolio")] : []),
     ];
     chrome({

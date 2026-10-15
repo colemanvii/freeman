@@ -23,7 +23,7 @@ for old in root.glob('fieldwork*.html'):
 # records.js is public: it carries only what the pages render. Unrendered source fields (budgets, square
 # footage, completion years, testimonial quotes, scraped Webflow URLs) stay in content.json.
 PROJECT_FIELDS = ['slug', 'id', 'name', 'location', 'type', 'summary', 'details', 'date', 'image', 'gallery', 'credits']
-PUBLIC_CREDITS = {'Client', 'Photography', 'Interior Design'}
+PUBLIC_CREDITS = {'Client', 'Photography', 'Interior Design', 'Architect'}
 def public_project(p):
     q = {k: p[k] for k in PROJECT_FIELDS if k in p}
     q['credits'] = [[k, v] for k, v in p['credits'] if k in PUBLIC_CREDITS and v != 'Interior Designer']

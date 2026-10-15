@@ -195,6 +195,44 @@
       "id": "11"
     },
     {
+      "name": "Mule Train Atlanta",
+      "location": "Atlanta, Georgia",
+      "type": "Hospitality",
+      "summary": "",
+      "details": "",
+      "credits": [
+        [
+          "Client",
+          "South Downtown"
+        ],
+        [
+          "Interior Design",
+          "NO Architecture"
+        ]
+      ],
+      "slug": "mule-train-atlanta",
+      "id": "12"
+    },
+    {
+      "name": "Broad Street BBQ",
+      "location": "Atlanta, Georgia",
+      "type": "Hospitality",
+      "summary": "",
+      "details": "",
+      "credits": [
+        [
+          "Client",
+          "South Downtown"
+        ],
+        [
+          "Architect",
+          "Wright Gardner Architects"
+        ]
+      ],
+      "slug": "broad-street-bbq",
+      "id": "13"
+    },
+    {
       "name": "Bocado Pizza",
       "location": "Atlanta, Georgia",
       "type": "Commercial",
