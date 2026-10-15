@@ -298,3 +298,14 @@ body[data-route="contact"] .viewport{display:flex}
 .co-team p>span{color:var(--muted);padding:0 3px}
 @media(max-width:760px){.co-team{margin-top:14px}.co-team p{font-size:10px}}
 @media(max-height:540px) and (orientation:landscape){.co-team{margin-top:10px}}
+
+
+/* Company people: photographic slots stay neutral until actual portraits are available. */
+.co-people{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.co-person{min-width:0}
+.co-portrait{aspect-ratio:4/5;background:color-mix(in srgb,var(--ink) 5%,transparent);border:1px solid var(--hair)}
+.co-person-name{font-size:10px;line-height:1.45;margin-top:7px}
+.co-person-role{color:var(--muted);font-size:9px;line-height:1.4;margin-top:2px}
+@media(max-width:760px){.co-people{gap:8px}.co-person-name{font-size:9px}.co-person-role{font-size:8px}.co-portrait{aspect-ratio:1/1}}
+@media(max-width:360px){.co-people{grid-template-columns:repeat(2,minmax(0,1fr))}.co-portrait{aspect-ratio:2/1}}
+@media(max-height:540px) and (orientation:landscape){.co-portrait{aspect-ratio:2/1}.co-people{gap:8px}}
