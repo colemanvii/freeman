@@ -1,3 +1,4 @@
+import os
 """Freeman public site navigation QA (Chromium via Playwright), per the rules in v5/README.md.
 
 Replaces v5-source/tools/navigation-qa.py, which predates the approved Projects index (.pi-row) and
@@ -170,6 +171,7 @@ with sync_playwright() as p:
 
 failed = [r for r in results if not r["ok"]]
 if OUT:
+    os.makedirs(os.path.dirname(OUT) or ".", exist_ok=True)
     json.dump({"base": BASE, "checks": len(results), "failed": len(failed), "results": results}, open(OUT, "w"), indent=2)
 print(f"{len(results)} checks, {len(failed)} failed")
 for f in failed:
