@@ -111,6 +111,61 @@ with sync_playwright() as p:
         check(f"{tag} contact form fields", pg.locator("#contact-message").count() == 1 and pg.locator("#contact-email").count() == 1)
         check(f"{tag} no JS errors", not errors, errors)
         ctx.close()
+
+    # Short phones (visible area with Safari's toolbars showing): the contact form stays reachable by
+    # scrolling, project rows open from a tap just above the name, and a tap leaves no sticky highlight.
+    for (w, h) in [(320, 454), (375, 553)]:
+        tag = f"{w}x{h} touch"
+        ctx = br.new_context(viewport={"width": w, "height": h}, is_mobile=True, has_touch=True)
+        ctx.add_init_script("try{sessionStorage.setItem('fgc-intro-seen','1')}catch(e){}")
+        pg = ctx.new_page()
+        pg.goto(BASE + "/contact"); pg.wait_for_selector("#contact-inquiry")
+        pg.mouse.move(w / 2, h / 2); pg.mouse.wheel(0, 800); pg.wait_for_timeout(300)
+        b = pg.locator("#contact-inquiry button").bounding_box()
+        hit = b and pg.evaluate("([x, y]) => !!document.elementFromPoint(x, y)?.closest('#contact-inquiry button')", [b["x"] + b["width"] / 2, b["y"] + b["height"] / 2])
+        check(f"{tag} contact SEND reachable by scrolling", b and b["y"] + b["height"] <= h and hit, b)
+        pg.goto(BASE + "/projects"); pg.wait_for_selector(".pi-project-link")
+        link = pg.locator(".pi-project-link").first
+        link.scroll_into_view_if_needed(); b = link.bounding_box()
+        pg.touchscreen.tap(b["x"] + b["width"] / 2, b["y"] - 10); pg.wait_for_timeout(300)
+        check(f"{tag} tap just above a project name opens it", path(pg).startswith("/project-"), path(pg))
+        gallery = next(p["slug"] for p in RECORDS["projects"] if p.get("gallery"))
+        pg.goto(BASE + f"/project-{gallery}"); pg.wait_for_selector(".pg-credits .credit-external")
+        ctx.route(lambda u: not u.startswith(BASE), lambda r: r.abort())  # credit links open external sites; keep them offline
+        credit = pg.locator(".pg-credits .credit-external").first
+        credit.tap(); pg.wait_for_timeout(300)
+        bg = credit.evaluate("e => getComputedStyle(e).backgroundColor")
+        check(f"{tag} no sticky highlight after tapping a credit", bg in ("rgba(0, 0, 0, 0)", "transparent"), bg)
+        # Enlarged hit areas (box widened by an absolute ::after) never overlap a neighbouring control.
+        for r in ["/", "/projects", f"/project-{gallery}", "/contact"]:
+            pg.goto(BASE + r); pg.wait_for_selector("#main > *", state="attached")
+            clashes = pg.evaluate("""() => {
+              const n = (v) => parseFloat(v) || 0;
+              const boxes = [...document.querySelectorAll('a[href],button')].filter((e) => e.getClientRects().length && getComputedStyle(e).visibility !== 'hidden' && !e.closest('.contact-honeypot')).map((e) => {
+                // ::after is positioned against the padding box (inside any border).
+                const r = e.getBoundingClientRect(), a = getComputedStyle(e, '::after'), x = a.content !== 'none' && a.position === 'absolute';
+                const pl = r.left + e.clientLeft, pt = r.top + e.clientTop, pr = r.right - e.clientLeft, pb = r.bottom - e.clientTop;
+                return { t: (e.getAttribute('aria-label') || e.textContent).trim().slice(0, 24), l: Math.min(r.left, x ? pl + n(a.left) : r.left), r: Math.max(r.right, x ? pr - n(a.right) : r.right), top: Math.min(r.top, x ? pt + n(a.top) : r.top), b: Math.max(r.bottom, x ? pb - n(a.bottom) : r.bottom) };
+              });
+              const out = [];
+              boxes.forEach((A, i) => boxes.slice(i + 1).forEach((B) => { if (Math.min(A.r, B.r) - Math.max(A.l, B.l) > 0.5 && Math.min(A.b, B.b) - Math.max(A.top, B.top) > 0.5) out.push(A.t + ' × ' + B.t); }));
+              return out;
+            }""")
+            check(f"{tag} {r} tap areas do not overlap", not clashes, clashes)
+        ctx.close()
+
+    # Credit links read as one name: every word (and the arrow) shares the link's colour, desktop and phone.
+    for (w, h, touch) in [(1440, 900, False), (375, 667, True)]:
+        ctx = br.new_context(viewport={"width": w, "height": h}, is_mobile=touch, has_touch=touch)
+        ctx.add_init_script("try{sessionStorage.setItem('fgc-intro-seen','1')}catch(e){}")
+        pg = ctx.new_page()
+        for p in RECORDS["projects"]:
+            r = f"/project-{p['slug']}"
+            pg.goto(BASE + r); pg.wait_for_selector("#main > *", state="attached")
+            mixed = pg.evaluate("""() => [...document.querySelectorAll('.credit-external')].filter((a) =>
+              new Set([...a.querySelectorAll('.hover-word,.credit-arrow')].map((s) => getComputedStyle(s).color)).size > 1).map((a) => a.textContent.trim())""")
+            check(f"{w}x{h} {r} credit links are one colour", not mixed, mixed)
+        ctx.close()
     br.close()
 
 failed = [r for r in results if not r["ok"]]

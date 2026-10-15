@@ -346,3 +346,29 @@ body[data-route="contact"] .viewport{display:flex}
 @media(max-width:760px){.co-people{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}.co-person{min-height:60px;padding:8px 0}.co-person-name{font-size:11px}.co-person-role{font-size:9px}.co-detail{min-height:120px}.co-detail h4{font-size:18px}}
 @media(max-width:360px){.co-people{grid-template-columns:repeat(2,minmax(0,1fr))}.co-person{min-height:55px}.co-person-name{font-size:10px}}
 @media(max-height:540px) and (orientation:landscape){.co-person{min-height:42px;padding:4px 0}.co-detail{min-height:84px}.co-detail h4{margin:5px 0;font-size:17px}}
+
+/* Phone usability (fix/freeman-mobile). Touch and phone widths only; the desktop reference is unchanged. */
+/* Contact: when the form cannot fit (short phones, Safari toolbars showing), the page area scrolls
+   like Company instead of cutting off the email field and SEND. Auto margins keep the top in view. */
+@media(max-width:760px){body[data-route="contact"] .viewport{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}body[data-route="contact"] .viewport::-webkit-scrollbar{display:none}}
+/* The label span inside credit links keeps the link colour (".reading .data span:first-child" mutes label cells). */
+.reading .data a .tap-label{color:inherit}
+@media(pointer:coarse){
+ /* Highlights hug the label as on desktop. Boxes keep their size (44px entrance rows, 28px project and
+    credit links); the pressed highlight paints the inline label inside them, and ::after adds hit area. */
+ .pi-project-link,.credit-external{position:relative}
+ .pi-project-link::after{content:"";position:absolute;inset:-16px -8px -2px}
+ .credit-external::after{content:"";position:absolute;inset:-2px -4px}
+ /* Small controls: larger invisible hit areas, same drawing. */
+ .client-access-entry::after{content:"";position:absolute;inset:-15px -8px}
+ .palette-chip{position:relative}.palette-chip::after{content:"";position:absolute;inset:-11px -8px}
+ .contact-sheet>a{position:relative}.contact-sheet>a::after{content:"";position:absolute;inset:-7px -4px}
+ /* A tap must not leave a sticky hover highlight (iOS keeps :hover until the next tap); show it while pressed. */
+ .credit-external:hover,.credit-external:active{background:transparent;color:inherit}
+ .mobile-home-nav a:hover,.mobile-home-nav a:active,.site-nav a:hover,.contact-inquiry button:hover,.pg-credits .credit-external:hover,.pg-credits .credit-external:active{background:transparent;color:var(--ink)}
+ .site-nav a.is-current:hover{color:var(--orange)}
+ .client-access-entry:hover,.pi-client.credit-external:hover,.pi-arch.credit-external:hover,.pi-client.credit-external:active,.pi-arch.credit-external:active{background:transparent;color:var(--muted)}
+ .pi-project-link:hover,.pi-project-link:active{background:transparent!important;color:var(--ink)!important}
+ .site-nav a:active,.client-access-entry:active,.contact-inquiry button:active{background:var(--orange)!important;color:var(--paper)!important}
+ .mobile-home-nav a:active .hover-word,.pi-project-link:active .tap-label,.credit-external:active .tap-label{background:var(--orange);color:var(--paper)}
+}
