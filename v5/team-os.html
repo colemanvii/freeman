@@ -102,4 +102,36 @@ $("answer").innerHTML="<strong>"+hits.length+" DEMO MATCH"+(hits.length===1?"":"
 });
 render();
 })();
+</script><style>
+#station-gate{position:fixed;inset:0;z-index:50;background:#f4f4f0;color:#30312f;display:grid;grid-template-rows:auto 1fr auto;padding:32px 40px 22px;font:12px/1.6 Monaco,monospace}
+#station-gate.closed{display:none}#station-gate .g-top,#station-gate .g-foot{display:flex;justify-content:space-between;gap:20px;font-size:11px}#station-gate .g-foot{border-top:1px solid #cfd1cb;padding-top:14px;color:#70716c;font-size:10px}
+#station-gate .g-body{display:grid;grid-template-columns:1fr 1fr;gap:9vw;align-items:center}
+#station-gate h1{font-size:clamp(52px,7vw,110px);font-weight:400;line-height:1.05;letter-spacing:-.085em;margin:24px 0}
+#station-gate .g-eyebrow{font-size:10px;color:#70716c}#station-gate .g-intro{font-size:14px}
+#station-gate .station{border-top:1px solid #cfd1cb;padding:18px 0;width:100%;display:flex;align-items:center;gap:20px}
+#station-gate .station:last-of-type{border-bottom:1px solid #cfd1cb}#station-gate .station strong{font-size:19px;font-weight:400;flex:1}
+#station-gate .station:hover strong{color:#c2431a}#station-gate .station small{color:#70716c;font-size:10px}#station-gate .g-orange{color:#c2431a}
+#station-gate .g-warning{color:#70716c;font-size:10px;margin-top:24px;max-width:47ch}
+#station-exit{font-size:10px;color:#c2431a;cursor:pointer}
+body[data-station="active"] .frame{height:100dvh}
+@media(max-width:760px){#station-gate{padding:20px}#station-gate .g-body{grid-template-columns:1fr;gap:25px;align-content:center}#station-gate h1{font-size:64px;margin:12px 0}#station-gate .station{padding:13px 0}}
+</style>
+<section id="station-gate" aria-label="Freeman OS demo station selection">
+<div class="g-top"><span>FREEMAN GC</span><span>TEAM ACCESS / STUDY 02</span></div>
+<div class="g-body"><div><div class="g-eyebrow">FREEMAN / MISSION CONTROL</div><h1>Freeman<br>OS<span class="g-orange">.</span></h1><div class="g-intro">One company. One operating picture.</div></div>
+<div><div class="g-eyebrow" style="margin-bottom:20px">ENTER SIMULATION / SELECT STATION</div>
+<button class="station" data-station-role="gabe"><span class="g-orange">01</span><strong>COMMAND</strong><small>LEADERSHIP ↗</small></button>
+<button class="station" data-station-role="field"><span class="g-orange">02</span><strong>FIELD</strong><small>OPERATIONS ↗</small></button>
+<button class="station" data-station-role="creative"><span class="g-orange">03</span><strong>CREATIVE</strong><small>DOCUMENTATION ↗</small></button>
+<div class="g-warning">OPEN DEMO / NO PASSWORD REQUIRED. ALL CONTENT IS ILLUSTRATIVE OR PUBLIC PROJECT REFERENCE. NO COMPANY SYSTEMS ARE CONNECTED.</div></div></div>
+<div class="g-foot"><span>BUILT FOR GENERATIONS</span><span>NOT AN AUTHENTICATED EMPLOYEE PORTAL</span></div>
+</section>
+<script>
+(function(){
+const gate=document.getElementById('station-gate'),persona=document.getElementById('persona');
+function close(){gate.classList.add('closed');document.body.dataset.station='active';}
+document.querySelectorAll('[data-station-role]').forEach(b=>b.addEventListener('click',()=>{persona.value=b.dataset.stationRole;persona.dispatchEvent(new Event('change',{bubbles:true}));close();}));
+const head=document.querySelector('header .right-header');
+if(head){const btn=document.createElement('button');btn.type='button';btn.id='station-exit';btn.textContent='SWITCH STATION ↗';btn.addEventListener('click',()=>{gate.classList.remove('closed');document.body.dataset.station='';});head.prepend(btn);}
+})();
 </script></body></html>
