@@ -331,3 +331,18 @@ body[data-route="contact"] .viewport{display:flex}
 .co-person-stage{position:relative}
 .co-person-stage .co-people[hidden]{display:grid!important;visibility:hidden;pointer-events:none}
 .co-person-stage .co-detail:not([hidden]){position:absolute;top:0;left:0;right:0;margin:0}
+
+
+/* Company names-only edition: typographic team index, no empty portrait slots. */
+.co-people{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}
+.co-person{display:flex;flex-direction:column;justify-content:center;min-height:65px;border-top:1px solid var(--hair);padding:10px 0 9px}
+.co-person:nth-last-child(-n+2){border-bottom:1px solid var(--hair)}
+.co-person-name{font-size:13px;line-height:1.4;margin:0;transition:color .15s}
+.co-person-role{font-size:10px;line-height:1.5;margin-top:3px}
+.co-person:hover .co-person-name,.co-person:focus-visible .co-person-name{color:var(--orange)}
+.co-detail{display:block;min-height:130px;padding-top:12px}
+.co-detail h4{font-size:22px;margin:14px 0 7px}
+.co-detail-note{margin-top:14px}
+@media(max-width:760px){.co-people{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}.co-person{min-height:60px;padding:8px 0}.co-person-name{font-size:11px}.co-person-role{font-size:9px}.co-detail{min-height:120px}.co-detail h4{font-size:18px}}
+@media(max-width:360px){.co-people{grid-template-columns:repeat(2,minmax(0,1fr))}.co-person{min-height:55px}.co-person-name{font-size:10px}}
+@media(max-height:540px) and (orientation:landscape){.co-person{min-height:42px;padding:4px 0}.co-detail{min-height:84px}.co-detail h4{margin:5px 0;font-size:17px}}
