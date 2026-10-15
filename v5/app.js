@@ -28,6 +28,7 @@
   const DESTINATIONS = [
     ["COMPANY", "company.html", ""],
     ["PROJECTS", "projects.html", ""],
+    ["RECORD", "record.html", ""],
     ["CONTACT", "contact.html", ""],
   ];
   const TITLES = {
