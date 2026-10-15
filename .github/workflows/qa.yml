@@ -33,7 +33,7 @@ jobs:
           npm install --no-save wrangler@4
       - name: Start Pages emulation
         run: |
-          npx wrangler pages dev v5 --port 8788 --ip 127.0.0.1 > wrangler.log 2>&1 &
+          npx wrangler pages dev v5 --port 8788 --ip 127.0.0.1 --binding FREEMAN_OS_PASSWORD=qa-demo-password --binding FREEMAN_OS_SESSION_KEY=qa-session-key-0123456789abcdef0123456789 > wrangler.log 2>&1 &
           for i in $(seq 1 60); do curl -sf http://127.0.0.1:8788/client-access > /dev/null && exit 0; sleep 1; done
           cat wrangler.log; exit 1
       - name: ACCESS and Alder
@@ -41,6 +41,9 @@ jobs:
       - name: Public navigation
         if: always()
         run: python qa/public-navigation-qa.py http://127.0.0.1:8788 qa/results/public-navigation.json
+      - name: FreemanOS password gate
+        if: always()
+        run: python qa/team-os-gate-qa.py http://localhost:8788 qa/results/team-os-gate.json qa-demo-password
       - uses: actions/upload-artifact@v4
         if: always()
         with:
