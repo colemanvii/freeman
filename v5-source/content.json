@@ -1,12 +1,50 @@
 {
   "projects": [
     {
+      "name": "Woodlands at Barnsley Resort",
+      "location": "Adairsville, Georgia",
+      "type": "Hospitality",
+      "summary": "",
+      "details": "",
+      "credits": [
+        [
+          "Client",
+          "South Street Partners"
+        ],
+        [
+          "Interior Design",
+          "David Thompson Architecture"
+        ]
+      ],
+      "slug": "woodlands-at-barnsley-resort",
+      "id": "15"
+    },
+    {
+      "name": "Dugan’s Pub",
+      "location": "Adairsville, Georgia",
+      "type": "Hospitality",
+      "summary": "",
+      "details": "",
+      "credits": [
+        [
+          "Client",
+          "South Street Partners"
+        ],
+        [
+          "Interior Design",
+          "David Thompson Architecture"
+        ]
+      ],
+      "slug": "dugans-pub",
+      "id": "16"
+    },
+    {
       "name": "Beetlecat",
       "location": "Atlanta, Georgia",
       "type": "Hospitality",
-      "summary": "Designed as a warm, layered hospitality space, Beetlecat required a balance of precision and personality. Freeman GC led construction with a focus on collaboration, sequencing, and detail\u2014bringing together materials, systems, and finishes in a way that feels cohesive and lived-in. The result is a space that enhances the rhythm of service while inviting guests to linger.",
+      "summary": "Designed as a warm, layered hospitality space, Beetlecat required a balance of precision and personality. Freeman GC led construction with a focus on collaboration, sequencing, and detail—bringing together materials, systems, and finishes in a way that feels cohesive and lived-in. The result is a space that enhances the rhythm of service while inviting guests to linger.",
       "details": "",
-      "quote": "Freeman treated our project like it mattered \u2014 and it showed in the finished work.",
+      "quote": "Freeman treated our project like it mattered — and it showed in the finished work.",
       "credits": [
         [
           "Client",
@@ -15,10 +53,6 @@
         [
           "Photography",
           "Jared Swafford"
-        ],
-        [
-          "Interior Design",
-          "Chuck Marie Studio"
         ],
         [
           "Total sq. ft.",
@@ -112,7 +146,7 @@
       ]
     },
     {
-      "name": "Barnsley Gardens",
+      "name": "Barnsley Family Pool",
       "location": "Adairsville, Georgia",
       "type": "Hospitality",
       "summary": "This Barnsley project defined by subtlety, sequencing, and respect for place. Freeman approached construction with a focus on precision and care, allowing materials, landscape, and structure to work together seamlessly. The result is an environment that feels settled and enduring, shaped as much by restraint as by craftsmanship.",
@@ -121,15 +155,11 @@
       "credits": [
         [
           "Client",
-          "Barnsley Resorts"
+          "South Street Partners"
         ],
         [
           "Photography",
           "Jared Swafford"
-        ],
-        [
-          "Interior Design",
-          "Chuck Marie Studio"
         ],
         [
           "Total sq. ft.",
@@ -163,6 +193,97 @@
           "h": 1312
         }
       ]
+    },
+    {
+      "name": "Muchacho Decatur",
+      "location": "Decatur, Georgia",
+      "type": "Hospitality",
+      "summary": "",
+      "details": "",
+      "credits": [
+        [
+          "Client",
+          "Electric Hospitality"
+        ],
+        [
+          "Interior Design",
+          "Blur Workshop"
+        ]
+      ],
+      "slug": "muchacho-decatur",
+      "id": "10"
+    },
+    {
+      "name": "Brewhouse Cafe",
+      "location": "Atlanta, Georgia",
+      "type": "Hospitality",
+      "summary": "",
+      "details": "",
+      "credits": [
+        [
+          "Client",
+          "South Downtown"
+        ],
+        [
+          "Interior Design",
+          "Gentle Works"
+        ]
+      ],
+      "slug": "brewhouse-cafe",
+      "id": "11"
+    },
+    {
+      "name": "Mule Train",
+      "location": "Atlanta, Georgia",
+      "type": "Hospitality",
+      "summary": "",
+      "details": "",
+      "credits": [
+        [
+          "Client",
+          "South Downtown"
+        ],
+        [
+          "Interior Design",
+          "NO Architecture"
+        ]
+      ],
+      "slug": "mule-train-atlanta",
+      "id": "12"
+    },
+    {
+      "name": "Broad Street BBQ",
+      "location": "Atlanta, Georgia",
+      "type": "Hospitality",
+      "summary": "",
+      "details": "",
+      "credits": [
+        [
+          "Client",
+          "South Downtown"
+        ],
+        [
+          "Architect",
+          "Wright Gardner Architects"
+        ]
+      ],
+      "slug": "broad-street-bbq",
+      "id": "13"
+    },
+    {
+      "name": "Azalea Marketplace",
+      "location": "Atlanta, Georgia",
+      "type": "Retail",
+      "summary": "",
+      "details": "",
+      "credits": [
+        [
+          "Client",
+          "Savi Provisions"
+        ]
+      ],
+      "slug": "azalea-marketplace",
+      "id": "14"
     },
     {
       "name": "Bocado Pizza",
@@ -204,7 +325,7 @@
       "name": "Savi Provisions",
       "location": "Emory Village, Atlanta",
       "type": "Retail",
-      "summary": "At Savi Provisions, construction plays a supporting role in the customer experience. Freeman worked closely with the project team to execute a space that balances durability with refinement\u2014allowing materials, layout, and flow to work together naturally.",
+      "summary": "At Savi Provisions, construction plays a supporting role in the customer experience. Freeman worked closely with the project team to execute a space that balances durability with refinement—allowing materials, layout, and flow to work together naturally.",
       "details": "",
       "quote": "",
       "credits": [
@@ -246,7 +367,7 @@
       "credits": [
         [
           "Client",
-          "O-Ku Atlanta"
+          "Indigo Road Hospitality"
         ],
         [
           "Photography",
@@ -254,7 +375,7 @@
         ],
         [
           "Interior Design",
-          "Chuck Marie Studio"
+          "David Thompson Studio"
         ],
         [
           "Total sq. ft.",
@@ -305,46 +426,10 @@
       "image": "assets/project-6.jpg"
     },
     {
-      "name": "Cleveland Surgery Center",
-      "location": "Cleveland, Tennessee",
-      "type": "Healthcare",
-      "summary": "Designed to support both clinical precision and patient comfort, Cleveland Surgery Center was constructed with care at every level. Freeman approached the project with a focus on coordination, durability, and long-term performance\u2014creating a space that functions seamlessly behind the scenes.",
-      "details": "",
-      "quote": "",
-      "credits": [
-        [
-          "Client",
-          "Interventional Pain Consultants"
-        ],
-        [
-          "Budget",
-          "$1.1M"
-        ],
-        [
-          "Interior Design",
-          "Chuck Marie Studio"
-        ],
-        [
-          "Location",
-          "Cleveland, TN"
-        ],
-        [
-          "Complete",
-          "2024"
-        ]
-      ],
-      "images": [
-        "https://cdn.prod.website-files.com/666b9585b7fd3bd24dfbba73/692db51e0255304cdedbe097_Cleveland%20Surgery%20Center_FGC.jpeg"
-      ],
-      "slug": "cleveland-surgery-center",
-      "id": "08",
-      "image": "assets/project-7.jpg"
-    },
-    {
       "name": "Dalton Surgery Center",
       "location": "Dalton, Georgia",
       "type": "Healthcare",
-      "summary": "Designed to support both clinical precision and patient comfort, Dalton Surgery Center was constructed with care at every level. Freeman approached the project with a focus on coordination, durability, and long-term performance\u2014creating a space that functions seamlessly behind the scenes.",
+      "summary": "Designed to support both clinical precision and patient comfort, Dalton Surgery Center was constructed with care at every level. Freeman approached the project with a focus on coordination, durability, and long-term performance—creating a space that functions seamlessly behind the scenes.",
       "details": "",
       "quote": "",
       "credits": [
@@ -386,7 +471,7 @@
       "project": "The Optimist",
       "link": "the-optimist",
       "status": "Portfolio / detail crop",
-      "text": "A close reading of the Oyster Bar refresh. Freeman\u2019s project account identifies a custom radius window, curved tile around the oven, custom millwork and stainless steel work. Together, these describe a project whose small scope contains several distinct trades.",
+      "text": "A close reading of the Oyster Bar refresh. Freeman’s project account identifies a custom radius window, curved tile around the oven, custom millwork and stainless steel work. Together, these describe a project whose small scope contains several distinct trades.",
       "note": "This is a crop of an existing portfolio photograph, not a separate field visit.",
       "source": "The Optimist published project account"
     },
@@ -420,7 +505,7 @@
       "project": "Barnsley Gardens",
       "link": "barnsley-gardens",
       "status": "Portfolio photograph",
-      "text": "Freeman\u2019s account of Barnsley Gardens emphasizes sequencing and respect for place. The portfolio photograph brings the built environment and its surrounding landscape into the same frame. This entry pairs that image with its project record.",
+      "text": "Freeman’s account of Barnsley Gardens emphasizes sequencing and respect for place. The portfolio photograph brings the built environment and its surrounding landscape into the same frame. This entry pairs that image with its project record.",
       "note": "Existing portfolio image; no additional site visit or field findings are implied. Photography credited by Freeman to Jared Swafford.",
       "source": "Barnsley Gardens published project account"
     },
@@ -443,7 +528,7 @@
       "project": "Illustrative study",
       "status": "SAMPLE / AI-generated imagery",
       "text": "A sample record demonstrates how a future construction sequence could preserve an opening from exposed structure through installation and completion. Each state is kept in the same frame so the change can be read without animation.",
-      "note": "All four frames are AI-generated images inherited from the repository\u2019s earlier study. They are not photographs of Freeman work. No real project or dates are assigned.",
+      "note": "All four frames are AI-generated images inherited from the repository’s earlier study. They are not photographs of Freeman work. No real project or dates are assigned.",
       "source": "Existing repository / field-notes-assets/README.md"
     }
   ]

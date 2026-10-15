@@ -24,7 +24,7 @@ UNPUBLISHED = re.compile(r"Budget|Total sq\. ft|\"Complete\"|\"quote\"|website-f
 # Old Webflow URLs that must keep working after the domain cutover (v5/_redirects).
 LEGACY = {"/about": "/company", "/sawdust": "/projects", "/projects/barnsley-gardens": "/project-barnsley-gardens",
           "/projects/beetlecat-atlanta": "/project-beetlecat", "/projects/bocado-pizza": "/project-bocado-pizza",
-          "/projects/cleveland-surgery-center": "/project-cleveland-surgery-center", "/projects/dalton-surgery-center": "/project-dalton-surgery-center",
+          "/projects/cleveland-surgery-center": "/projects", "/projects/dalton-surgery-center": "/project-dalton-surgery-center",
           "/projects/la-cresta-on-main": "/project-la-cresta-on-main", "/projects/o-ku-atlanta": "/project-o-ku-atlanta",
           "/projects/savi-provisions-emory-village": "/project-savi-provisions", "/projects/the-optimist": "/project-the-optimist",
           "/projects/unknown-old-slug": "/projects"}

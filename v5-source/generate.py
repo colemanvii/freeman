@@ -23,7 +23,7 @@ for old in root.glob('fieldwork*.html'):
 # records.js is public: it carries only what the pages render. Unrendered source fields (budgets, square
 # footage, completion years, testimonial quotes, scraped Webflow URLs) stay in content.json.
 PROJECT_FIELDS = ['slug', 'id', 'name', 'location', 'type', 'summary', 'details', 'date', 'image', 'gallery', 'credits']
-PUBLIC_CREDITS = {'Client', 'Photography', 'Interior Design'}
+PUBLIC_CREDITS = {'Client', 'Photography', 'Interior Design', 'Architect'}
 def public_project(p):
     q = {k: p[k] for k in PROJECT_FIELDS if k in p}
     q['credits'] = [[k, v] for k, v in p['credits'] if k in PUBLIC_CREDITS and v != 'Interior Designer']
@@ -71,3 +71,6 @@ urls = ''.join(f'<url><loc>{SITE}{route(n)}</loc></url>' for n in pages if n != 
 (root / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
     f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>\n')
 (root / 'robots.txt').write_text(f'User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n')
+
+# Public Record stories retain their own fixed-viewport reader and construction study.
+shutil.copy(src / "stories" / "record.html", root / "record.html")

@@ -291,6 +291,14 @@ body[data-route="contact"] .viewport{display:flex}
 .pg-credits .credit-external:hover,.pg-credits .credit-external:focus-visible{background:var(--orange);color:var(--paper)}
 @media(pointer:coarse){.credit-external{min-height:28px}.pi-project-link{min-height:28px}}
 
+/* Team names stay secondary to the company introduction and services. */
+.co-team{margin-top:20px}
+.co-team .co-label{margin-bottom:5px}
+.co-team p{font-size:11px;line-height:1.7}
+.co-team p>span{color:var(--muted);padding:0 3px}
+@media(max-width:760px){.co-team{margin-top:14px}.co-team p{font-size:10px}}
+@media(max-height:540px) and (orientation:landscape){.co-team{margin-top:10px}}
+
 /* Phone usability (fix/freeman-mobile). Touch and phone widths only; the desktop reference is unchanged. */
 /* Contact: when the form cannot fit (short phones, Safari toolbars showing), the page area scrolls
    like Company instead of cutting off the email field and SEND. Auto margins keep the top in view. */
