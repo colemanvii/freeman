@@ -329,6 +329,8 @@
   // Keep the credited name verbatim; this map affects links, not project attribution.
   const creditSites = {
     "Rocket Farm Restaurants": "https://www.rocketfarmrestaurants.com/",
+    "Electric Hospitality": "https://www.electric-hospitality.com/",
+    "Blur Workshop": "https://www.blurworkshop.com/",
     "David Thompson Studio": "https://dthompsonarchitect.com/",
     "Chuck Marie Studio": "https://www.chuckmariestudio.com/",
     "Barnsley Resorts": "https://www.barnsleyresort.com/",
@@ -497,7 +499,7 @@
       ...p.credits
         .filter(([k, v]) => ["Client", "Photography", "Interior Design"].includes(k) && v !== "Interior Designer")
         .map(([k, v]) => data(k, v)),
-      data("Source", "Freeman published portfolio"),
+      ...(p.image ? [data("Source", "Freeman published portfolio")] : []),
     ];
     chrome({
       title: "Projects / " + p.name,
@@ -505,9 +507,9 @@
       parent: { href: "projects.html", focus: p.slug },
     });
     const vp = root.querySelector(".viewport");
-    const pages = reading(vp, b, [
+    const pages = reading(vp, b, p.image ? [
       { photo: { src: p.image, alt: p.name + " — Freeman portfolio photograph", kind: "project", title: p.name, id: p.id, type: p.type, location: p.location } },
-    ]);
+    ] : []);
     showPages(vp, pages);
   }
 

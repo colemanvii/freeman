@@ -157,6 +157,25 @@
       ]
     },
     {
+      "name": "Muchacho Decatur",
+      "location": "Decatur, Georgia",
+      "type": "Hospitality",
+      "summary": "",
+      "details": "",
+      "credits": [
+        [
+          "Client",
+          "Electric Hospitality"
+        ],
+        [
+          "Interior Design",
+          "Blur Workshop"
+        ]
+      ],
+      "slug": "muchacho-decatur",
+      "id": "10"
+    },
+    {
       "name": "Bocado Pizza",
       "location": "Atlanta, Georgia",
       "type": "Commercial",
