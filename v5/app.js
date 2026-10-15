@@ -321,7 +321,7 @@
       index.hidden = true;
       detail.hidden = false;
       detail.innerHTML = `<div class="co-detail-photo" aria-hidden="true"></div><div class="co-detail-copy"><div class="co-detail-top"><span class="co-detail-index">0${i+1} / 04</span><button class="co-detail-back" type="button" aria-label="Back to people">← ALL PEOPLE</button></div><h4>${esc(name)}</h4><div class="co-detail-role">${esc(role)}</div><div class="co-detail-note">Portrait and profile forthcoming.</div></div>`;
-      detail.querySelector(".co-detail-back").addEventListener("click", () => { detail.hidden = true; index.hidden = false; index.querySelector('[data-person="${i}"]').focus(); });
+      detail.querySelector(".co-detail-back").addEventListener("click", () => { detail.hidden = true; index.hidden = false; index.querySelectorAll("[data-person]")[i].focus(); });
     }
     index.querySelectorAll("[data-person]").forEach(button => button.addEventListener("click", () => showPerson(Number(button.dataset.person))));
     words(vp);
