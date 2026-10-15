@@ -326,3 +326,9 @@ body[data-route="contact"] .viewport{display:flex}
 @media(max-width:760px){.co-team{margin-top:14px}.co-people{gap:8px}.co-person-name{font-size:9px}.co-person-role{font-size:8px}.co-portrait{aspect-ratio:1/1}.co-detail{grid-template-columns:90px minmax(0,1fr);min-height:100px}.co-detail h4{font-size:16px;margin-top:7px}.co-detail-note{margin-top:8px}}
 @media(max-width:360px){.co-people{grid-template-columns:repeat(2,minmax(0,1fr))}.co-portrait{aspect-ratio:2/1}.co-location{font-size:8px}}
 @media(max-height:540px) and (orientation:landscape){.co-portrait{aspect-ratio:2/1}.co-people{gap:8px}.co-detail-photo{aspect-ratio:1/1}}
+
+/* Lock Company to the portrait-index geometry during profile selection.
+   Hiding the index must never collapse the height of the centred composition. */
+.co-person-stage{position:relative}
+.co-person-stage .co-people[hidden]{display:grid!important;visibility:hidden;pointer-events:none}
+.co-person-stage .co-detail:not([hidden]){position:absolute;top:0;left:0;right:0;margin:0}
