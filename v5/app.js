@@ -341,7 +341,7 @@
     if (!name) return "";
     const href = creditSites[name];
     return href
-      ? `<a class="${cls} credit-external" href="${esc(href)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(name)} — visit website in new tab">${esc(name)}<span aria-hidden="true" class="credit-arrow"> ↗</span></a>`
+      ? `<a class="${cls} credit-external" href="${esc(href)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(name)} — visit website in new tab"><span class="tap-label">${esc(name)}<span aria-hidden="true" class="credit-arrow"> ↗</span></span></a>`
       : `<span class="${cls}">${esc(name)}</span>`;
   };
 
@@ -355,7 +355,7 @@
     const rows = projects
       .map((p, i) => {
         const here = p.slug === state.focus;
-        return `<li class="pi-row${here ? " is-current" : ""}"><div class="pi-link"><span class="pi-no">${pad(i + 1, 3)}</span><a class="pi-name pi-project-link" href="project-${esc(p.slug)}.html" data-slug="${esc(p.slug)}">${esc(p.name)}</a>${cell("pi-client", credit(p, "Client"), "Client")}${cell("pi-arch", designCredit(p), "Design")}${p.date ? `<span class="pi-date">${esc(p.date)}</span>` : `<span class="pi-date pi-empty" aria-hidden="true">—</span>`}</div></li>`;
+        return `<li class="pi-row${here ? " is-current" : ""}"><div class="pi-link"><span class="pi-no">${pad(i + 1, 3)}</span><a class="pi-name pi-project-link" href="project-${esc(p.slug)}.html" data-slug="${esc(p.slug)}"><span class="tap-label">${esc(p.name)}</span></a>${cell("pi-client", credit(p, "Client"), "Client")}${cell("pi-arch", designCredit(p), "Design")}${p.date ? `<span class="pi-date">${esc(p.date)}</span>` : `<span class="pi-date pi-empty" aria-hidden="true">—</span>`}</div></li>`;
       })
       .join("");
     const inProgress = [

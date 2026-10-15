@@ -136,6 +136,22 @@ with sync_playwright() as p:
         credit.tap(); pg.wait_for_timeout(300)
         bg = credit.evaluate("e => getComputedStyle(e).backgroundColor")
         check(f"{tag} no sticky highlight after tapping a credit", bg in ("rgba(0, 0, 0, 0)", "transparent"), bg)
+        # Enlarged hit areas (box widened by an absolute ::after) never overlap a neighbouring control.
+        for r in ["/", "/projects", f"/project-{gallery}", "/contact"]:
+            pg.goto(BASE + r); pg.wait_for_selector("#main > *", state="attached")
+            clashes = pg.evaluate("""() => {
+              const n = (v) => parseFloat(v) || 0;
+              const boxes = [...document.querySelectorAll('a[href],button')].filter((e) => e.getClientRects().length && getComputedStyle(e).visibility !== 'hidden' && !e.closest('.contact-honeypot')).map((e) => {
+                // ::after is positioned against the padding box (inside any border).
+                const r = e.getBoundingClientRect(), a = getComputedStyle(e, '::after'), x = a.content !== 'none' && a.position === 'absolute';
+                const pl = r.left + e.clientLeft, pt = r.top + e.clientTop, pr = r.right - e.clientLeft, pb = r.bottom - e.clientTop;
+                return { t: (e.getAttribute('aria-label') || e.textContent).trim().slice(0, 24), l: Math.min(r.left, x ? pl + n(a.left) : r.left), r: Math.max(r.right, x ? pr - n(a.right) : r.right), top: Math.min(r.top, x ? pt + n(a.top) : r.top), b: Math.max(r.bottom, x ? pb - n(a.bottom) : r.bottom) };
+              });
+              const out = [];
+              boxes.forEach((A, i) => boxes.slice(i + 1).forEach((B) => { if (Math.min(A.r, B.r) - Math.max(A.l, B.l) > 0.5 && Math.min(A.b, B.b) - Math.max(A.top, B.top) > 0.5) out.push(A.t + ' × ' + B.t); }));
+              return out;
+            }""")
+            check(f"{tag} {r} tap areas do not overlap", not clashes, clashes)
         ctx.close()
     br.close()
 
