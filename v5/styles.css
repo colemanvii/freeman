@@ -374,31 +374,32 @@ body[data-route="contact"] .viewport{display:flex}
 }
 
 
-/* FREEMANGC / V4 / COMPANY. Editorial architecture, not a new visual system. */
+/* FREEMANGC / V4 / COMPANY — the original centred editorial spacing.
+   The words lead on the left; photographs occupy the right. */
 body[data-route="company"] .viewport{overflow:hidden}
-.co4{height:100%;min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:clamp(16px,2.8vh,29px);max-width:1450px;margin:0 auto}
+.co4{height:100%;min-height:0;max-width:1220px;margin:0 auto;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:clamp(12px,2vh,22px)}
 .co4-top,.co4-bottom{display:flex;align-items:baseline;justify-content:space-between;gap:24px}
-.co4-top{border-bottom:1px solid var(--hair);padding-bottom:15px}
+.co4-top{border-bottom:1px solid var(--hair);padding-bottom:13px}
 .co4-label,.co4-bottom,.co4-eyebrow,.co4-index,.co4-visual figcaption{font:10px/1.5 var(--mono);color:var(--muted);letter-spacing:.035em;text-transform:uppercase}
 .co4-nav{display:flex;gap:clamp(16px,2.4vw,42px);flex-wrap:wrap;align-items:center}
 .co4-nav button{font:11px/1.5 var(--mono);white-space:nowrap;color:var(--muted);letter-spacing:.02em}
 .co4-nav button[aria-selected="true"]{color:var(--ink);border-bottom:1px solid var(--orange);padding-bottom:4px}
 .co4-nav button:hover{color:var(--orange)}
-.co4-stage{min-height:0;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:clamp(36px,6vw,112px);align-items:stretch}
-.co4-visual{margin:0;min-height:0;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:9px}
+.co4-stage{min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(55px,7.5vw,120px);align-items:center}
+.co4-visual{margin:0;min-width:0;min-height:0;height:min(53dvh,525px);align-self:center;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:9px}
 .co4-visual>img{height:100%;width:100%;min-height:0;object-fit:cover;object-position:center}
 .co4-visual>img[hidden],.co4-portrait[hidden]{display:none!important}
 .co4-portrait{display:flex;flex-direction:column;min-height:0;align-items:center;justify-content:center;border:1px solid var(--hair);background:color-mix(in srgb,var(--ink) 2%,var(--paper));gap:28px}
-.co4-portrait>span{font:clamp(66px,9vw,170px)/1 var(--mono);font-weight:400;letter-spacing:-.12em;color:var(--ink)}
+.co4-portrait>span{font:clamp(66px,9vw,150px)/1 var(--mono);font-weight:400;letter-spacing:-.12em;color:var(--ink)}
 .co4-portrait>small{font:10px/1.5 var(--mono);letter-spacing:.04em;color:var(--muted)}
-.co4-editorial{min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--hair) transparent;display:flex;flex-direction:column;justify-content:center}
-.co4-copy{min-width:0;width:100%;max-width:540px}
-.co4-eyebrow{margin-bottom:clamp(17px,3vh,38px)}
-.co4-copy h2{font:400 clamp(32px,4.2vw,72px)/1.08 var(--mono);letter-spacing:-.065em;margin:0 0 clamp(18px,3vh,33px)}
+.co4-editorial{min-width:0;min-height:0;max-height:100%;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--hair) transparent;display:flex;flex-direction:column;justify-content:center}
+.co4-copy{min-width:0;width:100%;max-width:520px}
+.co4-eyebrow{margin-bottom:18px}
+.co4-copy h2{font:400 clamp(26px,2.4vw,36px)/1.2 var(--mono);letter-spacing:-.04em;margin:0 0 27px}
 .co4-accent{color:var(--orange)}
-.co4-copy p{font:13px/1.75 var(--mono);margin:0 0 15px;max-width:48ch}
-.co4-copy .co4-lead{font-size:clamp(15px,1.4vw,21px);line-height:1.55;max-width:37ch;margin-bottom:20px}
-.co4-index{margin-top:clamp(19px,3vh,36px);display:block}
+.co4-copy p{font:13px/1.75 var(--mono);margin:0 0 16px;max-width:48ch}
+.co4-copy .co4-lead{font-size:13px;line-height:1.75;max-width:48ch;margin-bottom:18px}
+.co4-index{margin-top:24px;display:block}
 .co4-bottom{border-top:1px solid var(--hair);padding-top:11px}
 .co4-menu,.co4-people{border-top:1px solid var(--hair)}
 .co4-choice{width:100%;display:grid;grid-template-columns:34px minmax(0,1fr) 22px;gap:9px;align-items:center;text-align:left;border-bottom:1px solid var(--hair);padding:13px 0;font:12px/1.5 var(--mono);min-height:44px}
@@ -412,21 +413,21 @@ body[data-route="company"] .viewport{overflow:hidden}
 .co4-description p{font-size:12px;line-height:1.7;margin:9px 0 0}
 .co4-description small{display:block;color:var(--muted);font:10px/1.5 var(--mono);margin-top:8px}
 .co4[data-co4-view="people"] .co4-choice{padding:9px 0}
+/* At tablet/phone widths the mobile composition is intentional: photo then text. */
 @media(max-width:760px){
-  body[data-route="company"] .viewport{overflow:hidden}
-  .co4{gap:12px;grid-template-rows:auto minmax(0,1fr) auto}
+  .co4{max-width:100%;gap:12px;grid-template-rows:auto minmax(0,1fr) auto}
   .co4-top{align-items:flex-start;flex-direction:column;gap:10px;padding-bottom:10px}
   .co4-label{font-size:9px}
   .co4-nav{width:100%;justify-content:space-between;gap:5px}
   .co4-nav button{font-size:9px;letter-spacing:0}
   .co4-stage{grid-template-columns:1fr;grid-template-rows:minmax(115px,.7fr) minmax(0,1fr);gap:16px}
-  .co4-visual{gap:5px}
+  .co4-visual{grid-column:1;grid-row:1;align-self:stretch;height:auto;gap:5px}
+  .co4-editorial{grid-column:1;grid-row:2;justify-content:flex-start;overflow:auto;overscroll-behavior:contain}
   .co4-visual>img{object-position:center 48%}
   .co4-visual figcaption{font-size:9px}
   .co4-portrait{gap:6px}
   .co4-portrait>span{font-size:clamp(55px,14vw,80px)}
   .co4-portrait>small{font-size:8px}
-  .co4-editorial{justify-content:flex-start;overflow:auto;overscroll-behavior:contain}
   .co4-copy h2{font-size:clamp(25px,7vw,37px);margin-bottom:10px}
   .co4-copy p,.co4-copy .co4-lead{font-size:11px;line-height:1.6;margin-bottom:9px}
   .co4-copy .co4-lead{font-size:12px}
@@ -448,11 +449,12 @@ body[data-route="company"] .viewport{overflow:hidden}
 }
 @media(max-height:500px) and (orientation:landscape){
   .co4-top{flex-direction:row;gap:12px}
-  .co4-stage{grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,1fr);gap:20px}
+  .co4-stage{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:20px}
+  .co4-editorial{grid-column:1;grid-row:1}
+  .co4-visual{grid-column:2;grid-row:1;height:100%}
   .co4-copy h2{font-size:25px}
   .co4-visual figcaption{font-size:8px}
 }
-
 
 /* FREEMANGC / V4 / PROJECTS — only desktop changes. Preserve original mobile index. */
 body[data-route="projects"] .viewport{overflow:hidden}
