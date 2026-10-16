@@ -276,6 +276,31 @@ body[data-os-workspace]:not([data-os-workspace=overview]) .wrap>main{display:non
   .more .detail-close{margin:0 0 16px auto}
   .ahead li{grid-template-columns:70px minmax(0,1fr);gap:8px}
 }
+
+/* Haven discipline: one signal plane at a time on iPhone. */
+.mobile-signal-nav{display:none}
+@media(max-width:600px){
+  html,body{height:100%;overflow:hidden}
+  .wrap{height:100dvh;min-height:0;overflow:hidden}
+  .wrap>main{display:flex;flex:1;min-height:0;overflow:hidden;flex-direction:column}
+  .summary{flex:none;margin:16px 0 10px;font-size:16px}
+  .mobile-signal-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--hair);flex:none;margin-bottom:6px}
+  .mobile-signal-nav button{font-size:10px;text-align:center;min-height:46px;color:var(--muted);letter-spacing:-.02em}
+  .mobile-signal-nav button[aria-pressed=true]{color:var(--orange-ink);box-shadow:inset 0 -2px var(--orange)}
+  .jobs{overflow:auto;min-height:0;flex:1;border-top:0;scrollbar-width:thin}
+  .below{display:contents}
+  .below>section{display:none;overflow:auto;min-height:0;flex:1;margin:0;padding:9px 0 16px}
+  body[data-signal=week] .jobs,body[data-signal=changes] .jobs,body[data-signal=decisions] .jobs{display:none}
+  body[data-signal=week] .below>section:nth-child(1),
+  body[data-signal=changes] .below>section:nth-child(2),
+  body[data-signal=decisions] .below>section:nth-child(3){display:block}
+  .below h2{padding:9px 0 12px}
+  .foot{flex:none;margin-top:6px;padding-top:10px}
+  body[data-os-workspace]:not([data-os-workspace=overview]) .wrap{height:100dvh}
+  body[data-os-workspace]:not([data-os-workspace=overview]) .wrap>main{display:none}
+  .os-workspace{overflow:auto;min-height:0;flex:1}
+  .os-columns{overflow:visible}
+}
 </style>
 </head>
 <body>
@@ -290,6 +315,12 @@ body[data-os-workspace]:not([data-os-workspace=overview]) .wrap>main{display:non
 </nav>
   <p class="summary" id="summary"></p>
   <main>
+    <nav class="mobile-signal-nav" aria-label="Overview signals">
+      <button type="button" data-signal="work" aria-pressed="true">WORK</button>
+      <button type="button" data-signal="week" aria-pressed="false">WEEK</button>
+      <button type="button" data-signal="changes" aria-pressed="false">CHANGES</button>
+      <button type="button" data-signal="decisions" aria-pressed="false">DECISIONS</button>
+    </nav>
     <ol class="jobs" id="jobs"></ol>
     <div class="below">
       <section><h2>The week ahead</h2><ol class="week" id="week"></ol></section>
@@ -837,6 +868,18 @@ window.FOS_createLedger=createLedger;})();
  backdrop.addEventListener("click",e=>{if(e.target===backdrop)close();});
  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!backdrop.hidden){e.stopImmediatePropagation();close();}else if(e.key==="Tab"&&!backdrop.hidden){const closeButton=$("os-detail-close");if(e.shiftKey||e.target!==closeButton){e.preventDefault();closeButton.focus();}}},true);
  select("overview");
+})();
+</script>
+<script>
+/* Mobile signal selector; affects only the Overview display. */
+(function(){
+  const buttons=Array.from(document.querySelectorAll('[data-signal]'));
+  function selectSignal(id){
+    document.body.dataset.signal=id;
+    buttons.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.signal===id)));
+  }
+  buttons.forEach(b=>b.addEventListener('click',()=>selectSignal(b.dataset.signal)));
+  selectSignal('work');
 })();
 </script>
 </body>
