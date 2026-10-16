@@ -707,25 +707,8 @@
     words(root);
     paletteSelector();
   }
-  /* The red eagle plays once when a visitor arrives through the entrance. Never on Back/Forward. */
-  function opening() {
-    let navType = "navigate";
-    try {
-      const entry = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
-      if (entry && entry.type) navType = entry.type;
-    } catch (e) {}
-    if (navType === "back_forward" || hist.state.introSeen || ss.get("fgc-intro-seen")) return;
-    ss.set("fgc-intro-seen", "1");
-    hist.write("replaceState", { ...hist.state, introSeen: 1 }, location.href);
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const splash = document.createElement("div");
-    splash.className = "freeman-intro";
-    splash.setAttribute("aria-hidden", "true");
-    splash.innerHTML = '<img src="intro-eagle.svg" alt="">';
-    document.querySelector("#site").appendChild(splash);
-    splash.addEventListener("animationend", () => splash.remove(), { once: true });
-    setTimeout(() => splash.remove(), 2300);
-  }
+  /* V4 HOME: previous eagle intro retired. The approved pixel-assembly script animation
+     will be integrated from freeman_pixel_assembly_preview.html once its original file is available. */
 
   /* ---------- Fieldwork (living index lives in fieldwork-reader.js) ---------- */
   const fieldworkApi = {
@@ -863,5 +846,5 @@
   // A fresh arrival is depth 0 (CLOSE falls back to the entrance); a reload keeps its depth.
   hist.write("replaceState", { ...hist.state, fgc: 1, palette, depth: hist.state.depth || 0 }, location.href);
   render(first, hist.state);
-  if (first.kind === "entrance") opening();
+  // V4: do not run the previous eagle intro.
 })();
