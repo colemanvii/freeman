@@ -1,0 +1,13 @@
+/* FREEMAN / CORE — extracted without changing values from V5 production a1f39b3.
+   Keep this file in the Cloudflare output v5/. Public V5 and role identity
+   import it before their respective page-specific overrides. */
+:root{
+  --cursor-crosshair:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='21' height='21' viewBox='0 0 21 21'%3E%3Cpath d='M10.5 1v19M1 10.5h19' stroke='%2330312f' stroke-width='1'/%3E%3Crect x='9' y='9' width='3' height='3' fill='%23f05a28'/%3E%3C/svg%3E") 10 10,crosshair;
+  --cursor-orange:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='21' height='21' viewBox='0 0 21 21'%3E%3Cpath d='M10.5 1v19M1 10.5h19' stroke='%23f05a28' stroke-width='1'/%3E%3Crect x='8.5' y='8.5' width='4' height='4' fill='%23f05a28'/%3E%3C/svg%3E") 10 10,crosshair;
+  --paper:#f4f4f0;
+  --ink:#30312f;
+  --muted:#8e918c;
+  --hair:#cfd1cb;
+  --orange:#f05a28;
+  --mono:Monaco,"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+}
