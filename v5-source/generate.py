@@ -29,7 +29,7 @@ def public_project(p):
     q['credits'] = [[k, v] for k, v in p['credits'] if k in PUBLIC_CREDITS and v != 'Interior Designer']
     return q
 public = {'projects': [public_project(p) for p in records['projects']], 'archive': records['archive'] if FIELDWORK else []}
-(root / 'records.js').write_text('window.RECORDS=' + json.dumps(public).replace('</', '<\\/') + ';')
+(root / 'records.js').write_text('window.RECORDS=' + json.dumps(public, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/') + ';')
 
 # Every route is a real file with the same shell; app.js renders the route in place and
 # handles later navigation with the History API (see README "Navigation").
@@ -53,8 +53,8 @@ def route(name):
     return '/' if name == 'index.html' else '/' + name[:-len('.html')]
 
 # V4 entrance: the original Freeman pixel script (pixel-mark.js) loads on the entrance only.
-ENTRANCE_JS = '<script defer src="pixel-mark.js?v=20261016-v4-home"></script><script defer src="app.js?v=20261016-company-photo-fix"></script>'
-APP_JS = '<script defer src="app.js?v=20261016-company-photo-fix"></script>'
+APP_JS = '<script defer src="app.js?v=20261016-cleanup"></script>'
+ENTRANCE_JS = '<script defer src="pixel-mark.js?v=20261016-v4-home"></script>' + APP_JS
 
 for name, title in pages.items():
     # 404.html is served at any unknown path, including nested ones, so it resolves assets from the root.
@@ -75,5 +75,5 @@ urls = ''.join(f'<url><loc>{SITE}{route(n)}</loc></url>' for n in pages if n != 
     f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>\n')
 (root / 'robots.txt').write_text(f'User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n')
 
-# Public Record stories retain their own fixed-viewport reader and construction study.
-shutil.copy(src / "stories" / "record.html", root / "record.html")
+# RECORD is unpublished (#25): the old URL redirects to Company. The study stays in stories/record.html.
+(root / 'record.html').write_text('<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta http-equiv="refresh" content="0;url=company"><title>Freeman General Contracting</title><script>location.replace("company")</script></head><body><a href="company">Freeman General Contracting</a></body></html>')
