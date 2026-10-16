@@ -557,3 +557,8 @@ body[data-route="entrance"] #main{height:100%;width:100%}
  .v4-home-nav a:hover{background:transparent;color:inherit}
  .v4-home-nav a:active{background:var(--orange);color:var(--paper)}
 }
+
+
+/* Company — restrained editorial rule separating navigation from copy. */
+.co4-nav{border-bottom:1px solid var(--hair);padding-bottom:17px;margin-bottom:24px}
+@media(max-width:760px){.co4-nav{padding-bottom:12px;margin-bottom:19px}}
