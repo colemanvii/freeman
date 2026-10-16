@@ -319,6 +319,32 @@ body[data-display=command] .below .instrument-body p{font-size:clamp(12px,.9vw,1
 .os-mode button[aria-pressed=true]{color:var(--orange-ink)}
 @media(max-width:900px){body[data-os-workspace=overview] .below{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr))}}
 @media(max-width:600px){body[data-os-workspace=overview] .wrap{height:100dvh;min-height:0;overflow:hidden}body[data-os-workspace=overview] .below{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));flex:1;overflow:auto;margin-top:8px}body[data-os-workspace=overview] .below>section{display:block!important;grid-column:auto!important;padding:10px;overflow:auto}body[data-os-workspace=overview] .below h2{font-size:10px!important}.instrument-body p{display:block;font-size:10px}.instrument-body span{display:block;white-space:normal}.instrument-body strong{display:block;text-align:left}.os-mode{margin-left:0}}
+
+/* Finance command: contained budget / collections demonstration, no live numbers. */
+body[data-os-workspace="finance"] .os-workspace{overflow:auto}
+.os-budget{min-height:0;display:flex;flex-direction:column;gap:clamp(14px,2vh,24px);font-size:12px}
+.os-budget-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:1px solid var(--ink);border-bottom:1px solid var(--hair)}
+.os-budget-metrics>div{padding:14px 15px 16px 0;display:flex;flex-direction:column;gap:4px;min-width:0}
+.os-budget-metrics>div+div{border-left:1px solid var(--hair);padding-left:15px}
+.os-budget-metrics small{font-size:9px;color:var(--muted);line-height:1.6}
+.os-budget-metrics strong{font-size:clamp(22px,2.6vw,38px);font-weight:400;letter-spacing:-.07em;line-height:1.3}
+.os-budget-metrics span{color:var(--muted);font-size:10px}
+.os-budget-track{display:block;height:2px;background:var(--hair);margin-top:7px}
+.os-budget-track b{display:block;height:100%;background:var(--orange)}
+.os-budget-columns{display:grid;grid-template-columns:1.55fr 1fr 1fr;gap:clamp(18px,2.5vw,34px)}
+.os-budget-columns section{min-width:0}
+.os-budget-columns h2{display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:400;border-bottom:1px solid var(--ink);padding-bottom:11px;margin:0 0 8px}
+.os-budget-columns h2 span{font-size:9px;color:var(--muted)}
+.os-budget-row{display:grid;grid-template-columns:1.5fr .8fr .8fr .8fr;gap:7px;padding:12px 0;border-bottom:1px solid var(--hair);font-size:10px}
+.os-budget-row span:not(:first-child){text-align:right}
+.os-budget-row.hd{font-size:9px;color:var(--muted)}
+.os-budget-note,.os-budget-footer{font-size:9px;color:var(--muted);line-height:1.7;margin:12px 0 0}
+.os-budget-step{display:flex;flex-direction:column;gap:3px;padding:9px 0;border-bottom:1px solid var(--hair)}
+.os-budget-step span,.os-budget-step small{font-size:9px;color:var(--muted)}
+.os-budget-step strong{font-size:11px;font-weight:400;line-height:1.5}
+.os-budget-footer{margin-top:auto;padding:12px 0;border-top:1px solid var(--hair)}
+@media(max-width:950px){.os-budget-columns{grid-template-columns:1fr 1fr}.os-budget-columns section:first-child{grid-column:1/-1}}
+@media(max-width:600px){.os-budget-metrics{grid-template-columns:1fr 1fr}.os-budget-metrics>div:nth-child(3){border-left:0;padding-left:0;border-top:1px solid var(--hair)}.os-budget-metrics>div:nth-child(4){border-top:1px solid var(--hair)}.os-budget-columns{grid-template-columns:1fr}.os-budget-columns section:first-child{grid-column:auto}.os-budget-row{font-size:9px}}
 </style><link rel="stylesheet" href="/portal-identity.css">
 </head>
 <body>
@@ -868,6 +894,40 @@ window.FOS_createLedger=createLedger;})();
  function renderWorkspace(){
   if(current==="overview"){panel.hidden=true;return;}
   const w=W[current];panel.hidden=false;
+  if(current==="finance"){
+    panel.innerHTML=`<header class="os-intro"><div><span class="os-eyebrow">FREEMAN OS / FINANCIAL COMMAND</span><h1 class="os-title">Budgets & cash flow.</h1><p>Company target, job cost, pay applications, and collections in one view.</p></div><div class="os-sources">DEMONSTRATION ONLY<br>NO ACCOUNTING DATA CONNECTED</div></header>
+      <section class="os-budget" aria-label="Illustrative financial overview">
+        <div class="os-budget-metrics">
+          <div><small>2026 REVENUE GOAL / CONFIRMED TARGET</small><strong>$12.0M</strong><span>Freeman annual goal</span></div>
+          <div><small>REVENUE BOOKED / SAMPLE</small><strong>$7.4M</strong><span>62% of target · illustrative</span><i class="os-budget-track"><b style="width:62%"></b></i></div>
+          <div><small>ESTIMATED COST TO COMPLETE / SAMPLE</small><strong>$3.12M</strong><span>Across example projects</span></div>
+          <div><small>OPEN RECEIVABLES / SAMPLE</small><strong>$640K</strong><span>Unverified demo figure</span></div>
+        </div>
+        <div class="os-budget-columns">
+          <section><h2>PROJECT BUDGETS <span>ILLUSTRATIVE</span></h2>
+          <div class="os-budget-table" role="table" aria-label="Example project budgets">
+          <div class="os-budget-row hd" role="row"><span>PROJECT</span><span>BUDGET</span><span>COMMITTED</span><span>FORECAST</span></div>
+          <div class="os-budget-row" role="row"><span>Barnsley Residential</span><span>$2.80M</span><span>$1.94M</span><span>$2.69M</span></div>
+          <div class="os-budget-row" role="row"><span>Magnolia Commons</span><span>$1.65M</span><span>$980K</span><span>$1.60M</span></div>
+          <div class="os-budget-row" role="row"><span>Little Rey</span><span>$1.20M</span><span>$720K</span><span>$1.18M</span></div>
+          </div><p class="os-budget-note">Illustrative amounts only. Replace with authorized, project-coded accounting and commitments before operational use.</p></section>
+          <section><h2>PAY APPLICATION → COLLECTION <span>EXAMPLE CYCLE</span></h2>
+          <div class="os-budget-step"><span>01 / DRAFT</span><strong>Review completed work + stored materials</strong><small>Project manager</small></div>
+          <div class="os-budget-step"><span>02 / SUBMITTED</span><strong>Track owner / architect approval</strong><small>Pay application register</small></div>
+          <div class="os-budget-step"><span>03 / APPROVED</span><strong>Match approved billing to ledger</strong><small>Controller review</small></div>
+          <div class="os-budget-step"><span>04 / COLLECTED</span><strong>Confirm receipt and aging</strong><small>QuickBooks · not connected</small></div>
+          </section>
+          <section><h2>TWO-WEEK LOOKAHEAD <span>SAMPLE PRIORITIES</span></h2>
+          <div class="os-budget-step"><span>WEEK 01</span><strong>Review open change orders and uncommitted costs</strong><small>PM / Estimating</small></div>
+          <div class="os-budget-step"><span>WEEK 01</span><strong>Prepare draft pay applications</strong><small>PM / Controller</small></div>
+          <div class="os-budget-step"><span>WEEK 02</span><strong>Reconcile vendor invoices and purchase orders</strong><small>Ramp / QuickBooks · pending integration</small></div>
+          <div class="os-budget-step"><span>WEEK 02</span><strong>Review receivables and collection follow-ups</strong><small>Finance / Leadership</small></div>
+          </section>
+        </div>
+        <footer class="os-budget-footer">DEMO DATA / NO LIVE FINANCIAL SYSTEMS CONNECTED &nbsp;·&nbsp; PROCORE / RAMP / QUICKBOOKS: INTEGRATION PLANNED</footer>
+      </section>`;
+    return;
+  }
   panel.innerHTML='<header class="os-intro"><div><span class="os-eyebrow">'+esc(w.eyebrow)+'</span><h1 class="os-title">'+esc(w.title)+'</h1><p>'+esc(w.subtitle)+'</p></div><div class="os-sources">FICTIONAL DEMONSTRATION<br>NO LIVE CONNECTIONS</div></header><div class="os-columns">'+w.columns.map(col=>'<section class="os-col"><h2>'+esc(col.name)+'<small>'+esc(col.count)+'</small></h2>'+(col.rows||[]).map(line).join("")+(col.note?'<p class="os-col-note">'+esc(col.note)+'</p>':'')+(col.name==="INSTRUMENTS"||col.name==="FINANCIAL CONTROL"||col.name==="A LONGER VIEW"?w.sources.map(x=>'<div class="os-source-line">'+esc(x[0])+'<span>'+esc(x[1])+'</span></div>').join(""):'')+'</section>').join("")+'</div>';
  }
  function select(name){
