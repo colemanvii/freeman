@@ -222,6 +222,85 @@ body[data-os-workspace]:not([data-os-workspace=overview]) .wrap>main{display:non
 @media(max-width:900px){.os-nav{gap:18px;margin-top:8px}.os-nav button span{display:none}.os-workspace{padding-top:15px;gap:15px}.os-title{font-size:24px}.os-intro p{font-size:11px}.os-columns{grid-template-columns:1fr 1fr;gap:15px}.os-col:last-child{display:none}.os-sources{font-size:9px}.os-line{font-size:12px;padding:10px 0}}
 @media(max-width:540px){.os-nav{gap:13px}.os-nav button{font-size:10px}.os-intro{align-items:start}.os-sources{display:none}.os-columns{grid-template-columns:1fr 1fr;gap:13px}.os-line{font-size:11px}.os-line-meta{font-size:10px}.os-line-right{font-size:10px}.os-col h2{font-size:11px}.os-intro p{line-height:1.45}}
 
+
+/* iPhone-first command surface. Keep desktop unchanged; let the work breathe on touch. */
+@media (max-width:600px){
+  html,body{height:auto;min-height:100%;overflow:auto;-webkit-text-size-adjust:100%}
+  body{font-size:14px;line-height:1.5}
+  .wrap,.wrap:has(.os-workspace:not([hidden])){height:auto;min-height:100dvh;display:flex;flex-direction:column;padding:calc(16px + env(safe-area-inset-top)) 18px calc(24px + env(safe-area-inset-bottom))}
+  .top{display:flex;align-items:flex-start;gap:12px;font-size:11px}
+  .top .r{display:flex;flex-direction:column;align-items:flex-end;gap:2px;text-align:right;font-size:10px}
+  .os-nav{position:sticky;top:0;z-index:30;background:var(--paper);margin:16px -18px 0;padding:0 18px 0;gap:24px;border-bottom:1px solid var(--hair);overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+  .os-nav button{font-size:12px;flex:none;min-height:50px;display:flex;align-items:center}
+  .os-nav button[aria-current=page]:after{bottom:0}
+  .summary{margin:22px 0 20px;font-size:18px;line-height:1.45;max-width:none}
+  .summary .m{font-size:11px;margin-bottom:8px;letter-spacing:.03em}
+  .wrap>main{display:block;overflow:visible;min-height:auto;flex:none}
+  .jobs{border-top:1px solid var(--ink)}
+  .job>button{min-height:100px;padding:16px 0;gap:10px 12px;grid-template-columns:minmax(0,1fr) auto}
+  .name{font-size:19px;letter-spacing:-.025em}
+  .who,.notes,.date,.flag{font-size:12px}
+  .days{font-size:27px}.days small{font-size:11px}
+  .journey{grid-column:1/-1;grid-row:2;padding-top:2px}
+  .track i{height:3px}
+  .stages{font-size:10px;gap:3px}
+  .notes{margin-top:9px}
+  .below{display:block;min-height:0;margin-top:30px;overflow:visible}
+  .below>section{overflow:visible;min-height:auto;margin-bottom:28px}
+  .below h2{font-size:12px;text-transform:uppercase;letter-spacing:.03em;padding-bottom:10px;margin-bottom:11px}
+  .week li{grid-template-columns:76px minmax(0,1fr) auto;font-size:12px;gap:9px;padding:11px 0}
+  .feed li,.mine li{font-size:13px;line-height:1.55;margin-bottom:14px}
+  .below .m,.week li .m,.feed li .m,.mine li .m{font-size:11px}
+  .mine li button{min-height:44px}
+  .foot{margin-top:auto;padding-top:16px;font-size:10px;align-items:flex-start;line-height:1.5}
+  .foot span:last-child{max-width:52%;text-align:right}
+  .os-workspace{display:block;flex:1;min-height:0;padding-top:26px}
+  .os-intro{display:block;padding-bottom:20px}
+  .os-title{font-size:clamp(30px,9vw,42px)}
+  .os-eyebrow{font-size:11px}
+  .os-intro p{font-size:13px;line-height:1.6;margin-top:12px}
+  .os-columns{display:block;overflow:visible;min-height:0}
+  .os-col{overflow:visible;min-height:auto;margin-bottom:30px}
+  .os-col:last-child{display:block}
+  .os-col h2{font-size:12px;padding-bottom:11px}
+  .os-line{font-size:14px;min-height:58px;padding:13px 0;align-items:center}
+  .os-line-meta{font-size:11px}
+  .os-line-right{font-size:11px}
+  .os-source-line{min-height:52px}
+  .os-detail-backdrop{padding:0;align-items:end;place-items:end center}
+  .os-detail{width:100%;max-height:92dvh;border:0;border-top:1px solid var(--ink);padding:22px 20px calc(28px + env(safe-area-inset-bottom));overscroll-behavior:contain}
+  .os-detail-close{position:sticky;top:0;background:var(--paper);z-index:2;margin:0 0 22px auto;min-height:48px}
+  .os-detail h2{font-size:30px}
+  .os-detail dl div{grid-template-columns:90px minmax(0,1fr);gap:10px}
+  .job.open .more{top:auto;bottom:0;left:0;right:0;width:100%;max-height:91dvh;border:0;border-top:1px solid var(--ink);padding:22px 20px calc(28px + env(safe-area-inset-bottom));box-shadow:0 0 0 100vmax color-mix(in srgb,var(--ink) 25%,transparent)}
+  .more .detail-close{margin:0 0 16px auto}
+  .ahead li{grid-template-columns:70px minmax(0,1fr);gap:8px}
+}
+
+/* Haven discipline: one signal plane at a time on iPhone. */
+.mobile-signal-nav{display:none}
+@media(max-width:600px){
+  html,body{height:100%;overflow:hidden}
+  .wrap{height:100dvh;min-height:0;overflow:hidden}
+  .wrap>main{display:flex;flex:1;min-height:0;overflow:hidden;flex-direction:column}
+  .summary{flex:none;margin:16px 0 10px;font-size:16px}
+  .mobile-signal-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--hair);flex:none;margin-bottom:6px}
+  .mobile-signal-nav button{font-size:10px;text-align:center;min-height:46px;color:var(--muted);letter-spacing:-.02em}
+  .mobile-signal-nav button[aria-pressed=true]{color:var(--orange-ink);box-shadow:inset 0 -2px var(--orange)}
+  .jobs{overflow:auto;min-height:0;flex:1;border-top:0;scrollbar-width:thin}
+  .below{display:contents}
+  .below>section{display:none;overflow:auto;min-height:0;flex:1;margin:0;padding:9px 0 16px}
+  body[data-signal=week] .jobs,body[data-signal=changes] .jobs,body[data-signal=decisions] .jobs{display:none}
+  body[data-signal=week] .below>section:nth-child(1),
+  body[data-signal=changes] .below>section:nth-child(2),
+  body[data-signal=decisions] .below>section:nth-child(3){display:block}
+  .below h2{padding:9px 0 12px}
+  .foot{flex:none;margin-top:6px;padding-top:10px}
+  body[data-os-workspace]:not([data-os-workspace=overview]) .wrap{height:100dvh}
+  body[data-os-workspace]:not([data-os-workspace=overview]) .wrap>main{display:none}
+  .os-workspace{overflow:auto;min-height:0;flex:1}
+  .os-columns{overflow:visible}
+}
 </style>
 </head>
 <body>
@@ -236,6 +315,12 @@ body[data-os-workspace]:not([data-os-workspace=overview]) .wrap>main{display:non
 </nav>
   <p class="summary" id="summary"></p>
   <main>
+    <nav class="mobile-signal-nav" aria-label="Overview signals">
+      <button type="button" data-signal="work" aria-pressed="true">WORK</button>
+      <button type="button" data-signal="week" aria-pressed="false">WEEK</button>
+      <button type="button" data-signal="changes" aria-pressed="false">CHANGES</button>
+      <button type="button" data-signal="decisions" aria-pressed="false">DECISIONS</button>
+    </nav>
     <ol class="jobs" id="jobs"></ol>
     <div class="below">
       <section><h2>The week ahead</h2><ol class="week" id="week"></ol></section>
@@ -783,6 +868,18 @@ window.FOS_createLedger=createLedger;})();
  backdrop.addEventListener("click",e=>{if(e.target===backdrop)close();});
  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!backdrop.hidden){e.stopImmediatePropagation();close();}else if(e.key==="Tab"&&!backdrop.hidden){const closeButton=$("os-detail-close");if(e.shiftKey||e.target!==closeButton){e.preventDefault();closeButton.focus();}}},true);
  select("overview");
+})();
+</script>
+<script>
+/* Mobile signal selector; affects only the Overview display. */
+(function(){
+  const buttons=Array.from(document.querySelectorAll('[data-signal]'));
+  function selectSignal(id){
+    document.body.dataset.signal=id;
+    buttons.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.signal===id)));
+  }
+  buttons.forEach(b=>b.addEventListener('click',()=>selectSignal(b.dataset.signal)));
+  selectSignal('work');
 })();
 </script>
 </body>
