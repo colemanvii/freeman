@@ -320,12 +320,12 @@
         <button type="button" role="tab" data-co4-tab="people" aria-selected="false" aria-controls="co4-panel">03 / PEOPLE</button>
       </nav></div>
       <div class="co4-stage">
+        <section class="co4-editorial" id="co4-panel" role="tabpanel" aria-live="polite"><div class="co4-copy" id="co4-copy"></div></section>
         <figure class="co4-visual">
           <img id="co4-image" src="assets/projects/the-optimist-1.jpg" alt="Interior at The Optimist, a Freeman project" loading="eager">
           <div id="co4-portrait" class="co4-portrait" hidden aria-label="Portrait pending"><span id="co4-monogram">GF</span><small>PORTRAIT / FORTHCOMING</small></div>
           <figcaption id="co4-caption">THE OPTIMIST / ATLANTA, GA — SELECTED WORK</figcaption>
         </figure>
-        <section class="co4-editorial" id="co4-panel" role="tabpanel" aria-live="polite"><div class="co4-copy" id="co4-copy"></div></section>
       </div>
       <div class="co4-bottom"><span>BUILT FOR GENERATIONS</span><span>CARTERSVILLE, GEORGIA</span></div>
     </div>`;
@@ -337,7 +337,7 @@
       const isPerson=tab==="people";image.hidden=isPerson;portrait.hidden=!isPerson;
       if(tab==="philosophy"){
         caption.textContent="THE OPTIMIST / ATLANTA, GA — SELECTED WORK";
-        copy.innerHTML=`<div class="co4-eyebrow">01 / PHILOSOPHY</div><h2>Built for<br>generations<span class="co4-accent">.</span></h2>
+        copy.innerHTML=`<div class="co4-eyebrow">01 / PHILOSOPHY</div><h2>Built for generations<span class="co4-accent">.</span></h2>
           <p class="co4-lead">We exist to create places people long to live.</p>
           <p>Freeman General Contracting is an independent builder based in Cartersville, Georgia. We believe how something is built matters as much as what is built.</p>
           <p>Lasting work is built on trust, thoughtful collaboration, and attention to detail.</p>
