@@ -300,6 +300,25 @@ body[data-os-workspace]:not([data-os-workspace=overview]) .wrap>main{display:non
   .os-workspace{overflow:auto;min-height:0;flex:1}
   .os-columns{overflow:visible}
 }
+
+/* OS 02 — project-led instruments, continuing the existing website system */
+body[data-os-workspace=overview] .below{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:1.22fr .78fr;gap:0!important;margin-top:clamp(10px,2.1vh,22px);border-top:1px solid var(--ink);border-left:1px solid var(--hair);min-height:0;overflow:hidden}
+body[data-os-workspace=overview] .below>section{padding:clamp(12px,1.5vw,23px);border-right:1px solid var(--hair);border-bottom:1px solid var(--hair);min-height:0;overflow:hidden}
+body[data-os-workspace=overview] .below>section h2{font-size:clamp(11px,.79vw,14px);color:var(--ink);border-bottom:1px solid var(--hair);padding:0 0 8px;margin:0 0 10px;font-weight:400;display:flex;justify-content:space-between}
+body[data-os-workspace=overview] .below .week li{grid-template-columns:clamp(63px,6vw,100px) minmax(0,1fr) auto;gap:8px;font-size:clamp(10px,.76vw,13px)}
+body[data-os-workspace=overview] .below .feed li,body[data-os-workspace=overview] .below .mine li{font-size:clamp(10px,.76vw,13px)}
+.instrument h2 button{font-size:12px;color:var(--orange-ink);min-width:25px;text-align:right}
+.instrument-body{display:flex;flex-direction:column;justify-content:space-around;height:calc(100% - 32px);gap:6px}
+.instrument-body p{display:flex;justify-content:space-between;gap:10px;align-items:baseline;font-size:clamp(10px,.7vw,13px);line-height:1.45;border-bottom:1px solid var(--hair);padding-bottom:5px}
+.instrument-body p:last-child{border:0}
+.instrument-body span{font-size:clamp(9px,.63vw,11px);color:var(--muted);white-space:nowrap}
+.instrument-body strong{font-weight:400;text-align:right}
+body[data-display=command] .summary{font-size:clamp(20px,1.65vw,31px)}
+body[data-display=command] .below .instrument-body p{font-size:clamp(12px,.9vw,17px)}
+.os-mode{display:inline-flex;gap:13px;align-items:center;margin-left:auto;font-size:10px}
+.os-mode button[aria-pressed=true]{color:var(--orange-ink)}
+@media(max-width:900px){body[data-os-workspace=overview] .below{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){body[data-os-workspace=overview] .wrap{height:100dvh;min-height:0;overflow:hidden}body[data-os-workspace=overview] .below{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));flex:1;overflow:auto;margin-top:8px}body[data-os-workspace=overview] .below>section{display:block!important;grid-column:auto!important;padding:10px;overflow:auto}body[data-os-workspace=overview] .below h2{font-size:10px!important}.instrument-body p{display:block;font-size:10px}.instrument-body span{display:block;white-space:normal}.instrument-body strong{display:block;text-align:left}.os-mode{margin-left:0}}
 </style><link rel="stylesheet" href="/portal-identity.css">
 </head>
 <body>
@@ -312,6 +331,7 @@ body[data-os-workspace]:not([data-os-workspace=overview]) .wrap>main{display:non
   <button type="button" data-os-tab="finance">FINANCE <span>RAMP / QUICKBOOKS</span></button>
   <button type="button" data-os-tab="relationships">RELATIONSHIPS</button>
 </nav>
+  <div class="os-mode" role="group" aria-label="Display mode"><button type="button" data-display-mode="work" aria-pressed="true">WORK</button><span>/</span><button type="button" data-display-mode="command" aria-pressed="false">COMMAND</button></div>
   <p class="summary" id="summary"></p>
   <main>
     <nav class="mobile-signal-nav" aria-label="Overview signals">
@@ -325,6 +345,9 @@ body[data-os-workspace]:not([data-os-workspace=overview]) .wrap>main{display:non
       <section><h2>The week ahead</h2><ol class="week" id="week"></ol></section>
       <section><h2>Since yesterday</h2><ol class="feed" id="feed"></ol></section>
       <section><h2>Yours to decide</h2><ol class="mine" id="mine"></ol></section>
+      <section class="instrument"><h2>People <button type="button" data-instrument="relationships" aria-label="Open people workspace">↗</button></h2><div class="instrument-body"><p><span>PROJECT OWNERSHIP</span><strong>By responsibility, not department.</strong></p><p><span>COORDINATION</span><strong>View relevant project contacts ↗</strong></p></div></section>
+      <section class="instrument"><h2>Documents <button type="button" data-instrument="projects" aria-label="Open project documents">↗</button></h2><div class="instrument-body"><p><span>DRAWINGS / SUBMITTALS</span><strong>Current revisions by project</strong></p><p><span>PROPOSALS</span><strong>Review stage and source ↗</strong></p></div></section>
+      <section class="instrument"><h2>Field <button type="button" data-instrument="projects" aria-label="Open project field records">↗</button></h2><div class="instrument-body"><p><span>SITE EVIDENCE</span><strong>Daily logs and photographs</strong></p><p><span>LAST RECORDED</span><strong>View field activity ↗</strong></p></div></section>
     </div>
   </main>
   <section class="os-workspace" id="os-workspace" aria-live="polite" aria-label="Selected workspace" hidden></section>
@@ -880,5 +903,16 @@ window.FOS_createLedger=createLedger;})();
   selectSignal('work');
 })();
 </script>
-</body>
+<script>
+/* Preserves existing OS rendering, job details, and workspace navigation. */
+(function(){
+ document.querySelectorAll('[data-instrument]').forEach(button=>button.addEventListener('click',()=>{
+   document.querySelector('.os-nav [data-os-tab="'+button.dataset.instrument+'"]')?.click();
+ }));
+ document.querySelectorAll('[data-display-mode]').forEach(button=>button.addEventListener('click',()=>{
+   const mode=button.dataset.displayMode;document.body.dataset.display=mode;
+   document.querySelectorAll('[data-display-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.displayMode===mode)));
+ }));
+})();
+</script></body>
 </html>
