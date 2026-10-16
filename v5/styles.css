@@ -541,8 +541,8 @@ body[data-route="entrance"] #main{height:100%;width:100%}
 .v4-colorways{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);display:flex;gap:9px;z-index:20}
 .v4-way{position:relative;display:block;width:16px;height:16px;padding:0;border:1px solid color-mix(in srgb,var(--ink) 28%,transparent);border-radius:0;touch-action:manipulation}
 .v4-way-chalk{background:#fff9f1}.v4-way-umber{background:#332e20}.v4-way-sand{background:#f93822}
-.v4-way[aria-pressed="true"]{outline:1px solid var(--ink);outline-offset:3px}
-.v4-way:hover:not([aria-pressed="true"]),.v4-way:focus-visible{outline:1px solid var(--orange);outline-offset:3px}
+.v4-way[aria-pressed="true"]{outline:none}
+.v4-way:hover:not([aria-pressed="true"]){outline:none}.v4-way:focus-visible{outline:1px solid var(--orange);outline-offset:3px}
 @media(max-width:760px){
  .v4-home-nav{font-size:11px}
  .v4-home-nav .sep{padding:0 9px}
