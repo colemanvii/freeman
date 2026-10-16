@@ -488,9 +488,9 @@ body[data-route="projects"] .viewport{overflow:hidden}
 .pi4-client .credit-external:hover,.pi4-designer .credit-external:hover{background:var(--orange);color:var(--paper)}
 .pi4-stage{min-width:0;min-height:0;height:100%;display:flex;flex-direction:column;justify-content:center;gap:clamp(9px,1.4vh,16px)}
 .pi4-preview-head{flex:none}
-.pi4-preview-image{width:min(100%,41.6dvh);aspect-ratio:4/5;flex:none;min-height:0;overflow:hidden;background:color-mix(in srgb,var(--ink) 3%,var(--paper));display:grid;place-items:center}
+.pi4-preview-image{width:min(100%,41.6dvh);aspect-ratio:4/5;flex:none;min-height:0;overflow:hidden;background:transparent;display:grid;place-items:center}
 .pi4-image-link{width:100%;height:100%;display:block;overflow:hidden;cursor:var(--cursor-orange)}
-.pi4-image-link img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;max-width:none}
+.pi4-image-link img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;max-width:100%;max-height:100%}
 .pi4-no-image{font:10px/1.5 var(--mono);letter-spacing:.04em;color:var(--muted)}
 .pi4-preview-title{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex:none}
 .pi4-preview-title h2{font:400 clamp(17px,1.6vw,25px)/1.2 var(--mono);letter-spacing:-.045em}
