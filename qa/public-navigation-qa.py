@@ -42,6 +42,7 @@ with sync_playwright() as p:
     for (w, h) in [(1440, 900), (390, 844)]:
         tag = f"{w}x{h}"
         touch = w < 500
+        project_selector = ".pi-project-link" if touch else ".pi4-select"
         ctx = br.new_context(viewport={"width": w, "height": h}, is_mobile=touch, has_touch=touch)
         ctx.add_init_script("try{sessionStorage.setItem('fgc-intro-seen','1')}catch(e){}")
         pg = ctx.new_page()
@@ -70,23 +71,28 @@ with sync_playwright() as p:
 
         # Entrance → Projects → project → CLOSE → Projects (selection restored) → Back/Forward.
         pg.goto("about:blank"); pg.goto(BASE + "/"); pg.wait_for_selector(".client-access-entry")
-        tap((".mobile-home-nav" if w <= 760 else ".center") + " a[href='projects.html']")
-        pg.wait_for_selector(".pi-project-link")
+        tap(".v4-home-nav a[href='projects.html']")  # V4 entrance: one navigation under the script
+        pg.wait_for_selector(project_selector)
         check(f"{tag} entrance → Projects in place", path(pg) == "/projects", pg.url)
         slug = RECORDS["projects"][1]["slug"]
-        tap(f".pi-project-link[data-slug='{slug}']"); pg.wait_for_function(f"location.pathname.includes('project-{slug}')")
+        tap((f".pi-project-link[data-slug='{slug}']" if touch else f".pi4-select[data-pi4-select='{slug}']"))
+        if not touch: tap(".pi4-preview-title a")
+        pg.wait_for_function(f"location.pathname.includes('project-{slug}')")
         check(f"{tag} project opens", path(pg) == f"/project-{slug}", pg.url)
         pg.reload(); pg.wait_for_selector(".panel-head .close")
         check(f"{tag} refresh keeps the project", path(pg) == f"/project-{slug}", pg.url)
-        tap(".panel-head .close"); pg.wait_for_selector(".pi-project-link, .client-access-entry", state="attached")
+        tap(".panel-head .close"); pg.wait_for_selector(".pi4-select, .pi-project-link, .client-access-entry", state="attached")
         check(f"{tag} CLOSE after refresh returns to Projects (history state survives refresh)", path(pg) == "/projects", pg.url)
-        check(f"{tag} closed project is the current row", pg.locator(f".pi-row.is-current [data-slug='{slug}']").count() == 1)
+        check(f"{tag} closed project is the current row", pg.locator(f".pi-row.is-current [data-slug='{slug}']" if touch else f".pi4-select[data-pi4-select='{slug}'][aria-pressed='true']").count() == 1)
         if path(pg) != "/projects":
-            pg.goto(BASE + "/projects"); pg.wait_for_selector(".pi-project-link")
-            tap(f".pi-project-link[data-slug='{slug}']"); pg.wait_for_function(f"location.pathname.includes('project-{slug}')"); pg.go_back(); pg.wait_for_selector(".pi-project-link")
+            pg.goto(BASE + "/projects"); pg.wait_for_selector(project_selector)
+            tap((f".pi-project-link[data-slug='{slug}']" if touch else f".pi4-select[data-pi4-select='{slug}']"))
+            if not touch: tap(".pi4-preview-title a")
+            pg.wait_for_function(f"location.pathname.includes('project-{slug}')")
+            pg.go_back(); pg.wait_for_selector(project_selector)
         pg.go_forward(); pg.wait_for_function(f"location.pathname.includes('project-{slug}')")
         check(f"{tag} Forward reopens the project", path(pg) == f"/project-{slug}", pg.url)
-        pg.go_back(); pg.wait_for_selector(".pi-project-link")
+        pg.go_back(); pg.wait_for_selector(project_selector)
         check(f"{tag} Back returns to Projects", path(pg) == "/projects", pg.url)
 
         # Direct arrival on a project: CLOSE falls back to the entrance.
@@ -125,7 +131,7 @@ with sync_playwright() as p:
         b = pg.locator("#contact-inquiry button").bounding_box()
         hit = b and pg.evaluate("([x, y]) => !!document.elementFromPoint(x, y)?.closest('#contact-inquiry button')", [b["x"] + b["width"] / 2, b["y"] + b["height"] / 2])
         check(f"{tag} contact SEND reachable by scrolling", b and b["y"] + b["height"] <= h and hit, b)
-        pg.goto(BASE + "/projects"); pg.wait_for_selector(".pi-project-link")
+        pg.goto(BASE + "/projects"); pg.wait_for_selector(project_selector)
         link = pg.locator(".pi-project-link").first
         link.scroll_into_view_if_needed(); b = link.bounding_box()
         pg.touchscreen.tap(b["x"] + b["width"] / 2, b["y"] - 10); pg.wait_for_timeout(300)

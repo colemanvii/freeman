@@ -41,6 +41,12 @@ jobs:
       - name: Public navigation
         if: always()
         run: python qa/public-navigation-qa.py http://127.0.0.1:8788 qa/results/public-navigation.json
+      - name: FreemanGC V4 desktop and mobile
+        if: always()
+        run: python qa/freemangc-v4-qa.py http://127.0.0.1:8788
+      - name: FreemanGC V4 homepage (script, colorways, lifecycle)
+        if: always()
+        run: python qa/freemangc-v4-home-qa.py http://127.0.0.1:8788
       - name: FreemanOS password gate
         if: always()
         run: python qa/team-os-gate-qa.py http://localhost:8788 qa/results/team-os-gate.json qa-demo-password

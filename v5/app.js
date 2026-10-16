@@ -7,8 +7,8 @@
  * palette, the Fieldwork index position and the opening state are never reset by a visit.
  *
  * Navigation rules
- *  - index.html is the entrance. It stays in history like any other page; the eagle plays
- *    only on the first load of a tab session.
+ *  - index.html is the entrance. It stays in history like any other page; the original
+ *    Freeman script assembles on arrival and is shown finished on Back/Forward.
  *  - Every interior page carries the same section line at top-left:
  *      COMPANY / PROJECTS / FIELDWORK / CONTACT  (current section in orange).
  *    "FREEMAN GC" is the brand, never a navigation link.
@@ -24,7 +24,7 @@
   const { projects, archive } = window.RECORDS;
   const root = document.querySelector("#main");
   const PALETTES = ["chalk", "sand", "umber"];
-  const PAPER = { chalk: "#f4f4f0", sand: "#d9c5a7", umber: "#51453b" };
+  const PAPER = { chalk: "#fff9f1", sand: "#ddcfb3", umber: "#332e20" };
   const DESTINATIONS = [
     ["COMPANY", "company.html", ""],
     ["PROJECTS", "projects.html", ""],
@@ -298,36 +298,85 @@
 
   /* ---------- COMPANY: the company, as an editorial reading page ---------- */
   function company() {
-    // One static view: headline and introduction; services, people and location. No sheets.
-    const services = [
-      ["General Contracting", ""],
-      ["Construction Management", ""],
-      ["Preconstruction", ""],
-      ["Hospitality", ""],
-      ["Commercial", ""],
-      ["Residential", ""],
-    ];
-    const row = (k, v, cls = "") => `<div class="co-row${cls}"><dt>${esc(k)}</dt>${v ? `<dd>${esc(v)}</dd>` : ""}</div>`;
+    // V4: one editorial frame; three views, no route changes or layout jumps.
     chrome({ title: "Company / Freeman General Contracting", section: "company" });
     const vp = root.querySelector(".viewport");
-    // Centred in the page area; only a very small phone that cannot hold it scrolls (top never clipped).
-    const people = [["Gabe Freeman", "Founder / President"], ["Cameron Dombi", "Superintendent"], ["Mac Thompson", "Superintendent"], ["Jimmy Jennings", "Superintendent"]];
-    vp.innerHTML = `<div class="co-frame"><div class="co"><section class="co-intro"><h2 class="co-head">Built for generations.</h2><p>Freeman General Contracting is an independent builder based in Cartersville, Georgia.</p><p>We believe how something is built matters as much as what is built. Good work requires trust, judgment, and attention to every detail.</p><p>We work with people who believe the same.</p></section><section class="co-facts"><h3 class="co-label">WHAT WE DO</h3><dl class="co-list co-services">${services.map(([k,v]) => row(k,v)).join("")}</dl><div class="co-team"><div class="co-team-heading"><h3 class="co-label">PEOPLE</h3><span class="co-location">CARTERSVILLE, GEORGIA</span></div><div class="co-person-stage"><div class="co-people" id="co-people">${people.map(([name,role], i) => `<button class="co-person" type="button" data-person="${i}" aria-label="View ${esc(name)} profile"><span class="co-person-name">${esc(name)}</span><span class="co-person-role">${esc(role)}</span></button>`).join("")}</div><div class="co-detail" id="co-detail" hidden aria-live="polite"></div></div></div></section></div></div>`;
-    const index = vp.querySelector("#co-people");
-    const detail = vp.querySelector("#co-detail");
-    function showPerson(i) {
-      const [name, role] = people[i];
-      if (!name) return;
-      index.hidden = true;
-      detail.hidden = false;
-      detail.innerHTML = `<div class="co-detail-copy"><div class="co-detail-top"><span class="co-detail-index">0${i+1} / 04</span><button class="co-detail-back" type="button" aria-label="Back to people">← ALL PEOPLE</button></div><h4>${esc(name)}</h4><div class="co-detail-role">${esc(role)}</div><div class="co-detail-note">Profile forthcoming.</div></div>`;
-      detail.querySelector(".co-detail-back").addEventListener("click", () => { detail.hidden = true; index.hidden = false; index.querySelectorAll("[data-person]")[i].focus(); });
+    const people = [
+      {name:"Gabe Freeman",role:"Founder / President"},
+      {name:"Cameron Dombi",role:"Superintendent"},
+      {name:"Mac Thompson",role:"Superintendent"},
+      {name:"Jimmy Jennings",role:"Superintendent"}
+    ];
+    const services = [
+      {name:"General Contracting",detail:"Construction execution, coordination of trades, quality, and completion.",image:"assets/projects/barnsley-gardens-2.jpg",alt:"Architectural photograph of Barnsley Gardens",caption:"BARNSLEY GARDENS"},
+      {name:"Construction Management",detail:"Planning and coordination throughout the life of a project.",image:"assets/projects/barnsley-gardens-2.jpg",alt:"Photograph of Barnsley Gardens",caption:"BARNSLEY GARDENS"},
+      {name:"Preconstruction",detail:"Early collaboration around scope, budgets, schedules, and constructability.",image:"assets/projects/beetlecat-interior-2.jpg",alt:"Interior photograph of Beetlecat",caption:"BEETLECAT"}
+    ];
+    const philosophy={image:"assets/projects/barnsley-gardens-2.jpg",alt:"Barnsley Gardens project photograph",caption:"BARNSLEY GARDENS"};
+    let currentTab="philosophy",currentPerson=0,currentService=0;
+    vp.innerHTML = `<div class="co4" data-co4-view="philosophy">
+      <div class="co4-stage">
+        <section class="co4-editorial" id="co4-panel" role="tabpanel" aria-live="polite">
+          <nav class="co4-nav" aria-label="Company views" role="tablist">
+            <button type="button" role="tab" data-co4-tab="philosophy" aria-selected="true" aria-controls="co4-copy">PHILOSOPHY</button>
+            <button type="button" role="tab" data-co4-tab="services" aria-selected="false" aria-controls="co4-copy">SERVICES</button>
+            <button type="button" role="tab" data-co4-tab="people" aria-selected="false" aria-controls="co4-copy">PEOPLE</button>
+          </nav>
+          <div class="co4-copy" id="co4-copy"></div>
+        </section>
+        <figure class="co4-visual">
+          <div class="co4-media" aria-label="Selected Freeman photography or team portrait">
+            <img id="co4-image" src="${philosophy.image}" alt="${philosophy.alt}" loading="eager">
+            <div id="co4-portrait" class="co4-portrait" hidden aria-label="Portrait pending"><span id="co4-monogram">GF</span><small>PORTRAIT / FORTHCOMING</small></div>
+          </div>
+          <figcaption id="co4-caption">${philosophy.caption}</figcaption>
+        </figure>
+      </div>
+    </div>`;
+    const copy=vp.querySelector("#co4-copy"),image=vp.querySelector("#co4-image"),portrait=vp.querySelector("#co4-portrait"),caption=vp.querySelector("#co4-caption");
+    function showMedia(item) {
+      image.src=item.image;
+      image.alt=item.alt;
+      caption.textContent=item.caption;
     }
-    index.querySelectorAll("[data-person]").forEach(button => button.addEventListener("click", () => showPerson(Number(button.dataset.person))));
-    words(vp);
-    pageCount = 1;
-    renderPage = () => {};
-    count();
+    function show(tab) {
+      currentTab=tab;
+      vp.querySelector(".co4").dataset.co4View=tab;
+      vp.querySelectorAll("[data-co4-tab]").forEach(el=>el.setAttribute("aria-selected",String(el.dataset.co4Tab===tab)));
+      const isPerson=tab==="people";image.hidden=isPerson;portrait.hidden=!isPerson;
+      if(tab==="philosophy"){
+        showMedia(philosophy);
+        copy.innerHTML=`<h2>Built for generations.</h2>
+          <p>Freeman General Contracting is an independent builder based in Cartersville, Georgia.</p>
+          <p>We believe how something is built matters as much as what is built. Good work requires trust, judgment, and attention to every detail.</p>
+          <p>We work with people who believe the same.</p>`;
+      } else if(tab==="services"){
+        showMedia(services[currentService]);
+        copy.innerHTML=`<h2>What we do<span class="co4-accent">.</span></h2>
+          <div class="co4-menu" role="group" aria-label="Services">${services.map((s,i)=>`<button type="button" class="co4-choice" data-co4-service="${i}" aria-pressed="${i===currentService}"><span>0${i+1}</span><strong>${esc(s.name)}</strong><span>↗</span></button>`).join("")}</div>
+          <div class="co4-description"><span>OUR APPROACH</span><p id="co4-service-text">${esc(services[currentService].detail)}</p></div>`;
+      } else {
+        const person=people[currentPerson];
+        vp.querySelector("#co4-monogram").textContent=person.name.split(" ").map(x=>x[0]).join("");
+        caption.textContent=person.name.toUpperCase();
+        copy.innerHTML=`<h2>Our people<span class="co4-accent">.</span></h2>
+          <div class="co4-people" role="group" aria-label="Select a team member">${people.map((p,i)=>`<button type="button" class="co4-choice" data-co4-person="${i}" aria-pressed="${i===currentPerson}"><span>0${i+1}</span><strong>${esc(p.name)}</strong><span>↗</span></button>`).join("")}</div>
+          <div class="co4-description"><span id="co4-person-role">${esc(person.role)}</span><p id="co4-person-name">${esc(person.name)}</p><small>Full biography and portrait forthcoming.</small></div>`;
+      }
+    }
+    vp.addEventListener("click",e=>{
+      const tab=e.target.closest("[data-co4-tab]"),service=e.target.closest("[data-co4-service]"),person=e.target.closest("[data-co4-person]");
+      if(tab){show(tab.dataset.co4Tab);return;}
+      if(service){currentService=Number(service.dataset.co4Service);vp.querySelectorAll("[data-co4-service]").forEach(el=>el.setAttribute("aria-pressed",String(Number(el.dataset.co4Service)===currentService)));vp.querySelector("#co4-service-text").textContent=services[currentService].detail;showMedia(services[currentService]);return;}
+      if(person){currentPerson=Number(person.dataset.co4Person);show("people");}
+    });
+    vp.querySelector(".co4-nav").addEventListener("keydown",e=>{
+      const tabs=[...vp.querySelectorAll("[data-co4-tab]")],i=tabs.indexOf(document.activeElement);
+      if(i===-1||!["ArrowLeft","ArrowRight"].includes(e.key))return;
+      e.preventDefault();const next=tabs[(i+(e.key==="ArrowRight"?1:tabs.length-1))%tabs.length];next.focus();show(next.dataset.co4Tab);
+    });
+    show("philosophy");
+    pageCount=1;renderPage=()=>{};count();
   }
 
   /* ---------- Projects ---------- */
@@ -370,40 +419,74 @@
   function projectsIndex(state) {
     chrome({ title: "Projects / Selected work", section: "projects" });
     const vp = root.querySelector(".viewport");
-    const cell = (cls, value, label) =>
-      value
-        ? creditLink(value, cls)
-        : `<span class="${cls} pi-empty"><span class="sr-only">${label} not yet verified</span><span aria-hidden="true">—</span></span>`;
-    const rows = projects
-      .map((p, i) => {
-        const here = p.slug === state.focus;
-        return `<li class="pi-row${here ? " is-current" : ""}"><div class="pi-link"><span class="pi-no">${pad(i + 1, 3)}</span><a class="pi-name pi-project-link" href="project-${esc(p.slug)}.html" data-slug="${esc(p.slug)}"><span class="tap-label">${esc(p.name)}</span></a>${cell("pi-client", credit(p, "Client"), "Client")}${cell("pi-arch", designCredit(p), "Design")}${p.date ? `<span class="pi-date">${esc(p.date)}</span>` : `<span class="pi-date pi-empty" aria-hidden="true">—</span>`}</div></li>`;
-      })
-      .join("");
-    const inProgress = [
-      ["Barnsley Branded Residential", "Adairsville, Georgia", "Residential"],
-      ["Magnolia Commons Retail Center", "Cumming, GA", "Retail"],
-      ["Little Rey", "Dunwoody, Georgia", "Hospitality"],
+    const cell=(cls,value,label)=>value?creditLink(value,cls):`<span class="${cls} pi-empty"><span class="sr-only">${label} not yet verified</span><span aria-hidden="true">—</span></span>`;
+    const rows=projects.map((p,i)=>`<li class="pi-row${p.slug===state.focus?" is-current":""}"><div class="pi-link"><span class="pi-no">${pad(i+1,3)}</span><a class="pi-name pi-project-link" href="project-${esc(p.slug)}.html" data-slug="${esc(p.slug)}"><span class="tap-label">${esc(p.name)}</span></a>${cell("pi-client",credit(p,"Client"),"Client")}${cell("pi-arch",designCredit(p),"Design")}${p.date?`<span class="pi-date">${esc(p.date)}</span>`:'<span class="pi-date pi-empty" aria-hidden="true">—</span>'}</div></li>`).join("");
+    const inProgress=[
+      ["Barnsley Branded Residential","Adairsville, Georgia","Residential"],
+      ["Magnolia Commons Retail Center","Cumming, GA","Retail"],
+      ["Little Rey","Dunwoody, Georgia","Hospitality"]
     ];
-    const activeRows = inProgress.map(([name, place, type]) =>
-      `<li class="pi-row pi-progress"><div class="pi-link pi-progress-line"><span class="pi-no">—</span><span class="pi-name">${esc(name)}</span><span class="pi-client">${esc(place)}</span><span class="pi-arch">${esc(type)}</span><span class="pi-date">IN PROGRESS</span></div></li>`
-    ).join("");
-    vp.innerHTML = `<div class="pi"><div class="pi-head" aria-hidden="true"><span>No.</span><span>Project</span><span>Client</span><span>Design</span><span class="pi-head-date">Date</span></div><div class="pi-scroller"><div class="pi-section-label">IN PROGRESS / CURRENT WORK</div><ol class="pi-list" aria-label="In progress projects">${activeRows}</ol><div class="pi-section-label pi-completed-label">SELECTED WORK / COMPLETED</div><ol class="pi-list" aria-label="Completed projects">${rows}</ol></div></div>`;
-    const scroller = vp.querySelector(".pi-scroller");
-    // The project a visitor opens is the selection they return to.
-    scroller.addEventListener("click", (e) => {
-      const row = e.target.closest(".pi-row");
-      if (!row) return;
-      scroller.querySelectorAll(".pi-row.is-current").forEach((r) => r.classList.remove("is-current"));
+    const activeRows=inProgress.map(([name,place,type])=>`<li class="pi-row pi-progress"><div class="pi-link pi-progress-line"><span class="pi-no">—</span><span class="pi-name">${esc(name)}</span><span class="pi-client">${esc(place)}</span><span class="pi-arch">${esc(type)}</span><span class="pi-date">IN PROGRESS</span></div></li>`).join("");
+    const desktopItems=projects.map((p,i)=>`<li class="pi4-work-row"><button type="button" class="pi4-select" data-pi4-select="${esc(p.slug)}" aria-pressed="false"><span class="pi4-no">${pad(i+1,3)}</span><span class="pi4-indicator" aria-hidden="true">+</span><span class="pi4-item-name">${esc(p.name)}</span></button><span class="pi4-client">${cell("pi-client",credit(p,"Client"),"Client")}</span><span class="pi4-designer">${cell("pi-arch",designCredit(p),"Design")}</span></li>`).join("");
+    vp.innerHTML=`<div class="pi4" aria-label="Desktop project index"><aside class="pi4-register">
+      <div class="pi4-heading"><span>PROJECT INDEX</span><span>IN PROGRESS / ${pad(inProgress.length,2)} &nbsp;·&nbsp; SELECTED / ${pad(projects.length,2)}</span></div>
+      <div class="pi4-scroll"><div class="pi4-columns" aria-hidden="true"><span>NO.</span><span>PROJECT</span><span>CLIENT</span><span>DESIGN</span></div><div class="pi4-section">IN PROGRESS / CURRENT WORK</div>
+        <ol class="pi4-current">${inProgress.map(([name,place,type])=>`<li class="pi4-work-row pi4-in-progress"><span class="pi4-no">—</span><span class="pi4-item-name">${esc(name)}</span><span class="pi4-client">${esc(place)}</span><span class="pi4-designer">${esc(type)}</span></li>`).join("")}</ol>
+        <div class="pi4-section pi4-completed">SELECTED WORK / COMPLETED</div>
+        <ol class="pi4-items">${desktopItems}</ol>
+      </div></aside>
+      <section class="pi4-stage" id="pi4-stage" aria-label="Selected project preview" aria-live="polite"></section>
+    </div>
+    <div class="pi pi4-original-mobile"><div class="pi-head" aria-hidden="true"><span>No.</span><span>Project</span><span>Client</span><span>Design</span><span class="pi-head-date">Date</span></div><div class="pi-scroller"><div class="pi-section-label">IN PROGRESS / CURRENT WORK</div><ol class="pi-list" aria-label="In progress projects">${activeRows}</ol><div class="pi-section-label pi-completed-label">SELECTED WORK / COMPLETED</div><ol class="pi-list" aria-label="Completed projects">${rows}</ol></div></div>`;
+    // The full-screen photography view already exists. The preview is its smaller sibling.
+    const stage=vp.querySelector("#pi4-stage");
+    let selected=null,photoIndex=0;
+    const photosFor=p=>(p.gallery&&p.gallery.length?p.gallery.map(g=>g.src):p.image?[p.image]:[]);
+    function select(slug,index=0){
+      const p=projects.find(x=>x.slug===slug)||projects.find(x=>x.slug==="the-optimist")||projects.find(x=>photosFor(x).length)||projects[0];
+      if(!p)return;
+      selected=p;const photos=photosFor(p);photoIndex=Math.max(0,Math.min(index,photos.length-1));
+      const hasPhotos=photos.length>0,selectedIndex=projects.indexOf(p)+1;
+      stage.innerHTML=`<div class="pi4-preview-head"><span>SELECTED WORK / ${pad(selectedIndex,2)} OF ${pad(projects.length,2)}</span><button type="button" data-pi4-close aria-label="Close selected project">CLOSE ×</button></div>
+        <div class="pi4-preview-title"><div><h2>${esc(p.name)}</h2><p>${esc(p.location||"")}</p></div><a href="project-${esc(p.slug)}.html">VIEW PROJECT ↗</a></div>
+        <div class="pi4-preview-image">${hasPhotos?`<a href="project-${esc(p.slug)}.html" class="pi4-image-link" aria-label="Open ${esc(p.name)} full project gallery"><img id="pi4-image" src="${esc(photos[photoIndex])}" alt="${esc(p.name)} — photograph ${photoIndex+1}" draggable="false"></a>`:'<div class="pi4-no-image">PHOTOGRAPHY FORTHCOMING</div>'}</div>
+        <div class="pi4-image-caption">${esc(p.name)} / ${esc(p.date||"SELECTED WORK")}</div>
+        <div class="pi4-preview-bottom"><span>FREEMAN / SELECTED WORK</span>
+          ${hasPhotos?`<div class="pi4-arrows"><button type="button" data-pi4-step="-1" aria-label="Previous project photograph" ${photoIndex===0?"disabled":""}>←</button><span>${pad(photoIndex+1)} / ${pad(photos.length)}</span><button type="button" data-pi4-step="1" aria-label="Next project photograph" ${photoIndex===photos.length-1?"disabled":""}>→</button></div>`:""}
+        </div>`;
+      vp.querySelectorAll("[data-pi4-select]").forEach(el=>{
+        const active=el.dataset.pi4Select===p.slug;
+        el.setAttribute("aria-pressed",String(active));
+        const indicator=el.querySelector(".pi4-indicator");
+        if(indicator)indicator.textContent=active?"−":"+";
+      });
+      hist.write("replaceState",{...hist.state,focus:p.slug},location.href);
+    }
+    vp.querySelector(".pi4").addEventListener("click",e=>{
+      const chooser=e.target.closest("[data-pi4-select]"),step=e.target.closest("[data-pi4-step]"),close=e.target.closest("[data-pi4-close]");
+      if(chooser){select(chooser.dataset.pi4Select);return;}
+      if(step&&selected){select(selected.slug,photoIndex+Number(step.dataset.pi4Step));return;}
+      if(close){
+        selected=null;
+        stage.innerHTML='<div class="pi4-preview-head"><span>SELECTED WORK</span></div><div class="pi4-empty-selection">SELECT A PROJECT / LEFT INDEX ↗</div>';
+        vp.querySelectorAll("[data-pi4-select]").forEach(el=>{
+          el.setAttribute("aria-pressed","false");
+          const indicator=el.querySelector(".pi4-indicator");
+          if(indicator)indicator.textContent="+";
+        });
+        hist.write("replaceState",{...hist.state,focus:null},location.href);
+      }
+    });
+    select(state.focus||"the-optimist");
+    const scroller=vp.querySelector(".pi4-original-mobile .pi-scroller");
+    scroller.addEventListener("click",e=>{
+      const row=e.target.closest(".pi-row");if(!row)return;
+      scroller.querySelectorAll(".pi-row.is-current").forEach(r=>r.classList.remove("is-current"));
       row.classList.add("is-current");
     });
-    if (typeof state.projScroll === "number") scroller.scrollTop = state.projScroll;
-    const current = scroller.querySelector(".pi-row.is-current");
-    if (current) {
-      const top = current.offsetTop, bottom = top + current.offsetHeight;
-      if (top < scroller.scrollTop) scroller.scrollTop = top;
-      else if (bottom > scroller.scrollTop + scroller.clientHeight) scroller.scrollTop = bottom - scroller.clientHeight;
-    }
+    if(typeof state.projScroll==="number")scroller.scrollTop=state.projScroll;
+    const current=scroller.querySelector(".pi-row.is-current");
+    if(current){const top=current.offsetTop,bottom=top+current.offsetHeight;if(top<scroller.scrollTop)scroller.scrollTop=top;else if(bottom>scroller.scrollTop+scroller.clientHeight)scroller.scrollTop=bottom-scroller.clientHeight;}
     count();
   }
   /* Photography-first project page: one photograph at a time, the name, place and verified credits
@@ -594,54 +677,68 @@
     showPages(vp, reading(vp, [block("h1", "Record not found."), link("RETURN TO COMPANY", "company.html", "text-link phrase")]));
   }
 
-  /* ---------- Entrance ---------- */
-  function paletteSelector() {
-    const holder = document.createElement("div");
-    holder.className = "palette-selector";
-    holder.setAttribute("role", "group");
-    holder.setAttribute("aria-label", "Website color palette");
-    [["chalk", "OFF-WHITE"], ["sand", "SAND"], ["umber", "UMBER"]].forEach(([id, name]) => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "palette-chip palette-" + id;
-      b.dataset.palette = id;
-      b.setAttribute("aria-label", name + " palette");
-      b.title = name;
-      b.setAttribute("aria-pressed", String(id === palette));
-      b.addEventListener("click", () => {
-        choosePalette(id);
-        holder.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x.dataset.palette === id)));
-      });
-      holder.appendChild(b);
-    });
-    root.appendChild(holder);
+  /* ---------- Entrance (V4) ----------
+     The original 160×61 Freeman script is the identity; navigation sits beneath it as one group.
+     The script assembles on arrival (load, reload, in-site link) and is drawn finished on
+     Back/Forward, like the retired eagle. Selecting the script replays it. A colorway recolours
+     the script in place; it never restarts the animation. The bitmap is shown at a whole number of
+     device pixels per bitmap pixel, so every pixel of the script is the same size. */
+  const COLORWAYS = [["chalk", "Light"], ["umber", "Dark"], ["sand", "Freeman"]];
+  function entrance({ play = true } = {}) {
+    const nav = DESTINATIONS.map(([t, u]) => link(t, u, "", { "data-entry": "1" })).join('<span class="sep" aria-hidden="true">/</span>');
+    const ways = COLORWAYS.map(([id, name]) =>
+      `<button type="button" class="v4-way v4-way-${id}" data-v4-color="${id}" aria-label="${name} colorway" aria-pressed="${id === palette}"></button>`).join("");
+    root.innerHTML = `<div class="v4-home">
+      <h1 class="sr-only">Freeman General Contracting</h1>
+      <div class="v4-home-identity">
+        <button type="button" class="v4-home-mark" aria-label="Replay the Freeman script"><canvas id="v4-pixel-mark" width="160" height="61" aria-hidden="true"></canvas></button>
+        <nav class="v4-home-nav" aria-label="Main">${nav}</nav>
+      </div>
+      <a class="client-access-entry phrase" href="client-access.html" aria-label="Access">ACCESS ↗</a>
+      <div class="legal">FREEMAN GENERAL CONTRACTING<br>CARTERSVILLE, GEORGIA</div>
+      <div class="v4-colorways" role="group" aria-label="Colorway">${ways}</div>
+      <div class="mark">BUILT FOR GENERATIONS™</div>
+    </div>`;
+    const home = root.querySelector(".v4-home");
+    const canvas = root.querySelector("#v4-pixel-mark");
+    function fit() {
+      // Bitmap pixel size: a whole number of device pixels, nearest to the composed width.
+      const dpr = window.devicePixelRatio || 1;
+      const phone = matchMedia(PHONE).matches;
+      const target = phone ? innerWidth * 0.82 : Math.min(innerWidth * 0.34, innerHeight * 0.73);
+      const limit = phone ? innerWidth - 40 : Math.min(innerWidth * 0.5, innerHeight * 0.9);
+      let n = Math.max(1, Math.round((target * dpr) / 160));
+      while (n > 1 && (160 * n) / dpr > limit) n--;
+      // Low-density narrow screens (a 1× window under 400px) have no whole step near the target:
+      // keep the composed size there rather than shrinking the script to a stamp.
+      if ((160 * n) / dpr < target * 0.75) n = (target * dpr) / 160;
+      home.style.setProperty("--px", n / dpr + "px");
+      // Place the group on whole device pixels: a half-pixel offset would blur the bitmap.
+      const snap = (v) => Math.round(v * dpr) / dpr;
+      const group = home.querySelector(".v4-home-identity");
+      home.style.setProperty("--x", snap((innerWidth - (160 * n) / dpr) / 2) + "px");
+      home.style.setProperty("--y", snap(innerHeight * (phone ? 0.48 : 0.5) - group.offsetHeight / 2) + "px");
+    }
+    fit();
+    const mark = window.FreemanPixelMark ? window.FreemanPixelMark.mount(canvas, { play }) : null;
+    const button = root.querySelector(".v4-home-mark");
+    if (mark) button.addEventListener("click", () => mark.replay());
+    else button.disabled = true;
+    root.querySelectorAll("[data-v4-color]").forEach((btn) => btn.addEventListener("click", () => {
+      if (btn.dataset.v4Color !== palette) choosePalette(btn.dataset.v4Color);
+      root.querySelectorAll("[data-v4-color]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.v4Color === palette)));
+      if (mark) mark.paint();
+    }));
+    words(root.querySelector(".legal"));
+    words(root.querySelector(".mark"));
+    return { resize: fit, destroy: () => mark && mark.destroy() };
   }
-  function entrance() {
-    const nav = (cl) => DESTINATIONS.map(([t, u, c]) => link(t, u, c, { "data-entry": "1" }));
-    // FREEMAN GC is the brand, not a link: part of the centred group so brand and navigation centre together.
-    const brand = '<span class="brand-id">FREEMAN GC</span>';
-    root.innerHTML = `<nav class="center" aria-label="Main">${brand}${nav().join('<span class="sep">/</span>')}</nav><nav class="mobile-home-nav" aria-label="Main">${brand}${nav().join("")}</nav><a class="client-access-entry phrase" href="client-access.html" aria-label="Access">ACCESS ↗</a><div class="legal">FREEMAN GENERAL CONTRACTING<br>CARTERSVILLE, GEORGIA</div><div class="mark">BUILT FOR GENERATIONS™<br>EST. IN GEORGIA</div>`;
-    words(root);
-    paletteSelector();
-  }
-  /* The red eagle plays once when a visitor arrives through the entrance. Never on Back/Forward. */
-  function opening() {
-    let navType = "navigate";
+  // Back/Forward (and a document restored from history) shows the finished script.
+  function arrivedByHistory() {
     try {
       const entry = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
-      if (entry && entry.type) navType = entry.type;
-    } catch (e) {}
-    if (navType === "back_forward" || hist.state.introSeen || ss.get("fgc-intro-seen")) return;
-    ss.set("fgc-intro-seen", "1");
-    hist.write("replaceState", { ...hist.state, introSeen: 1 }, location.href);
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const splash = document.createElement("div");
-    splash.className = "freeman-intro";
-    splash.setAttribute("aria-hidden", "true");
-    splash.innerHTML = '<img src="intro-eagle.svg" alt="">';
-    document.querySelector("#site").appendChild(splash);
-    splash.addEventListener("animationend", () => splash.remove(), { once: true });
-    setTimeout(() => splash.remove(), 2300);
+      return !!entry && entry.type === "back_forward";
+    } catch (e) { return false; }
   }
 
   /* ---------- Fieldwork (living index lives in fieldwork-reader.js) ---------- */
@@ -651,7 +748,7 @@
   };
 
   /* ---------- Router ---------- */
-  function render(route, state = {}, { nav = false } = {}) {
+  function render(route, state = {}, { nav = false, pop = false } = {}) {
     const fw = window.FreemanFieldwork;
     const stayInFieldwork = view && view.kind === "fieldwork" && route.kind === "fieldwork" && fw;
     if (view && view.destroy && !stayInFieldwork) view.destroy();
@@ -677,9 +774,9 @@
           const scroller = root.querySelector(".pi-scroller");
           return { focus: currentFocus(), projScroll: scroller ? scroller.scrollTop : 0 };
         },
-        resize: () => render(parse(location.href), { ...hist.state, focus: currentFocus() }),
+        resize: ["company", "projects", "contact"].includes(route.kind) ? null : () => render(parse(location.href), { ...hist.state, focus: currentFocus() }),
       };
-      if (route.kind === "entrance") entrance();
+      if (route.kind === "entrance") Object.assign(view, entrance({ play: !pop }));
       else if (route.kind === "company") company();
       else if (route.kind === "projects") projectsIndex(state);
       else if (route.kind === "project") project(route.item);
@@ -690,12 +787,15 @@
     if (nav) settleFocus(state);
   }
   function currentFocus() {
+    const chosen = root.querySelector(".pi4-select[aria-pressed=\"true\"]");
+    if(chosen && matchMedia("(min-width:761px)").matches) return chosen.dataset.pi4Select;
     const a = root.querySelector(".index-row.active[data-slug], .pi-row.is-current [data-slug]");
     return a ? a.dataset.slug : undefined;
   }
   /* After an in-place navigation, put keyboard focus where the visitor expects it. */
   function settleFocus(state) {
-    let el = state.focus ? root.querySelector(`[data-slug="${CSS.escape(state.focus)}"]`) : null;
+    let el = state.focus && matchMedia("(min-width:761px)").matches ? root.querySelector(`[data-pi4-select="${CSS.escape(state.focus)}"]`) : null;
+    if(!el && state.focus) el = root.querySelector(`[data-slug="${CSS.escape(state.focus)}"]`);
     if (!el) el = root.querySelector(".panel-head h1, .fw-top h1");
     if (!el) return;
     if (!el.matches("a,button,input,[tabindex]")) el.setAttribute("tabindex", "-1");
@@ -735,7 +835,7 @@
   window.addEventListener("popstate", (e) => {
     const state = e.state && typeof e.state === "object" ? e.state : {};
     if (PALETTES.includes(state.palette) && state.palette !== palette) applyPalette(state.palette);
-    render(parse(location.href), state, { nav: true });
+    render(parse(location.href), state, { nav: true, pop: true });
   });
   // iOS Safari applies :active (the touch highlight) only when a touch listener exists.
   document.addEventListener("touchstart", () => {}, { passive: true });
@@ -776,6 +876,5 @@
   applyPalette([ss.get("freeman-palette"), hist.state.palette].find((p) => PALETTES.includes(p)));
   // A fresh arrival is depth 0 (CLOSE falls back to the entrance); a reload keeps its depth.
   hist.write("replaceState", { ...hist.state, fgc: 1, palette, depth: hist.state.depth || 0 }, location.href);
-  render(first, hist.state);
-  if (first.kind === "entrance") opening();
+  render(first, hist.state, { pop: arrivedByHistory() });
 })();
