@@ -24,7 +24,7 @@
   const { projects, archive } = window.RECORDS;
   const root = document.querySelector("#main");
   const PALETTES = ["chalk", "sand", "umber"];
-  const PAPER = { chalk: "#f4f4f0", sand: "#d9c5a7", umber: "#51453b" };
+  const PAPER = { chalk: "#fff9f1", sand: "#ddcfb3", umber: "#332e20" };
   const DESTINATIONS = [
     ["COMPANY", "company.html", ""],
     ["PROJECTS", "projects.html", ""],
