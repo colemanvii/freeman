@@ -308,7 +308,7 @@
       {name:"Jimmy Jennings",role:"Superintendent"}
     ];
     const services = [
-      {name:"General Contracting",detail:"Construction execution, coordination of trades, quality, and completion.",image:"assets/projects/barnsley-gardens-2.jpg",alt:"Architectural photograph of Barnsley Gardens",caption:"THE OPTIMIST / SELECTED FREEMAN WORK"},
+      {name:"General Contracting",detail:"Construction execution, coordination of trades, quality, and completion.",image:"assets/projects/barnsley-gardens-2.jpg",alt:"Architectural photograph of Barnsley Gardens",caption:"BARNSLEY GARDENS / SELECTED FREEMAN WORK"},
       {name:"Construction Management",detail:"Planning and coordination throughout the life of a project.",image:"assets/projects/barnsley-gardens-2.jpg",alt:"Photograph of Barnsley Gardens",caption:"BARNSLEY GARDENS / SELECTED FREEMAN WORK"},
       {name:"Preconstruction",detail:"Early collaboration around scope, budgets, schedules, and constructability.",image:"assets/projects/beetlecat-interior-2.jpg",alt:"Interior photograph of Beetlecat",caption:"BEETLECAT / SELECTED FREEMAN WORK"}
     ];
@@ -344,7 +344,7 @@
       vp.querySelectorAll("[data-co4-tab]").forEach(el=>el.setAttribute("aria-selected",String(el.dataset.co4Tab===tab)));
       const isPerson=tab==="people";image.hidden=isPerson;portrait.hidden=!isPerson;
       if(tab==="philosophy"){
-        showMedia({image:"assets/projects/the-optimist-1.jpg",alt:"Interior photograph of The Optimist",caption:"THE OPTIMIST / ATLANTA, GA — SELECTED WORK"});
+        showMedia({image:"assets/projects/barnsley-gardens-2.jpg",alt:"Barnsley Gardens project photograph",caption:"BARNSLEY GARDENS / SELECTED FREEMAN WORK"});
         copy.innerHTML=`<h2>Built for generations.</h2>
           <p>Freeman General Contracting is an independent builder based in Cartersville, Georgia.</p>
           <p>We believe how something is built matters as much as what is built. Good work requires trust, judgment, and attention to every detail.</p>
