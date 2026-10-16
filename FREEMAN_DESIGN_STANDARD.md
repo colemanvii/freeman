@@ -83,3 +83,56 @@ Do not mark any of these VERIFIED without deployed commit inspection and browser
 5. Generic design-system advice (never override the above).
 
 **This document records observations and review constraints; it does not change application behavior.**
+
+
+## 07 / Canonical system decision — ONE FREEMAN
+
+**Decision (October 16, 2026):** There is one Freeman visual identity across public website, proposals, client / architect / trade-partner workspaces, and Freeman OS. Surface-specific information architecture is permitted; separate aesthetic systems are not.
+
+### Source of truth and precedence
+
+1. The **currently approved live public-site aesthetic** is the visual benchmark, once its deployed commit and rendered behavior are confirmed.
+2. The existing `DESIGN-DOCTRINE.md` governs the identity philosophy when pages diverge.
+3. The **actual production design tokens and reusable primitives** should be extracted from the confirmed deployed source and maintained in one shared stylesheet/module.
+4. Historical pages (`styles.css`, prototypes, proposal studies, older portals) are **references to reconcile**, not alternative brand authorities.
+
+**Do not use the values below as production tokens until deployment parity is verified.** The root `index.html` currently contains `#f4f4f1` / `#242424` / `#e75a28` / Monaco. These are verified repository observations, not a completed production-site verification.
+
+### Universal visual grammar
+
+- **Same paper, ink, type and accent rules.** Never change to a separate visual theme merely because the user enters a portal or OS.
+- **Same navigation and feedback language.** Text-first controls, intentional hover/focus, clear state, and predictable back/close. Preserve brand color continuity.
+- **Same geometry.** Rectangular composition; fine rules and spatial divisions rather than rounded, elevated dashboard cards.
+- **Same restraint.** No free-floating UI, gradients, glossy surfaces, decorative status glow, or gratuitous animation.
+- **Same evidence standard.** Real project data, decisions, people, schedules, and photographs; dummy data clearly marked in demos.
+- **Same responsiveness.** Make desktop and mobile equally authored and readable without forcing the same columns at every width.
+
+### Page translation, without aesthetic divergence
+
+| Surface | What changes | What must not change |
+| --- | --- | --- |
+| Public | Architectural project selection and storytelling | Core typography, paper/ink, orange punctuation, interaction grammar |
+| Proposal | Scope, estimate, schedule, decisions, acceptance | Root identity, typography, fine rules and restrained color |
+| Client | Next action, approvals, progress, documents | No new card library or separate gradient/colorway |
+| Architect | Drawings, RFIs, submittals, coordination | Same layout grammar, functional status presentation |
+| Trade partners | Current drawings, schedule, scopes, safety, submissions | Same fonts, controls, and document hierarchy |
+| Freeman OS | High-density mission state, assignments, issues, decisions | Same brand system even when information density increases |
+
+### Implementation boundary
+
+**Phase A (this PR):** Establish policy, audit existing divergences, and guard new work. Documentation only.
+
+**Phase B (next code PR):** Identify the production deployment commit, capture desktop/mobile screenshots, extract final exact tokens into a single canonical stylesheet and shared components, and migrate one surface at a time.
+
+**Phase C (QA):** Side-by-side screenshot regression tests for landing → Team Access / Client Access → proposals and OS. Fix differences before merge. Never claim completion without testing production deployment.
+
+### Definition of done for visual consistency
+
+A new Freeman surface is acceptable only when:
+1. It inherits the canonical CSS tokens and typographic primitives rather than copying speculative values.
+2. Moving between public and private areas does **not** visibly switch brands, fonts, paper, color rules, or navigation language.
+3. Desktop and mobile states are inspected against approved references.
+4. Functional density and accessibility remain strong.
+5. A reviewer can point to actual source and screenshots proving compliance.
+
+**One firm. One visual language. Many instruments.**
