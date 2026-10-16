@@ -700,12 +700,24 @@
     root.appendChild(holder);
   }
   function entrance() {
-    const nav = (cl) => DESTINATIONS.map(([t, u, c]) => link(t, u, c, { "data-entry": "1" }));
-    // FREEMAN GC is the brand, not a link: part of the centred group so brand and navigation centre together.
-    const brand = '<span class="brand-id">FREEMAN GC</span>';
-    root.innerHTML = `<nav class="center" aria-label="Main">${brand}${nav().join('<span class="sep">/</span>')}</nav><nav class="mobile-home-nav" aria-label="Main">${brand}${nav().join("")}</nav><a class="client-access-entry phrase" href="client-access.html" aria-label="Access">ACCESS ↗</a><div class="legal">FREEMAN GENERAL CONTRACTING<br>CARTERSVILLE, GEORGIA</div><div class="mark">BUILT FOR GENERATIONS™<br>EST. IN GEORGIA</div>`;
+    const nav=DESTINATIONS.map(([t,u])=>link(t,u,"",{"data-entry":"1"})).join("");
+    root.innerHTML=`<div class="v4-home">
+      <header class="v4-home-header"><span>FREEMAN GC</span><nav aria-label="Main navigation">${nav}</nav></header>
+      <div class="v4-home-study"><span>FREEMAN / PIXEL ASSEMBLY</span><span>ORIGINAL SCRIPT · 160 PX BITMAP</span></div>
+      <div class="v4-home-mark"><canvas id="v4-pixel-mark" width="160" height="61" role="img" aria-label="Freeman handwritten script mark, assembled pixel by pixel"></canvas></div>
+      <div class="v4-home-bottom"><div class="v4-home-brand">FREEMAN<br>GENERAL CONTRACTING</div>
+      <div class="v4-home-actions"><button type="button" id="v4-replay">↻ REPLAY</button><a href="company.html">COMPANY VIEW ↗</a><button type="button" id="v4-cycle-color">CHANGE COLOR □</button></div>
+      <div class="v4-home-location">CARTERSVILLE, GA<br>BUILT FOR GENERATIONS</div></div>
+      <a class="v4-home-access" href="client-access.html">ACCESS ↗</a>
+    </div>`;
+    const mark=window.FreemanPixelMark&&window.FreemanPixelMark.mount(root.querySelector("#v4-pixel-mark"));
+    if(!mark){root.querySelector("#v4-pixel-mark").setAttribute("aria-label","Freeman mark animation unavailable");}
+    root.querySelector("#v4-replay").addEventListener("click",()=>mark&&mark.replay());
+    root.querySelector("#v4-cycle-color").addEventListener("click",()=>{
+      const next=PALETTES[(PALETTES.indexOf(palette)+1)%PALETTES.length];choosePalette(next);
+      if(mark)mark.replay();
+    });
     words(root);
-    paletteSelector();
   }
   /* V4 HOME: previous eagle intro retired. The approved pixel-assembly script animation
      will be integrated from freeman_pixel_assembly_preview.html once its original file is available. */
