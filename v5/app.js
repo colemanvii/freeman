@@ -23,8 +23,8 @@
 (() => {
   const { projects, archive } = window.RECORDS;
   const root = document.querySelector("#main");
-  const PALETTES = ["chalk", "sand", "umber"];
-  const PAPER = { chalk: "#f4f4f0", sand: "#d9c5a7", umber: "#51453b" };
+  const PALETTES = ["chalk", "sand", "umber", "cam"];
+  const PAPER = { chalk: "#f4f4f0", sand: "#d9c5a7", umber: "#51453b", cam: "#5c6349" };
   const DESTINATIONS = [
     ["COMPANY", "company.html", ""],
     ["PROJECTS", "projects.html", ""],
@@ -126,8 +126,12 @@
 
   /* ---------- Palette (entry always starts in off-white; choice is carried in history state) ---------- */
   let palette = "chalk";
+  let preCamPalette = "chalk";
+  // Tiny bitmap-style claw hammer, sharp edges and no illustration styling.
+  document.documentElement.style.setProperty("--cursor-hammer", 'url("data:image/svg+xml,'+encodeURIComponent("<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"28\" height=\"28\" viewBox=\"0 0 28 28\" shape-rendering=\"crispEdges\"><path d=\"M5 3h11v2h4v3h-4v2h-5V8H9v2H7V8H5z\" fill=\"#242b23\"/><path d=\"M6 4h10v2h4v1h-5v2h-4V7H8v2H7V7H6z\" fill=\"#c1c4b6\"/><path d=\"M13 9h3v3h-3z\" fill=\"#323e30\"/><path d=\"M15 11h3v3h-3zM17 13h3v3h-3zM19 15h3v3h-3zM21 17h3v3h-3zM23 19h3v4h-3z\" fill=\"#282e26\"/><path d=\"M14 11h2v3h-2zM16 13h2v3h-2zM18 15h2v3h-2zM20 17h2v3h-2zM22 19h2v4h-2z\" fill=\"#aa9071\"/></svg>")+'") 5 4, pointer');
   function applyPalette(id) {
     palette = PALETTES.includes(id) ? id : "chalk";
+    if (palette !== "cam") preCamPalette = palette;
     document.documentElement.dataset.palette = palette;
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute("content", PAPER[palette]);
@@ -623,6 +627,20 @@
     root.innerHTML = `<nav class="center" aria-label="Main">${brand}${nav().join('<span class="sep">/</span>')}</nav><nav class="mobile-home-nav" aria-label="Main">${brand}${nav().join("")}</nav><a class="client-access-entry phrase" href="client-access.html" aria-label="Access">ACCESS ↗</a><div class="legal">FREEMAN GENERAL CONTRACTING<br>CARTERSVILLE, GEORGIA</div><div class="mark">BUILT FOR GENERATIONS™<br>EST. IN GEORGIA</div>`;
     words(root);
     paletteSelector();
+    const camButton = document.createElement("button");
+    camButton.type = "button";
+    camButton.className = "cam-mode-trigger";
+    camButton.textContent = "CAM";
+    camButton.title = "Cam mode";
+    camButton.setAttribute("aria-label", "Toggle cam mode");
+    camButton.setAttribute("aria-pressed", String(palette === "cam"));
+    camButton.addEventListener("click", () => {
+      choosePalette(palette === "cam" ? preCamPalette : "cam");
+      camButton.setAttribute("aria-pressed", String(palette === "cam"));
+      root.querySelectorAll(".palette-chip").forEach((chip) =>
+        chip.setAttribute("aria-pressed", String(chip.dataset.palette === palette)));
+    });
+    root.appendChild(camButton);
   }
   /* The red eagle plays once when a visitor arrives through the entrance. Never on Back/Forward. */
   function opening() {
