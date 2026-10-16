@@ -124,7 +124,7 @@
     return parse(url.href).kind !== "notfound";
   }
 
-  /* ---------- Palette (entry always starts in off-white; choice is carried in history state) ---------- */
+  /* ---------- Palette (fresh sessions start off-white; navigation keeps the selection) ---------- */
   let palette = "chalk";
   function applyPalette(id) {
     palette = PALETTES.includes(id) ? id : "chalk";
@@ -773,12 +773,7 @@
 
   /* ---------- Boot ---------- */
   const first = parse(location.href);
-  if (first.kind === "entrance") {
-    applyPalette("chalk");
-    ss.set("freeman-palette", "chalk");
-  } else {
-    applyPalette([hist.state.palette, ss.get("freeman-palette")].find((p) => PALETTES.includes(p)));
-  }
+  applyPalette([ss.get("freeman-palette"), hist.state.palette].find((p) => PALETTES.includes(p)));
   // A fresh arrival is depth 0 (CLOSE falls back to the entrance); a reload keeps its depth.
   hist.write("replaceState", { ...hist.state, fgc: 1, palette, depth: hist.state.depth || 0 }, location.href);
   render(first, hist.state);
