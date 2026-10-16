@@ -702,13 +702,15 @@
   function entrance() {
     const nav=DESTINATIONS.map(([t,u])=>link(t,u,"",{"data-entry":"1"})).join("");
     root.innerHTML=`<div class="v4-home">
-      <header class="v4-home-header"><span>FREEMAN GC</span><nav aria-label="Main navigation">${nav}</nav></header>
-      <div class="v4-home-study"><span>FREEMAN / PIXEL ASSEMBLY</span><span>ORIGINAL SCRIPT · 160 PX BITMAP</span></div>
-      <div class="v4-home-mark"><canvas id="v4-pixel-mark" width="160" height="61" role="img" aria-label="Freeman handwritten script mark, assembled pixel by pixel"></canvas></div>
-      <div class="v4-home-bottom"><div class="v4-home-brand">FREEMAN<br>GENERAL CONTRACTING</div>
-      <div class="v4-home-actions"><button type="button" id="v4-replay">↻ REPLAY</button><a href="company.html">COMPANY VIEW ↗</a><div class="v4-colorways" role="group" aria-label="Website colorway"><button type="button" data-v4-color="chalk" aria-pressed="false"><span class="v4-swatch v4-light"></span>LIGHT</button><button type="button" data-v4-color="umber" aria-pressed="false"><span class="v4-swatch v4-dark"></span>DARK</button><button type="button" data-v4-color="sand" aria-pressed="false"><span class="v4-swatch v4-freeman"></span>FREEMAN</button></div></div>
-      <div class="v4-home-location">CARTERSVILLE, GA<br>BUILT FOR GENERATIONS</div></div>
+      <nav class="v4-home-nav" aria-label="Main navigation"><span class="v4-home-id">FREEMAN GC</span><div class="v4-home-links">${nav}</div></nav>
+      <div class="v4-home-mark"><canvas id="v4-pixel-mark" width="160" height="61" role="img" aria-label="Freeman handwritten script assembling pixel by pixel"></canvas></div>
       <a class="v4-home-access" href="client-access.html">ACCESS ↗</a>
+      <div class="v4-home-bottom"><div class="v4-home-legal">FREEMAN GENERAL CONTRACTING<br>CARTERSVILLE, GEORGIA</div>
+        <div class="v4-home-actions"><button type="button" id="v4-replay" aria-label="Replay script animation">↻</button><div class="v4-colorways" role="group" aria-label="Website colorway">
+          <button type="button" data-v4-color="chalk" aria-label="Light colorway" aria-pressed="false"><span class="v4-swatch v4-light"></span></button>
+          <button type="button" data-v4-color="sand" aria-label="Freeman colorway" aria-pressed="false"><span class="v4-swatch v4-freeman"></span></button>
+          <button type="button" data-v4-color="umber" aria-label="Dark colorway" aria-pressed="false"><span class="v4-swatch v4-dark"></span></button>
+        </div></div><div class="v4-home-tag">BUILT FOR GENERATIONS™<br>EST. IN GEORGIA</div>
     </div>`;
     const mark=window.FreemanPixelMark&&window.FreemanPixelMark.mount(root.querySelector("#v4-pixel-mark"));
     if(!mark){root.querySelector("#v4-pixel-mark").setAttribute("aria-label","Freeman mark animation unavailable");}
