@@ -314,13 +314,15 @@
     ];
     let currentTab="philosophy",currentPerson=0,currentService=0;
     vp.innerHTML = `<div class="co4" data-co4-view="philosophy">
-      <div class="co4-top"><span class="co4-label">FREEMAN / COMPANY</span><nav class="co4-nav" aria-label="Company views" role="tablist">
-        <button type="button" role="tab" data-co4-tab="philosophy" aria-selected="true" aria-controls="co4-panel">01 / PHILOSOPHY</button>
-        <button type="button" role="tab" data-co4-tab="services" aria-selected="false" aria-controls="co4-panel">02 / SERVICES</button>
-        <button type="button" role="tab" data-co4-tab="people" aria-selected="false" aria-controls="co4-panel">03 / PEOPLE</button>
-      </nav></div>
       <div class="co4-stage">
-        <section class="co4-editorial" id="co4-panel" role="tabpanel" aria-live="polite"><div class="co4-copy" id="co4-copy"></div></section>
+        <section class="co4-editorial" id="co4-panel" role="tabpanel" aria-live="polite">
+          <nav class="co4-nav" aria-label="Company views" role="tablist">
+            <button type="button" role="tab" data-co4-tab="philosophy" aria-selected="true" aria-controls="co4-copy">PHILOSOPHY</button>
+            <button type="button" role="tab" data-co4-tab="services" aria-selected="false" aria-controls="co4-copy">SERVICES</button>
+            <button type="button" role="tab" data-co4-tab="people" aria-selected="false" aria-controls="co4-copy">PEOPLE</button>
+          </nav>
+          <div class="co4-copy" id="co4-copy"></div>
+        </section>
         <figure class="co4-visual">
           <div class="co4-media" aria-label="Selected Freeman photography or team portrait">
             <img id="co4-image" src="assets/projects/the-optimist-1.jpg" alt="Interior at The Optimist, a Freeman project" loading="eager">
@@ -329,7 +331,6 @@
           <figcaption id="co4-caption">THE OPTIMIST / ATLANTA, GA — SELECTED WORK</figcaption>
         </figure>
       </div>
-      <div class="co4-bottom"><span>BUILT FOR GENERATIONS</span><span>CARTERSVILLE, GEORGIA</span></div>
     </div>`;
     const copy=vp.querySelector("#co4-copy"),image=vp.querySelector("#co4-image"),portrait=vp.querySelector("#co4-portrait"),caption=vp.querySelector("#co4-caption");
     function showMedia(item) {
