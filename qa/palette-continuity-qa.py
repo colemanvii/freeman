@@ -5,7 +5,7 @@ from playwright.sync_api import sync_playwright
 base=sys.argv[1] if len(sys.argv)>1 else 'http://localhost:8788'
 password=sys.argv[2] if len(sys.argv)>2 else 'qa-demo-password'
 colors={'chalk':'rgb(255, 249, 241)','sand':'rgb(221, 207, 179)','umber':'rgb(51, 46, 32)'}
-labels={'chalk':'OFF-WHITE','sand':'SAND','umber':'UMBER'}
+labels={'chalk':'Light','umber':'Dark','sand':'Freeman'}  # V4 entrance colorways
 checks=[]
 os.makedirs('qa/results',exist_ok=True)
 with sync_playwright() as p:
@@ -23,7 +23,7 @@ with sync_playwright() as p:
      assert actual['palette']==palette and actual['bg']==color, (stage,actual,palette)
      assert 'Monaco' in actual['font'] and not actual['overflow'],(stage,actual)
      checks.append(f'{device}/{scheme}/{palette}/{stage}')
-    page.goto(base+'/');page.get_by_role('button',name=labels[palette]+' palette',exact=True).click();verify('landing')
+    page.goto(base+'/');page.get_by_role('button',name=labels[palette]+' colorway',exact=True).click();verify('landing')
     page.get_by_role('link',name='Access',exact=True).click();page.locator('[data-team]').wait_for();verify('access')
     page.locator('[data-team]').click();page.wait_for_url('**/team-os?entry=1');verify('gate')
     if scheme=='light':page.screenshot(path=f'qa/results/{device}-{palette}-gate.png',full_page=True)

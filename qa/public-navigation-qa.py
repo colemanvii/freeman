@@ -71,7 +71,7 @@ with sync_playwright() as p:
 
         # Entrance → Projects → project → CLOSE → Projects (selection restored) → Back/Forward.
         pg.goto("about:blank"); pg.goto(BASE + "/"); pg.wait_for_selector(".client-access-entry")
-        tap((".mobile-home-nav" if w <= 760 else ".center") + " a[href='projects.html']")
+        tap(".v4-home-nav a[href='projects.html']")  # V4 entrance: one navigation under the script
         pg.wait_for_selector(project_selector)
         check(f"{tag} entrance → Projects in place", path(pg) == "/projects", pg.url)
         slug = RECORDS["projects"][1]["slug"]
