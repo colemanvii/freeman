@@ -23,8 +23,8 @@
 (() => {
   const { projects, archive } = window.RECORDS;
   const root = document.querySelector("#main");
-  const PALETTES = ["chalk", "sand", "umber"];
-  const PAPER = { chalk: "#f4f4f0", sand: "#d9c5a7", umber: "#51453b" };
+  const PALETTES = ["chalk", "sand", "umber", "cam"];
+  const PAPER = { chalk: "#f4f4f0", sand: "#d9c5a7", umber: "#51453b", cam: "#5c6349" };
   const DESTINATIONS = [
     ["COMPANY", "company.html", ""],
     ["PROJECTS", "projects.html", ""],
@@ -126,8 +126,11 @@
 
   /* ---------- Palette (entry always starts in off-white; choice is carried in history state) ---------- */
   let palette = "chalk";
+  let preCamPalette = "chalk";
+  document.documentElement.style.setProperty("--cursor-hammer", 'url("data:image/svg+xml,'+encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><g transform='rotate(-35 16 16)' stroke='#1e261b' stroke-width='1.3' stroke-linejoin='miter'><path fill='#bcb5a0' d='M13 10h6v19h-6z'/><path fill='#374431' d='M8 4h15l3 4-3 4h-6V9h-4v3H8z'/><path fill='#374431' d='M8 4 3 7l5 5h4V4z'/></g></svg>")+'") 5 4, pointer');
   function applyPalette(id) {
     palette = PALETTES.includes(id) ? id : "chalk";
+    if (palette !== "cam") preCamPalette = palette;
     document.documentElement.dataset.palette = palette;
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute("content", PAPER[palette]);
@@ -600,7 +603,7 @@
     holder.className = "palette-selector";
     holder.setAttribute("role", "group");
     holder.setAttribute("aria-label", "Website color palette");
-    [["chalk", "OFF-WHITE"], ["sand", "SAND"], ["umber", "UMBER"]].forEach(([id, name]) => {
+    [["chalk", "OFF-WHITE"], ["sand", "SAND"], ["umber", "UMBER"], ["cam", "CAMOUFLAGE"]].forEach(([id, name]) => {
       const b = document.createElement("button");
       b.type = "button";
       b.className = "palette-chip palette-" + id;
@@ -623,6 +626,20 @@
     root.innerHTML = `<nav class="center" aria-label="Main">${brand}${nav().join('<span class="sep">/</span>')}</nav><nav class="mobile-home-nav" aria-label="Main">${brand}${nav().join("")}</nav><a class="client-access-entry phrase" href="client-access.html" aria-label="Access">ACCESS ↗</a><div class="legal">FREEMAN GENERAL CONTRACTING<br>CARTERSVILLE, GEORGIA</div><div class="mark">BUILT FOR GENERATIONS™<br>EST. IN GEORGIA</div>`;
     words(root);
     paletteSelector();
+    const camButton = document.createElement("button");
+    camButton.type = "button";
+    camButton.className = "cam-mode-trigger";
+    camButton.textContent = "CAM";
+    camButton.title = "Cam mode";
+    camButton.setAttribute("aria-label", "Toggle cam mode");
+    camButton.setAttribute("aria-pressed", String(palette === "cam"));
+    camButton.addEventListener("click", () => {
+      choosePalette(palette === "cam" ? preCamPalette : "cam");
+      camButton.setAttribute("aria-pressed", String(palette === "cam"));
+      root.querySelectorAll(".palette-chip").forEach((chip) =>
+        chip.setAttribute("aria-pressed", String(chip.dataset.palette === palette)));
+    });
+    root.appendChild(camButton);
   }
   /* The red eagle plays once when a visitor arrives through the entrance. Never on Back/Forward. */
   function opening() {
