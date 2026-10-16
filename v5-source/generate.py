@@ -53,8 +53,8 @@ def route(name):
     return '/' if name == 'index.html' else '/' + name[:-len('.html')]
 
 # V4 entrance: the original Freeman pixel script (pixel-mark.js) loads on the entrance only.
-ENTRANCE_JS = '<script defer src="pixel-mark.js?v=20261016-v4-home"></script><script defer src="app.js?v=20261016-v4-home"></script>'
-APP_JS = '<script defer src="app.js?v=20261016-palette"></script>'
+ENTRANCE_JS = '<script defer src="pixel-mark.js?v=20261016-v4-home"></script><script defer src="app.js?v=20261016-company-photo-fix"></script>'
+APP_JS = '<script defer src="app.js?v=20261016-company-photo-fix"></script>'
 
 for name, title in pages.items():
     # 404.html is served at any unknown path, including nested ones, so it resolves assets from the root.
