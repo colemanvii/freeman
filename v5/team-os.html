@@ -361,9 +361,9 @@ body[data-os-workspace]:not([data-os-workspace=overview]) .revenue-instrument{di
     </div>
   </main>
   <section class="revenue-instrument" aria-label="Company revenue goal, demonstration values">
-    <div class="revenue-copy"><span class="revenue-label">07 / COMPANY REVENUE <span class="revenue-demo">ILLUSTRATIVE VALUES</span></span><strong id="revenue-progress-text">$7.2M <small>/ $12M TARGET</small></strong></div>
-    <div class="revenue-viz"><div class="revenue-scale"><span>0</span><span id="revenue-percent">60% OF GOAL</span><span>100%</span></div><div class="revenue-track" role="progressbar" aria-label="Sample company revenue progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="60" id="revenue-bar"><span id="revenue-fill" style="width:60%"></span></div><div class="revenue-foot"><span>RECOGNIZED TO DATE / DEMONSTRATION ONLY</span><button type="button" id="revenue-edit" aria-expanded="false" aria-controls="revenue-form">SET DEMO VALUES ↗</button></div>
-      <form id="revenue-form" hidden><label>ACTUAL $ <input type="number" id="rev-current" min="0" step="1000" value="7200000"></label><label>GOAL $ <input type="number" id="rev-target" min="1" step="1000" value="12000000"></label><button type="submit">APPLY ↗</button></form>
+    <div class="revenue-copy"><span class="revenue-label">07 / COMPANY REVENUE <span class="revenue-demo">TARGET CONFIRMED / ACTUAL PENDING</span></span><strong id="revenue-progress-text">— <small>/ $12M TARGET</small></strong></div>
+    <div class="revenue-viz"><div class="revenue-scale"><span>0</span><span id="revenue-percent">AWAITING ACTUAL</span><span>100%</span></div><div class="revenue-track" role="progressbar" aria-label="Sample company revenue progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="revenue-bar"><span id="revenue-fill" style="width:0%"></span></div><div class="revenue-foot"><span>ACTUAL REVENUE NOT YET PROVIDED</span><button type="button" id="revenue-edit" aria-expanded="false" aria-controls="revenue-form">SET DEMO VALUES ↗</button></div>
+      <form id="revenue-form" hidden><label>ACTUAL $ <input type="number" id="rev-current" min="0" step="1000" placeholder="Enter actual" value=""></label><label>GOAL $ <input type="number" id="rev-target" min="1" step="1000" value="12000000"></label><button type="submit">APPLY ↗</button></form>
     </div>
   </section>
   <section class="os-workspace" id="os-workspace" aria-live="polite" aria-label="Selected workspace" hidden></section>
