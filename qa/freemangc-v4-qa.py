@@ -16,6 +16,8 @@ with sync_playwright() as p:
         frame=page.locator(".co4-visual")
         frame.wait_for(state="visible")
         first=frame.bounding_box()
+        media=page.locator(".co4-media").bounding_box()
+        assert media and media["height"]>0 and abs(media["width"]/media["height"]-0.8)<0.035,media
         assert page.locator('[data-co4-tab="philosophy"]').get_attribute("aria-selected")=="true"
         page.locator('[data-co4-tab="services"]').click()
         assert page.get_by_text("General Contracting",exact=True).is_visible()
@@ -37,7 +39,14 @@ with sync_playwright() as p:
         else:
             assert page.locator(".pi4").is_visible()
             assert not page.locator(".pi4-original-mobile").is_visible()
+            assert page.locator(".pi4-columns").inner_text().find("CLIENT")>=0
+            assert page.locator(".pi4-columns").inner_text().find("DESIGN")>=0
+            assert "Rocket Farm" in page.locator(".pi4-work-row:has(.pi4-select[data-pi4-select='beetlecat']) .pi4-client").inner_text()
+            stage=page.locator(".pi4-stage").bounding_box()
+            assert stage and stage["width"]<width*0.38,stage
             page.locator(".pi4-select[data-pi4-select='beetlecat']").click()
+            photo=page.locator(".pi4-preview-image").bounding_box()
+            assert photo and abs(photo["width"]/photo["height"]-0.8)<0.035,photo
             assert "Beetlecat" in page.locator(".pi4-preview-title").inner_text()
             page.locator(".pi4-arrows [data-pi4-step='1']").click()
             assert "02 /" in page.locator(".pi4-arrows").inner_text()
