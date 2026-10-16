@@ -17,6 +17,33 @@ h2.eyebrow{font-weight:400;margin-top:0}.relationship-heading{display:flex;align
 @media(min-width:761px) and (max-height:820px){.choice{padding:9px 0}.choice .desc{max-width:none;line-height:1.5}.right .eyebrow{margin-bottom:18px}.actions{margin-top:18px}.note{margin-top:16px}.left h1{margin:18px 0 20px}}
 @media(max-height:500px) and (orientation:landscape){.frame{padding:12px 24px 10px;gap:8px}.stage{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);grid-template-rows:minmax(0,1fr);gap:28px;align-items:center}.left{border:0;padding:0}.left h1,body[data-view=step] .left h1{font-size:clamp(26px,5vw,40px);margin:6px 0 8px}.left p{font-size:11px;line-height:1.5;margin:0}.right{align-self:stretch;justify-content:center;max-width:none}.right .eyebrow{margin:0 0 6px}.choice,body[data-view=overview] .choice{padding:0}.choice .desc{display:none}.choice .name{font-size:13px}.step{padding:5px 0}.step strong{font-size:12px}.step small{font-size:10px;margin-top:2px;line-height:1.5}.actions{margin-top:6px}.note{margin-top:4px;font-size:10px;line-height:1.5}.code-form{margin-top:6px;padding-top:4px}.code-line input{padding:4px 0;font-size:12px}#code-status{min-height:0}.footer{padding-top:6px;font-size:9px}}
 body[data-view=home] .left h1{font-size:clamp(28px,3.8vw,60px);color:var(--orange)}
+
+/* Freeman identity is shared across entrance and ACCESS; no separate portal skin. */
+:root{--mono:Monaco,"SFMono-Regular",Consolas,"Liberation Mono",monospace;--muted:#6c6e69;--rule:#cfd1cb}
+html,body{font-family:var(--mono);-webkit-font-smoothing:none;text-rendering:geometricPrecision}
+body{font:12px/1.7 var(--mono)}
+button,a{font-family:inherit}
+button:hover,a:hover{color:var(--ink)}
+.choice:hover .name,.choice:focus-visible .name,.close:hover,#next:hover{background:var(--orange);color:var(--paper)}
+.top{font-size:10px;letter-spacing:.035em;text-transform:uppercase}
+.top>span:first-child{font-weight:700}
+.eyebrow{font-size:10px;letter-spacing:.035em}
+.left h1{font-size:clamp(38px,5.4vw,76px);font-weight:400;letter-spacing:-.055em;line-height:1.15}
+.left p{font-size:13px;line-height:1.7}
+.choice{border-radius:0;min-height:56px}
+.choice .name{font-size:clamp(14px,1.25vw,17px);line-height:1.5}
+.choice .desc{font-size:11px}
+.footer{font-size:9px;letter-spacing:.04em;text-transform:uppercase}
+:root[data-palette="sand"]{--muted:#766757}
+:root[data-palette="umber"]{--muted:#c9bcae}
+@media(max-width:760px){
+ .frame{padding:20px 20px 18px}
+ .left h1{font-size:clamp(36px,10vw,52px);letter-spacing:-.055em}
+ .left p{font-size:12px}
+ .choice{min-height:48px}
+ .choice .name{font-size:14px}
+ .footer{font-size:9px}
+}
 </style></head><body data-view="home"><main class="frame"><header class="top"><span>FREEMAN GC</span><span class="muted">ACCESS / <a class="close" id="close" href="/" aria-label="Close Access and return to the previous page">× CLOSE</a></span></header><section class="stage"><div class="left"><div class="eyebrow" id="kicker">FREEMAN / ACCESS</div><h1 id="heading" tabindex="-1">Welcome.</h1><p id="intro">One place to begin working together.</p></div><div class="right"><h2 class="eyebrow" id="section">YOUR RELATIONSHIP</h2><div id="body"></div><div class="actions"><button type="button" id="back" class="hidden">← BACK</button><button type="button" id="next" class="hidden">NEXT STEP ↗</button></div><p class="note" id="note">SELECT A RELATIONSHIP TO CONTINUE.</p></div></section><footer class="footer"><span>BUILT FOR GENERATIONS</span><span>FREEMAN GENERAL CONTRACTING / PRIVATE</span></footer></main><p id="announce" class="sr-only" aria-live="polite" aria-atomic="true"></p>
 <script>
 (() => {
