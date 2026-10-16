@@ -7,8 +7,8 @@
  * palette, the Fieldwork index position and the opening state are never reset by a visit.
  *
  * Navigation rules
- *  - index.html is the entrance. It stays in history like any other page; the eagle plays
- *    only on the first load of a tab session.
+ *  - index.html is the entrance. It stays in history like any other page; the original
+ *    Freeman script assembles on arrival and is shown finished on Back/Forward.
  *  - Every interior page carries the same section line at top-left:
  *      COMPANY / PROJECTS / FIELDWORK / CONTACT  (current section in orange).
  *    "FREEMAN GC" is the brand, never a navigation link.
@@ -677,57 +677,69 @@
     showPages(vp, reading(vp, [block("h1", "Record not found."), link("RETURN TO COMPANY", "company.html", "text-link phrase")]));
   }
 
-  /* ---------- Entrance ---------- */
-  function paletteSelector() {
-    const holder = document.createElement("div");
-    holder.className = "palette-selector";
-    holder.setAttribute("role", "group");
-    holder.setAttribute("aria-label", "Website color palette");
-    [["chalk", "OFF-WHITE"], ["sand", "SAND"], ["umber", "UMBER"]].forEach(([id, name]) => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "palette-chip palette-" + id;
-      b.dataset.palette = id;
-      b.setAttribute("aria-label", name + " palette");
-      b.title = name;
-      b.setAttribute("aria-pressed", String(id === palette));
-      b.addEventListener("click", () => {
-        choosePalette(id);
-        holder.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x.dataset.palette === id)));
-      });
-      holder.appendChild(b);
-    });
-    root.appendChild(holder);
-  }
-  function entrance() {
-    const nav=DESTINATIONS.map(([t,u])=>link(t,u,"",{"data-entry":"1"})).join("");
-    root.innerHTML=`<div class="v4-home">
-      <nav class="v4-home-nav" aria-label="Main navigation"><span class="v4-home-id">FREEMAN GC</span><div class="v4-home-links">${nav}</div></nav>
-      <div class="v4-home-mark"><canvas id="v4-pixel-mark" width="160" height="61" role="img" aria-label="Freeman handwritten script assembling pixel by pixel"></canvas></div>
-      <a class="v4-home-access" href="client-access.html">ACCESS ↗</a>
-      <div class="v4-home-bottom"><div class="v4-home-legal">FREEMAN GENERAL CONTRACTING<br>CARTERSVILLE, GEORGIA</div>
-        <div class="v4-home-actions"><button type="button" id="v4-replay" aria-label="Replay script animation">↻</button><div class="v4-colorways" role="group" aria-label="Website colorway">
-          <button type="button" data-v4-color="chalk" aria-label="Light colorway" aria-pressed="false"><span class="v4-swatch v4-light"></span></button>
-          <button type="button" data-v4-color="umber" aria-label="Dark colorway" aria-pressed="false"><span class="v4-swatch v4-dark"></span></button>
-          <button type="button" data-v4-color="sand" aria-label="Freeman red colorway" aria-pressed="false"><span class="v4-swatch v4-freeman"></span></button>
-        </div></div><div class="v4-home-tag">BUILT FOR GENERATIONS™<br>EST. IN GEORGIA</div>
+  /* ---------- Entrance (V4) ----------
+     The original 160×61 Freeman script is the identity; navigation sits beneath it as one group.
+     The script assembles on arrival (load, reload, in-site link) and is drawn finished on
+     Back/Forward, like the retired eagle. Selecting the script replays it. A colorway recolours
+     the script in place; it never restarts the animation. The bitmap is shown at a whole number of
+     device pixels per bitmap pixel, so every pixel of the script is the same size. */
+  const COLORWAYS = [["chalk", "Light"], ["umber", "Dark"], ["sand", "Freeman"]];
+  function entrance({ play = true } = {}) {
+    const nav = DESTINATIONS.map(([t, u]) => link(t, u, "", { "data-entry": "1" })).join('<span class="sep" aria-hidden="true">/</span>');
+    const ways = COLORWAYS.map(([id, name]) =>
+      `<button type="button" class="v4-way v4-way-${id}" data-v4-color="${id}" aria-label="${name} colorway" aria-pressed="${id === palette}"></button>`).join("");
+    root.innerHTML = `<div class="v4-home">
+      <h1 class="sr-only">Freeman General Contracting</h1>
+      <div class="v4-home-identity">
+        <button type="button" class="v4-home-mark" aria-label="Replay the Freeman script"><canvas id="v4-pixel-mark" width="160" height="61" aria-hidden="true"></canvas></button>
+        <nav class="v4-home-nav" aria-label="Main">${nav}</nav>
+      </div>
+      <a class="client-access-entry phrase" href="client-access.html" aria-label="Access">ACCESS ↗</a>
+      <div class="legal">FREEMAN GENERAL CONTRACTING<br>CARTERSVILLE, GEORGIA</div>
+      <div class="v4-colorways" role="group" aria-label="Colorway">${ways}</div>
+      <div class="mark">BUILT FOR GENERATIONS™</div>
     </div>`;
-    const mark=window.FreemanPixelMark&&window.FreemanPixelMark.mount(root.querySelector("#v4-pixel-mark"));
-    if(!mark){root.querySelector("#v4-pixel-mark").setAttribute("aria-label","Freeman mark animation unavailable");}
-    root.querySelector("#v4-replay").addEventListener("click",()=>mark&&mark.replay());
-    function syncV4Colors(){
-      root.querySelectorAll("[data-v4-color]").forEach(btn=>btn.setAttribute("aria-pressed",String(btn.dataset.v4Color===palette)));
-      if(mark)mark.replay();
+    const home = root.querySelector(".v4-home");
+    const canvas = root.querySelector("#v4-pixel-mark");
+    function fit() {
+      // Bitmap pixel size: a whole number of device pixels, nearest to the composed width.
+      const dpr = window.devicePixelRatio || 1;
+      const phone = matchMedia(PHONE).matches;
+      const target = phone ? innerWidth * 0.82 : Math.min(innerWidth * 0.34, innerHeight * 0.73);
+      const limit = phone ? innerWidth - 40 : Math.min(innerWidth * 0.5, innerHeight * 0.9);
+      let n = Math.max(1, Math.round((target * dpr) / 160));
+      while (n > 1 && (160 * n) / dpr > limit) n--;
+      // Low-density narrow screens (a 1× window under 400px) have no whole step near the target:
+      // keep the composed size there rather than shrinking the script to a stamp.
+      if ((160 * n) / dpr < target * 0.75) n = (target * dpr) / 160;
+      home.style.setProperty("--px", n / dpr + "px");
+      // Place the group on whole device pixels: a half-pixel offset would blur the bitmap.
+      const snap = (v) => Math.round(v * dpr) / dpr;
+      const group = home.querySelector(".v4-home-identity");
+      home.style.setProperty("--x", snap((innerWidth - (160 * n) / dpr) / 2) + "px");
+      home.style.setProperty("--y", snap(innerHeight * (phone ? 0.48 : 0.5) - group.offsetHeight / 2) + "px");
     }
-    root.querySelectorAll("[data-v4-color]").forEach(btn=>btn.addEventListener("click",()=>{
-      if(btn.dataset.v4Color!==palette)choosePalette(btn.dataset.v4Color);
-      syncV4Colors();
+    fit();
+    const mark = window.FreemanPixelMark ? window.FreemanPixelMark.mount(canvas, { play }) : null;
+    const button = root.querySelector(".v4-home-mark");
+    if (mark) button.addEventListener("click", () => mark.replay());
+    else button.disabled = true;
+    root.querySelectorAll("[data-v4-color]").forEach((btn) => btn.addEventListener("click", () => {
+      if (btn.dataset.v4Color !== palette) choosePalette(btn.dataset.v4Color);
+      root.querySelectorAll("[data-v4-color]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.v4Color === palette)));
+      if (mark) mark.paint();
     }));
-    syncV4Colors();
-    words(root);
+    words(root.querySelector(".legal"));
+    words(root.querySelector(".mark"));
+    return { resize: fit, destroy: () => mark && mark.destroy() };
   }
-  /* V4 HOME: previous eagle intro retired. The approved pixel-assembly script animation
-     will be integrated from freeman_pixel_assembly_preview.html once its original file is available. */
+  // Back/Forward (and a document restored from history) shows the finished script.
+  function arrivedByHistory() {
+    try {
+      const entry = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
+      return !!entry && entry.type === "back_forward";
+    } catch (e) { return false; }
+  }
 
   /* ---------- Fieldwork (living index lives in fieldwork-reader.js) ---------- */
   const fieldworkApi = {
@@ -736,7 +748,7 @@
   };
 
   /* ---------- Router ---------- */
-  function render(route, state = {}, { nav = false } = {}) {
+  function render(route, state = {}, { nav = false, pop = false } = {}) {
     const fw = window.FreemanFieldwork;
     const stayInFieldwork = view && view.kind === "fieldwork" && route.kind === "fieldwork" && fw;
     if (view && view.destroy && !stayInFieldwork) view.destroy();
@@ -764,7 +776,7 @@
         },
         resize: () => render(parse(location.href), { ...hist.state, focus: currentFocus() }),
       };
-      if (route.kind === "entrance") entrance();
+      if (route.kind === "entrance") Object.assign(view, entrance({ play: !pop }));
       else if (route.kind === "company") company();
       else if (route.kind === "projects") projectsIndex(state);
       else if (route.kind === "project") project(route.item);
@@ -823,7 +835,7 @@
   window.addEventListener("popstate", (e) => {
     const state = e.state && typeof e.state === "object" ? e.state : {};
     if (PALETTES.includes(state.palette) && state.palette !== palette) applyPalette(state.palette);
-    render(parse(location.href), state, { nav: true });
+    render(parse(location.href), state, { nav: true, pop: true });
   });
   // iOS Safari applies :active (the touch highlight) only when a touch listener exists.
   document.addEventListener("touchstart", () => {}, { passive: true });
@@ -864,6 +876,5 @@
   applyPalette([ss.get("freeman-palette"), hist.state.palette].find((p) => PALETTES.includes(p)));
   // A fresh arrival is depth 0 (CLOSE falls back to the entrance); a reload keeps its depth.
   hist.write("replaceState", { ...hist.state, fgc: 1, palette, depth: hist.state.depth || 0 }, location.href);
-  render(first, hist.state);
-  // V4: do not run the previous eagle intro.
+  render(first, hist.state, { pop: arrivedByHistory() });
 })();

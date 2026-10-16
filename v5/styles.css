@@ -520,80 +520,40 @@ body[data-route="projects"] .viewport{overflow:hidden}
 }
 
 
-/* V4 ENTRY — pixel assembly, based on approved original motion study. */
+/* V4 ENTRANCE — the live entrance, with the original Freeman script as its identity.
+   ACCESS, the corner notes (.legal / .mark) and the three squares keep the live entrance's
+   positions and type. The script and the navigation centre as one group, spaced in bitmap
+   pixels: --px is one pixel of the 160×61 script, a whole number of device pixels (app.js). */
+:root{--mark:#332e20}
+:root[data-palette="umber"]{--mark:#fff9f1}
+:root[data-palette="sand"]{--mark:#f93822}
 body[data-route="entrance"] #main{height:100%;width:100%}
-.v4-home{height:100%;width:100%;padding:clamp(20px,3vw,45px);position:relative;display:flex;flex-direction:column}
-.v4-home-header{display:flex;justify-content:space-between;align-items:center;font:10px/1.5 var(--mono);letter-spacing:.025em}
-.v4-home-header nav{display:flex;align-items:center;gap:clamp(16px,3vw,46px);text-transform:uppercase}
-.v4-home-header a:hover{color:var(--orange)}
-.v4-home-study{display:flex;justify-content:space-between;gap:20px;margin-top:25px;font:9px/1.5 var(--mono);letter-spacing:.04em;color:var(--muted)}
-.v4-home-mark{position:absolute;inset:14% 7% 20%;display:flex;align-items:center;justify-content:center;pointer-events:none}
-#v4-pixel-mark{display:block;width:min(75vw,820px);aspect-ratio:160/61;height:auto;image-rendering:pixelated}
-.v4-home-bottom{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:22px;margin-top:auto;padding-top:17px;border-top:1px solid var(--hair)}
-.v4-home-brand{font:400 clamp(15px,2.3vw,28px)/.99 var(--mono);letter-spacing:-.055em}
-.v4-home-location{text-align:right;font:9px/1.6 var(--mono);letter-spacing:.02em}
-.v4-home-actions{display:flex;align-items:center;gap:clamp(16px,2vw,30px);font:10px/1.5 var(--mono);white-space:nowrap;text-transform:uppercase}
-.v4-home-actions button,.v4-home-actions a{font:inherit;border-bottom:1px solid var(--hair);padding-bottom:8px}
-.v4-home-actions button:hover,.v4-home-actions a:hover{color:var(--orange);border-color:var(--orange)}
-.v4-home-access{position:absolute;right:clamp(20px,3vw,45px);bottom:clamp(112px,12vh,142px);font:9px/1.5 var(--mono);letter-spacing:.025em;color:var(--muted)}
-.v4-home-access:hover{color:var(--orange)}
+.v4-home{--px:3px;position:relative;height:100%;width:100%}
+.v4-home-identity{position:absolute;left:var(--x,0);top:var(--y,0);width:calc(var(--px) * 160);display:flex;flex-direction:column;align-items:center;gap:max(calc(var(--px) * 12),18px)}
+.v4-home-mark{display:block;padding:0;line-height:0;cursor:var(--cursor-orange)}
+.v4-home-mark:disabled{cursor:var(--cursor-crosshair)}
+.v4-home-mark:focus-visible{outline-offset:8px}
+#v4-pixel-mark{display:block;width:calc(var(--px) * 160);height:calc(var(--px) * 61);image-rendering:pixelated}
+.v4-home-nav{display:flex;align-items:center;white-space:nowrap;font-size:12px;line-height:1.5;letter-spacing:.035em;text-transform:uppercase}
+.v4-home-nav .sep{padding:0 12px}
+.v4-home-nav a{position:relative}
+.v4-home-nav a:hover,.v4-home-nav a:focus-visible{background:var(--orange);color:var(--paper)}
+.v4-colorways{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);display:flex;gap:9px;z-index:20}
+.v4-way{position:relative;display:block;width:16px;height:16px;padding:0;border:1px solid color-mix(in srgb,var(--ink) 28%,transparent);border-radius:0;touch-action:manipulation}
+.v4-way-chalk{background:#fff9f1}.v4-way-umber{background:#332e20}.v4-way-sand{background:#f93822}
+.v4-way[aria-pressed="true"]{outline:1px solid var(--ink);outline-offset:3px}
+.v4-way:hover:not([aria-pressed="true"]),.v4-way:focus-visible{outline:1px solid var(--orange);outline-offset:3px}
 @media(max-width:760px){
- .v4-home{padding:21px 20px}
- .v4-home-header{font-size:9px;align-items:flex-start}
- .v4-home-header nav{gap:13px;flex-wrap:wrap;justify-content:flex-end;max-width:66%;font-size:9px}
- .v4-home-study{font-size:8px;gap:12px}
- .v4-home-study span:last-child{max-width:120px;text-align:right}
- .v4-home-mark{inset:18% 3% 27%}
- #v4-pixel-mark{width:min(92vw,650px)}
- .v4-home-bottom{grid-template-columns:1fr auto;row-gap:18px;padding-top:14px}
- .v4-home-brand{font-size:clamp(15px,4.2vw,19px)}
- .v4-home-location{font-size:8px}
- .v4-home-actions{grid-column:1/-1;grid-row:2;justify-content:space-between;font-size:9px;gap:8px}
- .v4-home-access{bottom:115px;right:20px;font-size:8px}
+ .v4-home-nav{font-size:11px}
+ .v4-home-nav .sep{padding:0 9px}
+ .v4-colorways{bottom:max(24px,calc(env(safe-area-inset-bottom) + 12px))}
 }
-@media(max-width:390px){.v4-home-header nav{gap:9px;font-size:8px}.v4-home-actions{font-size:8px}.v4-home-study span:first-child{max-width:110px}}
-@media(prefers-reduced-motion:reduce){#v4-pixel-mark{transition:none}}
-
-
-/* Three explicit Freeman homepage colorway controls. Square, not circular. */
-.v4-home-actions{gap:clamp(13px,1.5vw,23px)}
-.v4-colorways{display:flex;align-items:center;gap:13px;white-space:nowrap}
-.v4-colorways button{display:inline-flex;align-items:center;gap:6px;border-bottom:1px solid transparent;padding-bottom:8px;font:9px/1.5 var(--mono);color:var(--muted)}
-.v4-colorways button[aria-pressed="true"]{border-color:var(--orange);color:var(--ink)}
-.v4-colorways button:hover{color:var(--orange)}
-.v4-swatch{width:11px;height:11px;display:inline-block;flex:none;border:1px solid var(--ink);border-radius:0}
-.v4-light{background:#fff9f1}.v4-dark{background:#332e20}.v4-freeman{background:#f93822;box-shadow:none}
-@media(max-width:760px){.v4-colorways{gap:9px}.v4-colorways button{font-size:8px;gap:4px}.v4-swatch{width:9px;height:9px}}
-@media(max-width:390px){.v4-home-actions{flex-wrap:wrap;justify-content:center}.v4-colorways{width:100%;justify-content:center}}
-
-
-/* V4 homepage final restraint: the approved live page is the spacing reference. */
-body[data-route="entrance"] .v4-home{padding:0;position:relative}
-.v4-home-nav{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:35px;white-space:nowrap;font:13px/1.3 var(--mono);letter-spacing:.015em;z-index:2}
-.v4-home-id{color:var(--ink);font-weight:400}
-.v4-home-links{display:flex;align-items:center;gap:25px}
-.v4-home-links a:hover{background:var(--orange);color:var(--paper)}
-.v4-home-mark{inset:0;display:flex;align-items:center;justify-content:center;transform:translateY(-13vh)}
-#v4-pixel-mark{width:min(62vw,750px);height:auto}
-.v4-home-access{position:absolute;top:30px;right:30px;bottom:auto;font:9px/1.5 var(--mono);color:var(--muted)}
-.v4-home-bottom{position:absolute;left:30px;right:30px;bottom:25px;padding:0;border:0;display:flex;justify-content:space-between;align-items:end;gap:18px}
-.v4-home-legal,.v4-home-tag{font:9px/1.5 var(--mono);color:var(--muted);letter-spacing:.025em}
-.v4-home-tag{text-align:right}
-.v4-home-actions{position:absolute;left:50%;bottom:0;transform:translateX(-50%);display:flex;gap:11px;align-items:center}
-.v4-home-actions>button{font:11px/1 var(--mono);color:var(--muted);border:0;padding:2px 3px}
-.v4-colorways{gap:9px}
-.v4-colorways button{font-size:0;gap:0;border:0;padding:2px}
-.v4-colorways button[aria-pressed="true"]{border:0;outline:1px solid var(--ink);outline-offset:2px}
-.v4-swatch{width:14px;height:14px;border:1px solid color-mix(in srgb,var(--ink) 30%,transparent)}
-@media(min-width:761px){.v4-home-nav{top:auto;bottom:calc(50% - 135px);transform:translateX(-50%);font-size:11px}.v4-home-mark{transform:translateY(-65px)}}
-@media(max-width:760px){
- .v4-home-nav{top:auto;bottom:calc(50% - 95px);transform:translateX(-50%);font-size:10px;gap:12px}
- .v4-home-links{gap:11px}
- .v4-home-mark{inset:0 3%;transform:translateY(-40px)}
- #v4-pixel-mark{width:92vw}
- .v4-home-access{top:21px;right:20px;font-size:8px}
- .v4-home-bottom{left:20px;right:20px;bottom:22px}
- .v4-home-legal,.v4-home-tag{font-size:7px}
- .v4-home-actions{bottom:26px}
+@media(pointer:coarse){
+ .v4-colorways{gap:20px}
+ .v4-way{width:24px;height:24px}
+ .v4-way::after{content:"";position:absolute;inset:-11px}
+ .v4-way:hover:not([aria-pressed="true"]):not(:focus-visible){outline:none}
+ .v4-home-nav a::after{content:"";position:absolute;inset:-14px -6px}
+ .v4-home-nav a:hover{background:transparent;color:inherit}
+ .v4-home-nav a:active{background:var(--orange);color:var(--paper)}
 }
-@media(max-width:410px){.v4-home-nav{font-size:9px;gap:10px}.v4-home-links{gap:8px}.v4-home-id{font-size:9px}}

@@ -52,14 +52,19 @@ SITE = 'https://www.freemangc.com'  # canonical host; the apex redirects here
 def route(name):
     return '/' if name == 'index.html' else '/' + name[:-len('.html')]
 
+# V4 entrance: the original Freeman pixel script (pixel-mark.js) loads on the entrance only.
+ENTRANCE_JS = '<script defer src="pixel-mark.js?v=20261016-v4-home"></script><script defer src="app.js?v=20261016-v4-home"></script>'
+APP_JS = '<script defer src="app.js?v=20261016-palette"></script>'
+
 for name, title in pages.items():
     # 404.html is served at any unknown path, including nested ones, so it resolves assets from the root.
     head = '<base href="/">' if name == '404.html' else f'<link rel="canonical" href="{SITE}{route(name)}">'
+    app_js = ENTRANCE_JS if name == 'index.html' else APP_JS
     (root / name).write_text(
         f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
         f'<meta name="theme-color" content="#f4f4f0"><title>{title} — Freeman GC</title>{head}<link rel="icon" href="favicon.svg">{palette}'
         f'<link rel="stylesheet" href="styles.css">{fw_css}'
-        f'<script defer src="records.js"></script>{fw_js}<script defer src="app.js?v=20261016-palette"></script></head>'
+        f'<script defer src="records.js"></script>{fw_js}{app_js}</head>'
         f'<body><div id="site"><main id="main"></main></div><noscript>This site needs JavaScript. '
         f'Contact Freeman at gabe@freemangc.com or 706.263.3348.</noscript></body></html>'
     )
