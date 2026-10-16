@@ -308,9 +308,9 @@
       {name:"Jimmy Jennings",role:"Superintendent"}
     ];
     const services = [
-      {name:"General Contracting",detail:"Construction execution, coordination of trades, quality, and completion."},
-      {name:"Construction Management",detail:"Planning and coordination throughout the life of a project."},
-      {name:"Preconstruction",detail:"Early collaboration around scope, budgets, schedules, and constructability."}
+      {name:"General Contracting",detail:"Construction execution, coordination of trades, quality, and completion.",image:"assets/projects/the-optimist-1.jpg",alt:"Interior photograph of The Optimist",caption:"THE OPTIMIST / SELECTED FREEMAN WORK"},
+      {name:"Construction Management",detail:"Planning and coordination throughout the life of a project.",image:"assets/projects/barnsley-gardens-2.jpg",alt:"Photograph of Barnsley Gardens",caption:"BARNSLEY GARDENS / SELECTED FREEMAN WORK"},
+      {name:"Preconstruction",detail:"Early collaboration around scope, budgets, schedules, and constructability.",image:"assets/projects/beetlecat-interior-2.jpg",alt:"Interior photograph of Beetlecat",caption:"BEETLECAT / SELECTED FREEMAN WORK"}
     ];
     let currentTab="philosophy",currentPerson=0,currentService=0;
     vp.innerHTML = `<div class="co4" data-co4-view="philosophy">
@@ -322,28 +322,35 @@
       <div class="co4-stage">
         <section class="co4-editorial" id="co4-panel" role="tabpanel" aria-live="polite"><div class="co4-copy" id="co4-copy"></div></section>
         <figure class="co4-visual">
-          <img id="co4-image" src="assets/projects/the-optimist-1.jpg" alt="Interior at The Optimist, a Freeman project" loading="eager">
-          <div id="co4-portrait" class="co4-portrait" hidden aria-label="Portrait pending"><span id="co4-monogram">GF</span><small>PORTRAIT / FORTHCOMING</small></div>
+          <div class="co4-media" aria-label="Selected Freeman photography or team portrait">
+            <img id="co4-image" src="assets/projects/the-optimist-1.jpg" alt="Interior at The Optimist, a Freeman project" loading="eager">
+            <div id="co4-portrait" class="co4-portrait" hidden aria-label="Portrait pending"><span id="co4-monogram">GF</span><small>PORTRAIT / FORTHCOMING</small></div>
+          </div>
           <figcaption id="co4-caption">THE OPTIMIST / ATLANTA, GA — SELECTED WORK</figcaption>
         </figure>
       </div>
       <div class="co4-bottom"><span>BUILT FOR GENERATIONS</span><span>CARTERSVILLE, GEORGIA</span></div>
     </div>`;
     const copy=vp.querySelector("#co4-copy"),image=vp.querySelector("#co4-image"),portrait=vp.querySelector("#co4-portrait"),caption=vp.querySelector("#co4-caption");
+    function showMedia(item) {
+      image.src=item.image;
+      image.alt=item.alt;
+      caption.textContent=item.caption;
+    }
     function show(tab) {
       currentTab=tab;
       vp.querySelector(".co4").dataset.co4View=tab;
       vp.querySelectorAll("[data-co4-tab]").forEach(el=>el.setAttribute("aria-selected",String(el.dataset.co4Tab===tab)));
       const isPerson=tab==="people";image.hidden=isPerson;portrait.hidden=!isPerson;
       if(tab==="philosophy"){
-        caption.textContent="THE OPTIMIST / ATLANTA, GA — SELECTED WORK";
+        showMedia({image:"assets/projects/the-optimist-1.jpg",alt:"Interior photograph of The Optimist",caption:"THE OPTIMIST / ATLANTA, GA — SELECTED WORK"});
         copy.innerHTML=`<div class="co4-eyebrow">01 / PHILOSOPHY</div><h2>Built for generations<span class="co4-accent">.</span></h2>
           <p class="co4-lead">We exist to create places people long to live.</p>
           <p>Freeman General Contracting is an independent builder based in Cartersville, Georgia. We believe how something is built matters as much as what is built.</p>
           <p>Lasting work is built on trust, thoughtful collaboration, and attention to detail.</p>
           <span class="co4-index">RELATIONAL / QUALITY / ENDURING</span>`;
       } else if(tab==="services"){
-        caption.textContent="THE OPTIMIST / ATLANTA, GA — SELECTED WORK";
+        showMedia(services[currentService]);
         copy.innerHTML=`<div class="co4-eyebrow">02 / SERVICES</div><h2>What we do<span class="co4-accent">.</span></h2>
           <div class="co4-menu" role="group" aria-label="Services">${services.map((s,i)=>`<button type="button" class="co4-choice" data-co4-service="${i}" aria-pressed="${i===currentService}"><span>0${i+1}</span><strong>${esc(s.name)}</strong><span>↗</span></button>`).join("")}</div>
           <div class="co4-description"><span>OUR APPROACH</span><p id="co4-service-text">${esc(services[currentService].detail)}</p></div>
@@ -360,7 +367,7 @@
     vp.addEventListener("click",e=>{
       const tab=e.target.closest("[data-co4-tab]"),service=e.target.closest("[data-co4-service]"),person=e.target.closest("[data-co4-person]");
       if(tab){show(tab.dataset.co4Tab);return;}
-      if(service){currentService=Number(service.dataset.co4Service);vp.querySelectorAll("[data-co4-service]").forEach(el=>el.setAttribute("aria-pressed",String(Number(el.dataset.co4Service)===currentService)));vp.querySelector("#co4-service-text").textContent=services[currentService].detail;return;}
+      if(service){currentService=Number(service.dataset.co4Service);vp.querySelectorAll("[data-co4-service]").forEach(el=>el.setAttribute("aria-pressed",String(Number(el.dataset.co4Service)===currentService)));vp.querySelector("#co4-service-text").textContent=services[currentService].detail;showMedia(services[currentService]);return;}
       if(person){currentPerson=Number(person.dataset.co4Person);show("people");}
     });
     vp.querySelector(".co4-nav").addEventListener("keydown",e=>{
