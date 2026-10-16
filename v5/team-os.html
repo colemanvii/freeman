@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <title>Freeman OS</title>
+<script>(function(){try{var p=sessionStorage.getItem('freeman-palette');if(/^(chalk|sand|umber)$/.test(p))document.documentElement.dataset.palette=p;else document.documentElement.dataset.palette='chalk';}catch(e){document.documentElement.dataset.palette='chalk';}})();</script>
 <style>/* FreemanOS / Operations Floor / Study 03.
    Tokens and patterns are carried over from v5/styles.css and v5/team-os.html:
    paper / ink / muted / hair / orange, Monaco, hairline rules, uppercase 9–10px labels,
@@ -24,9 +25,7 @@
 }
 :root[data-palette="sand"]{--paper:#d9c5a7;--ink:#302820;--muted:#766757;--hair:#b8a388;--orange:#ba4e2d;--orange-ink:#9c3f22;color-scheme:light}
 :root[data-palette="umber"],:root[data-theme="dark"]{--paper:#51453b;--ink:#f5eddf;--muted:#c9bcae;--hair:#817063;--orange:#ec7950;--orange-ink:#f08a66;--dim:.28;color-scheme:dark}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){--paper:#51453b;--ink:#f5eddf;--muted:#c9bcae;--hair:#817063;--orange:#ec7950;--orange-ink:#f08a66;--dim:.28;color-scheme:dark}
-}
+/* Palette is chosen on the Freeman landing page, never by device appearance. */
 /* FreemanOS / First screen. Calm: progress first, urgency only when it's earned. */
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;background:var(--paper);color:var(--ink)}
