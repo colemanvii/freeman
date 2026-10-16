@@ -4,7 +4,7 @@ import json, os, sys
 from playwright.sync_api import sync_playwright
 base=sys.argv[1] if len(sys.argv)>1 else 'http://localhost:8788'
 password=sys.argv[2] if len(sys.argv)>2 else 'qa-demo-password'
-colors={'chalk':'rgb(244, 244, 240)','sand':'rgb(217, 197, 167)','umber':'rgb(81, 69, 59)'}
+colors={'chalk':'rgb(255, 249, 241)','sand':'rgb(221, 207, 179)','umber':'rgb(51, 46, 32)'}
 labels={'chalk':'OFF-WHITE','sand':'SAND','umber':'UMBER'}
 checks=[]
 os.makedirs('qa/results',exist_ok=True)
