@@ -298,36 +298,78 @@
 
   /* ---------- COMPANY: the company, as an editorial reading page ---------- */
   function company() {
-    // One static view: headline and introduction; services, people and location. No sheets.
-    const services = [
-      ["General Contracting", ""],
-      ["Construction Management", ""],
-      ["Preconstruction", ""],
-      ["Hospitality", ""],
-      ["Commercial", ""],
-      ["Residential", ""],
-    ];
-    const row = (k, v, cls = "") => `<div class="co-row${cls}"><dt>${esc(k)}</dt>${v ? `<dd>${esc(v)}</dd>` : ""}</div>`;
+    // V4: one editorial frame; three views, no route changes or layout jumps.
     chrome({ title: "Company / Freeman General Contracting", section: "company" });
     const vp = root.querySelector(".viewport");
-    // Centred in the page area; only a very small phone that cannot hold it scrolls (top never clipped).
-    const people = [["Gabe Freeman", "Founder / President"], ["Cameron Dombi", "Superintendent"], ["Mac Thompson", "Superintendent"], ["Jimmy Jennings", "Superintendent"]];
-    vp.innerHTML = `<div class="co-frame"><div class="co"><section class="co-intro"><h2 class="co-head">Built for generations.</h2><p>Freeman General Contracting is an independent builder based in Cartersville, Georgia.</p><p>We believe how something is built matters as much as what is built. Good work requires trust, judgment, and attention to every detail.</p><p>We work with people who believe the same.</p></section><section class="co-facts"><h3 class="co-label">WHAT WE DO</h3><dl class="co-list co-services">${services.map(([k,v]) => row(k,v)).join("")}</dl><div class="co-team"><div class="co-team-heading"><h3 class="co-label">PEOPLE</h3><span class="co-location">CARTERSVILLE, GEORGIA</span></div><div class="co-person-stage"><div class="co-people" id="co-people">${people.map(([name,role], i) => `<button class="co-person" type="button" data-person="${i}" aria-label="View ${esc(name)} profile"><span class="co-person-name">${esc(name)}</span><span class="co-person-role">${esc(role)}</span></button>`).join("")}</div><div class="co-detail" id="co-detail" hidden aria-live="polite"></div></div></div></section></div></div>`;
-    const index = vp.querySelector("#co-people");
-    const detail = vp.querySelector("#co-detail");
-    function showPerson(i) {
-      const [name, role] = people[i];
-      if (!name) return;
-      index.hidden = true;
-      detail.hidden = false;
-      detail.innerHTML = `<div class="co-detail-copy"><div class="co-detail-top"><span class="co-detail-index">0${i+1} / 04</span><button class="co-detail-back" type="button" aria-label="Back to people">← ALL PEOPLE</button></div><h4>${esc(name)}</h4><div class="co-detail-role">${esc(role)}</div><div class="co-detail-note">Profile forthcoming.</div></div>`;
-      detail.querySelector(".co-detail-back").addEventListener("click", () => { detail.hidden = true; index.hidden = false; index.querySelectorAll("[data-person]")[i].focus(); });
+    const people = [
+      {name:"Gabe Freeman",role:"Founder / President"},
+      {name:"Cameron Dombi",role:"Superintendent"},
+      {name:"Mac Thompson",role:"Superintendent"},
+      {name:"Jimmy Jennings",role:"Superintendent"}
+    ];
+    const services = [
+      {name:"General Contracting",detail:"Construction execution, coordination of trades, quality, and completion."},
+      {name:"Construction Management",detail:"Planning and coordination throughout the life of a project."},
+      {name:"Preconstruction",detail:"Early collaboration around scope, budgets, schedules, and constructability."}
+    ];
+    let currentTab="philosophy",currentPerson=0,currentService=0;
+    vp.innerHTML = `<div class="co4" data-co4-view="philosophy">
+      <div class="co4-top"><span class="co4-label">FREEMAN / COMPANY</span><nav class="co4-nav" aria-label="Company views" role="tablist">
+        <button type="button" role="tab" data-co4-tab="philosophy" aria-selected="true" aria-controls="co4-panel">01 / PHILOSOPHY</button>
+        <button type="button" role="tab" data-co4-tab="services" aria-selected="false" aria-controls="co4-panel">02 / SERVICES</button>
+        <button type="button" role="tab" data-co4-tab="people" aria-selected="false" aria-controls="co4-panel">03 / PEOPLE</button>
+      </nav></div>
+      <div class="co4-stage">
+        <figure class="co4-visual">
+          <img id="co4-image" src="assets/projects/the-optimist-1.jpg" alt="Interior at The Optimist, a Freeman project" loading="eager">
+          <div id="co4-portrait" class="co4-portrait" hidden aria-label="Portrait pending"><span id="co4-monogram">GF</span><small>PORTRAIT / FORTHCOMING</small></div>
+          <figcaption id="co4-caption">THE OPTIMIST / ATLANTA, GA — SELECTED WORK</figcaption>
+        </figure>
+        <section class="co4-editorial" id="co4-panel" role="tabpanel" aria-live="polite"><div class="co4-copy" id="co4-copy"></div></section>
+      </div>
+      <div class="co4-bottom"><span>BUILT FOR GENERATIONS</span><span>CARTERSVILLE, GEORGIA</span></div>
+    </div>`;
+    const copy=vp.querySelector("#co4-copy"),image=vp.querySelector("#co4-image"),portrait=vp.querySelector("#co4-portrait"),caption=vp.querySelector("#co4-caption");
+    function show(tab) {
+      currentTab=tab;
+      vp.querySelector(".co4").dataset.co4View=tab;
+      vp.querySelectorAll("[data-co4-tab]").forEach(el=>el.setAttribute("aria-selected",String(el.dataset.co4Tab===tab)));
+      const isPerson=tab==="people";image.hidden=isPerson;portrait.hidden=!isPerson;
+      if(tab==="philosophy"){
+        caption.textContent="THE OPTIMIST / ATLANTA, GA — SELECTED WORK";
+        copy.innerHTML=`<div class="co4-eyebrow">01 / PHILOSOPHY</div><h2>Built for<br>generations<span class="co4-accent">.</span></h2>
+          <p class="co4-lead">We exist to create places people long to live.</p>
+          <p>Freeman General Contracting is an independent builder based in Cartersville, Georgia. We believe how something is built matters as much as what is built.</p>
+          <p>Lasting work is built on trust, thoughtful collaboration, and attention to detail.</p>
+          <span class="co4-index">RELATIONAL / QUALITY / ENDURING</span>`;
+      } else if(tab==="services"){
+        caption.textContent="THE OPTIMIST / ATLANTA, GA — SELECTED WORK";
+        copy.innerHTML=`<div class="co4-eyebrow">02 / SERVICES</div><h2>What we do<span class="co4-accent">.</span></h2>
+          <div class="co4-menu" role="group" aria-label="Services">${services.map((s,i)=>`<button type="button" class="co4-choice" data-co4-service="${i}" aria-pressed="${i===currentService}"><span>0${i+1}</span><strong>${esc(s.name)}</strong><span>↗</span></button>`).join("")}</div>
+          <div class="co4-description"><span>OUR APPROACH</span><p id="co4-service-text">${esc(services[currentService].detail)}</p></div>
+          <div class="co4-index">HOSPITALITY / COMMERCIAL / RESIDENTIAL</div>`;
+      } else {
+        const person=people[currentPerson];
+        vp.querySelector("#co4-monogram").textContent=person.name.split(" ").map(x=>x[0]).join("");
+        caption.textContent=person.name.toUpperCase()+" / PORTRAIT PENDING";
+        copy.innerHTML=`<div class="co4-eyebrow">03 / PEOPLE</div><h2>Our people<span class="co4-accent">.</span></h2>
+          <div class="co4-people" role="group" aria-label="Select a team member">${people.map((p,i)=>`<button type="button" class="co4-choice" data-co4-person="${i}" aria-pressed="${i===currentPerson}"><span>0${i+1}</span><strong>${esc(p.name)}</strong><span>↗</span></button>`).join("")}</div>
+          <div class="co4-description"><span id="co4-person-role">${esc(person.role)}</span><p id="co4-person-name">${esc(person.name)}</p><small>Full biography and portrait forthcoming.</small></div>`;
+      }
     }
-    index.querySelectorAll("[data-person]").forEach(button => button.addEventListener("click", () => showPerson(Number(button.dataset.person))));
-    words(vp);
-    pageCount = 1;
-    renderPage = () => {};
-    count();
+    vp.addEventListener("click",e=>{
+      const tab=e.target.closest("[data-co4-tab]"),service=e.target.closest("[data-co4-service]"),person=e.target.closest("[data-co4-person]");
+      if(tab){show(tab.dataset.co4Tab);return;}
+      if(service){currentService=Number(service.dataset.co4Service);vp.querySelectorAll("[data-co4-service]").forEach(el=>el.setAttribute("aria-pressed",String(Number(el.dataset.co4Service)===currentService)));vp.querySelector("#co4-service-text").textContent=services[currentService].detail;return;}
+      if(person){currentPerson=Number(person.dataset.co4Person);show("people");}
+    });
+    vp.querySelector(".co4-nav").addEventListener("keydown",e=>{
+      const tabs=[...vp.querySelectorAll("[data-co4-tab]")],i=tabs.indexOf(document.activeElement);
+      if(i===-1||!["ArrowLeft","ArrowRight"].includes(e.key))return;
+      e.preventDefault();const next=tabs[(i+(e.key==="ArrowRight"?1:tabs.length-1))%tabs.length];next.focus();show(next.dataset.co4Tab);
+    });
+    show("philosophy");
+    pageCount=1;renderPage=()=>{};count();
   }
 
   /* ---------- Projects ---------- */
