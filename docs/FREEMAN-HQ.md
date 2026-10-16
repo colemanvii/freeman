@@ -77,3 +77,27 @@ These classifications are a planning overview, **not proof of deployed functiona
 - Use names from verified company records, not invented user identities. Current demo project/people records are fictional.
 - Separate simulation/demo and real company activity visually.
 - Do not let a COMMAND TV view become an independent data-entry location; it should read from the core project record.
+
+## Audit 01 — deployment/source reconnaissance (2026-10-16)
+**Status: IN PROGRESS / SOURCE VERIFIED IN PART / PUBLIC BROWSER NOT VERIFIED.**
+
+Observed:
+- GitHub repo contains a `freeman-v5-consolidation` branch and public website implementation in `v5/`.
+- `.github/workflows/pages.yml` on that branch deploys GitHub Pages **from `main`**, not proof of which host is currently serving `freemangc.com`.
+- The `v5/_redirects` rules explicitly redirect `/fieldwork` and individual Fieldwork pages to `/projects` (302), so do **not** mark Fieldwork publicly accessible simply because its HTML exists.
+- Vercel `freeman-v5-preview` project is marked `live:false`, with preview deployments for HQ and COMMAND. These are **not** confirmed as the production website.
+- The COMMAND preview was deployed from `feature/command-001-20261016`; the HQ brief from `feature/freeman-hq-20261016`. These are separate branches and must be reconciled before publishing.
+- Previous work includes fixes to shared palette initialization, script-cache persistence, and Team Access route continuity. These indicate the problem was actively worked on, not that it has passed browser QA.
+
+Could not verify:
+- Live `freemangc.com` page content: external page fetch failed in the available browsing environment.
+- Actual DNS host/CDN origin and production deployment SHA: still unknown.
+- Desktop/iPhone transition from entry → Team Access → Team OS and all external role routes: still requires live browser test.
+
+**Release gate:** no production push or claim of fixed palette until the live domain and its authoritative source are identified, the routes are visually inspected, and state persists across each transition.
+
+Next actions:
+1. Identify authoritative production host and exact commit/branch via DNS/provider dashboard.
+2. Browser smoke test all entry routes + role access at desktop and mobile widths with palette variants.
+3. Compare code on the deployed branch against the most recent continuity fixes; isolate any mismatch.
+4. Update this section with screenshots, failures, and verified SHA before merging workstreams.
