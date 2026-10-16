@@ -427,11 +427,11 @@
       ["Little Rey","Dunwoody, Georgia","Hospitality"]
     ];
     const activeRows=inProgress.map(([name,place,type])=>`<li class="pi-row pi-progress"><div class="pi-link pi-progress-line"><span class="pi-no">—</span><span class="pi-name">${esc(name)}</span><span class="pi-client">${esc(place)}</span><span class="pi-arch">${esc(type)}</span><span class="pi-date">IN PROGRESS</span></div></li>`).join("");
-    const desktopItems=projects.map((p,i)=>`<li><button type="button" class="pi4-select" data-pi4-select="${esc(p.slug)}" aria-pressed="false"><span class="pi4-no">${pad(i+1,2)}</span><span class="pi4-item-name">${esc(p.name)}</span><span class="pi4-indicator">↗</span></button></li>`).join("");
+    const desktopItems=projects.map((p,i)=>`<li class="pi4-work-row"><button type="button" class="pi4-select" data-pi4-select="${esc(p.slug)}" aria-pressed="false"><span class="pi4-no">${pad(i+1,2)}</span><span class="pi4-item-name">${esc(p.name)}</span><span class="pi4-indicator">↗</span></button><span class="pi4-client">${cell("pi-client",credit(p,"Client"),"Client")}</span><span class="pi4-designer">${cell("pi-arch",designCredit(p),"Design")}</span></li>`).join("");
     vp.innerHTML=`<div class="pi4" aria-label="Desktop project index"><aside class="pi4-register">
       <div class="pi4-heading"><span>SELECTED WORK / ${pad(projects.length,2)}</span><span>PROJECT INDEX</span></div>
-      <div class="pi4-scroll"><div class="pi4-section">IN PROGRESS / CURRENT WORK</div>
-        <ol class="pi4-current">${inProgress.map(([name,place])=>`<li><span>—</span><span>${esc(name)}</span><small>${esc(place)}</small></li>`).join("")}</ol>
+      <div class="pi4-scroll"><div class="pi4-columns" aria-hidden="true"><span>NO.</span><span>PROJECT</span><span>CLIENT</span><span>DESIGN</span></div><div class="pi4-section">IN PROGRESS / CURRENT WORK</div>
+        <ol class="pi4-current">${inProgress.map(([name,place,type])=>`<li class="pi4-work-row pi4-in-progress"><span class="pi4-no">—</span><span class="pi4-item-name">${esc(name)}</span><span class="pi4-client">${esc(place)}</span><span class="pi4-designer">${esc(type)}</span></li>`).join("")}</ol>
         <div class="pi4-section pi4-completed">SELECTED WORK / COMPLETED</div>
         <ol class="pi4-items">${desktopItems}</ol>
       </div></aside>
@@ -450,7 +450,7 @@
       stage.innerHTML=`<div class="pi4-preview-head"><span>PROJECT / ${esc(p.id||"—")}</span><span>${esc(p.type||"BUILT WORK")}</span></div>
         <div class="pi4-preview-image">${hasPhotos?`<a href="project-${esc(p.slug)}.html" class="pi4-image-link" aria-label="Open ${esc(p.name)} full project gallery"><img id="pi4-image" src="${esc(photos[photoIndex])}" alt="${esc(p.name)} — photograph ${photoIndex+1}" draggable="false"></a>`:'<div class="pi4-no-image">PHOTOGRAPHY FORTHCOMING</div>'}</div>
         <div class="pi4-preview-title"><div><h2>${esc(p.name)}</h2><p>${esc(p.location||"")}</p></div><a href="project-${esc(p.slug)}.html">VIEW PROJECT ↗</a></div>
-        <div class="pi4-preview-bottom"><span>${client?"CLIENT / "+esc(client):"FREEMAN / SELECTED WORK"}${design?" · DESIGN / "+esc(design):""}</span>
+        <div class="pi4-preview-bottom"><span>FREEMAN / PROJECT PHOTO ARCHIVE</span>
           ${hasPhotos?`<div class="pi4-arrows"><button type="button" data-pi4-step="-1" aria-label="Previous project photograph" ${photoIndex===0?"disabled":""}>←</button><span>${pad(photoIndex+1)} / ${pad(photos.length)}</span><button type="button" data-pi4-step="1" aria-label="Next project photograph" ${photoIndex===photos.length-1?"disabled":""}>→</button></div>`:""}
         </div>`;
       vp.querySelectorAll("[data-pi4-select]").forEach(el=>el.setAttribute("aria-pressed",String(el.dataset.pi4Select===p.slug)));
