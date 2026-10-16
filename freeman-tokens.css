@@ -1,0 +1,11 @@
+/* Freeman / shared identity tokens.
+   Source: index.html on main, 2026-10-16.
+   Provisional until the production deployment is compared against main. */
+:root {
+  --freeman-paper:#f4f4f1;
+  --freeman-ink:#242424;
+  --freeman-muted:#777873;
+  --freeman-rule:#a4a49f;
+  --freeman-accent:#e75a28;
+  --freeman-mono:Monaco,"Courier New",monospace;
+}
