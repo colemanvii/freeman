@@ -13,8 +13,8 @@
 <div class="body"><nav class="side" aria-label="Select demonstration role"><button class="tab" data-role="team" aria-selected="true">TEAM <span class="num">01 ↗</span></button><button class="tab" data-role="client" aria-selected="false">CLIENT <span class="num">02 ↗</span></button><button class="tab" data-role="architect" aria-selected="false">ARCHITECT <span class="num">03 ↗</span></button><button class="tab" data-role="trade" aria-selected="false">TRADE PARTNER <span class="num">04 ↗</span></button></nav><main class="content"><div class="sectiontitle"><span id="projectname">ALDER / DEMONSTRATION</span><span id="phase">PRECONSTRUCTION</span></div><div class="columns"><div><section class="group"><h2>YOUR NEXT ACTIONS</h2><div id="actions"></div></section><section class="group"><h2>MILESTONES</h2><div id="milestones"></div></section><section class="group"><h2>DECISIONS</h2><div id="decisions"></div></section></div><div><section class="group"><h2>DOCUMENTS</h2><div id="documents"></div></section><section class="group"><h2>PROPOSALS</h2><div id="proposals"></div></section><section class="group"><h2>FIELD ACTIVITY</h2><div id="fieldUpdates"></div></section></div></div></main></div>
 <footer class="bottom"><span class="notice">■ FICTIONAL DATA / INTERFACE STUDY — NO PRIVATE ACCESS OR LIVE CONNECTIONS</span><button id="palette">◧ CHANGE PALETTE</button></footer></div>
 <script type="module">
-import {projectView} from '../app/core/project-record.js';
-import {SAMPLE_PROJECT} from '../app/core/sample-project.js';
+import {projectView} from './system/project-record.js';
+import {SAMPLE_PROJECT} from './system/sample-project.js';
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const describe=item=>item.date||item.status||item.state||item.version||item.createdAt||item.owner||'RECORD';
