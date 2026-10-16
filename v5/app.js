@@ -750,12 +750,15 @@
     if (nav) settleFocus(state);
   }
   function currentFocus() {
+    const chosen = root.querySelector(".pi4-select[aria-pressed=\"true\"]");
+    if(chosen && matchMedia("(min-width:761px)").matches) return chosen.dataset.pi4Select;
     const a = root.querySelector(".index-row.active[data-slug], .pi-row.is-current [data-slug]");
     return a ? a.dataset.slug : undefined;
   }
   /* After an in-place navigation, put keyboard focus where the visitor expects it. */
   function settleFocus(state) {
-    let el = state.focus ? root.querySelector(`[data-slug="${CSS.escape(state.focus)}"]`) : null;
+    let el = state.focus && matchMedia("(min-width:761px)").matches ? root.querySelector(`[data-pi4-select="${CSS.escape(state.focus)}"]`) : null;
+    if(!el && state.focus) el = root.querySelector(`[data-slug="${CSS.escape(state.focus)}"]`);
     if (!el) el = root.querySelector(".panel-head h1, .fw-top h1");
     if (!el) return;
     if (!el.matches("a,button,input,[tabindex]")) el.setAttribute("tabindex", "-1");
