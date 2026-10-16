@@ -59,7 +59,7 @@ for name, title in pages.items():
         f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
         f'<meta name="theme-color" content="#f4f4f0"><title>{title} — Freeman GC</title>{head}<link rel="icon" href="favicon.svg">{palette}'
         f'<link rel="stylesheet" href="styles.css">{fw_css}'
-        f'<script defer src="records.js"></script>{fw_js}<script defer src="app.js"></script></head>'
+        f'<script defer src="records.js"></script>{fw_js}<script defer src="app.js?v=20261016-palette"></script></head>'
         f'<body><div id="site"><main id="main"></main></div><noscript>This site needs JavaScript. '
         f'Contact Freeman at gabe@freemangc.com or 706.263.3348.</noscript></body></html>'
     )
