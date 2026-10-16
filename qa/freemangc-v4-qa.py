@@ -46,11 +46,17 @@ with sync_playwright() as p:
             assert stage and stage["width"]<width*0.38,stage
             page.locator(".pi4-select[data-pi4-select='beetlecat']").click()
             photo=page.locator(".pi4-preview-image").bounding_box()
-            assert photo and abs(photo["width"]/photo["height"]-0.8)<0.035,photo
+            assert photo and abs(photo["width"]/photo["height"]-4/3)<0.04,photo
+            assert page.locator(".pi4-image-link img").evaluate("(e)=>getComputedStyle(e).objectFit")=="contain"
             assert "Beetlecat" in page.locator(".pi4-preview-title").inner_text()
+            assert page.locator(".pi4-select[data-pi4-select='beetlecat'] .pi4-indicator").inner_text()=="−"
+            assert page.locator(".pi4-stage").evaluate("(e)=>getComputedStyle(e).borderLeftWidth")=="1px"
             page.locator(".pi4-arrows [data-pi4-step='1']").click()
             assert "02 /" in page.locator(".pi4-arrows").inner_text()
             page.screenshot(path=f"qa/results/v4-projects-{width}.png")
+            page.locator("[data-pi4-close]").click()
+            assert "SELECT A PROJECT" in page.locator(".pi4-empty-selection").inner_text()
+            page.locator(".pi4-select[data-pi4-select='beetlecat']").click()
             page.locator(".pi4-preview-title a").click()
         page.wait_for_url("**/project-beetlecat")
         assert not errors,errors
