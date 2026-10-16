@@ -101,3 +101,14 @@ Next actions:
 2. Browser smoke test all entry routes + role access at desktop and mobile widths with palette variants.
 3. Compare code on the deployed branch against the most recent continuity fixes; isolate any mismatch.
 4. Update this section with screenshots, failures, and verified SHA before merging workstreams.
+
+
+## Build 02 — Shared project-record contract (2026-10-16)
+**Code committed on this HQ branch; not deployed.**
+- `app/core/project-record.js`: contract validation and role-scoped projection for sample data.
+- `app/core/sample-project.js`: visibly fictional Alder demonstration, never operational truth.
+- `docs/PROJECT-SCHEMA.md`: entity relationships and proposed production contract.
+- `docs/ACCESS-MATRIX.md`: proposed responsibilities by role.
+- `tests/project-record.test.mjs`: Node tests for visibility, shared ID, and fail-closed roles.
+- **Important:** client-side filtering is solely a UI prototype, not real authentication. Never put confidential data in browser-delivered fixture.
+- **Next:** run tests in CI, establish one canonical app packaging/runtime and render the SAME demo project in Team/Client/Architect/Trade views, without duplicating its records.
