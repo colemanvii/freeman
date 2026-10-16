@@ -127,7 +127,8 @@
   /* ---------- Palette (entry always starts in off-white; choice is carried in history state) ---------- */
   let palette = "chalk";
   let preCamPalette = "chalk";
-  document.documentElement.style.setProperty("--cursor-hammer", 'url("data:image/svg+xml,'+encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><g transform='rotate(-35 16 16)' stroke='#1e261b' stroke-width='1.3' stroke-linejoin='miter'><path fill='#bcb5a0' d='M13 10h6v19h-6z'/><path fill='#374431' d='M8 4h15l3 4-3 4h-6V9h-4v3H8z'/><path fill='#374431' d='M8 4 3 7l5 5h4V4z'/></g></svg>")+'") 5 4, pointer');
+  // Tiny bitmap-style claw hammer, sharp edges and no illustration styling.
+  document.documentElement.style.setProperty("--cursor-hammer", 'url("data:image/svg+xml,'+encodeURIComponent("<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"28\" height=\"28\" viewBox=\"0 0 28 28\" shape-rendering=\"crispEdges\"><path d=\"M5 3h11v2h4v3h-4v2h-5V8H9v2H7V8H5z\" fill=\"#242b23\"/><path d=\"M6 4h10v2h4v1h-5v2h-4V7H8v2H7V7H6z\" fill=\"#c1c4b6\"/><path d=\"M13 9h3v3h-3z\" fill=\"#323e30\"/><path d=\"M15 11h3v3h-3zM17 13h3v3h-3zM19 15h3v3h-3zM21 17h3v3h-3zM23 19h3v4h-3z\" fill=\"#282e26\"/><path d=\"M14 11h2v3h-2zM16 13h2v3h-2zM18 15h2v3h-2zM20 17h2v3h-2zM22 19h2v4h-2z\" fill=\"#aa9071\"/></svg>")+'") 5 4, pointer');
   function applyPalette(id) {
     palette = PALETTES.includes(id) ? id : "chalk";
     if (palette !== "cam") preCamPalette = palette;
@@ -603,7 +604,7 @@
     holder.className = "palette-selector";
     holder.setAttribute("role", "group");
     holder.setAttribute("aria-label", "Website color palette");
-    [["chalk", "OFF-WHITE"], ["sand", "SAND"], ["umber", "UMBER"], ["cam", "CAMOUFLAGE"]].forEach(([id, name]) => {
+    [["chalk", "OFF-WHITE"], ["sand", "SAND"], ["umber", "UMBER"]].forEach(([id, name]) => {
       const b = document.createElement("button");
       b.type = "button";
       b.className = "palette-chip palette-" + id;
