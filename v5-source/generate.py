@@ -41,10 +41,8 @@ if FIELDWORK:
     for a in records['archive']:
         pages['fieldwork-' + a['slug'] + '.html'] = a['title']
 
-# Applies the visitor's palette before first paint (entry always starts in off-white).
-palette = ('<script>(function(){try{var f=location.pathname.split("/").pop().replace(/\\.html$/,"");'
-           'var s=history.state||{},p=(f===""||f==="index")?"chalk":(s.palette||sessionStorage.getItem("freeman-palette"));'
-           'if(/^(chalk|sand|umber)$/.test(p))document.documentElement.dataset.palette=p}catch(e){}})()</script>')
+# Use the same pre-paint palette initialization as ACCESS and the server-rendered gate.
+palette = '<script src="/palette.js"></script>'
 
 fw_css = '<link rel="stylesheet" href="fieldwork-reader.css">' if FIELDWORK else ''
 fw_js = '<script defer src="fieldwork-reader.js"></script>' if FIELDWORK else ''
