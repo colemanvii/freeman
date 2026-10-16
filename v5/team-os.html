@@ -319,6 +319,16 @@ body[data-display=command] .below .instrument-body p{font-size:clamp(12px,.9vw,1
 .os-mode button[aria-pressed=true]{color:var(--orange-ink)}
 @media(max-width:900px){body[data-os-workspace=overview] .below{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr))}}
 @media(max-width:600px){body[data-os-workspace=overview] .wrap{height:100dvh;min-height:0;overflow:hidden}body[data-os-workspace=overview] .below{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));flex:1;overflow:auto;margin-top:8px}body[data-os-workspace=overview] .below>section{display:block!important;grid-column:auto!important;padding:10px;overflow:auto}body[data-os-workspace=overview] .below h2{font-size:10px!important}.instrument-body p{display:block;font-size:10px}.instrument-body span{display:block;white-space:normal}.instrument-body strong{display:block;text-align:left}.os-mode{margin-left:0}}
+
+/* Revenue instrument: Freeman rules and typography, no third-party chart. */
+.revenue-instrument{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:clamp(18px,2.5vw,40px);border-top:1px solid var(--ink);margin-top:clamp(12px,2vh,22px);padding-top:11px;min-height:85px;align-items:center}
+.revenue-label,.revenue-scale,.revenue-foot{font-size:10px;letter-spacing:.03em;color:var(--muted)}
+.revenue-demo{margin-left:13px;color:var(--orange-ink)}
+.revenue-copy strong{display:block;font-size:clamp(19px,2vw,32px);font-weight:400;line-height:1.5;letter-spacing:-.06em}.revenue-copy small{font-size:12px;letter-spacing:0;color:var(--muted)}
+.revenue-scale,.revenue-foot{display:flex;justify-content:space-between;gap:10px}.revenue-track{height:5px;border:1px solid var(--hair);margin:10px 0 8px}.revenue-track span{display:block;height:100%;background:var(--orange);transition:width .15s linear}.revenue-foot button{font:inherit;color:var(--ink);white-space:nowrap}.revenue-foot button:hover{color:var(--orange-ink)}
+#revenue-form{margin-top:12px;display:flex;gap:12px;align-items:center;font-size:10px}#revenue-form[hidden]{display:none!important}#revenue-form label{color:var(--muted)}#revenue-form input{margin-left:6px;width:110px;font:12px Monaco,monospace;color:var(--ink);border:0;border-bottom:1px solid var(--hair);background:transparent}#revenue-form button{color:var(--orange-ink)}
+body[data-os-workspace]:not([data-os-workspace=overview]) .revenue-instrument{display:none}
+@media(max-width:600px){.revenue-instrument{grid-template-columns:1fr;gap:3px;margin-top:6px;min-height:0;padding-top:5px}.revenue-copy strong{font-size:17px}.revenue-label,.revenue-scale,.revenue-foot{font-size:9px}.revenue-demo{margin-left:4px}.revenue-track{margin:5px 0}.revenue-copy small{font-size:10px}#revenue-form{flex-wrap:wrap}#revenue-form input{width:75px}}
 </style><link rel="stylesheet" href="/portal-identity.css">
 </head>
 <body>
@@ -350,6 +360,12 @@ body[data-display=command] .below .instrument-body p{font-size:clamp(12px,.9vw,1
       <section class="instrument"><h2>Field <button type="button" data-instrument="projects" aria-label="Open project field records">↗</button></h2><div class="instrument-body"><p><span>SITE EVIDENCE</span><strong>Daily logs and photographs</strong></p><p><span>LAST RECORDED</span><strong>View field activity ↗</strong></p></div></section>
     </div>
   </main>
+  <section class="revenue-instrument" aria-label="Company revenue goal, demonstration values">
+    <div class="revenue-copy"><span class="revenue-label">07 / COMPANY REVENUE <span class="revenue-demo">ILLUSTRATIVE VALUES</span></span><strong id="revenue-progress-text">$7.2M <small>/ $12M TARGET</small></strong></div>
+    <div class="revenue-viz"><div class="revenue-scale"><span>0</span><span id="revenue-percent">60% OF GOAL</span><span>100%</span></div><div class="revenue-track" role="progressbar" aria-label="Sample company revenue progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="60" id="revenue-bar"><span id="revenue-fill" style="width:60%"></span></div><div class="revenue-foot"><span>RECOGNIZED TO DATE / DEMONSTRATION ONLY</span><button type="button" id="revenue-edit" aria-expanded="false" aria-controls="revenue-form">SET DEMO VALUES ↗</button></div>
+      <form id="revenue-form" hidden><label>ACTUAL $ <input type="number" id="rev-current" min="0" step="1000" value="7200000"></label><label>GOAL $ <input type="number" id="rev-target" min="1" step="1000" value="12000000"></label><button type="submit">APPLY ↗</button></form>
+    </div>
+  </section>
   <section class="os-workspace" id="os-workspace" aria-live="polite" aria-label="Selected workspace" hidden></section>
   <div class="os-detail-backdrop" id="os-detail-backdrop" hidden><section class="os-detail" role="dialog" aria-modal="true" aria-labelledby="os-detail-title"><button class="os-detail-close" id="os-detail-close" aria-label="Close detail">× CLOSE</button><div id="os-detail-content"></div></section></div>
   <footer class="foot"><span>Built for generations</span><span>Every name, date and event is fictional. Nothing is saved or sent.</span></footer>
@@ -913,6 +929,17 @@ window.FOS_createLedger=createLedger;})();
    const mode=button.dataset.displayMode;document.body.dataset.display=mode;
    document.querySelectorAll('[data-display-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.displayMode===mode)));
  }));
+})();
+</script><script>
+/* Revenue amounts are intentionally local demonstration inputs; no company financial data is loaded or persisted. */
+(function(){
+ const $=id=>document.getElementById(id);
+ const fmt=n=>n>=1000000?'
+</html>+(n/1000000).toFixed(1).replace(/\.0$/,'')+'M':n>=1000?'
+</html>+(n/1000).toFixed(0)+'K':'
+</html>+n.toLocaleString('en-US');
+ $('revenue-edit').addEventListener('click',()=>{const form=$('revenue-form');form.hidden=!form.hidden;$('revenue-edit').setAttribute('aria-expanded',String(!form.hidden));if(!form.hidden)$('rev-current').focus()});
+ $('revenue-form').addEventListener('submit',e=>{e.preventDefault();const n=Number($('rev-current').value),t=Number($('rev-target').value);if(!Number.isFinite(n)||!Number.isFinite(t)||n<0||t<=0)return;const p=Math.round(100*n/t);$('revenue-progress-text').innerHTML=fmt(n)+' <small>/ '+fmt(t)+' TARGET</small>';$('revenue-percent').textContent=p+'% OF GOAL';$('revenue-fill').style.width=Math.min(100,p)+'%';$('revenue-bar').setAttribute('aria-valuenow',String(Math.min(100,p)));$('revenue-form').hidden=true;$('revenue-edit').setAttribute('aria-expanded','false')});
 })();
 </script></body>
 </html>
