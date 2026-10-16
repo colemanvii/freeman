@@ -345,11 +345,10 @@
       const isPerson=tab==="people";image.hidden=isPerson;portrait.hidden=!isPerson;
       if(tab==="philosophy"){
         showMedia({image:"assets/projects/the-optimist-1.jpg",alt:"Interior photograph of The Optimist",caption:"THE OPTIMIST / ATLANTA, GA — SELECTED WORK"});
-        copy.innerHTML=`<div class="co4-eyebrow">01 / PHILOSOPHY</div><h2>Built for generations<span class="co4-accent">.</span></h2>
-          <p class="co4-lead">We exist to create places people long to live.</p>
-          <p>Freeman General Contracting is an independent builder based in Cartersville, Georgia. We believe how something is built matters as much as what is built.</p>
-          <p>Lasting work is built on trust, thoughtful collaboration, and attention to detail.</p>
-          <span class="co4-index">RELATIONAL / QUALITY / ENDURING</span>`;
+        copy.innerHTML=`<h2>Built for generations.</h2>
+          <p>Freeman General Contracting is an independent builder based in Cartersville, Georgia.</p>
+          <p>We believe how something is built matters as much as what is built. Good work requires trust, judgment, and attention to every detail.</p>
+          <p>We work with people who believe the same.</p>`;
       } else if(tab==="services"){
         showMedia(services[currentService]);
         copy.innerHTML=`<div class="co4-eyebrow">02 / SERVICES</div><h2>What we do<span class="co4-accent">.</span></h2>
