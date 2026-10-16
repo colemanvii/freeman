@@ -300,6 +300,19 @@ body[data-os-workspace]:not([data-os-workspace=overview]) .wrap>main{display:non
   .os-workspace{overflow:auto;min-height:0;flex:1}
   .os-columns{overflow:visible}
 }
+
+/* FREEMAN OS / LATTICE 01 — existing tokens, no card or independent skin */
+.freeman-lattice{display:grid;grid-template-columns:1.35fr 1fr .82fr;grid-template-rows:1.13fr 1fr 1fr;min-height:0;border-top:1px solid var(--ink);border-left:1px solid var(--hair);margin-top:18px}
+.lattice-panel{border-right:1px solid var(--hair);border-bottom:1px solid var(--hair);padding:clamp(13px,1.8vw,28px);display:flex;flex-direction:column;justify-content:space-between;min-width:0;min-height:0;position:relative;text-align:left;overflow:hidden}
+.lattice-panel:hover,.lattice-panel:focus-visible{background:color-mix(in srgb,var(--ink) 4%,var(--paper));color:var(--ink)}
+.lat-label,.lat-foot,.lat-info{font-size:clamp(10px,.68vw,12px);letter-spacing:.025em;line-height:1.4}.lat-label{display:flex;justify-content:space-between}.lat-arrow,.lat-orange{color:var(--orange)}.lat-foot{color:var(--muted)}.lat-info{align-self:flex-end}.lattice-panel strong{font-size:clamp(20px,2.5vw,53px);font-weight:400;line-height:1.12;letter-spacing:-.065em}.lattice-panel .lat-number{font-size:clamp(56px,6.4vw,125px);line-height:.8}.lattice-projects{grid-area:1/1/3/2}.lattice-attention{grid-area:1/2/2/3}.lattice-schedule{grid-area:1/3/2/4}.lattice-people{grid-area:2/2/3/4}.lattice-documents{grid-area:3/1/4/3}.lattice-field{grid-area:3/3/4/4}
+body[data-os-workspace=overview] .wrap{grid-template-rows:auto auto minmax(0,1fr) auto}
+body[data-os-workspace=overview] .wrap>.summary,body[data-os-workspace=overview] .wrap>main{display:none}
+body[data-os-workspace]:not([data-os-workspace=overview]) .freeman-lattice{display:none}
+.os-nav{flex-wrap:wrap}
+@media(max-width:900px){.freeman-lattice{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr))}.lattice-panel{grid-area:auto!important}.lattice-panel strong{font-size:clamp(17px,3vw,31px)}}
+@media(max-width:600px){body[data-os-workspace=overview] .wrap{height:100dvh;min-height:0;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto}.freeman-lattice{margin-top:5px}.lattice-panel{padding:12px}.lattice-panel strong{font-size:clamp(16px,4vw,24px)}.lattice-panel .lat-number{font-size:46px}.lat-label,.lat-foot,.lat-info{font-size:9px}.lat-info{display:none}.os-nav{gap:7px!important;margin-top:0!important}.os-nav button{font-size:9px!important}.wrap>.foot{margin-top:0}}
+@media(max-height:680px){.lattice-panel{padding:11px}.lat-info{display:none}}
 </style><link rel="stylesheet" href="/portal-identity.css">
 </head>
 <body>
@@ -307,11 +320,22 @@ body[data-os-workspace]:not([data-os-workspace=overview]) .wrap>main{display:non
   <header class="top"><span><span class="brand">FREEMAN GC</span></span><span class="r"><span class="sim" id="sim"></span><span id="today"></span><span>Demo, fictional data</span></span></header>
 
 <nav class="os-nav" aria-label="FreemanOS workspaces">
-  <button type="button" data-os-tab="overview" aria-current="page">OVERVIEW</button>
-  <button type="button" data-os-tab="projects">PROJECTS <span>PROCORE</span></button>
-  <button type="button" data-os-tab="finance">FINANCE <span>RAMP / QUICKBOOKS</span></button>
-  <button type="button" data-os-tab="relationships">RELATIONSHIPS</button>
+  <button type="button" data-os-tab="overview" aria-current="page">COMMAND</button>
+  <button type="button" data-os-tab="projects">PROJECTS</button>
+  <button type="button" data-os-tab="attention">ATTENTION</button>
+  <button type="button" data-os-tab="schedule">SCHEDULE</button>
+  <button type="button" data-os-tab="people">PEOPLE</button>
+  <button type="button" data-os-tab="documents">DOCUMENTS</button>
+  <button type="button" data-os-tab="fieldwork">FIELD</button>
 </nav>
+<section class="freeman-lattice" aria-label="Freeman operations instruments">
+  <button type="button" class="lattice-panel lattice-projects" data-lattice="projects"><span class="lat-label">01 / PROJECTS <span class="lat-arrow">↗</span></span><strong>Work in motion<span class="lat-orange">.</span></strong><span class="lat-foot">ACTIVE WORK / STATUS / NEXT ACTION</span><span class="lat-info">VIEW PROJECT OPERATIONS ↗</span></button>
+  <button type="button" class="lattice-panel lattice-attention" data-lattice="attention"><span class="lat-label">02 / ATTENTION <span class="lat-arrow">↗</span></span><strong class="lat-number">02<span class="lat-orange">.</span></strong><span class="lat-foot">ILLUSTRATIVE DECISIONS TO REVIEW</span></button>
+  <button type="button" class="lattice-panel lattice-schedule" data-lattice="schedule"><span class="lat-label">03 / SCHEDULE <span class="lat-arrow">↗</span></span><strong>Next seven days<span class="lat-orange">.</span></strong><span class="lat-foot">MILESTONES / DEPENDENCIES</span></button>
+  <button type="button" class="lattice-panel lattice-people" data-lattice="people"><span class="lat-label">04 / PEOPLE <span class="lat-arrow">↗</span></span><strong>Responsibility<span class="lat-orange">.</span></strong><span class="lat-foot">OWNERS / RESPONSES / TEAM</span></button>
+  <button type="button" class="lattice-panel lattice-documents" data-lattice="documents"><span class="lat-label">05 / DOCUMENTS <span class="lat-arrow">↗</span></span><strong>Current issue<span class="lat-orange">.</span></strong><span class="lat-foot">DRAWINGS / PROPOSALS / RECORDS</span></button>
+  <button type="button" class="lattice-panel lattice-field" data-lattice="fieldwork"><span class="lat-label">06 / FIELD <span class="lat-arrow">↗</span></span><strong>From the site<span class="lat-orange">.</span></strong><span class="lat-foot">LOGS / OBSERVATIONS / EVIDENCE</span></button>
+</section>
   <p class="summary" id="summary"></p>
   <main>
     <nav class="mobile-signal-nav" aria-label="Overview signals">
@@ -838,6 +862,36 @@ window.FOS_createLedger=createLedger;})();
   {name:"A LONGER VIEW",count:"WORK IN PROGRESS",note:"Keep relationships and company evidence together, without pretending that conversations are signed contracts."}
  ]}
  };
+
+// Additional instruments reuse the existing workspace renderer, record detail overlay and fictional source records.
+Object.assign(W,{
+ attention:{title:"Needs a decision.",eyebrow:"ATTENTION / OPEN RESPONSES",subtitle:"Approvals, RFIs and issues with a responsible party.",sources:[["SOURCE","Procore demo"],["AUTHORITY","Not connected"]],columns:[
+ {name:"NEEDS A RESPONSE",count:"02 ITEMS",rows:[["rfi","Kitchen ceiling coordination","Ember · Design response","Review"],["submittal","Custom millwork approval","Halyard · Shop drawing","Review"]]},
+ {name:"IN THE QUEUE",count:"01 SIGNAL",rows:[["delivery","Equipment delivery dependency","Ember · Site readiness","Upcoming"]]},
+ {name:"INSTRUMENTS",count:"READ-ONLY",note:"No approvals can be submitted from this demonstration."}
+ ]},
+ schedule:{title:"The week ahead.",eyebrow:"SCHEDULE / COMMITMENTS",subtitle:"What is approaching and what depends on a decision.",sources:[["SCHEDULE","Demo only"],["MILESTONES","Not connected"]],columns:[
+ {name:"UPCOMING",count:"02 MILESTONES",rows:[["delivery","Kitchen equipment delivery","Ember · Next seven days","Upcoming"],["submittal","Millwork fabrication slot","Halyard · Approval dependency","Review"]]},
+ {name:"DEPENDENCIES",count:"01 ISSUE",rows:[["rfi","Ceiling coordination before framing","Ember · Design team","Response due"]]},
+ {name:"INSTRUMENTS",count:"SAMPLE",note:"Dates are illustrative; production schedule integration is pending."}
+ ]},
+ people:{title:"The people responsible.",eyebrow:"PEOPLE / OWNERSHIP",subtitle:"Identify whose response or follow-through moves the work.",sources:[["DIRECTORY","Not connected"],["ASSIGNMENTS","Demo only"]],columns:[
+ {name:"PROJECT RESPONSES",count:"02 ITEMS",rows:[["rfi","Design team response","Ember · Ceiling coordination","Due"],["submittal","Project manager review","Halyard · Millwork","Open"]]},
+ {name:"FOLLOW THROUGH",count:"02 ITEMS",rows:[["architect","Architect introduction","Design network · Sample","Next"],["story","Field story owner","Editorial · Draft","Prepare"]]},
+ {name:"INSTRUMENTS",count:"DEMO",note:"Real owner assignments must come from approved project records."}
+ ]},
+ documents:{title:"The current record.",eyebrow:"DOCUMENTS / ISSUED WORK",subtitle:"Proposals, drawings, approvals and project records with clear provenance.",sources:[["PROCORE","Not connected"],["PROPOSALS","Study only"]],columns:[
+ {name:"DRAWINGS & SUBMITTALS",count:"02 RECORDS",rows:[["submittal","Custom millwork submittal","Halyard · Review issue","Review"],["rfi","Kitchen ceiling RFI","Ember · Coordination","Response"]]},
+ {name:"PROJECT RECORD",count:"01 ITEM",rows:[["story","Editorial project story","Field evidence · Draft","Private"]]},
+ {name:"INSTRUMENTS",count:"READ-ONLY",note:"Future records require version, issue date and authoritative document URL."}
+ ]},
+ fieldwork:{title:"Evidence from the field.",eyebrow:"FIELD / DAILY EVIDENCE",subtitle:"Observations and photographs tied to the work, not decoration.",sources:[["FIELD LOGS","Demo only"],["PHOTO ARCHIVE","Not connected"]],columns:[
+ {name:"RECENT ACTIVITY",count:"01 LOG",rows:[["field","Daily site log received","Cottage Row · Superintendent","Review"]]},
+ {name:"FOLLOW-UP",count:"02 ITEMS",rows:[["delivery","Site readiness for delivery","Ember · Field coordination","Upcoming"],["story","Field evidence selection","Editorial · Private record","Draft"]]},
+ {name:"INSTRUMENTS",count:"SAMPLE",note:"No real photographs or site reports are loaded."}
+ ]}
+});
+document.querySelectorAll('[data-lattice]').forEach(btn=>btn.addEventListener('click',()=>select(btn.dataset.lattice)));
  let current="overview",lastFocus=null;
  const tabs=Array.from(document.querySelectorAll("[data-os-tab]"));
  const panel=$("os-workspace"),backdrop=$("os-detail-backdrop"),detail=$("os-detail-content");
