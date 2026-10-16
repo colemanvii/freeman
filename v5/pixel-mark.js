@@ -9,7 +9,7 @@ const duration=1850;
 window.FreemanPixelMark={mount(canvas){
  const ctx=canvas.getContext("2d",{alpha:true});if(!ctx)return {replay(){},destroy(){}};
  let frame=0,run=0;
- function draw(ms){ctx.clearRect(0,0,160,61);ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue("--ink").trim()||"#332e20";let done=ms>=duration;
+ function draw(ms){ctx.clearRect(0,0,160,61);ctx.fillStyle=document.documentElement.dataset.palette==="sand"?"#f93822":(getComputedStyle(document.documentElement).getPropertyValue("--ink").trim()||"#332e20");let done=ms>=duration;
  for(const p of pixels){let t=done?1:Math.max(0,Math.min(1,(ms-p.start)/(duration-p.start-60)));if(t===0)continue;let e=ease(t);ctx.globalAlpha=done?1:Math.min(1,t*2.3);let x=Math.round(p.x+p.ox*(1-e)),y=Math.round(p.y+p.oy*(1-e));ctx.fillRect(x,y,1,1)}ctx.globalAlpha=1}
  function replay(){cancelAnimationFrame(frame);let id=++run,start=null;
   if(matchMedia("(prefers-reduced-motion:reduce)").matches){draw(duration);return}
