@@ -1,0 +1,101 @@
+/* Freeman Client Portal / identity continuity layer
+   Loaded after portal.css + portal-business.css. Layout and mobile view switching remain intact.
+   This replaces cosmetic variations, not project data or application logic. */
+:root {
+  --bg:var(--freeman-paper);
+  --shell:var(--freeman-paper);
+  --paper:var(--freeman-paper);
+  --ink:var(--freeman-ink);
+  --muted:var(--freeman-muted);
+  --orange:var(--freeman-accent);
+  --green:var(--freeman-accent);
+  --dark:var(--freeman-ink);
+  --rule:rgba(36,36,36,.22);
+  --mono:var(--freeman-mono);
+  --serif:var(--freeman-mono);
+}
+html,body { background:var(--freeman-paper)!important; color:var(--freeman-ink)!important; }
+body,button,a,input,textarea { font-family:var(--freeman-mono)!important; }
+.portal-wrap { background:var(--freeman-paper)!important; }
+.portal-header { border-bottom:1px solid var(--rule);padding-bottom:12px; }
+.portal-brand,.portal-shell,.project-rail,.client-brief,.now-panel,.portal-controls,
+.portal-controls button,.portal-controls a,.decision-actions button,.decision-card,
+.mobile-field-card,.team-card,.mobile-list button,.mobile-view,.status-rail,.brief-surface,
+.field-card,.portal-controls a,.portal-controls button,
+.mobile-view-head,.mobile-field-card img {
+  border-radius:0!important;
+  box-shadow:none!important;
+  background-image:none!important;
+}
+.portal-brand,.portal-shell,.client-brief,.now-panel,.portal-controls,.mobile-view,
+.brief-surface,.decision-card,.mobile-list button,.team-card {
+  background:transparent!important;
+  color:var(--freeman-ink)!important;
+  border-color:var(--rule)!important;
+}
+.portal-shell { border:0!important;padding:0!important; }
+.project-rail,.status-rail {
+  background:var(--freeman-paper)!important;
+  color:var(--freeman-ink)!important;
+  border:1px solid var(--rule)!important;
+}
+.portal-greeting strong,.rail-project strong,.rail-status strong,.rail-opening strong,
+.rail-opening b,.project-rail span,.rail-project p,.now-row strong,.now-heading span,
+.pulse-copy,.decision-panel h2,.decision-panel>p,.brief-milestones strong,
+.team-card strong,.mobile-view-note,.mobile-view-head,
+.mobile-list button,.mobile-list b,.portal-sync,.portal-sync span,
+.rail-mode,.now-note p,.now-note span {
+  font-family:var(--freeman-mono)!important;
+  color:var(--freeman-ink)!important;
+}
+.portal-greeting strong { font-size:18px;line-height:1.25; }
+.rail-project strong {font-size:23px;line-height:1.12;}
+.pulse-copy {font-size:clamp(15px,1.75vw,21px);line-height:1.4;}
+.decision-panel h2 {font-size:clamp(21px,2.35vw,30px);line-height:1.15;}
+.decision-panel>p {font-size:12px;line-height:1.55;}
+.project-rail span,.rail-mode,.brief-heading span,.decision-heading span,
+.portal-greeting span,.now-row span,.now-note span,.mobile-view-head span,
+.portal-controls button.active,.portal-controls button:hover,.portal-controls a:hover {
+  color:var(--freeman-accent)!important;
+}
+.rail-status strong i,.rail-source i,.now-row>i,.portal-sync i {
+  background:var(--freeman-accent)!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+}
+.decision-actions button,.portal-controls button,.portal-controls a,
+.mobile-list button,.team-card a {
+  border:1px solid var(--rule)!important;
+  color:var(--freeman-ink)!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  font-family:var(--freeman-mono)!important;
+}
+.decision-actions button:hover,.portal-controls button:hover,.portal-controls button.active,
+.portal-controls a:hover,.mobile-list button:hover,.team-card a:hover {
+  border-color:var(--freeman-accent)!important;
+  color:var(--freeman-accent)!important;
+}
+.portal-controls {border-top:1px solid var(--rule)!important;border-left:0!important;border-right:0!important;border-bottom:0!important;}
+.project-rail,.client-brief,.now-panel {min-width:0;}
+.now-row,.rail-project,.rail-status,.rail-mode,.brief-heading,.decision-panel,
+.now-heading,.brief-milestones,.now-note {border-color:var(--rule)!important;}
+.mobile-field-card figcaption,.field-tag,.field-card figcaption {background:var(--freeman-paper)!important;color:var(--freeman-ink)!important;}
+.portal-greeting span,.portal-sync,.rail-mode,.now-row span,.decision-heading span,.brief-heading span {font-size:max(9px, .65vw);}
+.motto {font-size:9px;color:var(--freeman-muted)!important;}
+:focus-visible {outline:2px solid var(--freeman-accent)!important;outline-offset:3px;}
+@media(max-width:700px){
+  .portal-wrap {padding:16px 16px 90px!important;}
+  .portal-header {margin-bottom:14px!important;}
+  .portal-shell {width:100%!important;}
+  .project-rail {padding:13px!important;}
+  .client-brief {padding:16px 0!important;margin-top:8px!important;border:0!important;}
+  .pulse-copy {font-size:17px!important;}
+  .decision-panel h2 {font-size:24px!important;}
+  .portal-controls {
+    left:0!important;right:0!important;bottom:0!important;
+    background:var(--freeman-paper)!important;
+    height:58px!important;padding:9px 12px!important;
+  }
+  .portal-controls button {font-size:10px!important;height:38px!important;letter-spacing:0!important;}
+}
