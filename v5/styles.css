@@ -380,15 +380,13 @@ body[data-route="company"] .viewport{overflow:hidden}
 .co4{width:100%;height:100%;min-height:0;display:flex;align-items:center;justify-content:center}
 .co4-stage{width:min(1160px,calc(100% - 48px));height:min(390px,100%);min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.84fr);gap:clamp(64px,5.5vw,86px);align-items:start}
 .co4-editorial{height:100%;min-width:0;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--hair) transparent;display:flex;flex-direction:column;justify-content:flex-start}
-.co4-nav{display:flex;gap:clamp(17px,2vw,33px);align-items:center;justify-content:flex-start;flex-wrap:wrap;margin:0 0 clamp(18px,2.4vh,27px)}
+.co4-nav{display:flex;gap:clamp(17px,2vw,33px);align-items:center;justify-content:flex-start;flex-wrap:wrap;margin:0 0 24px;padding-bottom:17px;border-bottom:1px solid var(--hair)}
 .co4-nav button{font:10px/1.5 var(--mono);color:var(--muted);letter-spacing:.02em;white-space:nowrap;text-transform:uppercase}
 .co4-nav button[aria-selected="true"],.co4-nav button:hover{color:var(--orange)}
 .co4-copy{width:100%;min-width:0;max-width:520px}
 .co4-copy h2{font:400 clamp(25px,2.3vw,33px)/1.28 var(--mono);letter-spacing:0;margin:0 0 25px}
 .co4-copy p{font:13px/1.75 var(--mono);max-width:520px;margin:0 0 17px}
-.co4-copy .co4-lead{font-size:13px;line-height:1.75;margin-bottom:17px}
 .co4-accent{color:var(--orange)}
-.co4-eyebrow,.co4-index{display:none}
 .co4-visual{min-width:0;min-height:0;margin:0;align-self:start;justify-self:center;width:min(100%,290px,31dvh);display:flex;flex-direction:column;gap:9px}
 .co4-media{position:relative;width:100%;aspect-ratio:4/5;overflow:hidden;flex:none}
 .co4-media>img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain;object-position:center}
@@ -411,15 +409,16 @@ body[data-route="company"] .viewport{overflow:hidden}
 @media(max-width:760px){
   .co4{align-items:stretch}
   .co4-stage{width:100%;height:100%;grid-template-columns:1fr;grid-template-rows:minmax(130px,.73fr) minmax(0,1fr);gap:15px}
-  .co4-visual{grid-column:1;grid-row:1;align-self:center;justify-self:center;height:100%;width:auto;max-width:100%;gap:5px}
-  .co4-media{align-self:center;flex:0 0 auto;width:min(100%,22dvh,205px);height:auto;aspect-ratio:4/5}
+  .co4-visual{grid-column:1;grid-row:1;align-self:stretch;justify-self:center;height:100%;width:auto;max-width:100%;gap:5px;overflow:hidden}
+  .co4-media{flex:none;height:calc(100% - 17px);width:auto;max-width:100%;max-height:256px;aspect-ratio:4/5}
+  .co4-visual figcaption{width:0;min-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .co4-media>img{object-fit:contain}
   .co4-visual figcaption{font-size:8px}
   .co4-editorial{grid-column:1;grid-row:2;overflow:auto;justify-content:flex-start}
-  .co4-nav{gap:17px;margin:0 0 14px}
+  .co4-nav{gap:17px;margin:0 0 19px;padding-bottom:12px}
   .co4-nav button{font-size:10px}
   .co4-copy h2{font-size:clamp(23px,6vw,29px);margin-bottom:15px}
-  .co4-copy p,.co4-copy .co4-lead{font-size:11px;line-height:1.62;margin-bottom:12px}
+  .co4-copy p{font-size:11px;line-height:1.62;margin-bottom:12px}
   .co4-choice{padding:7px 0;min-height:35px;font-size:11px}
   .co4-description{margin-top:10px}
   .co4-description p{font-size:11px}
@@ -558,7 +557,3 @@ body[data-route="entrance"] #main{height:100%;width:100%}
  .v4-home-nav a:active{background:var(--orange);color:var(--paper)}
 }
 
-
-/* Company — restrained editorial rule separating navigation from copy. */
-.co4-nav{border-bottom:1px solid var(--hair);padding-bottom:17px;margin-bottom:24px}
-@media(max-width:760px){.co4-nav{padding-bottom:12px;margin-bottom:19px}}

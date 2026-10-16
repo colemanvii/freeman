@@ -308,10 +308,11 @@
       {name:"Jimmy Jennings",role:"Superintendent"}
     ];
     const services = [
-      {name:"General Contracting",detail:"Construction execution, coordination of trades, quality, and completion.",image:"assets/projects/barnsley-gardens-2.jpg",alt:"Architectural photograph of Barnsley Gardens",caption:"BARNSLEY GARDENS / SELECTED FREEMAN WORK"},
-      {name:"Construction Management",detail:"Planning and coordination throughout the life of a project.",image:"assets/projects/barnsley-gardens-2.jpg",alt:"Photograph of Barnsley Gardens",caption:"BARNSLEY GARDENS / SELECTED FREEMAN WORK"},
-      {name:"Preconstruction",detail:"Early collaboration around scope, budgets, schedules, and constructability.",image:"assets/projects/beetlecat-interior-2.jpg",alt:"Interior photograph of Beetlecat",caption:"BEETLECAT / SELECTED FREEMAN WORK"}
+      {name:"General Contracting",detail:"Construction execution, coordination of trades, quality, and completion.",image:"assets/projects/barnsley-gardens-2.jpg",alt:"Architectural photograph of Barnsley Gardens",caption:"BARNSLEY GARDENS"},
+      {name:"Construction Management",detail:"Planning and coordination throughout the life of a project.",image:"assets/projects/barnsley-gardens-2.jpg",alt:"Photograph of Barnsley Gardens",caption:"BARNSLEY GARDENS"},
+      {name:"Preconstruction",detail:"Early collaboration around scope, budgets, schedules, and constructability.",image:"assets/projects/beetlecat-interior-2.jpg",alt:"Interior photograph of Beetlecat",caption:"BEETLECAT"}
     ];
+    const philosophy={image:"assets/projects/barnsley-gardens-2.jpg",alt:"Barnsley Gardens project photograph",caption:"BARNSLEY GARDENS"};
     let currentTab="philosophy",currentPerson=0,currentService=0;
     vp.innerHTML = `<div class="co4" data-co4-view="philosophy">
       <div class="co4-stage">
@@ -325,10 +326,10 @@
         </section>
         <figure class="co4-visual">
           <div class="co4-media" aria-label="Selected Freeman photography or team portrait">
-            <img id="co4-image" src="assets/projects/barnsley-gardens-2.jpg" alt="Barnsley Gardens, a Freeman project" loading="eager">
+            <img id="co4-image" src="${philosophy.image}" alt="${philosophy.alt}" loading="eager">
             <div id="co4-portrait" class="co4-portrait" hidden aria-label="Portrait pending"><span id="co4-monogram">GF</span><small>PORTRAIT / FORTHCOMING</small></div>
           </div>
-          <figcaption id="co4-caption">BARNSLEY GARDENS / SELECTED WORK</figcaption>
+          <figcaption id="co4-caption">${philosophy.caption}</figcaption>
         </figure>
       </div>
     </div>`;
@@ -344,22 +345,21 @@
       vp.querySelectorAll("[data-co4-tab]").forEach(el=>el.setAttribute("aria-selected",String(el.dataset.co4Tab===tab)));
       const isPerson=tab==="people";image.hidden=isPerson;portrait.hidden=!isPerson;
       if(tab==="philosophy"){
-        showMedia({image:"assets/projects/barnsley-gardens-2.jpg",alt:"Barnsley Gardens project photograph",caption:"BARNSLEY GARDENS / SELECTED FREEMAN WORK"});
+        showMedia(philosophy);
         copy.innerHTML=`<h2>Built for generations.</h2>
           <p>Freeman General Contracting is an independent builder based in Cartersville, Georgia.</p>
           <p>We believe how something is built matters as much as what is built. Good work requires trust, judgment, and attention to every detail.</p>
           <p>We work with people who believe the same.</p>`;
       } else if(tab==="services"){
         showMedia(services[currentService]);
-        copy.innerHTML=`<div class="co4-eyebrow">02 / SERVICES</div><h2>What we do<span class="co4-accent">.</span></h2>
+        copy.innerHTML=`<h2>What we do<span class="co4-accent">.</span></h2>
           <div class="co4-menu" role="group" aria-label="Services">${services.map((s,i)=>`<button type="button" class="co4-choice" data-co4-service="${i}" aria-pressed="${i===currentService}"><span>0${i+1}</span><strong>${esc(s.name)}</strong><span>↗</span></button>`).join("")}</div>
-          <div class="co4-description"><span>OUR APPROACH</span><p id="co4-service-text">${esc(services[currentService].detail)}</p></div>
-          <div class="co4-index">HOSPITALITY / COMMERCIAL / RESIDENTIAL</div>`;
+          <div class="co4-description"><span>OUR APPROACH</span><p id="co4-service-text">${esc(services[currentService].detail)}</p></div>`;
       } else {
         const person=people[currentPerson];
         vp.querySelector("#co4-monogram").textContent=person.name.split(" ").map(x=>x[0]).join("");
-        caption.textContent=person.name.toUpperCase()+" / PORTRAIT PENDING";
-        copy.innerHTML=`<div class="co4-eyebrow">03 / PEOPLE</div><h2>Our people<span class="co4-accent">.</span></h2>
+        caption.textContent=person.name.toUpperCase();
+        copy.innerHTML=`<h2>Our people<span class="co4-accent">.</span></h2>
           <div class="co4-people" role="group" aria-label="Select a team member">${people.map((p,i)=>`<button type="button" class="co4-choice" data-co4-person="${i}" aria-pressed="${i===currentPerson}"><span>0${i+1}</span><strong>${esc(p.name)}</strong><span>↗</span></button>`).join("")}</div>
           <div class="co4-description"><span id="co4-person-role">${esc(person.role)}</span><p id="co4-person-name">${esc(person.name)}</p><small>Full biography and portrait forthcoming.</small></div>`;
       }
@@ -774,7 +774,7 @@
           const scroller = root.querySelector(".pi-scroller");
           return { focus: currentFocus(), projScroll: scroller ? scroller.scrollTop : 0 };
         },
-        resize: () => render(parse(location.href), { ...hist.state, focus: currentFocus() }),
+        resize: ["company", "projects", "contact"].includes(route.kind) ? null : () => render(parse(location.href), { ...hist.state, focus: currentFocus() }),
       };
       if (route.kind === "entrance") Object.assign(view, entrance({ play: !pop }));
       else if (route.kind === "company") company();
