@@ -308,7 +308,7 @@
       {name:"Jimmy Jennings",role:"Superintendent"}
     ];
     const services = [
-      {name:"General Contracting",detail:"Construction execution, coordination of trades, quality, and completion.",image:"assets/projects/la-cresta-on-main-living.jpg",alt:"Interior photograph of La Cresta on Main",caption:"THE OPTIMIST / SELECTED FREEMAN WORK"},
+      {name:"General Contracting",detail:"Construction execution, coordination of trades, quality, and completion.",image:"assets/projects/barnsley-gardens-2.jpg",alt:"Architectural photograph of Barnsley Gardens",caption:"THE OPTIMIST / SELECTED FREEMAN WORK"},
       {name:"Construction Management",detail:"Planning and coordination throughout the life of a project.",image:"assets/projects/barnsley-gardens-2.jpg",alt:"Photograph of Barnsley Gardens",caption:"BARNSLEY GARDENS / SELECTED FREEMAN WORK"},
       {name:"Preconstruction",detail:"Early collaboration around scope, budgets, schedules, and constructability.",image:"assets/projects/beetlecat-interior-2.jpg",alt:"Interior photograph of Beetlecat",caption:"BEETLECAT / SELECTED FREEMAN WORK"}
     ];
@@ -325,10 +325,10 @@
         </section>
         <figure class="co4-visual">
           <div class="co4-media" aria-label="Selected Freeman photography or team portrait">
-            <img id="co4-image" src="assets/projects/la-cresta-on-main-living.jpg" alt="Interior at La Cresta on Main, a Freeman project" loading="eager">
+            <img id="co4-image" src="assets/projects/barnsley-gardens-2.jpg" alt="Barnsley Gardens, a Freeman project" loading="eager">
             <div id="co4-portrait" class="co4-portrait" hidden aria-label="Portrait pending"><span id="co4-monogram">GF</span><small>PORTRAIT / FORTHCOMING</small></div>
           </div>
-          <figcaption id="co4-caption">LA CRESTA ON MAIN / SELECTED WORK</figcaption>
+          <figcaption id="co4-caption">BARNSLEY GARDENS / SELECTED WORK</figcaption>
         </figure>
       </div>
     </div>`;
