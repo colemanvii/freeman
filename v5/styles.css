@@ -562,7 +562,7 @@ body[data-route="entrance"] #main{height:100%;width:100%}
 .v4-colorways button[aria-pressed="true"]{border-color:var(--orange);color:var(--ink)}
 .v4-colorways button:hover{color:var(--orange)}
 .v4-swatch{width:11px;height:11px;display:inline-block;flex:none;border:1px solid var(--ink);border-radius:0}
-.v4-light{background:#fff9f1}.v4-dark{background:#332e20}.v4-freeman{background:#ddcfb3;box-shadow:inset -3px 0 #f93822}
+.v4-light{background:#fff9f1}.v4-dark{background:#332e20}.v4-freeman{background:#f93822;box-shadow:none}
 @media(max-width:760px){.v4-colorways{gap:9px}.v4-colorways button{font-size:8px;gap:4px}.v4-swatch{width:9px;height:9px}}
 @media(max-width:390px){.v4-home-actions{flex-wrap:wrap;justify-content:center}.v4-colorways{width:100%;justify-content:center}}
 
