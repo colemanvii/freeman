@@ -372,3 +372,34 @@ body[data-route="contact"] .viewport{display:flex}
  .site-nav a:active,.client-access-entry:active,.contact-inquiry button:active{background:var(--orange)!important;color:var(--paper)!important}
  .mobile-home-nav a:active .hover-word,.pi-project-link:active .tap-label,.credit-external:active .tap-label{background:var(--orange);color:var(--paper)}
 }
+
+/* CAM MODE / hidden field edition. Never changes structure, type, or spacing. */
+:root[data-palette="cam"]{
+  --paper:#5c6349;--ink:#f2eedf;--muted:#ddd6bc;--hair:#858a6b;--orange:#d9a26b;
+}
+:root[data-palette="cam"] .sep,:root[data-palette="cam"] .legal,
+:root[data-palette="cam"] .mark,:root[data-palette="cam"] .subtle,
+:root[data-palette="cam"] .index-title,:root[data-palette="cam"] .index-row .number,
+:root[data-palette="cam"] .reading .micro,:root[data-palette="cam"] .reading .data span:first-child,
+:root[data-palette="cam"] .photo-sheet figcaption,:root[data-palette="cam"] .preview figcaption,
+:root[data-palette="cam"] .sheet-controls .count{color:var(--muted)}
+:root[data-palette="cam"] body{
+ background-color:var(--paper);
+ background-image:
+  radial-gradient(ellipse 16% 32% at 19% 16%,#383f32 0 42%,transparent 73%),
+  radial-gradient(ellipse 18% 24% at 80% 64%,#343a2e 0 44%,transparent 77%),
+  radial-gradient(ellipse 26% 12% at 64% 9%,#827f60 0 48%,transparent 79%),
+  radial-gradient(ellipse 21% 20% at 28% 88%,#827d60 0 47%,transparent 75%),
+  radial-gradient(ellipse 13% 28% at 96% 15%,#3c4434 0 44%,transparent 76%);
+}
+:root[data-palette="cam"] body,:root[data-palette="cam"] a,
+:root[data-palette="cam"] button,:root[data-palette="cam"] .phrase:hover,
+:root[data-palette="cam"] .hover-word:hover{cursor:var(--cursor-hammer)!important}
+.palette-chip.palette-cam{background:linear-gradient(145deg,#414939 0 27%,#a19b72 28% 43%,#596448 44% 74%,#323d30 75%)}
+.palette-chip.palette-cam:not([aria-pressed="true"]){opacity:.28}
+.cam-mode-trigger{position:absolute;right:29px;bottom:67px;font-size:9px;letter-spacing:.09em;
+ color:var(--muted);opacity:.13;z-index:21;line-height:1.4;padding:8px 0 8px 12px;
+ transition:opacity .15s ease}
+.cam-mode-trigger:hover,.cam-mode-trigger:focus-visible,
+.cam-mode-trigger[aria-pressed="true"]{opacity:1}
+@media(max-width:760px){.cam-mode-trigger{right:16px;bottom:76px;opacity:.34}}
