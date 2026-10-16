@@ -706,17 +706,22 @@
       <div class="v4-home-study"><span>FREEMAN / PIXEL ASSEMBLY</span><span>ORIGINAL SCRIPT · 160 PX BITMAP</span></div>
       <div class="v4-home-mark"><canvas id="v4-pixel-mark" width="160" height="61" role="img" aria-label="Freeman handwritten script mark, assembled pixel by pixel"></canvas></div>
       <div class="v4-home-bottom"><div class="v4-home-brand">FREEMAN<br>GENERAL CONTRACTING</div>
-      <div class="v4-home-actions"><button type="button" id="v4-replay">↻ REPLAY</button><a href="company.html">COMPANY VIEW ↗</a><button type="button" id="v4-cycle-color">CHANGE COLOR □</button></div>
+      <div class="v4-home-actions"><button type="button" id="v4-replay">↻ REPLAY</button><a href="company.html">COMPANY VIEW ↗</a><div class="v4-colorways" role="group" aria-label="Website colorway"><button type="button" data-v4-color="chalk" aria-pressed="false"><span class="v4-swatch v4-light"></span>LIGHT</button><button type="button" data-v4-color="umber" aria-pressed="false"><span class="v4-swatch v4-dark"></span>DARK</button><button type="button" data-v4-color="sand" aria-pressed="false"><span class="v4-swatch v4-freeman"></span>FREEMAN</button></div></div>
       <div class="v4-home-location">CARTERSVILLE, GA<br>BUILT FOR GENERATIONS</div></div>
       <a class="v4-home-access" href="client-access.html">ACCESS ↗</a>
     </div>`;
     const mark=window.FreemanPixelMark&&window.FreemanPixelMark.mount(root.querySelector("#v4-pixel-mark"));
     if(!mark){root.querySelector("#v4-pixel-mark").setAttribute("aria-label","Freeman mark animation unavailable");}
     root.querySelector("#v4-replay").addEventListener("click",()=>mark&&mark.replay());
-    root.querySelector("#v4-cycle-color").addEventListener("click",()=>{
-      const next=PALETTES[(PALETTES.indexOf(palette)+1)%PALETTES.length];choosePalette(next);
+    function syncV4Colors(){
+      root.querySelectorAll("[data-v4-color]").forEach(btn=>btn.setAttribute("aria-pressed",String(btn.dataset.v4Color===palette)));
       if(mark)mark.replay();
-    });
+    }
+    root.querySelectorAll("[data-v4-color]").forEach(btn=>btn.addEventListener("click",()=>{
+      if(btn.dataset.v4Color!==palette)choosePalette(btn.dataset.v4Color);
+      syncV4Colors();
+    }));
+    syncV4Colors();
     words(root);
   }
   /* V4 HOME: previous eagle intro retired. The approved pixel-assembly script animation
