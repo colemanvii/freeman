@@ -481,9 +481,9 @@ body[data-route="projects"] .viewport{overflow:hidden}
 .pi4-preview-title p{font:10px/1.6 var(--mono);color:var(--muted);margin-top:6px}
 .pi4-preview-title a{font:9px/1.5 var(--mono);white-space:nowrap;align-self:end}
 .pi4-preview-title a:hover{background:var(--orange);color:var(--paper)}
-.pi4-preview-image{width:100%;aspect-ratio:4/3;max-height:48dvh;min-height:0;overflow:hidden;flex:none;display:grid;place-items:center;background:transparent;border:1px solid var(--hair)}
-.pi4-image-link{width:100%;height:100%;display:grid;place-items:center;overflow:hidden;cursor:var(--cursor-orange)}
-.pi4-image-link img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;max-width:100%;max-height:100%}
+.pi4-preview-image{width:100%;height:auto;min-height:0;max-height:none;overflow:visible;flex:none;display:flex;justify-content:center;align-items:flex-start;background:transparent;border:0}
+.pi4-image-link{display:block;width:fit-content;max-width:100%;height:auto;overflow:visible;cursor:var(--cursor-orange);line-height:0}
+.pi4-image-link img{display:block;width:auto;height:auto;max-width:100%;max-height:46dvh;object-fit:contain;object-position:center}
 .pi4-no-image{font:10px/1.5 var(--mono);letter-spacing:.04em;color:var(--muted)}
 .pi4-image-caption{font:9px/1.6 var(--mono);color:var(--muted);margin-top:12px;flex:none;text-transform:uppercase}
 .pi4-preview-bottom{border-top:1px solid var(--hair);padding-top:11px;margin-top:22px;display:flex;justify-content:space-between;gap:14px;align-items:baseline;font:9px/1.5 var(--mono);color:var(--muted);text-transform:uppercase;flex:none}
@@ -515,7 +515,7 @@ body[data-route="projects"] .viewport{overflow:hidden}
   .pi4-in-progress{min-height:42px;padding:7px 0}
   .pi4-preview-title{margin-bottom:12px}
   .pi4-preview-head{height:33px}
-  .pi4-preview-image{max-height:38dvh}
+  .pi4-image-link img{max-height:38dvh}
   .pi4-preview-bottom{margin-top:10px}
 }
 
