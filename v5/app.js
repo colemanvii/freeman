@@ -412,40 +412,58 @@
   function projectsIndex(state) {
     chrome({ title: "Projects / Selected work", section: "projects" });
     const vp = root.querySelector(".viewport");
-    const cell = (cls, value, label) =>
-      value
-        ? creditLink(value, cls)
-        : `<span class="${cls} pi-empty"><span class="sr-only">${label} not yet verified</span><span aria-hidden="true">—</span></span>`;
-    const rows = projects
-      .map((p, i) => {
-        const here = p.slug === state.focus;
-        return `<li class="pi-row${here ? " is-current" : ""}"><div class="pi-link"><span class="pi-no">${pad(i + 1, 3)}</span><a class="pi-name pi-project-link" href="project-${esc(p.slug)}.html" data-slug="${esc(p.slug)}"><span class="tap-label">${esc(p.name)}</span></a>${cell("pi-client", credit(p, "Client"), "Client")}${cell("pi-arch", designCredit(p), "Design")}${p.date ? `<span class="pi-date">${esc(p.date)}</span>` : `<span class="pi-date pi-empty" aria-hidden="true">—</span>`}</div></li>`;
-      })
-      .join("");
-    const inProgress = [
-      ["Barnsley Branded Residential", "Adairsville, Georgia", "Residential"],
-      ["Magnolia Commons Retail Center", "Cumming, GA", "Retail"],
-      ["Little Rey", "Dunwoody, Georgia", "Hospitality"],
+    const cell=(cls,value,label)=>value?creditLink(value,cls):`<span class="${cls} pi-empty"><span class="sr-only">${label} not yet verified</span><span aria-hidden="true">—</span></span>`;
+    const rows=projects.map((p,i)=>`<li class="pi-row${p.slug===state.focus?" is-current":""}"><div class="pi-link"><span class="pi-no">${pad(i+1,3)}</span><a class="pi-name pi-project-link" href="project-${esc(p.slug)}.html" data-slug="${esc(p.slug)}"><span class="tap-label">${esc(p.name)}</span></a>${cell("pi-client",credit(p,"Client"),"Client")}${cell("pi-arch",designCredit(p),"Design")}${p.date?`<span class="pi-date">${esc(p.date)}</span>`:'<span class="pi-date pi-empty" aria-hidden="true">—</span>'}</div></li>`).join("");
+    const inProgress=[
+      ["Barnsley Branded Residential","Adairsville, Georgia","Residential"],
+      ["Magnolia Commons Retail Center","Cumming, GA","Retail"],
+      ["Little Rey","Dunwoody, Georgia","Hospitality"]
     ];
-    const activeRows = inProgress.map(([name, place, type]) =>
-      `<li class="pi-row pi-progress"><div class="pi-link pi-progress-line"><span class="pi-no">—</span><span class="pi-name">${esc(name)}</span><span class="pi-client">${esc(place)}</span><span class="pi-arch">${esc(type)}</span><span class="pi-date">IN PROGRESS</span></div></li>`
-    ).join("");
-    vp.innerHTML = `<div class="pi"><div class="pi-head" aria-hidden="true"><span>No.</span><span>Project</span><span>Client</span><span>Design</span><span class="pi-head-date">Date</span></div><div class="pi-scroller"><div class="pi-section-label">IN PROGRESS / CURRENT WORK</div><ol class="pi-list" aria-label="In progress projects">${activeRows}</ol><div class="pi-section-label pi-completed-label">SELECTED WORK / COMPLETED</div><ol class="pi-list" aria-label="Completed projects">${rows}</ol></div></div>`;
-    const scroller = vp.querySelector(".pi-scroller");
-    // The project a visitor opens is the selection they return to.
-    scroller.addEventListener("click", (e) => {
-      const row = e.target.closest(".pi-row");
-      if (!row) return;
-      scroller.querySelectorAll(".pi-row.is-current").forEach((r) => r.classList.remove("is-current"));
+    const activeRows=inProgress.map(([name,place,type])=>`<li class="pi-row pi-progress"><div class="pi-link pi-progress-line"><span class="pi-no">—</span><span class="pi-name">${esc(name)}</span><span class="pi-client">${esc(place)}</span><span class="pi-arch">${esc(type)}</span><span class="pi-date">IN PROGRESS</span></div></li>`).join("");
+    const desktopItems=projects.map((p,i)=>`<li><button type="button" class="pi4-select" data-pi4-select="${esc(p.slug)}" aria-pressed="false"><span class="pi4-no">${pad(i+1,2)}</span><span class="pi4-item-name">${esc(p.name)}</span><span class="pi4-indicator">↗</span></button></li>`).join("");
+    vp.innerHTML=`<div class="pi4" aria-label="Desktop project index"><aside class="pi4-register">
+      <div class="pi4-heading"><span>SELECTED WORK / ${pad(projects.length,2)}</span><span>PROJECT INDEX</span></div>
+      <div class="pi4-scroll"><div class="pi4-section">IN PROGRESS / CURRENT WORK</div>
+        <ol class="pi4-current">${inProgress.map(([name,place])=>`<li><span>—</span><span>${esc(name)}</span><small>${esc(place)}</small></li>`).join("")}</ol>
+        <div class="pi4-section pi4-completed">SELECTED WORK / COMPLETED</div>
+        <ol class="pi4-items">${desktopItems}</ol>
+      </div></aside>
+      <section class="pi4-stage" id="pi4-stage" aria-label="Selected project preview" aria-live="polite"></section>
+    </div>
+    <div class="pi pi4-original-mobile"><div class="pi-head" aria-hidden="true"><span>No.</span><span>Project</span><span>Client</span><span>Design</span><span class="pi-head-date">Date</span></div><div class="pi-scroller"><div class="pi-section-label">IN PROGRESS / CURRENT WORK</div><ol class="pi-list" aria-label="In progress projects">${activeRows}</ol><div class="pi-section-label pi-completed-label">SELECTED WORK / COMPLETED</div><ol class="pi-list" aria-label="Completed projects">${rows}</ol></div></div>`;
+    // The full-screen photography view already exists. The preview is its smaller sibling.
+    const stage=vp.querySelector("#pi4-stage");
+    let selected=null,photoIndex=0;
+    const photosFor=p=>(p.gallery&&p.gallery.length?p.gallery.map(g=>g.src):p.image?[p.image]:[]);
+    function select(slug,index=0){
+      const p=projects.find(x=>x.slug===slug)||projects.find(x=>x.slug==="the-optimist")||projects.find(x=>photosFor(x).length)||projects[0];
+      if(!p)return;
+      selected=p;const photos=photosFor(p);photoIndex=Math.max(0,Math.min(index,photos.length-1));
+      const client=credit(p,"Client"),design=designCredit(p),hasPhotos=photos.length>0;
+      stage.innerHTML=`<div class="pi4-preview-head"><span>PROJECT / ${esc(p.id||"—")}</span><span>${esc(p.type||"BUILT WORK")}</span></div>
+        <div class="pi4-preview-image">${hasPhotos?`<a href="project-${esc(p.slug)}.html" class="pi4-image-link" aria-label="Open ${esc(p.name)} full project gallery"><img id="pi4-image" src="${esc(photos[photoIndex])}" alt="${esc(p.name)} — photograph ${photoIndex+1}" draggable="false"></a>`:'<div class="pi4-no-image">PHOTOGRAPHY FORTHCOMING</div>'}</div>
+        <div class="pi4-preview-title"><div><h2>${esc(p.name)}</h2><p>${esc(p.location||"")}</p></div><a href="project-${esc(p.slug)}.html">VIEW PROJECT ↗</a></div>
+        <div class="pi4-preview-bottom"><span>${client?"CLIENT / "+esc(client):"FREEMAN / SELECTED WORK"}${design?" · DESIGN / "+esc(design):""}</span>
+          ${hasPhotos?`<div class="pi4-arrows"><button type="button" data-pi4-step="-1" aria-label="Previous project photograph" ${photoIndex===0?"disabled":""}>←</button><span>${pad(photoIndex+1)} / ${pad(photos.length)}</span><button type="button" data-pi4-step="1" aria-label="Next project photograph" ${photoIndex===photos.length-1?"disabled":""}>→</button></div>`:""}
+        </div>`;
+      vp.querySelectorAll("[data-pi4-select]").forEach(el=>el.setAttribute("aria-pressed",String(el.dataset.pi4Select===p.slug)));
+      hist.write("replaceState",{...hist.state,focus:p.slug},location.href);
+    }
+    vp.querySelector(".pi4").addEventListener("click",e=>{
+      const chooser=e.target.closest("[data-pi4-select]"),step=e.target.closest("[data-pi4-step]");
+      if(chooser){select(chooser.dataset.pi4Select);return;}
+      if(step&&selected){select(selected.slug,photoIndex+Number(step.dataset.pi4Step));}
+    });
+    select(state.focus||"the-optimist");
+    const scroller=vp.querySelector(".pi4-original-mobile .pi-scroller");
+    scroller.addEventListener("click",e=>{
+      const row=e.target.closest(".pi-row");if(!row)return;
+      scroller.querySelectorAll(".pi-row.is-current").forEach(r=>r.classList.remove("is-current"));
       row.classList.add("is-current");
     });
-    if (typeof state.projScroll === "number") scroller.scrollTop = state.projScroll;
-    const current = scroller.querySelector(".pi-row.is-current");
-    if (current) {
-      const top = current.offsetTop, bottom = top + current.offsetHeight;
-      if (top < scroller.scrollTop) scroller.scrollTop = top;
-      else if (bottom > scroller.scrollTop + scroller.clientHeight) scroller.scrollTop = bottom - scroller.clientHeight;
-    }
+    if(typeof state.projScroll==="number")scroller.scrollTop=state.projScroll;
+    const current=scroller.querySelector(".pi-row.is-current");
+    if(current){const top=current.offsetTop,bottom=top+current.offsetHeight;if(top<scroller.scrollTop)scroller.scrollTop=top;else if(bottom>scroller.scrollTop+scroller.clientHeight)scroller.scrollTop=bottom-scroller.clientHeight;}
     count();
   }
   /* Photography-first project page: one photograph at a time, the name, place and verified credits
