@@ -85,54 +85,42 @@ Do not mark any of these VERIFIED without deployed commit inspection and browser
 **This document records observations and review constraints; it does not change application behavior.**
 
 
-## 07 / Canonical system decision — ONE FREEMAN
+## 07 / Production authority — VERIFIED FROM CLOUDFLARE AND COMMIT
 
-**Decision (October 16, 2026):** There is one Freeman visual identity across public website, proposals, client / architect / trade-partner workspaces, and Freeman OS. Surface-specific information architecture is permitted; separate aesthetic systems are not.
+**Cloudflare Pages:** project `freeman` serves `freemangc.com`, `www.freemangc.com`, and `freeman-d6f.pages.dev`, per the deployment dashboard screenshot supplied October 16, 2026. Its production deployment is commit `a1f39b3ff40c33007304fbf8a130839eae37c1e3` (merge PR #45).
 
-### Source of truth and precedence
+**Canonical source:** `v5/` is Cloudflare's output folder, generated from `v5-source/generate.py`. The top-level `index.html`, `styles.css`, and `portal.html` are not the current production V5 authority. Never build a production portal patch against those root files.
 
-1. The **currently approved live public-site aesthetic** is the visual benchmark, once its deployed commit and rendered behavior are confirmed.
-2. The existing `DESIGN-DOCTRINE.md` governs the identity philosophy when pages diverge.
-3. The **actual production design tokens and reusable primitives** should be extracted from the confirmed deployed source and maintained in one shared stylesheet/module.
-4. Historical pages (`styles.css`, prototypes, proposal studies, older portals) are **references to reconcile**, not alternative brand authorities.
+### Production tokens (V5 source, commit a1f39b3)
+From `v5/styles.css`:
+- `--paper: #f4f4f0`
+- `--ink: #30312f`
+- `--muted: #8e918c`
+- `--hair: #cfd1cb`
+- `--orange: #f05a28`
+- `--mono: Monaco, "SFMono-Regular", Consolas, "Liberation Mono", monospace`
+- custom crosshair and orange-interaction cursors, orange whole-word hover, mostly fixed-viewport compositions
 
-**Do not use the values below as production tokens until deployment parity is verified.** The root `index.html` currently contains `#f4f4f1` / `#242424` / `#e75a28` / Monaco. These are verified repository observations, not a completed production-site verification.
+These are **verified in the deployed commit's repository source**, not browser-computed results.
 
-### Universal visual grammar
+### Existing palette and identity infrastructure
+- `v5/palette.js` reads sessionStorage key `freeman-palette` and sets `data-palette` before paint, including the document's theme-color. Values: `chalk` (`#f4f4f0`), `sand` (`#d9c5a7`), and `umber` (`#51453b`).
+- `v5/portal-identity.css` defines shared identity tokens and palette variants for gated/role surfaces.
+- Both `v5/client-access.html` and `v5/team-os.html` already load the shared identity file. Prefer improving this existing system and removing duplicated definitions through tested incremental changes, not introducing a parallel portal stylesheet.
+- `v5/client-access.html` implements client/architect/trade-partner guided access; the copy marks pathways as demonstrations, not actual access provisioning.
 
-- **Same paper, ink, type and accent rules.** Never change to a separate visual theme merely because the user enters a portal or OS.
-- **Same navigation and feedback language.** Text-first controls, intentional hover/focus, clear state, and predictable back/close. Preserve brand color continuity.
-- **Same geometry.** Rectangular composition; fine rules and spatial divisions rather than rounded, elevated dashboard cards.
-- **Same restraint.** No free-floating UI, gradients, glossy surfaces, decorative status glow, or gratuitous animation.
-- **Same evidence standard.** Real project data, decisions, people, schedules, and photographs; dummy data clearly marked in demos.
-- **Same responsiveness.** Make desktop and mobile equally authored and readable without forcing the same columns at every width.
+### Corrected precedence
+1. User-approved deployed V5 screens and explicitly frozen proposal benchmarks.
+2. `DESIGN-DOCTRINE.md`.
+3. The deployed V5 generator and shared identity implementation.
+4. V5 page-specific code that needs harmonization.
+5. Legacy root pages and discarded prototypes, for historical reference only.
 
-### Page translation, without aesthetic divergence
-
-| Surface | What changes | What must not change |
-| --- | --- | --- |
-| Public | Architectural project selection and storytelling | Core typography, paper/ink, orange punctuation, interaction grammar |
-| Proposal | Scope, estimate, schedule, decisions, acceptance | Root identity, typography, fine rules and restrained color |
-| Client | Next action, approvals, progress, documents | No new card library or separate gradient/colorway |
-| Architect | Drawings, RFIs, submittals, coordination | Same layout grammar, functional status presentation |
-| Trade partners | Current drawings, schedule, scopes, safety, submissions | Same fonts, controls, and document hierarchy |
-| Freeman OS | High-density mission state, assignments, issues, decisions | Same brand system even when information density increases |
-
-### Implementation boundary
-
-**Phase A (this PR):** Establish policy, audit existing divergences, and guard new work. Documentation only.
-
-**Phase B (next code PR):** Identify the production deployment commit, capture desktop/mobile screenshots, extract final exact tokens into a single canonical stylesheet and shared components, and migrate one surface at a time.
-
-**Phase C (QA):** Side-by-side screenshot regression tests for landing → Team Access / Client Access → proposals and OS. Fix differences before merge. Never claim completion without testing production deployment.
-
-### Definition of done for visual consistency
-
-A new Freeman surface is acceptable only when:
-1. It inherits the canonical CSS tokens and typographic primitives rather than copying speculative values.
-2. Moving between public and private areas does **not** visibly switch brands, fonts, paper, color rules, or navigation language.
-3. Desktop and mobile states are inspected against approved references.
-4. Functional density and accessibility remain strong.
-5. A reviewer can point to actual source and screenshots proving compliance.
+### Next engineering acceptance gates
+- Identify duplicated declarations between V5 root styles, ACCESS, and Team OS and consolidate safely without changing behavior.
+- Preserve all three selected palette modes, crosshair cursor, whole-word hover, no-scroll composition where intended, and responsive usability.
+- Verify at wide desktop, laptop, mobile portrait, touch, keyboard and reload/navigation palette persistence.
+- Keep client/architect/trade access workflows and demos intact; ensure no fake data is represented as live.
+- Visual compare against the production deploy before merging.
 
 **One firm. One visual language. Many instruments.**
