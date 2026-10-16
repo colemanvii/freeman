@@ -708,8 +708,8 @@
       <div class="v4-home-bottom"><div class="v4-home-legal">FREEMAN GENERAL CONTRACTING<br>CARTERSVILLE, GEORGIA</div>
         <div class="v4-home-actions"><button type="button" id="v4-replay" aria-label="Replay script animation">↻</button><div class="v4-colorways" role="group" aria-label="Website colorway">
           <button type="button" data-v4-color="chalk" aria-label="Light colorway" aria-pressed="false"><span class="v4-swatch v4-light"></span></button>
-          <button type="button" data-v4-color="sand" aria-label="Freeman colorway" aria-pressed="false"><span class="v4-swatch v4-freeman"></span></button>
           <button type="button" data-v4-color="umber" aria-label="Dark colorway" aria-pressed="false"><span class="v4-swatch v4-dark"></span></button>
+          <button type="button" data-v4-color="sand" aria-label="Freeman red colorway" aria-pressed="false"><span class="v4-swatch v4-freeman"></span></button>
         </div></div><div class="v4-home-tag">BUILT FOR GENERATIONS™<br>EST. IN GEORGIA</div>
     </div>`;
     const mark=window.FreemanPixelMark&&window.FreemanPixelMark.mount(root.querySelector("#v4-pixel-mark"));
