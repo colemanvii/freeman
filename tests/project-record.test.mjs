@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {projectView,validateProject} from '../app/core/project-record.js';
+import {SAMPLE_PROJECT} from '../app/core/sample-project.js';
+test('fictional record validates',()=>assert.deepEqual(validateProject(SAMPLE_PROJECT),[]));
+test('same project identity per role',()=>{for(const role of ['team','client','architect','trade'])assert.equal(projectView(SAMPLE_PROJECT,role).id,SAMPLE_PROJECT.id)});
+test('client sees proposal not estimate',()=>{const v=projectView(SAMPLE_PROJECT,'client');assert.equal(v.proposals.length,1);assert.ok(!v.documents.some(d=>d.id==='doc-02'))});
+test('architect sees drawings not proposal',()=>{const v=projectView(SAMPLE_PROJECT,'architect');assert.ok(v.documents.some(d=>d.id==='doc-01'));assert.equal(v.proposals.length,0)});
+test('trade sees assigned commitment not owner budget',()=>{const v=projectView(SAMPLE_PROJECT,'trade');assert.ok(v.commitments.some(c=>c.id==='commit-01'));assert.equal(v.proposals.length,0)});
+test('team sees internal estimate',()=>assert.ok(projectView(SAMPLE_PROJECT,'team').documents.some(d=>d.id==='doc-02')));
+test('unknown role is denied',()=>assert.throws(()=>projectView(SAMPLE_PROJECT,'anonymous'),/Unknown role/));
+test('invalid audience is denied',()=>{const bad=structuredClone(SAMPLE_PROJECT);bad.documents[0].visibleTo=['public'];assert.ok(validateProject(bad).length)});
