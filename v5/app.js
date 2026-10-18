@@ -312,9 +312,13 @@
       {name:"Construction Management",detail:"Planning and coordination throughout the life of a project.",image:"assets/projects/barnsley-gardens-2.jpg",alt:"Photograph of Barnsley Gardens",caption:"BARNSLEY GARDENS"},
       {name:"Preconstruction",detail:"Early collaboration around scope, budgets, schedules, and constructability.",image:"assets/projects/beetlecat-interior-2.jpg",alt:"Interior photograph of Beetlecat",caption:"BEETLECAT"}
     ];
-    const philosophy={image:"assets/projects/barnsley-gardens-2.jpg",alt:"Barnsley Gardens project photograph",caption:"BARNSLEY GARDENS"};
     let currentTab="philosophy",currentPerson=0,currentService=0;
     vp.innerHTML = `<div class="co4" data-co4-view="philosophy">
+      <style>
+        .co4-stage{width:min(760px,calc(100% - 48px));grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr)!important;gap:0!important}
+        .co4-editorial{grid-column:1!important;grid-row:1!important}
+        @media(max-width:700px){.co4-stage{width:100%;height:100%}}
+      </style>
       <div class="co4-stage">
         <section class="co4-editorial" id="co4-panel" role="tabpanel" aria-live="polite">
           <nav class="co4-nav" aria-label="Company views" role="tablist">
@@ -324,41 +328,24 @@
           </nav>
           <div class="co4-copy" id="co4-copy"></div>
         </section>
-        <figure class="co4-visual">
-          <div class="co4-media" aria-label="Selected Freeman photography or team portrait">
-            <img id="co4-image" src="${philosophy.image}" alt="${philosophy.alt}" loading="eager">
-            <div id="co4-portrait" class="co4-portrait" hidden aria-label="Portrait pending"><span id="co4-monogram">GF</span><small>PORTRAIT / FORTHCOMING</small></div>
-          </div>
-          <figcaption id="co4-caption">${philosophy.caption}</figcaption>
-        </figure>
       </div>
     </div>`;
-    const copy=vp.querySelector("#co4-copy"),image=vp.querySelector("#co4-image"),portrait=vp.querySelector("#co4-portrait"),caption=vp.querySelector("#co4-caption");
-    function showMedia(item) {
-      image.src=item.image;
-      image.alt=item.alt;
-      caption.textContent=item.caption;
-    }
+    const copy=vp.querySelector("#co4-copy");
     function show(tab) {
       currentTab=tab;
       vp.querySelector(".co4").dataset.co4View=tab;
       vp.querySelectorAll("[data-co4-tab]").forEach(el=>el.setAttribute("aria-selected",String(el.dataset.co4Tab===tab)));
-      const isPerson=tab==="people";image.hidden=isPerson;portrait.hidden=!isPerson;
       if(tab==="philosophy"){
-        showMedia(philosophy);
         copy.innerHTML=`<h2>Built for generations.</h2>
           <p>Freeman General Contracting is an independent builder based in Cartersville, Georgia.</p>
           <p>We believe how something is built matters as much as what is built. Good work requires trust, judgment, and attention to every detail.</p>
           <p>We work with people who believe the same.</p>`;
       } else if(tab==="services"){
-        showMedia(services[currentService]);
         copy.innerHTML=`<h2>What we do<span class="co4-accent">.</span></h2>
           <div class="co4-menu" role="group" aria-label="Services">${services.map((s,i)=>`<button type="button" class="co4-choice" data-co4-service="${i}" aria-pressed="${i===currentService}"><span>0${i+1}</span><strong>${esc(s.name)}</strong><span>↗</span></button>`).join("")}</div>
           <div class="co4-description"><span>OUR APPROACH</span><p id="co4-service-text">${esc(services[currentService].detail)}</p></div>`;
       } else {
         const person=people[currentPerson];
-        vp.querySelector("#co4-monogram").textContent=person.name.split(" ").map(x=>x[0]).join("");
-        caption.textContent=person.name.toUpperCase();
         copy.innerHTML=`<h2>Our people<span class="co4-accent">.</span></h2>
           <div class="co4-people" role="group" aria-label="Select a team member">${people.map((p,i)=>`<button type="button" class="co4-choice" data-co4-person="${i}" aria-pressed="${i===currentPerson}"><span>0${i+1}</span><strong>${esc(p.name)}</strong><span>↗</span></button>`).join("")}</div>
           <div class="co4-description"><span id="co4-person-role">${esc(person.role)}</span><p id="co4-person-name">${esc(person.name)}</p><small>Full biography and portrait forthcoming.</small></div>`;
@@ -367,7 +354,7 @@
     vp.addEventListener("click",e=>{
       const tab=e.target.closest("[data-co4-tab]"),service=e.target.closest("[data-co4-service]"),person=e.target.closest("[data-co4-person]");
       if(tab){show(tab.dataset.co4Tab);return;}
-      if(service){currentService=Number(service.dataset.co4Service);vp.querySelectorAll("[data-co4-service]").forEach(el=>el.setAttribute("aria-pressed",String(Number(el.dataset.co4Service)===currentService)));vp.querySelector("#co4-service-text").textContent=services[currentService].detail;showMedia(services[currentService]);return;}
+      if(service){currentService=Number(service.dataset.co4Service);vp.querySelectorAll("[data-co4-service]").forEach(el=>el.setAttribute("aria-pressed",String(Number(el.dataset.co4Service)===currentService)));vp.querySelector("#co4-service-text").textContent=services[currentService].detail;return;}
       if(person){currentPerson=Number(person.dataset.co4Person);show("people");}
     });
     vp.querySelector(".co4-nav").addEventListener("keydown",e=>{
