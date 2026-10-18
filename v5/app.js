@@ -692,7 +692,7 @@
       // Bitmap pixel size: a whole number of device pixels, nearest to the composed width.
       const dpr = window.devicePixelRatio || 1;
       const phone = matchMedia(PHONE).matches;
-      const target = phone ? innerWidth * 0.82 : Math.min(innerWidth * 0.34, innerHeight * 0.73);
+      const target = phone ? innerWidth * 0.72 : Math.min(innerWidth * 0.34, innerHeight * 0.73);
       const limit = phone ? innerWidth - 40 : Math.min(innerWidth * 0.5, innerHeight * 0.9);
       let n = Math.max(1, Math.round((target * dpr) / 160));
       while (n > 1 && (160 * n) / dpr > limit) n--;
