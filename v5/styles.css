@@ -447,3 +447,10 @@ body[data-route="entrance"] #main{height:100%;width:100%}
  .v4-home-nav a:active{background:var(--orange);color:var(--paper)}
 }
 
+
+/* iPad Safari: pin the document to the visible viewport while preserving
+   intentional scrolling inside project and editorial panels. */
+html{position:fixed;inset:0;width:100%;height:100%;height:100dvh;overflow:hidden;overscroll-behavior:none}
+body{position:fixed;inset:0;width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
+#site{height:100%;height:100dvh;overflow:hidden;overscroll-behavior:none}
+#main{height:100%;overflow:hidden}
