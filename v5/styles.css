@@ -215,7 +215,7 @@ body[data-route="contact"] .viewport{display:flex}
 @media(max-width:760px){.contact-inquiry input[type="email"]{font-size:16px}}
 
 /* Client Access: discreet perimeter navigation on entrance only. */
-.client-access-entry{position:absolute;right:30px;top:29px;z-index:12;font-size:10px;line-height:1.5;letter-spacing:.035em;color:var(--muted);white-space:nowrap;text-transform:uppercase}
+.client-access-entry{position:absolute;right:30px;top:29px;z-index:12;font-size:10px;line-height:1.5;letter-spacing:.035em;color:var(--orange);white-space:nowrap;text-transform:uppercase}
 .client-access-entry:hover,.client-access-entry:focus-visible{background:var(--orange);color:var(--paper)}
 @media(max-width:760px){.client-access-entry{top:max(20px,env(safe-area-inset-top));right:max(18px,env(safe-area-inset-right));font-size:10px}}
 
