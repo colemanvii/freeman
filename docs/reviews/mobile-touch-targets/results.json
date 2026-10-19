@@ -1,0 +1,3028 @@
+{
+  "after": [
+    {
+      "route": "company",
+      "elements": [
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 18,
+            "right": 58.015625,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 18,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase is-current",
+          "text": "COMPANY"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 73.734375,
+            "right": 119.46875,
+            "top": 20.75,
+            "width": 45.734375,
+            "x": 73.734375,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "PROJECTS"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 135.1875,
+            "right": 175.203125,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 135.1875,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "CONTACT"
+        },
+        {
+          "box": {
+            "bottom": 35,
+            "height": 15,
+            "left": 257.78125,
+            "right": 302,
+            "top": 20,
+            "width": 44.21875,
+            "x": 257.78125,
+            "y": 20
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "close phrase",
+          "text": "× CLOSE"
+        },
+        {
+          "box": {
+            "bottom": 85,
+            "height": 15,
+            "left": 18,
+            "right": 80.015625,
+            "top": 70,
+            "width": 62.015625,
+            "x": 18,
+            "y": 70
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "",
+          "text": "PHILOSOPHY"
+        },
+        {
+          "box": {
+            "bottom": 85,
+            "height": 15,
+            "left": 97.015625,
+            "right": 146.625,
+            "top": 70,
+            "width": 49.609375,
+            "x": 97.015625,
+            "y": 70
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "",
+          "text": "SERVICES"
+        },
+        {
+          "box": {
+            "bottom": 85,
+            "height": 15,
+            "left": 163.625,
+            "right": 200.8359375,
+            "top": 70,
+            "width": 37.2109375,
+            "x": 163.625,
+            "y": 70
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "",
+          "text": "PEOPLE"
+        },
+        {
+          "box": {
+            "bottom": 307.046875,
+            "height": 201.046875,
+            "left": 18,
+            "right": 302,
+            "top": 106,
+            "width": 284,
+            "x": 18,
+            "y": 106
+          },
+          "font": "16px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "16px",
+          "selector": "co4-copy",
+          "text": "Built for generations.\n          Freeman General Contracting is an independent builder based in Cartersville, Georgia.\n          We believe how something is built matters as much as what is built. Good work requires trust, judgment, and attention to every detail.\n          We work with people who believe the same."
+        }
+      ],
+      "height": 568,
+      "scroll": 320,
+      "width": 320
+    },
+    {
+      "route": "project-the-optimist",
+      "elements": [
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 18,
+            "right": 58.015625,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 18,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "COMPANY"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 73.734375,
+            "right": 119.46875,
+            "top": 20.75,
+            "width": 45.734375,
+            "x": 73.734375,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase is-current",
+          "text": "PROJECTS"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 135.1875,
+            "right": 175.203125,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 135.1875,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "CONTACT"
+        },
+        {
+          "box": {
+            "bottom": 35,
+            "height": 15,
+            "left": 257.78125,
+            "right": 302,
+            "top": 20,
+            "width": 44.21875,
+            "x": 257.78125,
+            "y": 20
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "close phrase",
+          "text": "× CLOSE"
+        },
+        {
+          "box": {
+            "bottom": 184.84375,
+            "height": 114.84375,
+            "left": 18,
+            "right": 302,
+            "top": 70,
+            "width": 284,
+            "x": 18,
+            "y": 70
+          },
+          "font": "16px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "16px",
+          "selector": "pg-info",
+          "text": "The OptimistAtlanta, GeorgiaClientRocket Farm Restaurants ↗Interior designChuck Marie Studio ↗PhotographyJared Swafford ↗"
+        },
+        {
+          "box": {
+            "bottom": 465,
+            "height": 262.15625,
+            "left": 18,
+            "right": 302,
+            "top": 202.84375,
+            "width": 284,
+            "x": 18,
+            "y": 202.84375
+          },
+          "font": "16px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "16px",
+          "selector": "pg-frame",
+          "text": ""
+        },
+        {
+          "box": {
+            "bottom": 495,
+            "height": 19,
+            "left": 104.3359375,
+            "right": 113.3671875,
+            "top": 476,
+            "width": 9.03125,
+            "x": 104.3359375,
+            "y": 476
+          },
+          "font": "15px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "15px",
+          "selector": "pg-arrow",
+          "text": "←"
+        },
+        {
+          "box": {
+            "bottom": 493.75,
+            "height": 16.5,
+            "left": 135.3671875,
+            "right": 184.65625,
+            "top": 477.25,
+            "width": 49.2890625,
+            "x": 135.3671875,
+            "y": 477.25
+          },
+          "font": "",
+          "fontSize": "11px",
+          "selector": "pg-count",
+          "text": "01 / 03"
+        },
+        {
+          "box": {
+            "bottom": 495,
+            "height": 19,
+            "left": 206.65625,
+            "right": 215.6640625,
+            "top": 476,
+            "width": 9.0078125,
+            "x": 206.65625,
+            "y": 476
+          },
+          "font": "15px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "15px",
+          "selector": "pg-arrow",
+          "text": "→"
+        }
+      ],
+      "height": 568,
+      "scroll": 320,
+      "width": 320
+    },
+    {
+      "route": "contact",
+      "elements": [
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 18,
+            "right": 58.015625,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 18,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "COMPANY"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 73.734375,
+            "right": 119.46875,
+            "top": 20.75,
+            "width": 45.734375,
+            "x": 73.734375,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "PROJECTS"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 135.1875,
+            "right": 175.203125,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 135.1875,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase is-current",
+          "text": "CONTACT"
+        },
+        {
+          "box": {
+            "bottom": 35,
+            "height": 15,
+            "left": 257.78125,
+            "right": 302,
+            "top": 20,
+            "width": 44.21875,
+            "x": 257.78125,
+            "y": 20
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "close phrase",
+          "text": "× CLOSE"
+        }
+      ],
+      "height": 568,
+      "scroll": 320,
+      "width": 320
+    },
+    {
+      "route": "projects",
+      "elements": [
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 18,
+            "right": 58.015625,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 18,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "COMPANY"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 73.734375,
+            "right": 119.46875,
+            "top": 20.75,
+            "width": 45.734375,
+            "x": 73.734375,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase is-current",
+          "text": "PROJECTS"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 135.1875,
+            "right": 175.203125,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 135.1875,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "CONTACT"
+        },
+        {
+          "box": {
+            "bottom": 35,
+            "height": 15,
+            "left": 257.78125,
+            "right": 302,
+            "top": 20,
+            "width": 44.21875,
+            "x": 257.78125,
+            "y": 20
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "close phrase",
+          "text": "× CLOSE"
+        }
+      ],
+      "height": 568,
+      "scroll": 320,
+      "width": 320
+    },
+    {
+      "route": "company",
+      "elements": [
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 18,
+            "right": 58.015625,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 18,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase is-current",
+          "text": "COMPANY"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 77.734375,
+            "right": 123.46875,
+            "top": 20.75,
+            "width": 45.734375,
+            "x": 77.734375,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "PROJECTS"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 143.1875,
+            "right": 183.203125,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 143.1875,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "CONTACT"
+        },
+        {
+          "box": {
+            "bottom": 35,
+            "height": 15,
+            "left": 327.78125,
+            "right": 372,
+            "top": 20,
+            "width": 44.21875,
+            "x": 327.78125,
+            "y": 20
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "close phrase",
+          "text": "× CLOSE"
+        },
+        {
+          "box": {
+            "bottom": 85,
+            "height": 15,
+            "left": 18,
+            "right": 80.015625,
+            "top": 70,
+            "width": 62.015625,
+            "x": 18,
+            "y": 70
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "",
+          "text": "PHILOSOPHY"
+        },
+        {
+          "box": {
+            "bottom": 85,
+            "height": 15,
+            "left": 97.015625,
+            "right": 146.625,
+            "top": 70,
+            "width": 49.609375,
+            "x": 97.015625,
+            "y": 70
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "",
+          "text": "SERVICES"
+        },
+        {
+          "box": {
+            "bottom": 85,
+            "height": 15,
+            "left": 163.625,
+            "right": 200.8359375,
+            "top": 70,
+            "width": 37.2109375,
+            "x": 163.625,
+            "y": 70
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "",
+          "text": "PEOPLE"
+        },
+        {
+          "box": {
+            "bottom": 304.8203125,
+            "height": 187.8203125,
+            "left": 18,
+            "right": 372,
+            "top": 117,
+            "width": 354,
+            "x": 18,
+            "y": 117
+          },
+          "font": "16px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "16px",
+          "selector": "co4-copy",
+          "text": "Built for generations.\n          Freeman General Contracting is an independent builder based in Cartersville, Georgia.\n          We believe how something is built matters as much as what is built. Good work requires trust, judgment, and attention to every detail.\n          We work with people who believe the same."
+        }
+      ],
+      "height": 844,
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "route": "project-the-optimist",
+      "elements": [
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 18,
+            "right": 58.015625,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 18,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "COMPANY"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 77.734375,
+            "right": 123.46875,
+            "top": 20.75,
+            "width": 45.734375,
+            "x": 77.734375,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase is-current",
+          "text": "PROJECTS"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 143.1875,
+            "right": 183.203125,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 143.1875,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "CONTACT"
+        },
+        {
+          "box": {
+            "bottom": 35,
+            "height": 15,
+            "left": 327.78125,
+            "right": 372,
+            "top": 20,
+            "width": 44.21875,
+            "x": 327.78125,
+            "y": 20
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "close phrase",
+          "text": "× CLOSE"
+        },
+        {
+          "box": {
+            "bottom": 184.84375,
+            "height": 114.84375,
+            "left": 18,
+            "right": 372,
+            "top": 70,
+            "width": 354,
+            "x": 18,
+            "y": 70
+          },
+          "font": "16px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "16px",
+          "selector": "pg-info",
+          "text": "The OptimistAtlanta, GeorgiaClientRocket Farm Restaurants ↗Interior designChuck Marie Studio ↗PhotographyJared Swafford ↗"
+        },
+        {
+          "box": {
+            "bottom": 741,
+            "height": 538.15625,
+            "left": 18,
+            "right": 372,
+            "top": 202.84375,
+            "width": 354,
+            "x": 18,
+            "y": 202.84375
+          },
+          "font": "16px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "16px",
+          "selector": "pg-frame",
+          "text": ""
+        },
+        {
+          "box": {
+            "bottom": 771,
+            "height": 19,
+            "left": 139.3359375,
+            "right": 148.3671875,
+            "top": 752,
+            "width": 9.03125,
+            "x": 139.3359375,
+            "y": 752
+          },
+          "font": "15px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "15px",
+          "selector": "pg-arrow",
+          "text": "←"
+        },
+        {
+          "box": {
+            "bottom": 769.75,
+            "height": 16.5,
+            "left": 170.3671875,
+            "right": 219.65625,
+            "top": 753.25,
+            "width": 49.2890625,
+            "x": 170.3671875,
+            "y": 753.25
+          },
+          "font": "",
+          "fontSize": "11px",
+          "selector": "pg-count",
+          "text": "01 / 03"
+        },
+        {
+          "box": {
+            "bottom": 771,
+            "height": 19,
+            "left": 241.65625,
+            "right": 250.6640625,
+            "top": 752,
+            "width": 9.0078125,
+            "x": 241.65625,
+            "y": 752
+          },
+          "font": "15px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "15px",
+          "selector": "pg-arrow",
+          "text": "→"
+        }
+      ],
+      "height": 844,
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "route": "contact",
+      "elements": [
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 18,
+            "right": 58.015625,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 18,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "COMPANY"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 77.734375,
+            "right": 123.46875,
+            "top": 20.75,
+            "width": 45.734375,
+            "x": 77.734375,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "PROJECTS"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 143.1875,
+            "right": 183.203125,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 143.1875,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase is-current",
+          "text": "CONTACT"
+        },
+        {
+          "box": {
+            "bottom": 35,
+            "height": 15,
+            "left": 327.78125,
+            "right": 372,
+            "top": 20,
+            "width": 44.21875,
+            "x": 327.78125,
+            "y": 20
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "close phrase",
+          "text": "× CLOSE"
+        }
+      ],
+      "height": 844,
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "route": "projects",
+      "elements": [
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 18,
+            "right": 58.015625,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 18,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "COMPANY"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 77.734375,
+            "right": 123.46875,
+            "top": 20.75,
+            "width": 45.734375,
+            "x": 77.734375,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase is-current",
+          "text": "PROJECTS"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 143.1875,
+            "right": 183.203125,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 143.1875,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "CONTACT"
+        },
+        {
+          "box": {
+            "bottom": 35,
+            "height": 15,
+            "left": 327.78125,
+            "right": 372,
+            "top": 20,
+            "width": 44.21875,
+            "x": 327.78125,
+            "y": 20
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "close phrase",
+          "text": "× CLOSE"
+        }
+      ],
+      "height": 844,
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "route": "company",
+      "elements": [
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 18,
+            "right": 58.015625,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 18,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase is-current",
+          "text": "COMPANY"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 77.734375,
+            "right": 123.46875,
+            "top": 20.75,
+            "width": 45.734375,
+            "x": 77.734375,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "PROJECTS"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 143.1875,
+            "right": 183.203125,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 143.1875,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "CONTACT"
+        },
+        {
+          "box": {
+            "bottom": 35,
+            "height": 15,
+            "left": 367.78125,
+            "right": 412,
+            "top": 20,
+            "width": 44.21875,
+            "x": 367.78125,
+            "y": 20
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "close phrase",
+          "text": "× CLOSE"
+        },
+        {
+          "box": {
+            "bottom": 85,
+            "height": 15,
+            "left": 18,
+            "right": 80.015625,
+            "top": 70,
+            "width": 62.015625,
+            "x": 18,
+            "y": 70
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "",
+          "text": "PHILOSOPHY"
+        },
+        {
+          "box": {
+            "bottom": 85,
+            "height": 15,
+            "left": 97.015625,
+            "right": 146.625,
+            "top": 70,
+            "width": 49.609375,
+            "x": 97.015625,
+            "y": 70
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "",
+          "text": "SERVICES"
+        },
+        {
+          "box": {
+            "bottom": 85,
+            "height": 15,
+            "left": 163.625,
+            "right": 200.8359375,
+            "top": 70,
+            "width": 37.2109375,
+            "x": 163.625,
+            "y": 70
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "",
+          "text": "PEOPLE"
+        },
+        {
+          "box": {
+            "bottom": 307.890625,
+            "height": 190.890625,
+            "left": 18,
+            "right": 412,
+            "top": 117,
+            "width": 394,
+            "x": 18,
+            "y": 117
+          },
+          "font": "16px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "16px",
+          "selector": "co4-copy",
+          "text": "Built for generations.\n          Freeman General Contracting is an independent builder based in Cartersville, Georgia.\n          We believe how something is built matters as much as what is built. Good work requires trust, judgment, and attention to every detail.\n          We work with people who believe the same."
+        }
+      ],
+      "height": 844,
+      "scroll": 430,
+      "width": 430
+    },
+    {
+      "route": "project-the-optimist",
+      "elements": [
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 18,
+            "right": 58.015625,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 18,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "COMPANY"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 77.734375,
+            "right": 123.46875,
+            "top": 20.75,
+            "width": 45.734375,
+            "x": 77.734375,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase is-current",
+          "text": "PROJECTS"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 143.1875,
+            "right": 183.203125,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 143.1875,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "CONTACT"
+        },
+        {
+          "box": {
+            "bottom": 35,
+            "height": 15,
+            "left": 367.78125,
+            "right": 412,
+            "top": 20,
+            "width": 44.21875,
+            "x": 367.78125,
+            "y": 20
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "close phrase",
+          "text": "× CLOSE"
+        },
+        {
+          "box": {
+            "bottom": 150.34375,
+            "height": 80.34375,
+            "left": 18,
+            "right": 412,
+            "top": 70,
+            "width": 394,
+            "x": 18,
+            "y": 70
+          },
+          "font": "16px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "16px",
+          "selector": "pg-info",
+          "text": "The OptimistAtlanta, GeorgiaClientRocket Farm Restaurants ↗Interior designChuck Marie Studio ↗PhotographyJared Swafford ↗"
+        },
+        {
+          "box": {
+            "bottom": 741,
+            "height": 572.65625,
+            "left": 18,
+            "right": 412,
+            "top": 168.34375,
+            "width": 394,
+            "x": 18,
+            "y": 168.34375
+          },
+          "font": "16px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "16px",
+          "selector": "pg-frame",
+          "text": ""
+        },
+        {
+          "box": {
+            "bottom": 771,
+            "height": 19,
+            "left": 159.3359375,
+            "right": 168.3671875,
+            "top": 752,
+            "width": 9.03125,
+            "x": 159.3359375,
+            "y": 752
+          },
+          "font": "15px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "15px",
+          "selector": "pg-arrow",
+          "text": "←"
+        },
+        {
+          "box": {
+            "bottom": 769.75,
+            "height": 16.5,
+            "left": 190.3671875,
+            "right": 239.65625,
+            "top": 753.25,
+            "width": 49.2890625,
+            "x": 190.3671875,
+            "y": 753.25
+          },
+          "font": "",
+          "fontSize": "11px",
+          "selector": "pg-count",
+          "text": "01 / 03"
+        },
+        {
+          "box": {
+            "bottom": 771,
+            "height": 19,
+            "left": 261.65625,
+            "right": 270.6640625,
+            "top": 752,
+            "width": 9.0078125,
+            "x": 261.65625,
+            "y": 752
+          },
+          "font": "15px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "15px",
+          "selector": "pg-arrow",
+          "text": "→"
+        }
+      ],
+      "height": 844,
+      "scroll": 430,
+      "width": 430
+    },
+    {
+      "route": "contact",
+      "elements": [
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 18,
+            "right": 58.015625,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 18,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "COMPANY"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 77.734375,
+            "right": 123.46875,
+            "top": 20.75,
+            "width": 45.734375,
+            "x": 77.734375,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "PROJECTS"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 143.1875,
+            "right": 183.203125,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 143.1875,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase is-current",
+          "text": "CONTACT"
+        },
+        {
+          "box": {
+            "bottom": 35,
+            "height": 15,
+            "left": 367.78125,
+            "right": 412,
+            "top": 20,
+            "width": 44.21875,
+            "x": 367.78125,
+            "y": 20
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "close phrase",
+          "text": "× CLOSE"
+        }
+      ],
+      "height": 844,
+      "scroll": 430,
+      "width": 430
+    },
+    {
+      "route": "projects",
+      "elements": [
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 18,
+            "right": 58.015625,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 18,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "COMPANY"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 77.734375,
+            "right": 123.46875,
+            "top": 20.75,
+            "width": 45.734375,
+            "x": 77.734375,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase is-current",
+          "text": "PROJECTS"
+        },
+        {
+          "box": {
+            "bottom": 34.25,
+            "height": 13.5,
+            "left": 143.1875,
+            "right": 183.203125,
+            "top": 20.75,
+            "width": 40.015625,
+            "x": 143.1875,
+            "y": 20.75
+          },
+          "font": "9px / 13.5px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "9px",
+          "selector": "site-link phrase",
+          "text": "CONTACT"
+        },
+        {
+          "box": {
+            "bottom": 35,
+            "height": 15,
+            "left": 367.78125,
+            "right": 412,
+            "top": 20,
+            "width": 44.21875,
+            "x": 367.78125,
+            "y": 20
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "close phrase",
+          "text": "× CLOSE"
+        }
+      ],
+      "height": 844,
+      "scroll": 430,
+      "width": 430
+    },
+    {
+      "route": "company",
+      "elements": [
+        {
+          "box": {
+            "bottom": 43,
+            "height": 15,
+            "left": 30,
+            "right": 74.4609375,
+            "top": 28,
+            "width": 44.4609375,
+            "x": 30,
+            "y": 28
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "site-link phrase is-current",
+          "text": "COMPANY"
+        },
+        {
+          "box": {
+            "bottom": 43,
+            "height": 15,
+            "left": 100.8125,
+            "right": 151.625,
+            "top": 28,
+            "width": 50.8125,
+            "x": 100.8125,
+            "y": 28
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "site-link phrase",
+          "text": "PROJECTS"
+        },
+        {
+          "box": {
+            "bottom": 43,
+            "height": 15,
+            "left": 177.9765625,
+            "right": 222.4375,
+            "top": 28,
+            "width": 44.4609375,
+            "x": 177.9765625,
+            "y": 28
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "site-link phrase",
+          "text": "CONTACT"
+        },
+        {
+          "box": {
+            "bottom": 43,
+            "height": 15,
+            "left": 1365.5390625,
+            "right": 1410,
+            "top": 28,
+            "width": 44.4609375,
+            "x": 1365.5390625,
+            "y": 28
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "close phrase",
+          "text": "× CLOSE"
+        },
+        {
+          "box": {
+            "bottom": 273,
+            "height": 15,
+            "left": 340,
+            "right": 402.015625,
+            "top": 258,
+            "width": 62.015625,
+            "x": 340,
+            "y": 258
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "",
+          "text": "PHILOSOPHY"
+        },
+        {
+          "box": {
+            "bottom": 273,
+            "height": 15,
+            "left": 430.8125,
+            "right": 480.421875,
+            "top": 258,
+            "width": 49.609375,
+            "x": 430.8125,
+            "y": 258
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "",
+          "text": "SERVICES"
+        },
+        {
+          "box": {
+            "bottom": 273,
+            "height": 15,
+            "left": 509.21875,
+            "right": 546.4296875,
+            "top": 258,
+            "width": 37.2109375,
+            "x": 509.21875,
+            "y": 258
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "",
+          "text": "PEOPLE"
+        },
+        {
+          "box": {
+            "bottom": 569.734375,
+            "height": 254.734375,
+            "left": 340,
+            "right": 860,
+            "top": 315,
+            "width": 520,
+            "x": 340,
+            "y": 315
+          },
+          "font": "16px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "16px",
+          "selector": "co4-copy",
+          "text": "Built for generations.\n          Freeman General Contracting is an independent builder based in Cartersville, Georgia.\n          We believe how something is built matters as much as what is built. Good work requires trust, judgment, and attention to every detail.\n          We work with people who believe the same."
+        }
+      ],
+      "height": 900,
+      "scroll": 1440,
+      "width": 1440
+    },
+    {
+      "route": "project-the-optimist",
+      "elements": [
+        {
+          "box": {
+            "bottom": 43,
+            "height": 15,
+            "left": 30,
+            "right": 74.4609375,
+            "top": 28,
+            "width": 44.4609375,
+            "x": 30,
+            "y": 28
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "site-link phrase",
+          "text": "COMPANY"
+        },
+        {
+          "box": {
+            "bottom": 43,
+            "height": 15,
+            "left": 100.8125,
+            "right": 151.625,
+            "top": 28,
+            "width": 50.8125,
+            "x": 100.8125,
+            "y": 28
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "site-link phrase is-current",
+          "text": "PROJECTS"
+        },
+        {
+          "box": {
+            "bottom": 43,
+            "height": 15,
+            "left": 177.9765625,
+            "right": 222.4375,
+            "top": 28,
+            "width": 44.4609375,
+            "x": 177.9765625,
+            "y": 28
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "site-link phrase",
+          "text": "CONTACT"
+        },
+        {
+          "box": {
+            "bottom": 43,
+            "height": 15,
+            "left": 1365.5390625,
+            "right": 1410,
+            "top": 28,
+            "width": 44.4609375,
+            "x": 1365.5390625,
+            "y": 28
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "close phrase",
+          "text": "× CLOSE"
+        },
+        {
+          "box": {
+            "bottom": 812,
+            "height": 718,
+            "left": 30,
+            "right": 250,
+            "top": 94,
+            "width": 220,
+            "x": 30,
+            "y": 94
+          },
+          "font": "16px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "16px",
+          "selector": "pg-info",
+          "text": "The OptimistAtlanta, GeorgiaClientRocket Farm Restaurants ↗Interior designChuck Marie Studio ↗PhotographyJared Swafford ↗"
+        },
+        {
+          "box": {
+            "bottom": 783,
+            "height": 689,
+            "left": 307.59375,
+            "right": 1410,
+            "top": 94,
+            "width": 1102.40625,
+            "x": 307.59375,
+            "y": 94
+          },
+          "font": "16px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "16px",
+          "selector": "pg-frame",
+          "text": ""
+        },
+        {
+          "box": {
+            "bottom": 813,
+            "height": 19,
+            "left": 803.1328125,
+            "right": 812.1640625,
+            "top": 794,
+            "width": 9.03125,
+            "x": 803.1328125,
+            "y": 794
+          },
+          "font": "15px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "15px",
+          "selector": "pg-arrow",
+          "text": "←"
+        },
+        {
+          "box": {
+            "bottom": 811.75,
+            "height": 16.5,
+            "left": 834.1640625,
+            "right": 883.453125,
+            "top": 795.25,
+            "width": 49.2890625,
+            "x": 834.1640625,
+            "y": 795.25
+          },
+          "font": "",
+          "fontSize": "11px",
+          "selector": "pg-count",
+          "text": "01 / 03"
+        },
+        {
+          "box": {
+            "bottom": 813,
+            "height": 19,
+            "left": 905.453125,
+            "right": 914.4609375,
+            "top": 794,
+            "width": 9.0078125,
+            "x": 905.453125,
+            "y": 794
+          },
+          "font": "15px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "15px",
+          "selector": "pg-arrow",
+          "text": "→"
+        }
+      ],
+      "height": 900,
+      "scroll": 1440,
+      "width": 1440
+    },
+    {
+      "route": "contact",
+      "elements": [
+        {
+          "box": {
+            "bottom": 43,
+            "height": 15,
+            "left": 30,
+            "right": 74.4609375,
+            "top": 28,
+            "width": 44.4609375,
+            "x": 30,
+            "y": 28
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "site-link phrase",
+          "text": "COMPANY"
+        },
+        {
+          "box": {
+            "bottom": 43,
+            "height": 15,
+            "left": 100.8125,
+            "right": 151.625,
+            "top": 28,
+            "width": 50.8125,
+            "x": 100.8125,
+            "y": 28
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "site-link phrase",
+          "text": "PROJECTS"
+        },
+        {
+          "box": {
+            "bottom": 43,
+            "height": 15,
+            "left": 177.9765625,
+            "right": 222.4375,
+            "top": 28,
+            "width": 44.4609375,
+            "x": 177.9765625,
+            "y": 28
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "site-link phrase is-current",
+          "text": "CONTACT"
+        },
+        {
+          "box": {
+            "bottom": 43,
+            "height": 15,
+            "left": 1365.5390625,
+            "right": 1410,
+            "top": 28,
+            "width": 44.4609375,
+            "x": 1365.5390625,
+            "y": 28
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "close phrase",
+          "text": "× CLOSE"
+        }
+      ],
+      "height": 900,
+      "scroll": 1440,
+      "width": 1440
+    },
+    {
+      "route": "projects",
+      "elements": [
+        {
+          "box": {
+            "bottom": 43,
+            "height": 15,
+            "left": 30,
+            "right": 74.4609375,
+            "top": 28,
+            "width": 44.4609375,
+            "x": 30,
+            "y": 28
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "site-link phrase",
+          "text": "COMPANY"
+        },
+        {
+          "box": {
+            "bottom": 43,
+            "height": 15,
+            "left": 100.8125,
+            "right": 151.625,
+            "top": 28,
+            "width": 50.8125,
+            "x": 100.8125,
+            "y": 28
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "site-link phrase is-current",
+          "text": "PROJECTS"
+        },
+        {
+          "box": {
+            "bottom": 43,
+            "height": 15,
+            "left": 177.9765625,
+            "right": 222.4375,
+            "top": 28,
+            "width": 44.4609375,
+            "x": 177.9765625,
+            "y": 28
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "site-link phrase",
+          "text": "CONTACT"
+        },
+        {
+          "box": {
+            "bottom": 43,
+            "height": 15,
+            "left": 1365.5390625,
+            "right": 1410,
+            "top": 28,
+            "width": 44.4609375,
+            "x": 1365.5390625,
+            "y": 28
+          },
+          "font": "10px / 15px Monaco, SFMono-Regular, Consolas, \"Liberation Mono\", monospace",
+          "fontSize": "10px",
+          "selector": "close phrase",
+          "text": "× CLOSE"
+        }
+      ],
+      "height": 900,
+      "scroll": 1440,
+      "width": 1440
+    }
+  ],
+  "hitResults": [
+    {
+      "route": "company",
+      "width": 320,
+      "overflow": false,
+      "overlap": [],
+      "targets": [
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "COMPANY",
+          "w": 44,
+          "x": 16.007800000000003,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "PROJECTS",
+          "w": 45.7344,
+          "x": 73.734375,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "CONTACT",
+          "w": 44,
+          "x": 133.1953,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "× CLOSE",
+          "w": 44.2188,
+          "x": 257.78125,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "PHILOSOPHY",
+          "w": 62.0156,
+          "x": 18,
+          "y": 55.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "SERVICES",
+          "w": 49.6094,
+          "x": 97.015625,
+          "y": 55.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "PEOPLE",
+          "w": 44,
+          "x": 163.625,
+          "y": 55.5
+        }
+      ]
+    },
+    {
+      "route": "project-the-optimist",
+      "width": 320,
+      "overflow": false,
+      "overlap": [],
+      "targets": [
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "COMPANY",
+          "w": 44,
+          "x": 16.007800000000003,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "PROJECTS",
+          "w": 45.7344,
+          "x": 73.734375,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "CONTACT",
+          "w": 44,
+          "x": 133.1953,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "× CLOSE",
+          "w": 44.2188,
+          "x": 257.78125,
+          "y": 5.5
+        },
+        {
+          "disabled": true,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "←",
+          "w": 44,
+          "x": 86.8515575,
+          "y": 466
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "→",
+          "w": 44,
+          "x": 189.15625,
+          "y": 466
+        }
+      ]
+    },
+    {
+      "route": "contact",
+      "width": 320,
+      "overflow": false,
+      "overlap": [],
+      "targets": [
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "COMPANY",
+          "w": 44,
+          "x": 16.007800000000003,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "PROJECTS",
+          "w": 45.7344,
+          "x": 73.734375,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "CONTACT",
+          "w": 44,
+          "x": 133.1953,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "× CLOSE",
+          "w": 44.2188,
+          "x": 257.78125,
+          "y": 5.5
+        }
+      ]
+    },
+    {
+      "route": "projects",
+      "width": 320,
+      "overflow": false,
+      "overlap": [],
+      "targets": [
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "COMPANY",
+          "w": 44,
+          "x": 16.007800000000003,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "PROJECTS",
+          "w": 45.7344,
+          "x": 73.734375,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "CONTACT",
+          "w": 44,
+          "x": 133.1953,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "× CLOSE",
+          "w": 44.2188,
+          "x": 257.78125,
+          "y": 5.5
+        }
+      ]
+    },
+    {
+      "route": "company",
+      "width": 390,
+      "overflow": false,
+      "overlap": [],
+      "targets": [
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "COMPANY",
+          "w": 44,
+          "x": 16.007800000000003,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "PROJECTS",
+          "w": 45.7344,
+          "x": 77.734375,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "CONTACT",
+          "w": 44,
+          "x": 141.1953,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "× CLOSE",
+          "w": 44.2188,
+          "x": 327.78125,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "PHILOSOPHY",
+          "w": 62.0156,
+          "x": 18,
+          "y": 55.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "SERVICES",
+          "w": 49.6094,
+          "x": 97.015625,
+          "y": 55.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "PEOPLE",
+          "w": 44,
+          "x": 163.625,
+          "y": 55.5
+        }
+      ]
+    },
+    {
+      "route": "project-the-optimist",
+      "width": 390,
+      "overflow": false,
+      "overlap": [],
+      "targets": [
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "COMPANY",
+          "w": 44,
+          "x": 16.007800000000003,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "PROJECTS",
+          "w": 45.7344,
+          "x": 77.734375,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "CONTACT",
+          "w": 44,
+          "x": 141.1953,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "× CLOSE",
+          "w": 44.2188,
+          "x": 327.78125,
+          "y": 5.5
+        },
+        {
+          "disabled": true,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "←",
+          "w": 44,
+          "x": 121.8515575,
+          "y": 742
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "→",
+          "w": 44,
+          "x": 224.15625,
+          "y": 742
+        }
+      ]
+    },
+    {
+      "route": "contact",
+      "width": 390,
+      "overflow": false,
+      "overlap": [],
+      "targets": [
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "COMPANY",
+          "w": 44,
+          "x": 16.007800000000003,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "PROJECTS",
+          "w": 45.7344,
+          "x": 77.734375,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "CONTACT",
+          "w": 44,
+          "x": 141.1953,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "× CLOSE",
+          "w": 44.2188,
+          "x": 327.78125,
+          "y": 5.5
+        }
+      ]
+    },
+    {
+      "route": "projects",
+      "width": 390,
+      "overflow": false,
+      "overlap": [],
+      "targets": [
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "COMPANY",
+          "w": 44,
+          "x": 16.007800000000003,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "PROJECTS",
+          "w": 45.7344,
+          "x": 77.734375,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "CONTACT",
+          "w": 44,
+          "x": 141.1953,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "× CLOSE",
+          "w": 44.2188,
+          "x": 327.78125,
+          "y": 5.5
+        }
+      ]
+    },
+    {
+      "route": "company",
+      "width": 430,
+      "overflow": false,
+      "overlap": [],
+      "targets": [
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "COMPANY",
+          "w": 44,
+          "x": 16.007800000000003,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "PROJECTS",
+          "w": 45.7344,
+          "x": 77.734375,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "CONTACT",
+          "w": 44,
+          "x": 141.1953,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "× CLOSE",
+          "w": 44.2188,
+          "x": 367.78125,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "PHILOSOPHY",
+          "w": 62.0156,
+          "x": 18,
+          "y": 55.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "SERVICES",
+          "w": 49.6094,
+          "x": 97.015625,
+          "y": 55.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "PEOPLE",
+          "w": 44,
+          "x": 163.625,
+          "y": 55.5
+        }
+      ]
+    },
+    {
+      "route": "project-the-optimist",
+      "width": 430,
+      "overflow": false,
+      "overlap": [],
+      "targets": [
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "COMPANY",
+          "w": 44,
+          "x": 16.007800000000003,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "PROJECTS",
+          "w": 45.7344,
+          "x": 77.734375,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "CONTACT",
+          "w": 44,
+          "x": 141.1953,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "× CLOSE",
+          "w": 44.2188,
+          "x": 367.78125,
+          "y": 5.5
+        },
+        {
+          "disabled": true,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "←",
+          "w": 44,
+          "x": 141.8515575,
+          "y": 742
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "→",
+          "w": 44,
+          "x": 244.15625,
+          "y": 742
+        }
+      ]
+    },
+    {
+      "route": "contact",
+      "width": 430,
+      "overflow": false,
+      "overlap": [],
+      "targets": [
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "COMPANY",
+          "w": 44,
+          "x": 16.007800000000003,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "PROJECTS",
+          "w": 45.7344,
+          "x": 77.734375,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "CONTACT",
+          "w": 44,
+          "x": 141.1953,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "× CLOSE",
+          "w": 44.2188,
+          "x": 367.78125,
+          "y": 5.5
+        }
+      ]
+    },
+    {
+      "route": "projects",
+      "width": 430,
+      "overflow": false,
+      "overlap": [],
+      "targets": [
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "COMPANY",
+          "w": 44,
+          "x": 16.007800000000003,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "PROJECTS",
+          "w": 45.7344,
+          "x": 77.734375,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "CONTACT",
+          "w": 44,
+          "x": 141.1953,
+          "y": 5.5
+        },
+        {
+          "disabled": false,
+          "h": 44,
+          "hits": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "text": "× CLOSE",
+          "w": 44.2188,
+          "x": 367.78125,
+          "y": 5.5
+        }
+      ]
+    }
+  ],
+  "diffs": []
+}

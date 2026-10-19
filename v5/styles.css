@@ -454,3 +454,21 @@ html{position:fixed;inset:0;width:100%;height:100%;height:100dvh;overflow:hidden
 body{position:fixed;inset:0;width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
 #site{height:100%;height:100dvh;overflow:hidden;overscroll-behavior:none}
 #main{height:100%;overflow:hidden}
+
+/* Mobile hit areas only: retain the visible labels, baselines and layout boxes. */
+@media(max-width:760px){
+ .site-nav a,.panel-head .close,.co4-nav button,.pg-arrow{position:relative}
+ .site-nav a::after,.panel-head .close::after,.co4-nav button::after,.pg-arrow::after{
+  content:"";position:absolute;inset:auto;left:50%;top:50%;
+  width:max(44px,100%);height:44px;transform:translate(-50%,-50%);
+ }
+ /* The first tab sits at the scrollport's top. Extend that scrollport upward,
+    then pad it back down so its text, rule and copy stay in exactly the same place. */
+ body[data-route="company"] .viewport{overflow:visible}
+ .co4-editorial{margin-top:-15px;padding-top:15px;height:calc(100% + 15px)}
+ .co4-nav button::after{left:0;transform:translateY(-50%)}
+ /* Keep image clipping in .pg-frame; let the controls reach into the blank
+    footer margin. Their hit areas start below the frame, not over the image. */
+ .viewport:has(>.pg){overflow:visible}
+ .pg-arrow::after{top:-10px;transform:translateX(-50%)}
+}
