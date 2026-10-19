@@ -358,10 +358,12 @@
       if(tab==="philosophy"){
         setCompanySheets();
       } else if(tab==="services"){
+        pageCount=1;renderPage=()=>{};count();
         copy.innerHTML=`<h2>What we do<span class="co4-accent">.</span></h2>
           <div class="co4-menu" role="group" aria-label="Services">${services.map((s,i)=>`<button type="button" class="co4-choice" data-co4-service="${i}" aria-pressed="${i===currentService}"><span>0${i+1}</span><strong>${esc(s.name)}</strong><span>↗</span></button>`).join("")}</div>
           <div class="co4-description"><span>OUR APPROACH</span><p id="co4-service-text">${esc(services[currentService].detail)}</p></div>`;
       } else {
+        pageCount=1;renderPage=()=>{};count();
         const person=people[currentPerson];
         copy.innerHTML=`<h2>Our people<span class="co4-accent">.</span></h2>
           <div class="co4-people" role="group" aria-label="Select a team member">${people.map((p,i)=>`<button type="button" class="co4-choice" data-co4-person="${i}" aria-pressed="${i===currentPerson}"><span>0${i+1}</span><strong>${esc(p.name)}</strong><span>↗</span></button>`).join("")}</div>
