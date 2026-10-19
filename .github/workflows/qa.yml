@@ -4,9 +4,9 @@ name: QA — ACCESS, Alder and public navigation
 # (same _redirects and extensionless-URL behaviour as production).
 on:
   pull_request:
-    branches: ["freeman-v5-consolidation"]
+    branches: ["release/approved-v5-2026-10-18", "freeman-v5-consolidation"]
   push:
-    branches: ["freeman-v5-consolidation", "fix/**"]
+    branches: ["release/approved-v5-2026-10-18", "freeman-v5-consolidation", "fix/**"]
   workflow_dispatch:
 
 permissions:
@@ -41,9 +41,9 @@ jobs:
       - name: Public navigation
         if: always()
         run: python qa/public-navigation-qa.py http://127.0.0.1:8788 qa/results/public-navigation.json
-      - name: FreemanGC V4 desktop and mobile
+      - name: Production stabilization desktop and mobile
         if: always()
-        run: python qa/freemangc-v4-qa.py http://127.0.0.1:8788
+        run: python qa/production-stabilization-001.py http://127.0.0.1:8788
       - name: FreemanGC V4 homepage (script, colorways, lifecycle)
         if: always()
         run: python qa/freemangc-v4-home-qa.py http://127.0.0.1:8788

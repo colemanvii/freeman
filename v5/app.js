@@ -320,13 +320,13 @@
         @media(max-width:700px){.co4-stage{width:100%;height:100%}}
       </style>
       <div class="co4-stage">
-        <section class="co4-editorial" id="co4-panel" role="tabpanel" aria-live="polite">
+        <section class="co4-editorial" id="co4-panel">
           <nav class="co4-nav" aria-label="Company views" role="tablist">
-            <button type="button" role="tab" data-co4-tab="philosophy" aria-selected="true" aria-controls="co4-copy">PHILOSOPHY</button>
-            <button type="button" role="tab" data-co4-tab="services" aria-selected="false" aria-controls="co4-copy">SERVICES</button>
-            <button type="button" role="tab" data-co4-tab="people" aria-selected="false" aria-controls="co4-copy">PEOPLE</button>
+            <button type="button" role="tab" id="co4-tab-philosophy" tabindex="0" data-co4-tab="philosophy" aria-selected="true" aria-controls="co4-copy">PHILOSOPHY</button>
+            <button type="button" role="tab" id="co4-tab-services" tabindex="-1" data-co4-tab="services" aria-selected="false" aria-controls="co4-copy">SERVICES</button>
+            <button type="button" role="tab" id="co4-tab-people" tabindex="-1" data-co4-tab="people" aria-selected="false" aria-controls="co4-copy">PEOPLE</button>
           </nav>
-          <div class="co4-copy" id="co4-copy"></div>
+          <div class="co4-copy" id="co4-copy" role="tabpanel" tabindex="0" aria-labelledby="co4-tab-philosophy"></div>
         </section>
       </div>
     </div>`;
@@ -334,7 +334,12 @@
     function show(tab) {
       currentTab=tab;
       vp.querySelector(".co4").dataset.co4View=tab;
-      vp.querySelectorAll("[data-co4-tab]").forEach(el=>el.setAttribute("aria-selected",String(el.dataset.co4Tab===tab)));
+      vp.querySelectorAll("[data-co4-tab]").forEach(el=>{
+        const active=el.dataset.co4Tab===tab;
+        el.setAttribute("aria-selected",String(active));
+        el.tabIndex=active?0:-1;
+      });
+      copy.setAttribute("aria-labelledby","co4-tab-"+tab);
       if(tab==="philosophy"){
         copy.innerHTML=`<h2>Built for generations.</h2>
           <p>Freeman General Contracting is an independent builder based in Cartersville, Georgia.</p>
@@ -343,24 +348,29 @@
       } else if(tab==="services"){
         copy.innerHTML=`<h2>What we do<span class="co4-accent">.</span></h2>
           <div class="co4-menu" role="group" aria-label="Services">${services.map((s,i)=>`<button type="button" class="co4-choice" data-co4-service="${i}" aria-pressed="${i===currentService}"><span>0${i+1}</span><strong>${esc(s.name)}</strong><span>↗</span></button>`).join("")}</div>
-          <div class="co4-description"><span>OUR APPROACH</span><p id="co4-service-text">${esc(services[currentService].detail)}</p></div>`;
+          <div class="co4-description" aria-live="polite"><span>OUR APPROACH</span><p id="co4-service-text">${esc(services[currentService].detail)}</p></div>`;
       } else {
         const person=people[currentPerson];
         copy.innerHTML=`<h2>Our people<span class="co4-accent">.</span></h2>
           <div class="co4-people" role="group" aria-label="Select a team member">${people.map((p,i)=>`<button type="button" class="co4-choice" data-co4-person="${i}" aria-pressed="${i===currentPerson}"><span>0${i+1}</span><strong>${esc(p.name)}</strong><span>↗</span></button>`).join("")}</div>
-          <div class="co4-description"><span id="co4-person-role">${esc(person.role)}</span><p id="co4-person-name">${esc(person.name)}</p><small>Full biography and portrait forthcoming.</small></div>`;
+          <div class="co4-description" aria-live="polite"><span id="co4-person-role">${esc(person.role)}</span><p id="co4-person-name">${esc(person.name)}</p><small>Full biography and portrait forthcoming.</small></div>`;
       }
     }
     vp.addEventListener("click",e=>{
       const tab=e.target.closest("[data-co4-tab]"),service=e.target.closest("[data-co4-service]"),person=e.target.closest("[data-co4-person]");
       if(tab){show(tab.dataset.co4Tab);return;}
       if(service){currentService=Number(service.dataset.co4Service);vp.querySelectorAll("[data-co4-service]").forEach(el=>el.setAttribute("aria-pressed",String(Number(el.dataset.co4Service)===currentService)));vp.querySelector("#co4-service-text").textContent=services[currentService].detail;return;}
-      if(person){currentPerson=Number(person.dataset.co4Person);show("people");}
+      if(person){
+        currentPerson=Number(person.dataset.co4Person);
+        vp.querySelectorAll("[data-co4-person]").forEach(el=>el.setAttribute("aria-pressed",String(Number(el.dataset.co4Person)===currentPerson)));
+        vp.querySelector("#co4-person-role").textContent=people[currentPerson].role;
+        vp.querySelector("#co4-person-name").textContent=people[currentPerson].name;
+      }
     });
     vp.querySelector(".co4-nav").addEventListener("keydown",e=>{
       const tabs=[...vp.querySelectorAll("[data-co4-tab]")],i=tabs.indexOf(document.activeElement);
-      if(i===-1||!["ArrowLeft","ArrowRight"].includes(e.key))return;
-      e.preventDefault();const next=tabs[(i+(e.key==="ArrowRight"?1:tabs.length-1))%tabs.length];next.focus();show(next.dataset.co4Tab);
+      if(i===-1||!["ArrowLeft","ArrowRight","Home","End"].includes(e.key))return;
+      e.preventDefault();const next=tabs[e.key==="Home"?0:e.key==="End"?tabs.length-1:(i+(e.key==="ArrowRight"?1:tabs.length-1))%tabs.length];next.focus();show(next.dataset.co4Tab);
     });
     show("philosophy");
     pageCount=1;renderPage=()=>{};count();
@@ -427,9 +437,21 @@
     <div class="pi pi4-original-mobile"><div class="pi-head" aria-hidden="true"><span>No.</span><span>Project</span><span>Client</span><span>Design</span><span class="pi-head-date">Date</span></div><div class="pi-scroller"><div class="pi-section-label">IN PROGRESS / CURRENT WORK</div><ol class="pi-list" aria-label="In progress projects">${activeRows}</ol><div class="pi-section-label pi-completed-label">SELECTED WORK / COMPLETED</div><ol class="pi-list" aria-label="Completed projects">${rows}</ol></div></div>`;
     // The full-screen photography view already exists. The preview is its smaller sibling.
     const stage=vp.querySelector("#pi4-stage");
-    let selected=null,photoIndex=0;
+    let selected=null,photoIndex=0,focusedSlug=state.focus;
+    const phone=matchMedia(PHONE);
+    const desktopScroller=vp.querySelector(".pi4-scroll");
+    const scroller=vp.querySelector(".pi4-original-mobile .pi-scroller");
+    const scrolls={desktop:state.projDesktopScroll,mobile:state.projScroll};
+    let scrollTimer;
+    let mode=phone.matches?"mobile":"desktop";
+    const activeScroller=()=>mode==="mobile"?scroller:desktopScroller;
+    const remember=()=>{
+      if(phone.matches===(mode==="mobile"))scrolls[mode]=activeScroller().scrollTop;
+      return {focus:mode==="desktop"?(selected?selected.slug:null):focusedSlug,projPreview:photoIndex,projDesktopScroll:scrolls.desktop,projScroll:scrolls.mobile};
+    };
+    const persist=()=>hist.write("replaceState",{...hist.state,...remember()},location.href);
     const photosFor=p=>(p.gallery&&p.gallery.length?p.gallery.map(g=>g.src):p.image?[p.image]:[]);
-    function select(slug,index=0){
+    function select(slug,index=0,syncSelection=true){
       const p=projects.find(x=>x.slug===slug)||projects.find(x=>x.slug==="the-optimist")||projects.find(x=>photosFor(x).length)||projects[0];
       if(!p)return;
       selected=p;const photos=photosFor(p);photoIndex=Math.max(0,Math.min(index,photos.length-1));
@@ -447,33 +469,59 @@
         const indicator=el.querySelector(".pi4-indicator");
         if(indicator)indicator.textContent=active?"−":"+";
       });
-      hist.write("replaceState",{...hist.state,focus:p.slug},location.href);
+      if(syncSelection){
+        focusedSlug=p.slug;
+        scroller.querySelectorAll(".pi-row").forEach(row=>row.classList.toggle("is-current",row.querySelector("[data-slug]")?.dataset.slug===p.slug));
+      }
+      persist();
     }
     vp.querySelector(".pi4").addEventListener("click",e=>{
       const chooser=e.target.closest("[data-pi4-select]"),step=e.target.closest("[data-pi4-step]"),close=e.target.closest("[data-pi4-close]");
       if(chooser){select(chooser.dataset.pi4Select);return;}
       if(step&&selected){select(selected.slug,photoIndex+Number(step.dataset.pi4Step));return;}
       if(close){
-        selected=null;
+        clearSelection();
+      }
+    });
+    function clearSelection(){
+        selected=null;photoIndex=0;focusedSlug=null;
         stage.innerHTML='<div class="pi4-preview-head"><span>SELECTED WORK</span></div><div class="pi4-empty-selection">SELECT A PROJECT / LEFT INDEX ↗</div>';
         vp.querySelectorAll("[data-pi4-select]").forEach(el=>{
           el.setAttribute("aria-pressed","false");
           const indicator=el.querySelector(".pi4-indicator");
           if(indicator)indicator.textContent="+";
         });
-        hist.write("replaceState",{...hist.state,focus:null},location.href);
-      }
-    });
-    select(state.focus||"the-optimist");
-    const scroller=vp.querySelector(".pi4-original-mobile .pi-scroller");
+        scroller.querySelectorAll(".pi-row.is-current").forEach(row=>row.classList.remove("is-current"));
+        persist();
+    }
+    activeScroller().scrollTop=scrolls[mode]||0;
+    if(state.focus===null)clearSelection();
+    else select(state.focus||"the-optimist",state.projPreview||0,state.focus!==undefined);
+    if(phone.matches && state.focus && typeof state.projScroll!=="number"){
+      scroller.querySelector(".pi-row.is-current")?.scrollIntoView({block:"nearest"});
+    }
     scroller.addEventListener("click",e=>{
-      const row=e.target.closest(".pi-row");if(!row)return;
-      scroller.querySelectorAll(".pi-row.is-current").forEach(r=>r.classList.remove("is-current"));
-      row.classList.add("is-current");
+      const link=e.target.closest("[data-slug]");if(!link)return;
+      select(link.dataset.slug,selected?.slug===link.dataset.slug?photoIndex:0);
     });
-    if(typeof state.projScroll==="number")scroller.scrollTop=state.projScroll;
-    const current=scroller.querySelector(".pi-row.is-current");
-    if(current){const top=current.offsetTop,bottom=top+current.offsetHeight;if(top<scroller.scrollTop)scroller.scrollTop=top;else if(bottom>scroller.scrollTop+scroller.clientHeight)scroller.scrollTop=bottom-scroller.clientHeight;}
+    [scroller,desktopScroller].forEach(el=>el.addEventListener("scroll",()=>{
+      if(el!==activeScroller() || phone.matches!==(mode==="mobile"))return;
+      remember();
+      clearTimeout(scrollTimer);
+      scrollTimer=setTimeout(persist,150);
+    },{passive:true}));
+    function breakpoint(){
+      // Hidden scrollports may already report zero: their last visible position is saved on scroll.
+      mode=phone.matches?"mobile":"desktop";
+      activeScroller().scrollTop=scrolls[mode]||0;
+      persist();
+    }
+    phone.addEventListener("change",breakpoint);
+    window.addEventListener("pagehide",persist);
+    Object.assign(view,{
+      save:remember,
+      destroy:()=>{clearTimeout(scrollTimer);phone.removeEventListener("change",breakpoint);window.removeEventListener("pagehide",persist);}
+    });
     count();
   }
   /* Photography-first project page: one photograph at a time, the name, place and verified credits
@@ -756,11 +804,7 @@
         kind: route.kind,
         detail: () => route.kind === "project",
         key: (e) => (galleryKey ? galleryKey(e) : false),
-        save: () => {
-          if (route.kind !== "projects") return {};
-          const scroller = root.querySelector(".pi-scroller");
-          return { focus: currentFocus(), projScroll: scroller ? scroller.scrollTop : 0 };
-        },
+        save: () => ({}),
         resize: ["company", "projects", "contact"].includes(route.kind) ? null : () => render(parse(location.href), { ...hist.state, focus: currentFocus() }),
       };
       if (route.kind === "entrance") Object.assign(view, entrance({ play: !pop }));
