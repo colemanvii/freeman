@@ -331,16 +331,32 @@
       </div>
     </div>`;
     const copy=vp.querySelector("#co4-copy");
+    const philosophyParagraphs=[
+      "Freeman is a Georgia-based general contractor building hospitality, commercial, and residential projects.",
+      "Hospitality is our focus. A restaurant is more than a building. It's the owner's vision and the architect's ideas, made real for the people who walk through the door.",
+      "We've made a deliberate commitment to this work. Building these places takes close relationships, an understanding of design, and attention to the details that make a place feel complete.",
+      "We take pride in the work, and in the people we build with."
+    ];
+    function renderCompanySheet() {
+      if(currentTab!=="philosophy")return;
+      const split=matchMedia("(max-width:760px)").matches;
+      const paragraphs=split ? (pageIndex===0 ? philosophyParagraphs.slice(0,2) : philosophyParagraphs.slice(2)) : philosophyParagraphs;
+      copy.innerHTML=`<h2>Built for generations.</h2>${paragraphs.map(p=>`<p>${esc(p)}</p>`).join("")}`;
+    }
+    function setCompanySheets() {
+      pageCount=currentTab==="philosophy" && matchMedia("(max-width:760px)").matches ? 2 : 1;
+      pageIndex=Math.min(pageIndex,pageCount-1);
+      renderPage=renderCompanySheet;
+      renderPage();
+      count();
+    }
     function show(tab) {
       currentTab=tab;
       vp.querySelector(".co4").dataset.co4View=tab;
       vp.querySelectorAll("[data-co4-tab]").forEach(el=>el.setAttribute("aria-selected",String(el.dataset.co4Tab===tab)));
+      pageIndex=0;
       if(tab==="philosophy"){
-        copy.innerHTML=`<h2>Built for generations.</h2>
-          <p>Freeman is a Georgia-based general contractor building hospitality, commercial, and residential projects.</p>
-          <p>Hospitality is our focus. A restaurant is more than a building. It's the owner's vision and the architect's ideas, made real for the people who walk through the door.</p>
-          <p>We've made a deliberate commitment to this work. Building these places takes close relationships, an understanding of design, and attention to the details that make a place feel complete.</p>
-          <p>We take pride in the work, and in the people we build with.</p>`;
+        setCompanySheets();
       } else if(tab==="services"){
         copy.innerHTML=`<h2>What we do<span class="co4-accent">.</span></h2>
           <div class="co4-menu" role="group" aria-label="Services">${services.map((s,i)=>`<button type="button" class="co4-choice" data-co4-service="${i}" aria-pressed="${i===currentService}"><span>0${i+1}</span><strong>${esc(s.name)}</strong><span>↗</span></button>`).join("")}</div>
@@ -364,7 +380,8 @@
       e.preventDefault();const next=tabs[(i+(e.key==="ArrowRight"?1:tabs.length-1))%tabs.length];next.focus();show(next.dataset.co4Tab);
     });
     show("philosophy");
-    pageCount=1;renderPage=()=>{};count();
+    const companyScreen=matchMedia("(max-width:760px)");
+    companyScreen.addEventListener("change",()=>setCompanySheets());
   }
 
   /* ---------- Projects ---------- */
