@@ -237,7 +237,7 @@ button:hover,a:hover{color:var(--ink)}
   $('body').addEventListener('click', (e) => {
     const r = e.target.closest('[data-role]');
     const st = e.target.closest('[data-step]');
-    if (e.target.closest('[data-team]')) { location.assign('team-os.html?entry=1'); return; }
+    if (e.target.closest('[data-team]')) { location.assign('team-transmissions.html'); return; }
     if (r) go({ role: r.dataset.role, step: -1 });
     else if (st) go({ role: view.role, step: Number(st.dataset.step) });
   });
