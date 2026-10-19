@@ -337,9 +337,10 @@
       vp.querySelectorAll("[data-co4-tab]").forEach(el=>el.setAttribute("aria-selected",String(el.dataset.co4Tab===tab)));
       if(tab==="philosophy"){
         copy.innerHTML=`<h2>Built for generations.</h2>
-          <p>Freeman General Contracting is an independent builder based in Cartersville, Georgia.</p>
-          <p>We believe how something is built matters as much as what is built. Good work requires trust, judgment, and attention to every detail.</p>
-          <p>We work with people who believe the same.</p>`;
+          <p>Freeman is a Georgia-based general contractor building hospitality, commercial, and residential projects.</p>
+          <p>Hospitality is our focus. A restaurant is more than a building. It's the owner's vision and the architect's ideas, made real for the people who walk through the door.</p>
+          <p>We've made a deliberate commitment to this work. Building these places takes close relationships, an understanding of design, and attention to the details that make a place feel complete.</p>
+          <p>We take pride in the work, and in the people we build with.</p>`;
       } else if(tab==="services"){
         copy.innerHTML=`<h2>What we do<span class="co4-accent">.</span></h2>
           <div class="co4-menu" role="group" aria-label="Services">${services.map((s,i)=>`<button type="button" class="co4-choice" data-co4-service="${i}" aria-pressed="${i===currentService}"><span>0${i+1}</span><strong>${esc(s.name)}</strong><span>↗</span></button>`).join("")}</div>
