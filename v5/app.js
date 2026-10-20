@@ -39,6 +39,7 @@
     fieldwork: "Fieldwork",
     contact: "Contact",
     etcetera: "Etcetera",
+    experience: "Etcetera",
     notfound: "Record not found",
   };
   const PHONE = "(max-width:760px)";
@@ -107,6 +108,9 @@
     const r = { file, url, params: url.searchParams, kind: "notfound" };
     if (file === "index") r.kind = "entrance";
     else if (["company", "projects", "etcetera", "contact"].includes(file)) r.kind = file;
+    // Study (etcetera-index-001): every ETCETERA entry opens its own experience at etcetera-<slug>.
+    // The slug is checked against the registry (etcetera/entries.js) when the page renders.
+    else if (/^etcetera-[a-z0-9-]+$/.test(file)) { r.kind = "experience"; r.slug = file.slice(9); }
     // Fieldwork exists only in local --fieldwork builds (see v5-source/generate.py); publicly it is not found.
     else if (file === "fieldwork" && window.FreemanFieldwork) r.kind = file;
     else if (file.startsWith("project-")) {
@@ -186,7 +190,8 @@
     `<a class="close phrase" href="index.html" data-back="1" aria-label="Close — return to the previous page">× CLOSE</a>`;
   function goBack() {
     if ((hist.state.depth || 0) > 0) history.back();
-    else navigate("index.html");
+    // An ETCETERA experience reached directly closes to its index, not the entrance.
+    else navigate(view && view.kind === "experience" ? "etcetera.html" : "index.html");
   }
   window.FreemanClose = closeMarkup;
 
@@ -635,18 +640,158 @@
       try { sessionStorage.setItem("freeman-contact-draft", v); } catch (e) {}
     },
   };
-  function etcetera() {
+  /* ---------- ETCETERA (study etcetera-index-001) ----------
+     One registry (etcetera/entries.js) feeds three index studies and opens every entry in its own
+     experience. Index studies: ?index=a|b|c, switched in the footer (same view, so it replaces
+     history); the choice is kept for the visit. ?index=approved shows the approved 2 × 2 (cc00dae).
+     The index is one viewport and pages with production's sheet controls (?sheet=, ← →, swipe).
+     Registry, index and experience files load on first use. */
+  const ETC_DIR = "/etcetera/", ETC_V = "?v=etc-index-001-2";
+  const ETC_INDEXES = [["a", "Typographic"], ["b", "Visual"], ["c", "Composed"]];
+  const etcFiles = {};
+  // Stylesheets load in parallel with the scripts, and both must be in place before anything is
+  // composed: the index measures its frame to paginate.
+  function etcLoad({ src = [], css = [] }) {
+    const sheets = css.map((f) => (etcFiles[f] = etcFiles[f] || new Promise((ok, fail) => {
+      const l = document.createElement("link");
+      l.rel = "stylesheet";
+      l.href = ETC_DIR + f + ETC_V;
+      l.onload = ok;
+      l.onerror = () => { delete etcFiles[f]; fail(); };
+      document.head.append(l);
+    })));
+    const add = (f) => (etcFiles[f] = etcFiles[f] || new Promise((ok, fail) => {
+      const s = document.createElement("script");
+      s.src = ETC_DIR + f + ETC_V;
+      s.onload = ok;
+      s.onerror = () => { delete etcFiles[f]; fail(); };
+      document.head.append(s);
+    }));
+    return Promise.all([...sheets, src.reduce((p, f) => p.then(() => add(f)), Promise.resolve())]);
+  }
+  function etcIndexStudy() {
+    const ok = (id) => id === "approved" || ETC_INDEXES.some(([k]) => k === id);
+    const asked = new URL(location.href).searchParams.get("index");
+    if (ok(asked)) { ss.set("freeman-etc-index", asked); return asked; }
+    return ok(ss.get("freeman-etc-index")) ? ss.get("freeman-etc-index") : "a";
+  }
+  const etcIndexHref = () => `etcetera.html?index=${etcIndexStudy()}`;
+  const etcFailed = (vp) => { vp.innerHTML = `<article class="reading"><p>Etcetera could not be loaded.</p></article>`; };
+
+  function etcetera(state = {}) {
     chrome({ title: "Etcetera / Freeman General Contracting", section: "etcetera" });
     pageCount = 1;
     renderPage = () => {};
     count();
     const vp = root.querySelector(".viewport");
-    // Temporary public holding state. Preserve the full collection implementation below.
-    const etceteraPublicHolding = true;
+    // Temporary public holding state in production. This study branch shows the collection.
+    const etceteraPublicHolding = false;
     if (etceteraPublicHolding) {
       vp.innerHTML = `<div style="width:100%;height:100%;display:grid;place-items:center"><span style="font-size:12px;letter-spacing:.04em">UNDER CONSTRUCTION</span></div>`;
-      return;
+      return {};
     }
+    const study = etcIndexStudy();
+    const params = new URL(location.href).searchParams;
+    const fill = Math.min(96, Math.max(0, Number(params.get("fill")) || 0));
+    root.querySelector(".section-link").innerHTML = `<span class="etc-switch">INDEX ${ETC_INDEXES.map(([id, name]) =>
+      `<a class="phrase${id === study ? " is-current" : ""}" href="etcetera.html?index=${id}${fill ? "&fill=" + fill : ""}"${id === study ? ' aria-current="true"' : ""} title="${name}">${id.toUpperCase()}</a>`).join("")}</span>${fill ? `<span class="etc-fill">CAPACITY TEST / ${fill} RESERVED</span>` : ""}`;
+    if (study === "approved") { etceteraCollection(vp); return {}; }
+    vp.innerHTML = "";
+    let live = true, index = null, last = state.focus;
+    const layout = (focus) => {
+      pageCount = index.paginate();
+      if (focus) { const p = index.pageOf(focus); if (p >= 0) pageIndex = p; }
+      pageIndex = Math.min(pageIndex, pageCount - 1);
+      renderPage = () => index.render(pageIndex);
+      renderPage();
+      count();
+      const el = focus && vp.querySelector(`[data-slug="${CSS.escape(focus)}"]`);
+      if (el) try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); }
+    };
+    etcLoad({ src: ["entries.js", "index/index.js"], css: ["shell.css", "index/index.css"] }).then(() => {
+      if (!live) return;
+      index = window.FreemanEtcIndex.mount(vp, {
+        study,
+        entries: window.ETCETERA.entries,
+        fill,
+        type: params.get("type") || "",
+        setType(type) {
+          const u = new URL(location.href);
+          if (type) u.searchParams.set("type", type); else u.searchParams.delete("type");
+          u.searchParams.delete("sheet");
+          hist.write("replaceState", { ...hist.state }, u.href);
+          pageIndex = 0;
+          layout();
+        },
+      });
+      layout(state.focus);
+    }, () => live && etcFailed(vp));
+    vp.addEventListener("click", (e) => { const a = e.target.closest("[data-slug]"); if (a) last = a.dataset.slug; });
+    // Phones: a horizontal swipe turns the sheet. Edge touches are left to the browser's swipe-back.
+    let x0 = null, y0 = 0;
+    vp.addEventListener("touchstart", (e) => {
+      const t = e.touches[0];
+      x0 = e.touches.length === 1 && t.clientX > 24 && t.clientX < innerWidth - 24 ? t.clientX : null;
+      y0 = t.clientY;
+    }, { passive: true });
+    vp.addEventListener("touchend", (e) => {
+      if (x0 == null) return;
+      const t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0;
+      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) go(pageIndex + (dx < 0 ? 1 : -1));
+      x0 = null;
+    });
+    return {
+      save: () => ({ focus: last }),
+      resize: () => index && layout(),
+      destroy: () => { live = false; },
+    };
+  }
+
+  /* An ETCETERA experience: the interior shell (ETCETERA current, × CLOSE, Escape) around a module
+     named by the entry (etcetera/experiences/). Modules own their frame and may scroll; the shell
+     never does. The footer identifies the entry and steps to its neighbours without adding history,
+     so × CLOSE still returns to the index. */
+  function experience(route) {
+    chrome({ title: "Etcetera", section: "etcetera", parent: { href: etcIndexHref(), focus: route.slug } });
+    pageCount = 1;
+    count();
+    const vp = root.querySelector(".viewport");
+    let live = true, mounted = null;
+    etcLoad({ src: ["entries.js"], css: ["shell.css"] }).then(() => {
+      if (!live) return;
+      const { entries, modules } = window.ETCETERA;
+      const i = entries.findIndex((e) => e.slug === route.slug);
+      const entry = entries[i];
+      if (!entry) {
+        vp.innerHTML = `<article class="reading"><h1>Entry not found.</h1><p>${link("RETURN TO ETCETERA", "etcetera.html", "text-link phrase")}</p></article>`;
+        document.title = "Record not found — Freeman GC";
+        return;
+      }
+      const mod = modules[entry.experience.module];
+      document.title = `${entry.title} — Etcetera — Freeman GC`;
+      root.querySelector(".panel-head h1").textContent = `Etcetera / ${entry.no} / ${entry.title}`;
+      document.body.dataset.experience = entry.experience.module;
+      const near = (n) => entries[i + n] || null;
+      const prev = near(-1), next = near(1);
+      root.querySelector(".section-link").innerHTML = `<span>ETCETERA ${esc(entry.no)} / ${esc(entry.type.toUpperCase())}</span>`;
+      root.querySelector(".sheet-controls").insertAdjacentHTML("beforeend", `<nav class="etc-near" aria-label="Neighbouring entries">${
+        prev ? `<a class="phrase" href="etcetera-${esc(prev.slug)}.html" data-replace="1" aria-label="Previous entry: ${esc(prev.title)}">← ${esc(prev.no)}</a>` : '<span aria-hidden="true">← —</span>'}${
+        next ? `<a class="phrase" href="etcetera-${esc(next.slug)}.html" data-replace="1" aria-label="Next entry: ${esc(next.title)}">${esc(next.no)} →</a>` : '<span aria-hidden="true">— →</span>'}</nav>`);
+      return etcLoad({ src: [...mod.src, ...(entry.experience.files || [])], css: mod.css || [] }).then(() => {
+        if (!live) return;
+        mounted = window.FreemanExperiences[entry.experience.module].mount({
+          root, viewport: vp, entry, params: new URL(location.href).searchParams, words, esc, pad,
+        }) || {};
+      });
+    }).catch(() => live && etcFailed(vp));
+    return {
+      key: (e) => !!(mounted && mounted.key && mounted.key(e)),
+      destroy: () => { live = false; if (mounted && mounted.destroy) mounted.destroy(); },
+    };
+  }
+
+  // The approved 2 × 2 collection (cc00dae), kept intact for comparison at ?index=approved.
+  function etceteraCollection(vp) {
     vp.innerHTML = `<div class="etc-canvas">
       <button class="etc-object etc-ruskin" type="button" data-etc-open="ruskin" aria-label="Open John Ruskin photograph">
         <span class="etc-object-body"><img src="/etcetera/ruskin.webp" alt="Photograph of a printed John Ruskin passage about building for future generations" /></span>
@@ -837,6 +982,7 @@
     if (view && view.destroy && !stayInFieldwork) view.destroy();
     document.querySelectorAll(".freeman-intro").forEach((s) => route.kind !== "entrance" && s.remove());
     document.body.dataset.route = route.kind;
+    delete document.body.dataset.experience;
     pageIndex = sheetFromUrl();
     pageCount = 1;
     renderPage = () => {};
@@ -850,21 +996,22 @@
       galleryKey = null;
       view = {
         kind: route.kind,
-        detail: () => route.kind === "project",
+        detail: () => route.kind === "project" || route.kind === "experience",
         key: (e) => (galleryKey ? galleryKey(e) : false),
         save: () => {
           if (route.kind !== "projects") return {};
           const scroller = root.querySelector(".pi-scroller");
           return { focus: currentFocus(), projScroll: scroller ? scroller.scrollTop : 0 };
         },
-        resize: ["company", "projects", "etcetera", "contact"].includes(route.kind) ? null : () => render(parse(location.href), { ...hist.state, focus: currentFocus() }),
+        resize: ["company", "projects", "etcetera", "experience", "contact"].includes(route.kind) ? null : () => render(parse(location.href), { ...hist.state, focus: currentFocus() }),
       };
       if (route.kind === "entrance") Object.assign(view, entrance({ play: !pop }));
       else if (route.kind === "company") company();
       else if (route.kind === "projects") projectsIndex(state);
       else if (route.kind === "project") project(route.item);
       else if (route.kind === "contact") contact();
-      else if (route.kind === "etcetera") etcetera();
+      else if (route.kind === "etcetera") Object.assign(view, etcetera(state));
+      else if (route.kind === "experience") Object.assign(view, experience(route));
       else notFound();
       document.title = (route.item ? route.item.name : TITLES[route.kind]) + " — Freeman GC";
     }
@@ -914,7 +1061,7 @@
     const url = new URL(a.getAttribute("href"), document.baseURI);
     if (!isAppUrl(url)) return;
     e.preventDefault();
-    navigate(url.href, { focus: a.dataset.focus });
+    navigate(url.href, { focus: a.dataset.focus, replace: !!a.dataset.replace });
   });
   window.addEventListener("popstate", (e) => {
     const state = e.state && typeof e.state === "object" ? e.state : {};

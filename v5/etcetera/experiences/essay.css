@@ -1,0 +1,39 @@
+/* ETCETERA experience: essay. The one entry type that scrolls. The frame is the shell's own: the
+   column scrolls between the section line and the footer, the page never does. */
+body[data-experience="essay"] .viewport{inset:76px 0 70px;overflow:hidden}
+.ex-essay{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;outline:none;scrollbar-width:thin;scrollbar-color:var(--hair) transparent;-webkit-overflow-scrolling:touch}
+.ex-essay:focus-visible{outline:none}
+/* A narrow measure set on the site's 12-column frame: the column starts at the fifth column, the
+   numerals hang in the margin to its left. */
+.ex-essay-col{width:min(58ch,100%);margin:0 0 0 calc(30px + (100% - 60px) * 4 / 12);padding:clamp(48px,14vh,150px) 30px clamp(80px,26vh,260px) 0;font-size:13px;line-height:1.85}
+.ex-essay-col p{font-size:13px;line-height:1.85;margin:0 0 1.45em}
+.ex-essay-head{margin-bottom:clamp(56px,10vh,96px)}
+.ex-essay-kicker,.ex-essay-status,.ex-essay-end p{font-size:9px!important;line-height:1.6!important;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.ex-essay-kicker{margin-bottom:22px!important}
+.ex-essay-title{font-size:clamp(28px,3.3vw,46px);line-height:1.08;letter-spacing:-.05em;margin:0 0 22px;max-width:16ch}
+.ex-essay-status{max-width:42ch}
+.ex-essay-lead{font-size:15px!important;line-height:1.75!important;margin-bottom:2.2em!important}
+.ex-essay-h{position:relative;font-size:10px;line-height:1.6;letter-spacing:.04em;text-transform:uppercase;margin:clamp(48px,8vh,80px) 0 18px;font-weight:400}
+.ex-essay-n{position:absolute;right:calc(100% + 24px);color:var(--muted)}
+.ex-essay-quote{margin:2.4em 0;padding:0}
+.ex-essay-quote p{font-size:15px!important;line-height:1.6!important;letter-spacing:-.02em;margin-bottom:12px!important}
+.ex-essay-quote cite{display:block;font-style:normal;font-size:9px;line-height:1.6;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.ex-essay-quote cite a{color:var(--ink)}
+.ex-essay-rule{border:0;border-top:1px solid var(--hair);width:48px;margin:clamp(40px,7vh,64px) 0}
+.ex-essay-end{margin-top:clamp(56px,10vh,96px);padding-top:16px;border-top:1px solid var(--hair);display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+.ex-essay-end a{font-size:10px;letter-spacing:.035em}
+@media(max-width:1100px){.ex-essay-col{margin-left:calc(30px + (100% - 60px) * 3 / 12)}}
+@media(max-width:760px){
+ body[data-experience="essay"] .viewport{inset:62px 0 62px}
+ .ex-essay-col{width:100%;margin:0;padding:40px 18px 30vh}
+ .ex-essay-col p{font-size:14px;line-height:1.72}
+ .ex-essay-lead{font-size:15px!important;line-height:1.65!important}
+ .ex-essay-title{font-size:clamp(26px,8vw,34px)}
+ .ex-essay-n{position:static;margin-right:12px}
+}
+@media(pointer:coarse){
+ body[data-experience="essay"] .viewport{top:max(62px,calc(env(safe-area-inset-top) + 44px));bottom:max(62px,calc(env(safe-area-inset-bottom) + 48px));left:0;right:0}
+ .ex-essay-col{padding-left:max(18px,env(safe-area-inset-left));padding-right:max(18px,env(safe-area-inset-right))}
+ .ex-essay-end a{display:inline-flex;align-items:center;min-height:44px}
+}
+@media(max-height:540px){body[data-experience="essay"] .viewport{top:56px;bottom:52px}}
