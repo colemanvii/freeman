@@ -643,7 +643,7 @@
     const vp = root.querySelector(".viewport");
     vp.innerHTML = `<div class="etc-canvas">
       <button class="etc-object etc-ruskin" type="button" data-etc-open="ruskin" aria-label="Open John Ruskin photograph">
-        <img src="/etcetera/ruskin.webp" alt="Photograph of a printed John Ruskin passage about building for future generations" />
+        <img src="/etcetera/ruskin.svg" alt="Photograph of a printed John Ruskin passage about building for future generations" />
         <span class="etc-caption">001 / JOHN RUSKIN · ON BUILDING</span>
       </button>
       <button class="etc-object etc-optimist" type="button" data-etc-open="optimist" aria-label="Read our note on the challenges of hospitality buildouts">
@@ -665,7 +665,7 @@
       const ruskin = btn.dataset.etcOpen === "ruskin";
       title.textContent = ruskin ? "001 / JOHN RUSKIN" : "002 / THE OPTIMIST";
       detail.innerHTML = ruskin
-        ? '<img class="etc-detail-photo" src="/etcetera/ruskin.webp" alt="Photographed John Ruskin passage about building for future generations">'
+        ? '<img class="etc-detail-photo" src="/etcetera/ruskin.svg" alt="Photographed John Ruskin passage about building for future generations">'
         : `<div class="etc-number">ETCETERA / AN EDITORIAL NOTE</div>
           <h2>On building a place people want to return to.</h2>
           <p>A restaurant is experienced as a whole. The light on a table, the curve of a booth, the sounds of service, the ease with which people move through a room. But behind that apparent ease is a concentration of decisions made by many people.</p>
