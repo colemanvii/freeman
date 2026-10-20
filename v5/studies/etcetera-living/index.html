@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ETCETERA / Living Index Study — Freeman</title>
+<style>
+:root{--paper:#fff9f1;--ink:#282923;--muted:#817b72;--red:#c24b35;--rule:#c7c1b7}
+*{box-sizing:border-box}html,body{height:100%;margin:0;overflow:hidden}body{font-family:Monaco,"Courier New",monospace;background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased}button{font:inherit;color:inherit;cursor:pointer}button:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.shell{height:100dvh;display:grid;grid-template-rows:auto minmax(0,1fr) auto;padding:clamp(17px,2.3vw,32px);gap:clamp(12px,2vw,30px)}
+header,footer{display:flex;align-items:center;justify-content:space-between;font-size:11px;gap:10px}header{letter-spacing:-.03em}footer{color:var(--muted);font-size:10px}
+.workspace{display:grid;grid-template-columns:minmax(210px,30%) minmax(0,1fr);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);min-height:0}
+.index{padding:clamp(20px,3vw,46px) clamp(15px,2.3vw,36px) 20px 0;border-right:1px solid var(--rule);display:flex;flex-direction:column;min-height:0}
+.eyebrow,.label{font-size:10px;color:var(--muted);letter-spacing:.03em}
+.index h1{font-size:clamp(26px,3.1vw,48px);line-height:1;letter-spacing:-.07em;font-weight:500;margin:18px 0 28px}
+.entries{display:grid;gap:0;margin:0;padding:0;list-style:none;min-height:0}
+.entries button{width:100%;padding:clamp(12px,1.6vw,20px) 0;border:0;border-top:1px solid var(--rule);background:transparent;text-align:left;display:grid;grid-template-columns:33px minmax(0,1fr) 14px;align-items:baseline;gap:8px}
+.entries button .number{font-size:9px;color:var(--muted)}.entries button .name{font-size:clamp(12px,1.15vw,16px);letter-spacing:-.04em}.entries button .arrow{opacity:0;color:var(--red)}
+.entries button:hover .arrow,.entries button[aria-pressed=true] .arrow{opacity:1}.entries button[aria-pressed=true] .name{color:var(--red)}
+.index-bottom{margin-top:auto;padding-top:24px;font-size:10px;line-height:1.8;color:var(--muted)}
+.stage{padding:clamp(22px,3vw,48px);min-width:0;min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:16px}
+.stage-head,.stage-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:10px;color:var(--muted)}
+.art{display:grid;place-items:center;min-height:0;overflow:hidden;padding:5px}.art img{display:block;max-width:100%;max-height:100%;height:auto;width:auto;object-fit:contain}
+.art .quote{font-size:clamp(23px,3.2vw,46px);line-height:1.16;max-width:670px;letter-spacing:-.06em}
+.stage-foot .action{border:0;background:transparent;border-bottom:1px solid var(--red);color:var(--red);padding:8px 0;font-size:10px;min-height:44px}
+dialog{width:min(670px,calc(100vw - 36px));max-height:83dvh;overflow:hidden;border:1px solid var(--ink);padding:0;background:var(--paper);color:var(--ink);font:inherit}dialog::backdrop{background:rgba(27,26,23,.53)}
+.dialog-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--rule);padding:12px 20px;font-size:10px}.dialog-head button{border:0;background:transparent;min-height:44px}
+.dialog-content{overflow:auto;max-height:calc(83dvh - 70px);padding:clamp(22px,5vw,55px)}
+.dialog-content img{display:block;max-width:100%;max-height:65dvh;object-fit:contain;margin:0 auto}.dialog-content h2{font-size:clamp(24px,4vw,39px);font-weight:500;letter-spacing:-.06em;line-height:1.17}
+.dialog-content p{font-size:clamp(13px,1.3vw,16px);line-height:1.8;margin:0 0 1.4em}.dialog-content small{font-size:10px;color:var(--muted)}
+@media(max-width:700px){
+.shell{padding:16px;gap:12px}.workspace{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr)}.index{border-right:0;border-bottom:1px solid var(--rule);padding:10px 0 8px}
+.index h1{font-size:25px;margin:6px 0 12px}.entries{grid-template-columns:1fr 1fr;column-gap:14px}.entries button{padding:9px 0;grid-template-columns:21px 1fr 10px}.entries button .name{font-size:11px}.index-bottom{display:none}
+.stage{padding:12px 0 8px;gap:5px}.stage-head,.stage-foot{font-size:9px}.art{padding:10px}.art .quote{font-size:clamp(21px,5vw,32px)}header,footer{font-size:9px}
+}
+</style></head><body>
+<div class="shell">
+<header><span>FREEMAN GENERAL CONTRACTING</span><span>ETCETERA / WORKING STUDY</span></header>
+<main class="workspace">
+<aside class="index"><div class="eyebrow">A COLLECTION OF THINGS WE KEEP RETURNING TO</div><h1>Etcetera.</h1>
+<ol id="entries" class="entries" aria-label="Browse collection"></ol>
+<div class="index-bottom">A growing index of observations, drawings,<br>references and notes.<br><br>FOUR ENTRIES / NO FIXED CATEGORY</div>
+</aside>
+<section class="stage" aria-live="polite"><div class="stage-head"><span id="kind">OBJECT / 001</span><span>FREEMAN ARCHIVE</span></div>
+<div id="art" class="art"></div><div class="stage-foot"><span id="caption"></span><button id="open" class="action" type="button">OPEN OBJECT ↗</button></div></section>
+</main>
+<footer><span>BUILT FOR GENERATIONS</span><span>DESIGN STUDY / NOT PRODUCTION</span></footer></div>
+<dialog id="viewer" aria-labelledby="viewer-title"><div class="dialog-head"><span id="viewer-title">ETCETERA</span><button id="close" type="button">× CLOSE</button></div><div id="dialog-content" class="dialog-content"></div></dialog>
+<script>
+const items=[
+{id:"ruskin",name:"John Ruskin",type:"A PASSAGE",caption:"ON BUILDING / JOHN RUSKIN",src:"/etcetera/ruskin.webp",alt:"Photographed printed John Ruskin passage about building with future generations in mind"},
+{id:"optimist",name:"On the work",type:"AN EDITORIAL NOTE",caption:"THE OPTIMIST / NOTES ON BUILDING",text:"On building a place people want to return to."},
+{id:"industrial",name:"Architectural drawing",type:"A DRAWING",caption:"INDUSTRIAL STUDY / ATTRIBUTION UNVERIFIED",src:"/etcetera/architectural-industrial.webp",alt:"Black-and-white drawing of small building beside tall utility pole and overhead wires"},
+{id:"residential",name:"Residential perspective",type:"A DRAWING",caption:"RESIDENTIAL STUDY / ATTRIBUTION UNVERIFIED",src:"/etcetera/residential-landscape.webp",alt:"Warm-toned drawing of a low residential building set among trees"}
+];let active=0;const $=s=>document.querySelector(s),entries=$("#entries"),viewer=$("#viewer");
+entries.innerHTML=items.map((x,i)=>'<li><button type="button" data-i="'+i+'" aria-pressed="false"><span class="number">0'+(i+1)+'</span><span class="name">'+x.name+'</span><span class="arrow">↗</span></button></li>').join("");
+function draw(i){active=i;const x=items[i];entries.querySelectorAll("button").forEach((b,j)=>b.setAttribute("aria-pressed",String(i===j)));$("#kind").textContent=x.type+" / 00"+(i+1);$("#caption").textContent=x.caption;$("#art").replaceChildren();if(x.src){const img=document.createElement("img");img.src=x.src;img.alt=x.alt;$("#art").append(img)}else{const q=document.createElement("div");q.className="quote";q.textContent=x.text;$("#art").append(q)}$("#open").textContent=x.src?"VIEW OBJECT ↗":"READ NOTE ↗"}
+function open(){const x=items[active];$("#viewer-title").textContent="00"+(active+1)+" / "+x.name.toUpperCase();const body=$("#dialog-content");body.replaceChildren();if(x.src){const img=document.createElement("img");img.src=x.src;img.alt=x.alt;body.append(img)}else{body.innerHTML='<h2>On building a place people want to return to.</h2><p>A restaurant is experienced as a whole. The light on a table, the curve of a booth, the sounds of service, the ease with which people move through a room. But behind that apparent ease is a concentration of decisions made by many people.</p><p>Hospitality buildouts ask construction to reconcile different kinds of pressure at once: the designer\'s intent, the operator\'s day-to-day requirements, durability, craft, budgets, and the calendar. A beautiful detail also has to survive a busy Saturday night.</p><p>The Optimist\'s oyster-bar refresh gives us a useful place to examine that tension. Its finished rooms offer a starting point; what we\'d like to document next is the less visible work—coordination, sequencing, material choices, and judgment that makes a space feel effortless.</p><p>Not just what a place looks like after the work is finished, but what it took to get there.</p><small>WORKING EDITORIAL REFLECTION / PROJECT-SPECIFIC CONSTRUCTION DETAILS NOT YET VERIFIED</small>'}viewer.showModal()}
+entries.addEventListener("click",e=>{const b=e.target.closest("[data-i]");if(b)draw(Number(b.dataset.i))});$("#open").addEventListener("click",open);$("#close").addEventListener("click",()=>viewer.close());viewer.addEventListener("click",e=>{if(e.target===viewer)viewer.close()});
+draw(0);
+</script></body></html>
