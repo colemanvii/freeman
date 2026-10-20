@@ -28,7 +28,7 @@
   const DESTINATIONS = [
     ["COMPANY", "company.html", ""],
     ["PROJECTS", "projects.html", ""],
-    ["ETC.", "etcetera.html", ""],
+    ["ETCETERA", "etcetera.html", ""],
     // RECORD is being developed privately; restore navigation only after approval.
     ["CONTACT", "contact.html", ""],
   ];
