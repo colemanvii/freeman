@@ -641,6 +641,12 @@
     renderPage = () => {};
     count();
     const vp = root.querySelector(".viewport");
+    // Temporary public holding state. Preserve the full collection implementation below.
+    const etceteraPublicHolding = true;
+    if (etceteraPublicHolding) {
+      vp.innerHTML = `<div style="width:100%;height:100%;display:grid;place-items:center"><span style="font-size:12px;letter-spacing:.04em">UNDER CONSTRUCTION</span></div>`;
+      return;
+    }
     vp.innerHTML = `<div class="etc-canvas">
       <button class="etc-object etc-ruskin" type="button" data-etc-open="ruskin" aria-label="Open John Ruskin photograph">
         <span class="etc-object-body"><img src="/etcetera/ruskin.webp" alt="Photograph of a printed John Ruskin passage about building for future generations" /></span>
