@@ -651,9 +651,17 @@
         <span class="etc-heading">On building a place people want to return to.</span>
         <span class="etc-open">THE OPTIMIST / OPEN NOTE ↗</span>
       </button>
+      <button class="etc-object etc-industrial" type="button" data-etc-open="industrial" aria-label="Enlarge architectural drawing with utility poles">
+        <img src="/etcetera/architectural-industrial.webp" width="1290" height="1717" alt="Black-and-white architectural drawing of a small structure, stairs, utility poles and wires, with open paper space and a handwritten inscription along the lower margin">
+        <span class="etc-caption">003 / ARCHITECTURAL DRAWING</span>
+      </button>
+      <button class="etc-object etc-residential" type="button" data-etc-open="residential" aria-label="Enlarge residential landscape drawing">
+        <img src="/etcetera/residential-landscape.webp" width="768" height="576" alt="Warm-toned perspective drawing of a long, low residence among trees and landscape, with paper margins and lettering along the lower edge">
+        <span class="etc-caption">004 / RESIDENTIAL PERSPECTIVE</span>
+      </button>
     </div>
-    <dialog class="etc-dialog" aria-label="Etcetera object detail">
-      <div class="etc-dialog-bar"><span data-etc-title></span><button class="phrase" data-etc-close type="button">× CLOSE</button></div>
+    <dialog class="etc-dialog" aria-labelledby="etc-detail-title">
+      <div class="etc-dialog-bar"><span id="etc-detail-title" data-etc-title></span><button class="phrase" data-etc-close type="button">× CLOSE</button></div>
       <article class="etc-dialog-body" data-etc-body></article>
     </dialog>`;
     const dialog = vp.querySelector(".etc-dialog");
@@ -662,6 +670,22 @@
     vp.querySelector("[data-etc-close]").addEventListener("click", () => dialog.close());
     dialog.addEventListener("click", (e) => { if (e.target === dialog) dialog.close(); });
     vp.querySelectorAll("[data-etc-open]").forEach((btn) => btn.addEventListener("click", () => {
+      const artwork = {
+        industrial: ["003 / ARCHITECTURAL DRAWING", "/etcetera/architectural-industrial.webp"],
+        residential: ["004 / RESIDENTIAL PERSPECTIVE", "/etcetera/residential-landscape.webp"]
+      }[btn.dataset.etcOpen];
+      dialog.classList.toggle("etc-dialog-artwork", Boolean(artwork));
+      detail.scrollTop = 0;
+      if (artwork) {
+        title.textContent = artwork[0];
+        const image = document.createElement("img");
+        image.className = "etc-detail-photo";
+        image.src = artwork[1];
+        image.alt = btn.querySelector("img").alt;
+        detail.replaceChildren(image);
+        dialog.showModal();
+        return;
+      }
       const ruskin = btn.dataset.etcOpen === "ruskin";
       title.textContent = ruskin ? "001 / JOHN RUSKIN" : "002 / THE OPTIMIST";
       detail.innerHTML = ruskin

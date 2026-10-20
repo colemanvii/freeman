@@ -499,3 +499,40 @@ body[data-route="etcetera"] .viewport{overflow:hidden;min-height:0}
 .etc-optimist{left:30%;top:54%;width:65%;min-height:140px;padding:13px}
 .etc-heading{font-size:clamp(18px,5vw,23px);margin:15px 0}
 }
+
+/* Four independently placed objects, with room between their edges. */
+.etc-ruskin{left:7%;top:7%;width:23%}
+.etc-ruskin img{max-height:39dvh}
+.etc-optimist{left:42%;top:auto;bottom:4%;width:30%;min-height:0}
+.etc-industrial{left:76%;top:6%;width:14%}
+.etc-residential{left:39%;top:5%;width:26%}
+.etc-industrial img,.etc-residential img{display:block;width:100%;height:auto;object-fit:contain}
+.etc-object:focus-visible{outline:1px solid var(--red);outline-offset:6px}
+.etc-dialog-artwork{width:min(1200px,calc(100vw - 28px))}
+.etc-dialog-artwork .etc-dialog-body{padding:16px;overscroll-behavior:contain}
+.etc-dialog-artwork .etc-detail-photo{width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 115px)}
+.etc-dialog-bar button{min-height:44px;flex-shrink:0}
+@media(max-width:760px){
+ .etc-ruskin{left:5%;top:3%;width:39%}
+ .etc-ruskin img{max-height:27dvh}
+ .etc-industrial{left:66%;top:5%;width:24%}
+ .etc-residential{left:7%;top:46%;width:43%}
+ .etc-optimist{left:57%;top:57%;bottom:auto;width:38%;padding:10px;min-height:0}
+ .etc-heading{font-size:clamp(14px,3.6vw,23px);margin:12px 0}
+ .etc-caption{font-size:8px}
+ .etc-dialog-bar{padding:4px 12px;gap:12px;font-size:10px}
+}
+@media(min-width:761px) and (max-height:600px){
+ .etc-ruskin{width:21%}.etc-ruskin img{max-height:52dvh}
+ .etc-industrial{width:11%}.etc-residential{width:25%}
+ .etc-optimist{top:52%;bottom:auto;width:35%;padding:12px}
+ .etc-heading{font-size:20px;margin:10px 0}
+}
+@media(min-width:600px) and (max-height:600px){
+ .etc-ruskin{left:3%;top:5%;width:19%}.etc-ruskin img{max-height:45dvh}
+ .etc-residential{left:28%;top:4%;width:28%}
+ .etc-industrial{left:61%;top:3%;width:12%}
+ .etc-optimist{left:77%;top:15%;bottom:auto;width:22%;padding:10px;min-height:0}
+ .etc-heading{font-size:14px;margin:10px 0}
+ .etc-caption{font-size:8px}
+}
