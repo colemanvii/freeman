@@ -158,3 +158,7 @@ node v5/studies/opus-signature-motion/verify.js
 | `instrument.js` | clock, rendering, production reference, controls, final-frame check |
 | `instrument.css` | instrument additions on top of production `styles.css` |
 | `verify.js` | offline verification in Node |
+| `bake.js` | bakes the refined Practiced hand into `practiced.timeline.js` |
+| `practiced.timeline.js` | production timing table (per-pixel ink time and settle) |
+| `hand-mark.js` | production player, drop-in for `FreemanPixelMark.mount` |
+| `HANDOFF.md` | integration handoff for the production entrance |
