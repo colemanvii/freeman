@@ -333,7 +333,7 @@
     const copy=vp.querySelector("#co4-copy");
     const philosophyParagraphs=[
       "We're a Georgia-based general contractor with a deliberate focus on hospitality.",
-      "We work closely with owners, architects, and designers to bring ambitious ideas to life. Our approach is built on strong relationships, careful execution, and pride in the finished work.",
+      "We work closely with owners, architects, and designers to preserve what makes each hospitality concept distinctive through the work of building it. Our approach is built on strong relationships, careful execution, and pride in the finished work.",
       "We build places made to last."
     ];
     function renderCompanySheet() {
