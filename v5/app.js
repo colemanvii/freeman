@@ -640,7 +640,41 @@
     pageCount = 1;
     renderPage = () => {};
     count();
-    // Intentionally blank: a native no-scroll Freeman sheet, ready for future work.
+    const vp = root.querySelector(".viewport");
+    vp.innerHTML = `<div class="etc-canvas">
+      <button class="etc-object etc-ruskin" type="button" data-etc-open="ruskin" aria-label="Open John Ruskin photograph">
+        <img src="/etcetera/ruskin.webp" alt="Photograph of a printed John Ruskin passage about building for future generations" />
+        <span class="etc-caption">001 / JOHN RUSKIN · ON BUILDING</span>
+      </button>
+      <button class="etc-object etc-optimist" type="button" data-etc-open="optimist" aria-label="Read our note on the challenges of hospitality buildouts">
+        <span class="etc-number">002 / A NOTE ON THE WORK</span>
+        <span class="etc-heading">On building a place people want to return to.</span>
+        <span class="etc-open">THE OPTIMIST / OPEN NOTE ↗</span>
+      </button>
+    </div>
+    <dialog class="etc-dialog" aria-label="Etcetera object detail">
+      <div class="etc-dialog-bar"><span data-etc-title></span><button class="phrase" data-etc-close type="button">× CLOSE</button></div>
+      <article class="etc-dialog-body" data-etc-body></article>
+    </dialog>`;
+    const dialog = vp.querySelector(".etc-dialog");
+    const detail = vp.querySelector("[data-etc-body]");
+    const title = vp.querySelector("[data-etc-title]");
+    vp.querySelector("[data-etc-close]").addEventListener("click", () => dialog.close());
+    dialog.addEventListener("click", (e) => { if (e.target === dialog) dialog.close(); });
+    vp.querySelectorAll("[data-etc-open]").forEach((btn) => btn.addEventListener("click", () => {
+      const ruskin = btn.dataset.etcOpen === "ruskin";
+      title.textContent = ruskin ? "001 / JOHN RUSKIN" : "002 / THE OPTIMIST";
+      detail.innerHTML = ruskin
+        ? '<img class="etc-detail-photo" src="/etcetera/ruskin.webp" alt="Photographed John Ruskin passage about building for future generations">'
+        : `<div class="etc-number">ETCETERA / AN EDITORIAL NOTE</div>
+          <h2>On building a place people want to return to.</h2>
+          <p>A restaurant is experienced as a whole. The light on a table, the curve of a booth, the sounds of service, the ease with which people move through a room. But behind that apparent ease is a concentration of decisions made by many people.</p>
+          <p>Hospitality buildouts ask construction to reconcile different kinds of pressure at once: the designer's intent, the operator's day-to-day requirements, durability, craft, budgets, and the calendar. A beautiful detail also has to survive a busy Saturday night.</p>
+          <p>The Optimist's oyster-bar refresh gives us a useful place to examine that tension. Its finished rooms offer a starting point; what we'd like to document next is the less visible work—coordination, sequencing, material choices, and judgment that makes a space feel effortless.</p>
+          <p>Not just what a place looks like after the work is finished, but what it took to get there.</p>
+          <small>WORKING EDITORIAL REFLECTION / PROJECT-SPECIFIC CONSTRUCTION DETAILS NOT YET VERIFIED</small>`;
+      dialog.showModal();
+    }));
   }
 
   function contact() {
