@@ -1,70 +1,63 @@
-# Project Monograph 001: Beetlecat
+# ETCETERA 005: Beetlecat, an editorial snapshot
 
 An isolated study on branch `study/project-monograph-001`, cut from the production release branch `release/approved-v5-2026-10-18` at 44cb8cc. Not merged into production, not deployed to production.
 
-The monograph is an **ETCETERA object**: object 005 in the ETCETERA collection, which opens it at its own site route, `/etcetera-monograph-001`.
+One small page inside ETCETERA: five authentic photographs (two of them crops), one short commentary, and restrained identification and credits. It is composed three ways, so the editorial design can be judged with the content held constant. It replaces the earlier five-plate Project Monograph, which remains in this branch's history.
 
-- Files: `v5/etcetera/monograph-001/` (`beetlecat.js` data, `monograph.js` plate composer, `monograph.css`, `details/`), route shell `v5/etcetera-monograph-001.html`
-- Production files changed on this branch: `v5/app.js` (route, ETCETERA object, loader, paging and swipe; holding flag off) and `v5/etcetera.html` (asset version)
-- Local preview: `http://localhost:8815/etcetera.html`
+- Files: `v5/etcetera/snapshot-001/`
+  - `beetlecat.js`: the content, shared by all three studies
+  - `snapshot.js`: the compositions
+  - `snapshot.css`
+  - `details/`: the two crops
+- Route shell: `v5/etcetera-snapshot-001.html`
+- Production files changed on this branch: `v5/app.js` (route, ETCETERA object, loader and study switch; holding flag off) and `v5/etcetera.html` (asset version)
+- Local preview: `http://localhost:8815/etcetera.html`. Open object 005, then switch STUDY A / B / C in the footer.
 - Asset audit: [`INVENTORY.md`](INVENTORY.md)
 
 ## ETCETERA on this branch
 
-Live ETCETERA has shown a temporary `UNDER CONSTRUCTION` holding state since 44cb8cc. The approved collection (cc00dae) is still in `app.js` behind `etceteraPublicHolding`. This branch sets that flag to `false` so the monograph can be seen within the approved composition. Releasing the monograph would therefore also end the holding state. That is a separate decision.
+Live ETCETERA has shown a temporary `UNDER CONSTRUCTION` holding state since 44cb8cc. The approved collection (cc00dae) is still in `app.js` behind `etceteraPublicHolding`. This branch sets that flag to `false` so the snapshot can be seen within the approved composition. Releasing it would therefore also end the holding state, which is a separate decision.
 
-## Principle
+The approved 2 × 2 keeps its four objects, their order, columns and caption baselines. Object 005 enters below them as one index line on a hairline, set on the same two columns: `005 / BEETLECAT · AN EDITORIAL SNAPSHOT` in the caption style, and `OPEN ↗` in the collection's red OPEN style. To make room, the four objects render about 9% smaller at 1440 × 900.
 
-The result proves taste. The evidence proves capability. The monograph shows the finished work at its best, then places it beside the record that would prove how it was built. Where that record does not exist, the page holds a frame open for it rather than filling it.
+## The content (identical in A, B and C)
 
-## Non-negotiable
-
-Static and one viewport. ETCETERA and every plate of the monograph fit inside production's fixed `.viewport` frame on desktop and phones. Nothing scrolls, nothing overflows sideways, and nothing is hidden by clipping. Plates are recomposed for phones, never cropped.
-
-## What is native
-
-Production `styles.css` tokens, Monaco, the three palettes, hover words, crosshair cursors, the interior shell (section line with ETCETERA current, × CLOSE), and production's own paging: `chrome()`, PREV · 03 / 05 · NEXT, ← →, `?sheet=` in the URL, and Escape through history. Plate 01 is the project gallery layout (`.pg`). Plate 02 is production's project plate (`.project-plate`). Plate 03 uses Company's headline register. Phones split two plates across two sheets, as Company does. The only additions are horizontal swipes on touch screens (like the project gallery) and preloading of the plate photographs.
-
-## ETCETERA
-
-The approved 2 × 2 keeps its four objects, their order, columns and caption baselines. Object 005 enters below them as one index line on a hairline, set on the same two columns: `005 / PROJECT MONOGRAPH 001 · BEETLECAT` in the caption style, and `OPEN MONOGRAPH ↗` in the collection's own red OPEN ↗ style. To make room, the four objects render about 9% smaller at 1440 × 900.
-
-## The plates
-
-| | Plate | One idea | Composition |
-|---|---|---|---|
-| 01 | Beetlecat | Arrival | Gallery layout: name, place and credits beside the threshold photograph (the ETCETERA cover), with the plate list |
-| 02 | The bar | The room | One photograph as a production project plate, with the large caption |
-| 03 | Account | Freeman's words, and their standing | Company register: the published account verbatim, beside the record with each status. Freeman red marks *stated*. |
-| 04 | Material | Craft | Five crops at one height, numbered D—01 to D—05, with a key. Never larger than their source. |
-| 05 | Field record | The gap | The finished dining room beside an open frame of the same proportion, *NOT ON FILE*; what is requested; continue to the project, The Optimist, or back to ETCETERA |
-
-Phones (portrait): 7 sheets. Account and record are split, and the Field record is split into the pair and a Continue sheet. The material crops sit in two rows. Short screens (phones in landscape): the same 7 sheets, composed side by side with tighter type.
-
-**Verified by script** at 1920 × 1080, 1440 × 900, 1280 × 720, 1024 × 768, 1024 × 480, 844 × 390, 667 × 375, 390 × 844, 375 × 667, 375 × 812 and 360 × 640. On every sheet, every element sits inside the frame, the frame does not scroll, and the page has no horizontal or vertical overflow. ETCETERA was checked the same way at 1440 × 900, 1280 × 720, 1024 × 480, 844 × 390, 390 × 844 and 360 × 640.
-
-## Detail crops (source pixels)
-
-| Crop | From | x, y, w, h |
+| | Source | Status |
 |---|---|---|
-| D—01 door | `beetlecat-interior-2.jpg` | 860, 500, 340, 940 |
-| D—02 counter front | `beetlecat-interior-2.jpg` | 0, 1240, 840, 660 |
-| D—03 window frames | `beetlecat-3.jpg` | 1540, 0, 380, 860 |
-| D—04 stools | `project-0.jpg` | 1040, 650, 560, 620 |
-| D—05 carpet | `beetlecat-interior-2.jpg` | 840, 1420, 600, 500 |
+| Figures 1–3 | Production's Beetlecat photographs by Jared Swafford | Credited |
+| Figures 4, 5 | Crops of 1 and 2: the door at 860, 500, 340 × 940 and the window frames at 1540, 0, 380 × 860 (source pixels) | Crops, labelled |
+| **Two colours, one curve.** | Headline summarising the observation | Editorial |
+| **Observed** | Only what is visible in figures 1–5: red in the carpet, ribbed counter fronts and banquette; yellow in the window frames, door and stools; one rounded line at every scale | Visible; attributes nothing to anyone |
+| **Reading / ours** | “A few decisions, repeated without exception, make the room whole.” | Interpretation, labelled as ours |
+| Client, Photography | Production record | Credited |
+| Construction: Freeman GC | Freeman's own published record | Stated, and marked as stated |
+| Design | No credit is published | Shown as not credited |
 
-A new monograph is a new data file like `beetlecat.js`. `monograph.js` and `monograph.css` do not change.
+No construction narrative is told: nothing on file documents the build.
 
-## Within the site
+## The three studies
 
-- **Discovering:** ETCETERA object 005, as described above.
-- **Entering:** a link to `/etcetera-monograph-001`, handled in place by `app.js`, so palette and history carry over. Scripts and styles load on first use.
-- **Navigating:** PREV / NEXT, ← →, swipes, and the plate list on plate 01.
-- **Returning:** × CLOSE, Escape and RETURN / ETCETERA go back in history. On a direct arrival, they fall back to the entrance, as every detail page does.
+| | Name | Composition |
+|---|---|---|
+| A | Spread | A journal opening. Left page: figure 1 alone, full height. Right page: headline and text in two columns, figures 2 and 3 as a pair, then the two crops beside the credits. On phones, the spread is folded: figure 1 tall beside 2 and 3 stacked, the words, then the crops by the credits. |
+| B | Band | All five figures in one band at one height (1 · 4 · 2 · 3 · 5), set on the register beneath: identification, observed, reading, credits in four columns. On phones, two rows over the register. |
+| C | Plate | The project gallery's margin column holds every word. The field holds one dominant figure (2) and a row of four small figures beneath, like a journal plate. On phones, the plate sits above the words. |
+
+**Phones in landscape and other short screens:** each study keeps its arrangement of the figures, with the words set in two columns beside them. A has figures first; B and C have words first.
+
+## Static, one viewport: verified by script
+
+Checked at 1920 × 1080, 1440 × 900, 1366 × 640, 1280 × 720, 1024 × 768, 1024 × 600, 768 × 1024, 844 × 390, 667 × 375, 430 × 932, 390 × 844, 375 × 667 and 360 × 640, for every study. On each:
+- every element sits inside production's `.viewport` frame
+- the frame does not scroll
+- the page has no horizontal or vertical overflow
+
+ETCETERA was checked at 1440 × 900. Figures are never shown larger than their source.
+
+**Honest limit:** on the smallest phones (375 × 667 and below), the words claim most of the frame, and the figures land at roughly 40–170px tall.
 
 ## Open questions
 
-1. Permission from Jared Swafford to publish crops of his photographs, and higher-resolution originals.
-2. Whether a design credit exists for Beetlecat. The production record has none, so none is shown.
-3. Whether Rocket Farm Restaurants will give a statement.
-4. Whether Freeman has any Beetlecat field photographs at all. If it does, the open frame on plate 05 takes one with no layout change.
+1. Permission from Jared Swafford to publish crops of his photographs.
+2. Whether a design credit exists for Beetlecat.
+3. Whether Freeman has any Beetlecat field photographs. They would add evidence; the snapshot does not need them.

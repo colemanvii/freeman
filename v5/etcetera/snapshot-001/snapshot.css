@@ -1,0 +1,187 @@
+/* ETCETERA 005 — an editorial snapshot (study). Production styles.css supplies every token, the
+   shell and the ETCETERA collection; this file adds only the snapshot's entry in ETCETERA and the
+   three compositions. Every composition sits inside production's fixed .viewport: no scrolling. */
+
+/* ---------- ETCETERA: object 005 ----------
+   The approved 2 × 2 keeps its order, columns and caption baselines. The snapshot enters below it
+   as one index line on a hairline, on the same two columns, in the collection's caption and
+   OPEN ↗ language: a fifth object of a different kind, not a fifth picture. */
+.etc-canvas.etc-with-snapshot{grid-template-rows:repeat(2,minmax(0,1fr)) auto}
+.etc-snapshot{grid-column:1 / -1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:clamp(40px,8vw,120px);align-items:baseline;border-top:1px solid var(--hair);padding-top:10px;text-decoration:none}
+.etc-snapshot .etc-caption{grid-column:1;min-height:0}
+.etc-snapshot .etc-open{grid-column:2;justify-self:start;margin:0;color:var(--orange)}
+.etc-snapshot:hover .etc-open,.etc-snapshot:focus-visible .etc-open{background:var(--orange);color:var(--paper)}
+.etc-snapshot:focus-visible{outline:1px solid var(--orange);outline-offset:5px}
+@media(max-width:760px){.etc-snapshot{column-gap:24px}}
+@media(max-height:500px) and (min-width:600px){.etc-snapshot{padding-top:6px}}
+@media(pointer:coarse){.etc-snapshot:hover .etc-open{background:transparent;color:var(--orange)}.etc-snapshot:active .etc-open{background:var(--orange);color:var(--paper)}}
+
+/* ---------- Shared ---------- */
+body[data-route="snapshot"] .viewport{overflow:hidden}
+.sn{height:100%;min-height:0;min-width:0}
+.sn img{user-select:none;-webkit-user-drag:none}
+/* Bands: figures in a row share one height; the band's width is solved to fit its frame. */
+.sn-band{min-height:0;min-width:0;container-type:size;display:flex;align-items:flex-start}
+.sn-band-inner{--gap:clamp(10px,1.3vw,20px);--line:20px;--rowgap:12px;display:flex;flex-direction:column;gap:var(--rowgap);
+  width:min(100cqw,calc((100cqh - var(--rows) * var(--line) - (var(--rows) - 1) * var(--rowgap) + var(--gap) * var(--k)) / var(--inv)),calc((var(--hmax) + var(--gap) * var(--k)) / var(--inv)))}
+.sn-row{display:flex;gap:var(--gap)}
+/* Grow factors are scaled: factors summing below 1 would leave part of the row empty. */
+.sn-band figure{margin:0;flex:calc(var(--a) * 100) 1 0;min-width:0}
+.sn-band img{display:block;width:100%;height:auto}
+.sn-band figcaption{height:var(--line);padding-top:5px;font:9px/1.5 var(--mono);letter-spacing:.04em;color:var(--muted);white-space:nowrap;overflow:visible}
+.sn-no{font-weight:400;color:var(--orange)}
+/* Words: the gallery's register (name, place, credits) and Company's headline. */
+.sn-run{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding-bottom:10px;border-bottom:1px solid var(--hair);font:10px/1.5 var(--mono);letter-spacing:.035em}
+.sn-run span:last-child{color:var(--muted);text-align:right}
+.sn-kicker,.sn-label{margin:0;font:9px/1.5 var(--mono);letter-spacing:.04em;color:var(--muted)}
+.sn-name{margin:8px 0 0;font:400 13px/1.45 var(--mono);letter-spacing:.04em;text-transform:uppercase}
+.sn-place{margin:0;font:10px/1.5 var(--mono);letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+.sn-headline{margin:0 0 14px;font:400 clamp(21px,1.9vw,29px)/1.25 var(--mono)}
+.sn-observed p:not(.sn-label),.sn-reading p:not(.sn-label){margin:4px 0 0;font:11px/1.6 var(--mono);max-width:48ch}
+.sn-reading{margin-top:14px}
+.sn-credits{margin:14px 0 0;font:10px/1.5 var(--mono);border-bottom:1px solid var(--hair)}
+.sn-credits div{display:grid;grid-template-columns:92px minmax(0,1fr);gap:10px;border-top:1px solid var(--hair);padding:5px 0;align-items:baseline}
+.sn-credits dt{font-size:9px;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+.sn-credits dd{margin:0;min-width:0}
+.sn-credits small{display:block;font-size:9px;color:var(--muted)}
+.sn-key{margin:10px 0 0;font:9px/1.5 var(--mono);letter-spacing:.02em;color:var(--muted)}
+.sn-key a{color:var(--ink);letter-spacing:.04em;white-space:nowrap}
+
+/* ---------- A — Spread ---------- */
+.sn-a{display:grid;grid-template-rows:auto minmax(0,1fr);row-gap:18px}
+.sn-a-spread{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);column-gap:clamp(28px,4vw,64px);min-height:0}
+.sn-a-left{display:flex;min-height:0}
+.sn-a-one{flex:1;justify-content:flex-end}
+.sn-a-right{display:grid;grid-template-rows:auto minmax(110px,1.6fr) minmax(min-content,1fr);row-gap:16px;min-height:0;min-width:0}
+.sn-a-cols{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);column-gap:clamp(20px,2.4vw,40px)}
+.sn-a-cols .sn-reading{margin-top:0}
+.sn-a-foot{display:grid;grid-template-columns:minmax(0,.55fr) minmax(0,1fr);column-gap:clamp(20px,2.4vw,40px);min-height:0;border-top:1px solid var(--hair);padding-top:12px}
+.sn-a-foot .sn-credits{margin-top:0}
+.sn-a-text{display:block;border-top:1px solid var(--hair);padding-top:10px}
+
+/* ---------- B — Band ---------- */
+.sn-b{display:grid;grid-template-rows:minmax(0,1fr) auto;row-gap:20px}
+.sn-b-band{align-items:flex-end;justify-content:center}
+.sn-b-register{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.25fr) minmax(0,1fr) minmax(0,1fr);column-gap:clamp(18px,2.4vw,40px);border-top:1px solid var(--hair);padding-top:14px}
+.sn-b-register .sn-credits{margin-top:0}
+
+@media(min-width:761px) and (max-width:1100px){.sn-b-register{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:12px}}
+
+/* ---------- C — Plate ---------- */
+.sn-c{display:grid;grid-template-columns:240px minmax(0,1fr);column-gap:clamp(32px,4vw,64px)}
+.sn-c-margin{display:flex;flex-direction:column;min-height:0;min-width:0}
+.sn-c-margin .sn-place{margin-bottom:22px}
+.sn-c-margin .sn-headline{font-size:clamp(19px,1.6vw,24px)}
+.sn-c-margin .sn-credits{margin-top:auto}
+.sn-c-plate{display:grid;grid-template-rows:minmax(0,2.3fr) minmax(0,1fr);row-gap:14px;min-height:0;min-width:0}
+
+/* ---------- Shorter desktop windows: tighter type; C's margin widens to hold its words ---------- */
+@media(min-width:761px) and (min-height:641px) and (max-height:800px){
+ .sn-headline{font-size:clamp(18px,1.6vw,22px);margin-bottom:8px}
+ .sn-observed p:not(.sn-label),.sn-reading p:not(.sn-label){font-size:10px;line-height:1.5}
+ .sn-reading{margin-top:8px}
+ .sn-credits{margin-top:8px}
+ .sn-credits div{padding:3px 0}
+ .sn-credits small{display:none}
+ .sn-credits div:nth-child(3) dd::after{content:" (stated)";color:var(--muted)}
+ .sn-key{margin-top:6px}
+ .sn-a,.sn-a-right{row-gap:10px}
+ .sn-a-foot{padding-top:8px}
+ .sn-b{row-gap:12px}
+ .sn-b-register{padding-top:10px}
+ .sn-c{grid-template-columns:300px minmax(0,1fr)}
+ .sn-c-margin .sn-place{margin-bottom:12px}
+ .sn-c-margin .sn-headline{font-size:clamp(17px,1.5vw,20px)}
+}
+
+/* ---------- Phones (portrait): recomposed, never clipped ---------- */
+@media(max-width:760px) and (min-height:501px){
+ .sn-band-inner{--gap:8px;--line:18px;--rowgap:8px}
+ .sn-band figcaption{padding-top:3px}
+ .sn-headline{font-size:clamp(18px,5vw,22px);margin-bottom:8px}
+ .sn-observed p:not(.sn-label),.sn-reading p:not(.sn-label){font-size:10px;line-height:1.5;max-width:none}
+ .sn-reading{margin-top:8px}
+ .sn-credits{margin-top:8px;font-size:9px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:12px}
+ .sn-credits div{grid-template-columns:minmax(0,1fr);gap:0;padding:4px 0}
+ .sn-credits small{display:none}
+ .sn-credits div:nth-child(3) dd::after{content:" (stated)";color:var(--muted)}
+ .sn-key{margin-top:6px}
+ /* The figures keep a fixed share of the frame; the words take what is left. */
+ .sn-a{grid-template-rows:auto minmax(40%,1fr) auto auto;row-gap:12px}
+ .sn-a-fold{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);column-gap:8px;min-height:0}
+ .sn-a-fold .sn-band{justify-content:flex-start}
+ .sn-a-foot{grid-template-columns:minmax(0,.34fr) minmax(0,1fr);column-gap:12px;padding-top:8px}
+ .sn-a-foot .sn-credits{margin-top:0}
+ .sn-b{grid-template-rows:minmax(46%,1fr) auto;row-gap:12px}
+ .sn-b-band{justify-content:flex-start}
+ .sn-b-register{grid-template-columns:minmax(0,1fr);row-gap:8px;padding-top:10px}
+ .sn-b-ident{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+ .sn-b-ident .sn-kicker{flex-basis:100%}
+ .sn-b-ident .sn-name{margin:0}
+ .sn-c{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(46%,1fr) auto;row-gap:12px}
+ .sn-c-plate{grid-row:1;grid-template-rows:minmax(0,2fr) minmax(0,1fr);row-gap:8px}
+ .sn-c-margin{grid-row:2;display:block}
+ .sn-c-margin .sn-place{margin-bottom:8px}
+ .sn-c-margin .sn-headline{font-size:clamp(18px,5vw,22px)}
+}
+
+/* Shorter phones: tighter words, so the figures keep their share. */
+@media(max-width:760px) and (min-height:501px) and (max-height:700px){
+ .sn-headline{font-size:17px;margin-bottom:6px}
+ .sn-observed p:not(.sn-label),.sn-reading p:not(.sn-label){font-size:9px;line-height:1.45}
+ .sn-label,.sn-kicker{font-size:8px}
+ .sn-reading{margin-top:6px}
+ .sn-credits{margin-top:6px}
+ .sn-credits div{padding:2px 0}
+ .sn-key{font-size:8px;margin-top:4px}
+ .sn-run{padding-bottom:6px;font-size:9px}
+ .sn-a,.sn-b,.sn-c{row-gap:8px}
+ /* The figures' guaranteed share drops; they still take everything the words leave. */
+ .sn-a{grid-template-rows:auto minmax(30%,1fr) auto auto}
+ .sn-b,.sn-c{grid-template-rows:minmax(30%,1fr) auto}
+ .sn-b-register{padding-top:6px;row-gap:6px}
+ .sn-a-text{padding-top:6px}
+}
+
+/* ---------- Short screens (phones in landscape, low desktop windows): the same compositions, tighter ---------- */
+@media(max-height:500px),(min-width:761px) and (max-height:640px){
+ .sn-band-inner{--gap:8px;--line:16px;--rowgap:6px}
+ .sn-band figcaption{padding-top:2px;font-size:8px}
+ .sn-run{padding-bottom:5px;font-size:9px}
+ .sn-name{margin-top:4px;font-size:11px}
+ .sn-headline{font-size:16px;margin-bottom:6px}
+ .sn-observed p:not(.sn-label),.sn-reading p:not(.sn-label){font-size:9px;line-height:1.45}
+ .sn-label,.sn-kicker{font-size:8px}
+ .sn-reading{margin-top:6px}
+ .sn-credits{margin-top:6px;font-size:9px}
+ .sn-credits div{padding:2px 0;grid-template-columns:76px minmax(0,1fr)}
+ .sn-credits small{display:none}
+ .sn-credits div:nth-child(3) dd::after{content:" (stated)";color:var(--muted)}
+ .sn-key{margin-top:4px;font-size:8px}
+ .sn-a{row-gap:8px}
+ .sn-a-right{row-gap:8px}
+ .sn-a-cols{column-gap:16px}
+ .sn-a-foot{padding-top:6px;column-gap:16px}
+ .sn-b{row-gap:8px}
+ .sn-b-register{padding-top:6px;column-gap:14px}
+ .sn-c{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);column-gap:20px}
+ .sn-c-margin .sn-place{margin-bottom:8px}
+ .sn-c-margin .sn-headline{font-size:15px}
+}
+
+/* Short screens (phones in landscape): words in two columns beside the figures. */
+.sn-short{display:grid;column-gap:18px;min-height:0}
+.sn-short-a{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}
+.sn-short-b,.sn-short-c{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)}
+.sn-short-text{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:14px;align-content:start;min-height:0;min-width:0}
+.sn-short-head{grid-column:1 / -1}
+.sn-short-text .sn-kicker{margin-bottom:4px}
+.sn-short-text .sn-observed p:not(.sn-label),.sn-short-text .sn-reading p:not(.sn-label){line-height:1.4}
+.sn-short-figures{display:grid;min-height:0;min-width:0}
+.sn-short-b .sn-band,.sn-short-c .sn-band{justify-content:flex-end}
+.sn-short-plate{grid-template-rows:minmax(0,2fr) minmax(0,1fr);row-gap:6px}
+
+/* Study switch (review only): the footer's section-link slot, current study in Freeman red. */
+body[data-route="snapshot"] .sheet-controls .section-link{color:var(--muted);letter-spacing:.04em;max-width:none}
+body[data-route="snapshot"] .sheet-controls .section-link a{color:var(--ink);padding:0 3px}
+body[data-route="snapshot"] .sheet-controls .section-link a.is-current{color:var(--orange)}

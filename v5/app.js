@@ -39,7 +39,7 @@
     fieldwork: "Fieldwork",
     contact: "Contact",
     etcetera: "Etcetera",
-    monograph: "Project Monograph 001",
+    snapshot: "Beetlecat / Etcetera",
     notfound: "Record not found",
   };
   const PHONE = "(max-width:760px)";
@@ -108,8 +108,8 @@
     const r = { file, url, params: url.searchParams, kind: "notfound" };
     if (file === "index") r.kind = "entrance";
     else if (["company", "projects", "etcetera", "contact"].includes(file)) r.kind = file;
-    // Study (project-monograph-001): an ETCETERA object with its own route.
-    else if (file === "etcetera-monograph-001") r.kind = "monograph";
+    // Study (project-monograph-001): ETCETERA object 005, an editorial snapshot with its own route.
+    else if (file === "etcetera-snapshot-001") r.kind = "snapshot";
     // Fieldwork exists only in local --fieldwork builds (see v5-source/generate.py); publicly it is not found.
     else if (file === "fieldwork" && window.FreemanFieldwork) r.kind = file;
     else if (file.startsWith("project-")) {
@@ -645,14 +645,14 @@
     count();
     const vp = root.querySelector(".viewport");
     // Temporary public holding state. Preserve the full collection implementation below.
-    // Study branch (project-monograph-001): the approved collection is shown so the monograph can sit within it.
+    // Study branch (project-monograph-001): the approved collection is shown so the snapshot can sit within it.
     const etceteraPublicHolding = false;
     if (etceteraPublicHolding) {
       vp.innerHTML = `<div style="width:100%;height:100%;display:grid;place-items:center"><span style="font-size:12px;letter-spacing:.04em">UNDER CONSTRUCTION</span></div>`;
       return;
     }
-    loadMonographStyles();
-    vp.innerHTML = `<div class="etc-canvas etc-with-monograph">
+    loadSnapshotStyles();
+    vp.innerHTML = `<div class="etc-canvas etc-with-snapshot">
       <button class="etc-object etc-ruskin" type="button" data-etc-open="ruskin" aria-label="Open John Ruskin photograph">
         <span class="etc-object-body"><img src="/etcetera/ruskin.webp" alt="Photograph of a printed John Ruskin passage about building for future generations" /></span>
         <span class="etc-caption">001 / JOHN RUSKIN · ON BUILDING</span>
@@ -672,9 +672,9 @@
         </span>
         <span class="etc-caption">002 / A NOTE ON THE WORK</span>
       </button>
-      <a class="etc-object etc-monograph" href="etcetera-monograph-001.html" aria-label="Open Project Monograph 001, Beetlecat">
-        <span class="etc-caption">005 / PROJECT MONOGRAPH 001 · BEETLECAT</span>
-        <span class="etc-open">OPEN MONOGRAPH ↗</span>
+      <a class="etc-object etc-snapshot" href="etcetera-snapshot-001.html" aria-label="Open Beetlecat, an editorial snapshot">
+        <span class="etc-caption">005 / BEETLECAT · AN EDITORIAL SNAPSHOT</span>
+        <span class="etc-open">OPEN ↗</span>
       </a>
     </div>
     <dialog class="etc-dialog" aria-labelledby="etc-detail-title">
@@ -718,92 +718,54 @@
     }));
   }
 
-  /* ---------- Etcetera / Project Monograph 001 (study) ----------
-     Its own route under ETCETERA: a short sequence of static plates, one viewport each, in the
-     interior shell. The monograph's scripts and styles load on first use; history, palette,
-     sheets, Escape and the return to ETCETERA are the site's own. */
-  const MONOGRAPH_DIR = "/etcetera/monograph-001/", MONOGRAPH_V = "?v=001-13";
-  function loadMonographStyles() {
-    if (document.querySelector("link[data-monograph]")) return;
+  /* ---------- Etcetera 005 / Beetlecat, an editorial snapshot (study) ----------
+     One page in the interior shell, ETCETERA current; nothing scrolls. Three composition studies
+     of the same content: ?study=a|b|c, switched in the footer (same view, so it replaces history).
+     Scripts and styles load on first use; Escape and × CLOSE return through history. */
+  const SNAPSHOT_DIR = "/etcetera/snapshot-001/", SNAPSHOT_V = "?v=001-26";
+  const SNAPSHOT_STUDIES = [["a", "Spread"], ["b", "Band"], ["c", "Plate"]];
+  function loadSnapshotStyles() {
+    if (document.querySelector("link[data-snapshot]")) return;
     const css = document.createElement("link");
     css.rel = "stylesheet";
-    css.href = MONOGRAPH_DIR + "monograph.css" + MONOGRAPH_V;
-    css.dataset.monograph = "";
+    css.href = SNAPSHOT_DIR + "snapshot.css" + SNAPSHOT_V;
+    css.dataset.snapshot = "";
     document.head.append(css);
   }
-  let monographLoad = null;
-  function loadMonograph() {
-    loadMonographStyles();
+  let snapshotLoad = null;
+  function loadSnapshot() {
+    loadSnapshotStyles();
     const add = (src) => new Promise((ok, fail) => {
       const s = document.createElement("script");
-      s.src = MONOGRAPH_DIR + src + MONOGRAPH_V;
+      s.src = SNAPSHOT_DIR + src + SNAPSHOT_V;
       s.onload = ok;
       s.onerror = fail;
       document.head.append(s);
     });
-    if (!monographLoad) monographLoad = add("beetlecat.js").then(() => add("monograph.js"));
-    return monographLoad;
+    if (!snapshotLoad) snapshotLoad = add("beetlecat.js").then(() => add("snapshot.js"));
+    return snapshotLoad;
   }
-  // Production's own paging (chrome, go, count, ?sheet=, ← →): a phone recomposes some plates
-  // across two sheets, as Company does. Swipes page like the project gallery's.
-  function monograph() {
-    chrome({ title: "Etcetera / Project Monograph 001 / Beetlecat", section: "etcetera", parent: { href: "etcetera.html", focus: "monograph-001" } });
+  function snapshot() {
+    chrome({ title: "Etcetera / Beetlecat, an editorial snapshot", section: "etcetera", parent: { href: "etcetera.html", focus: "snapshot-001" } });
+    pageCount = 1;
+    count();
     const vp = root.querySelector(".viewport");
-    const label = root.querySelector(".section-link");
-    vp.classList.add("mg-viewport");
-    // Until the plates load, keep ?sheet= (count() would clamp it to a single sheet).
-    root.querySelector(".sheet-controls nav").hidden = true;
+    const study = SNAPSHOT_STUDIES.some(([id]) => id === parse(location.href).params.get("study")) ? parse(location.href).params.get("study") : "a";
+    root.querySelector(".section-link").innerHTML = `ETCETERA 005 / STUDY ${SNAPSHOT_STUDIES.map(([id, name]) =>
+      `<a class="phrase${id === study ? " is-current" : ""}" href="etcetera-snapshot-001.html?study=${id}"${id === study ? ' aria-current="page"' : ""} title="${name}">${id.toUpperCase()}</a>`).join(" ")}`;
     // Phones in portrait and short screens (phones in landscape) have their own compositions.
     const phone = matchMedia(PHONE), short = matchMedia("(max-height:500px)");
     const mode = () => (short.matches ? "short" : phone.matches ? "phone" : "desktop");
-    let live = true, sheets = [];
-    function compose() {
-      const was = pageCount;
-      sheets = window.FreemanMonograph.sheets(window.MONOGRAPH, mode());
-      pageCount = sheets.length;
-      // Keep the place when a resize changes the number of sheets.
-      if (was > 1 && was !== pageCount) pageIndex = Math.round((pageIndex * (pageCount - 1)) / (was - 1));
-      renderPage = () => {
-        const s = sheets[pageIndex];
-        vp.innerHTML = `<div class="mg-sheet" data-sheet="${pageIndex}">${s.html}</div>`;
-        label.textContent = `MONOGRAPH 001 / ${s.label.toUpperCase()}`;
-        words(vp);
-      };
-      pageIndex = Math.min(pageIndex, pageCount - 1);
-      renderPage();
-      count();
-    }
-    loadMonograph().then(
-      () => {
-        if (!live) return;
-        compose();
-        // Plates change in place: fetch every photograph once, so no plate opens blank.
-        const M = window.MONOGRAPH;
-        [...Object.values(M.plates), ...M.details].forEach((p) => { new Image().src = p.src; });
-      },
-      () => { if (live) vp.innerHTML = `<article class="reading"><p>The monograph could not be loaded.</p></article>`; },
-    );
-    const recompose = () => live && window.FreemanMonograph && compose();
-    phone.addEventListener("change", recompose);
-    short.addEventListener("change", recompose);
-    vp.addEventListener("click", (e) => {
-      const b = e.target.closest("[data-sheet-link]");
-      if (b) go(Number(b.dataset.sheetLink));
-    });
-    const EDGE = 24;
-    let x0 = 0, y0 = 0, tracking = false;
-    vp.addEventListener("touchstart", (e) => {
-      const t = e.touches[0];
-      tracking = e.touches.length === 1 && t.clientX > EDGE && t.clientX < innerWidth - EDGE;
-      x0 = t.clientX; y0 = t.clientY;
-    }, { passive: true });
-    vp.addEventListener("touchend", (e) => {
-      if (!tracking) return;
-      tracking = false;
-      const t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0;
-      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) go(pageIndex + (dx < 0 ? 1 : -1));
-    }, { passive: true });
-    return { destroy: () => { live = false; phone.removeEventListener("change", recompose); short.removeEventListener("change", recompose); } };
+    let live = true;
+    const compose = () => {
+      if (!live || !window.FreemanSnapshot) return;
+      vp.innerHTML = window.FreemanSnapshot.compose(window.SNAPSHOT, study, mode());
+      words(vp);
+    };
+    loadSnapshot().then(compose, () => { if (live) vp.innerHTML = `<article class="reading"><p>The snapshot could not be loaded.</p></article>`; });
+    phone.addEventListener("change", compose);
+    short.addEventListener("change", compose);
+    return { destroy: () => { live = false; phone.removeEventListener("change", compose); short.removeEventListener("change", compose); } };
   }
 
   function contact() {
@@ -947,14 +909,14 @@
       galleryKey = null;
       view = {
         kind: route.kind,
-        detail: () => route.kind === "project" || route.kind === "monograph",
+        detail: () => route.kind === "project" || route.kind === "snapshot",
         key: (e) => (galleryKey ? galleryKey(e) : false),
         save: () => {
           if (route.kind !== "projects") return {};
           const scroller = root.querySelector(".pi-scroller");
           return { focus: currentFocus(), projScroll: scroller ? scroller.scrollTop : 0 };
         },
-        resize: ["company", "projects", "etcetera", "contact", "monograph"].includes(route.kind) ? null : () => render(parse(location.href), { ...hist.state, focus: currentFocus() }),
+        resize: ["company", "projects", "etcetera", "contact", "snapshot"].includes(route.kind) ? null : () => render(parse(location.href), { ...hist.state, focus: currentFocus() }),
       };
       if (route.kind === "entrance") Object.assign(view, entrance({ play: !pop }));
       else if (route.kind === "company") company();
@@ -962,7 +924,7 @@
       else if (route.kind === "project") project(route.item);
       else if (route.kind === "contact") contact();
       else if (route.kind === "etcetera") etcetera();
-      else if (route.kind === "monograph") Object.assign(view, monograph());
+      else if (route.kind === "snapshot") Object.assign(view, snapshot());
       else notFound();
       document.title = (route.item ? route.item.name : TITLES[route.kind]) + " — Freeman GC";
     }
