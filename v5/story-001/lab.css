@@ -1,0 +1,69 @@
+/* Project Story 001 — shared tokens and the laboratory frame.
+   Tokens are the production values from v5/styles.css; nothing new is introduced. */
+:root{
+  --paper:#fff9f1;
+  --ink:#332e20;
+  --muted:#706659;
+  --hair:#d5cec3;
+  --red:#f93822;
+  --mono:Monaco,"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  --gutter:30px;
+  --cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='21' height='21' viewBox='0 0 21 21'%3E%3Cpath d='M10.5 1v19M1 10.5h19' stroke='%2330312f' stroke-width='1'/%3E%3Crect x='9' y='9' width='3' height='3' fill='%23f05a28'/%3E%3C/svg%3E") 10 10,crosshair;
+  --cursor-act:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='21' height='21' viewBox='0 0 21 21'%3E%3Cpath d='M10.5 1v19M1 10.5h19' stroke='%23f05a28' stroke-width='1'/%3E%3Crect x='8.5' y='8.5' width='4' height='4' fill='%23f05a28'/%3E%3C/svg%3E") 10 10,crosshair;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--paper);color:var(--ink);font-family:var(--mono);-webkit-font-smoothing:none;text-rendering:geometricPrecision}
+body{cursor:var(--cursor)}
+a,button{font:inherit;color:inherit;text-decoration:none;cursor:var(--cursor-act);background:none;border:0;padding:0;border-radius:0}
+a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--red);outline-offset:4px}
+h1,h2,h3,p,figure,ol,ul,dl,dd{margin:0;padding:0;font-weight:400}
+ol,ul{list-style:none}
+img{display:block;max-width:100%}
+[hidden]{display:none!important}
+.hl:hover,.hl:focus-visible,.hl.is-on{background:var(--red);color:var(--paper);outline:none}
+.muted{color:var(--muted)}
+.red{color:var(--red)}
+.micro{font-size:9px;line-height:1.5;letter-spacing:.04em;text-transform:uppercase}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+
+/* The lab frame: one line, top of every page, in the production panel-head register. */
+.lab{position:fixed;z-index:50;left:0;right:0;top:0;padding:24px var(--gutter) 8px;background:var(--paper);display:flex;justify-content:space-between;align-items:baseline;gap:20px;font-size:10px;line-height:1.5;letter-spacing:.035em;text-transform:uppercase;pointer-events:none}
+.lab>*{pointer-events:auto}
+.lab nav{display:flex;flex-wrap:wrap;gap:0 4px;align-items:baseline}
+.lab .sep{color:#9a9c97;padding:0 7px}
+.lab a[aria-current="page"]{color:var(--red)}
+.lab a:hover{background:var(--red);color:var(--paper)}
+.lab .tools{display:flex;gap:22px;white-space:nowrap}
+.lab .study-tag{color:var(--muted)}
+body.lab-hidden .lab{visibility:hidden}
+.lab{pointer-events:auto}
+
+/* About this study: a plain sheet over the page. */
+.about{position:fixed;inset:0;z-index:60;background:var(--paper);display:none;overflow:auto}
+.about.open{display:block}
+.about-inner{width:min(760px,calc(100% - 2*var(--gutter)));margin:0 auto;padding:110px 0 80px}
+.about h2{font-size:clamp(22px,2.6vw,34px);line-height:1.15;letter-spacing:-.03em;text-transform:uppercase;margin-bottom:34px}
+.about dl{display:grid;grid-template-columns:150px 1fr;border-top:1px solid var(--hair)}
+.about dt,.about dd{padding:13px 0;border-bottom:1px solid var(--hair);font-size:12px;line-height:1.65}
+.about dt{font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);padding-top:15px}
+.about .close-about{position:fixed;top:24px;right:var(--gutter);font-size:10px;letter-spacing:.035em;text-transform:uppercase}
+.about .close-about:hover{background:var(--red);color:var(--paper)}
+
+@media(max-width:760px){
+  :root{--gutter:18px}
+  .lab{padding-top:max(16px,env(safe-area-inset-top));font-size:9px;flex-direction:row}
+  .lab .sep{padding:0 4px}
+  .lab .long{display:none}
+  .lab .tools{gap:14px}
+  .about dl{grid-template-columns:1fr}
+  .about dt{border-bottom:0;padding-bottom:0}
+  .about-inner{padding-top:80px}
+}
+@media(pointer:coarse){
+  body{cursor:auto}
+  .lab a,.lab button{position:relative}
+  .lab a:after,.lab button:after{content:"";position:absolute;inset:-14px -5px}
+  .hl:hover{background:transparent;color:inherit}
+  .hl.is-on{background:var(--red);color:var(--paper)}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}

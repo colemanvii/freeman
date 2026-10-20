@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#fff9f1">
+<title>Project Story 001 — Freeman GC laboratory</title>
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="lab.css">
+<style>
+html,body{overflow:hidden}
+.top{position:fixed;left:var(--gutter);right:var(--gutter);top:24px;display:flex;justify-content:space-between;gap:20px;font-size:10px;line-height:1.5;letter-spacing:.035em;text-transform:uppercase}
+.top .brand{font-weight:700}
+.top .muted b{font-weight:400;color:var(--red)}
+.wrap{position:fixed;inset:84px var(--gutter) 30px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.18fr);gap:clamp(40px,6vw,110px)}
+.wrap>*{min-height:0}
+
+/* Left: the governing idea and the material. */
+.thesis{display:flex;flex-direction:column;gap:clamp(18px,3vh,30px)}
+.thesis h1{font-size:clamp(28px,3.5vw,56px);line-height:1.04;letter-spacing:-.045em;text-transform:uppercase}
+.thesis h1 span{display:block}
+.thesis .lede{font-size:12px;line-height:1.7;max-width:50ch}
+.ledger{margin-top:auto}
+.ledger table{width:100%;border-collapse:collapse}
+.ledger th,.ledger td{text-align:left;font-weight:400;border-top:1px solid var(--hair);padding:6px 0;font-size:11px;line-height:1.45;vertical-align:baseline}
+.ledger th{font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);width:44%}
+.ledger td.n{width:34px;text-align:right;padding-right:14px}
+.ledger tr.zero td{color:var(--red)}
+.ledger caption{text-align:left;font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);padding-bottom:8px}
+
+/* Right: the three studies. */
+.right{display:flex;flex-direction:column;min-height:0}
+.tabs{display:flex;gap:24px;font-size:10px;letter-spacing:.035em;text-transform:uppercase;border-bottom:1px solid var(--hair);padding-bottom:12px}
+.tabs button[aria-selected="true"]{color:var(--red)}
+.tabs button:hover{background:var(--red);color:var(--paper)}
+.panel{flex:1;min-height:0;display:none;overflow:auto;scrollbar-width:none}
+.panel::-webkit-scrollbar{display:none}
+.panel.on{display:flex;flex-direction:column}
+.panel:not(.on){display:none!important}
+
+.study{display:grid;grid-template-columns:44px minmax(0,1fr) 150px;gap:18px;align-items:start;padding:clamp(14px,2.6vh,26px) 0;border-bottom:1px solid var(--hair);flex:1 0 auto}
+.study:last-child{border-bottom:0}
+.study .k{font-size:clamp(26px,2.6vw,40px);line-height:1;letter-spacing:-.04em}
+.study h2{font-size:clamp(18px,1.9vw,28px);line-height:1.05;letter-spacing:-.035em;text-transform:uppercase;margin-bottom:8px}
+.study h2 .phrase{padding:0 .05em}
+.study:hover h2 .phrase,.study:focus-visible h2 .phrase{background:var(--red);color:var(--paper)}
+.study:hover .k,.study:focus-visible .k{color:var(--red)}
+.study:focus-visible{outline:none}
+.study p.line{font-size:12px;line-height:1.6;max-width:52ch;margin-bottom:12px}
+.study dl{display:grid;grid-template-columns:96px 1fr;gap:3px 12px;font-size:10px;line-height:1.5}
+.study dt{font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.study svg{width:150px;height:96px;display:block}
+.study svg *{vector-effect:non-scaling-stroke}
+
+.compare table{width:100%;border-collapse:collapse;margin-top:6px}
+.compare th,.compare td{text-align:left;vertical-align:top;font-weight:400;border-bottom:1px solid var(--hair);padding:9px 12px 9px 0;font-size:11px;line-height:1.5}
+.compare thead th{font-size:10px;letter-spacing:.035em;text-transform:uppercase;padding-top:14px}
+.compare thead th a:hover{background:var(--red);color:var(--paper)}
+.compare tbody th{font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);width:20%}
+.compare .note{font-size:10px;line-height:1.6;color:var(--muted);margin-top:16px;max-width:70ch}
+
+.prov{padding-top:16px;display:flex;flex-direction:column;gap:18px}
+.prov h3{font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.prov p,.prov li{font-size:11px;line-height:1.65;max-width:68ch}
+.prov ol{display:flex;flex-direction:column;gap:6px;counter-reset:r}
+.prov ol li{counter-increment:r;display:grid;grid-template-columns:26px 1fr}
+.prov ol li:before{content:counter(r,decimal-leading-zero);font-size:9px;color:var(--muted);padding-top:2px}
+.prov blockquote{margin:0;border-left:1px solid var(--red);padding-left:14px;font-size:11px;line-height:1.65;max-width:68ch}
+.foot{font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border-top:1px solid var(--hair);padding-top:12px;display:flex;gap:18px;flex-wrap:wrap}
+.foot kbd{font:inherit;color:var(--ink)}
+
+@media(max-width:860px){
+  html,body{overflow:auto;height:auto}
+  .top{position:static;padding:max(18px,env(safe-area-inset-top)) var(--gutter) 0;flex-direction:column;gap:4px}
+  .wrap{position:static;display:flex;flex-direction:column;gap:36px;padding:34px var(--gutter) 40px}
+  .ledger{margin-top:0}
+  .panel{overflow:visible}
+  .study{grid-template-columns:34px minmax(0,1fr);flex:none}
+  .study svg{display:none}
+  .compare{overflow-x:auto}
+  .compare table{min-width:620px}
+  .foot{display:none}
+}
+@media(max-height:760px) and (min-width:861px){.study p.line{margin-bottom:6px}.study dl{gap:1px 12px}.thesis{gap:14px}.ledger th,.ledger td{padding:4px 0}}
+</style>
+</head>
+<body>
+<header class="top">
+  <span><span class="brand">Freeman GC</span> · Creative laboratory</span>
+  <span class="muted">Project Story 001 · Issued 19 Oct 2026 · <b>Study, not published</b></span>
+</header>
+
+<div class="wrap">
+  <section class="thesis">
+    <p class="micro muted">Project Story 001 · The Optimist, Atlanta, Georgia · Hospitality</p>
+    <h1><span>The result proves taste.</span><span>The evidence proves capability.</span></h1>
+    <p class="lede">One hospitality project, told three ways from the same material. Each study changes what comes first, how the material is ordered, and what the visitor does with their hands. Nothing has been invented. Where evidence is missing, the studies say so.</p>
+    <div class="ledger">
+      <table>
+        <caption>Material on file</caption>
+        <tr><td class="n">7</td><th>Photographs</th><td>Jared Swafford, as published by Freeman</td></tr>
+        <tr><td class="n">1</td><th>Drawing</th><td>The sign, Freeman GC archive</td></tr>
+        <tr><td class="n">1</td><th>Project account</th><td>Freeman’s published text, quoted verbatim</td></tr>
+        <tr><td class="n">4</td><th>Credits</th><td>Client, interior design, photography, construction</td></tr>
+        <tr class="zero"><td class="n">0</td><th>Field photographs</th><td>None on file</td></tr>
+        <tr class="zero"><td class="n">0</td><th>Dated records</th><td>No schedule, cost or drawing record</td></tr>
+        <tr><td class="n">2</td><th>Withheld</th><td>Square footage and year: unconfirmed template credits</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="right">
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" aria-selected="true" aria-controls="p-studies" id="t-studies">Three studies</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="p-compare" id="t-compare">Compare</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="p-prov" id="t-prov">Provenance &amp; rules</button>
+    </div>
+
+    <div class="panel on" id="p-studies" role="tabpanel" aria-labelledby="t-studies">
+      <a class="study" href="a/">
+        <span class="k">A</span>
+        <div>
+          <h2><span class="phrase">Approach</span></h2>
+          <p class="line">From the sign on the street to lettering on a tabletop. The result first, one view at a time, ordered by distance. The record of what Freeman built is the destination.</p>
+          <dl><dt>Leads with</dt><dd>The result</dd><dt>Structure</dt><dd>One axis, by distance</dd><dt>Control</dt><dd>A distance rule</dd></dl>
+        </div>
+        <svg viewBox="0 0 150 96" aria-hidden="true"><rect x="6" y="10" width="104" height="70" fill="none" stroke="#332e20"/><line x1="142" y1="6" x2="142" y2="92" stroke="#332e20"/><g stroke="#332e20"><line x1="134" y1="10" x2="142" y2="10"/><line x1="137" y1="22" x2="142" y2="22"/><line x1="134" y1="34" x2="142" y2="34"/><line x1="137" y1="46" x2="142" y2="46"/><line x1="134" y1="70" x2="142" y2="70"/><line x1="134" y1="82" x2="142" y2="82"/></g><rect x="138.5" y="54.5" width="7" height="7" fill="#f93822"/><line x1="6" y1="88" x2="110" y2="88" stroke="#d5cec3"/></svg>
+      </a>
+      <a class="study" href="b/">
+        <span class="k">B</span>
+        <div>
+          <h2><span class="phrase">Account</span></h2>
+          <p class="line">Fourteen plain sentences. Each opens what stands behind it: a photograph, a drawing, a credit, or an honest empty frame. Marks show how much is shown and how much is only stated.</p>
+          <dl><dt>Leads with</dt><dd>The evidence, and its absence</dd><dt>Structure</dt><dd>An argument, sentence by sentence</dd><dt>Control</dt><dd>The sentences themselves</dd></dl>
+        </div>
+        <svg viewBox="0 0 150 96" aria-hidden="true"><g stroke="#332e20"><line x1="4" y1="14" x2="76" y2="14"/><line x1="4" y1="24" x2="70" y2="24"/><line x1="4" y1="34" x2="78" y2="34"/><line x1="4" y1="54" x2="72" y2="54"/><line x1="4" y1="64" x2="60" y2="64"/></g><rect x="4" y="41" width="56" height="6" fill="#f93822"/><rect x="92" y="10" width="54" height="56" fill="none" stroke="#f93822" stroke-dasharray="3 2"/><g fill="#332e20"><rect x="4" y="82" width="5" height="5"/><rect x="11" y="82" width="5" height="5"/><rect x="18" y="82" width="5" height="5"/></g><g fill="none" stroke="#f93822"><rect x="25.5" y="82.5" width="4" height="4"/><rect x="32.5" y="82.5" width="4" height="4"/><rect x="39.5" y="82.5" width="4" height="4"/></g><line x1="92" y1="76" x2="146" y2="76" stroke="#d5cec3"/><line x1="92" y1="84" x2="146" y2="84" stroke="#d5cec3"/></svg>
+      </a>
+      <a class="study" href="c/">
+        <span class="k">C</span>
+        <div>
+          <h2><span class="phrase">Sheet</span></h2>
+          <p class="line">The project told in the architecture world’s own document: one drawing sheet with general notes, an elevation, eleven details and a title block naming every party. Four details are drawn empty, awaiting evidence.</p>
+          <dl><dt>Leads with</dt><dd>The people and the record</dd><dt>Structure</dt><dd>Everything at once</dd><dt>Control</dt><dd>Detail callouts</dd></dl>
+        </div>
+        <svg viewBox="0 0 150 96" aria-hidden="true"><rect x="3" y="6" width="144" height="86" fill="none" stroke="#332e20"/><line x1="28" y1="6" x2="28" y2="92" stroke="#332e20"/><line x1="122" y1="6" x2="122" y2="92" stroke="#332e20"/><g fill="none" stroke="#332e20"><rect x="33" y="11" width="30" height="22"/><rect x="67" y="11" width="50" height="22"/><rect x="33" y="38" width="25" height="20"/><rect x="62" y="38" width="25" height="20"/><rect x="91" y="38" width="26" height="20"/><rect x="33" y="63" width="12" height="24"/><rect x="48" y="63" width="12" height="24"/><rect x="63" y="63" width="12" height="24"/></g><g fill="none" stroke="#f93822" stroke-dasharray="2 2"><rect x="80" y="63" width="17" height="10"/><rect x="100" y="63" width="17" height="10"/><rect x="80" y="77" width="17" height="10"/><rect x="100" y="77" width="17" height="10"/></g><g stroke="#332e20"><line x1="122" y1="22" x2="147" y2="22"/><line x1="122" y1="34" x2="147" y2="34"/><line x1="122" y1="46" x2="147" y2="46"/><line x1="122" y1="78" x2="147" y2="78"/></g><g stroke="#d5cec3"><line x1="7" y1="14" x2="24" y2="14"/><line x1="7" y1="20" x2="24" y2="20"/><line x1="7" y1="26" x2="22" y2="26"/><line x1="7" y1="32" x2="24" y2="32"/></g></svg>
+      </a>
+    </div>
+
+    <div class="panel compare" id="p-compare" role="tabpanel" aria-labelledby="t-compare">
+      <table>
+        <thead><tr><th></th><th><a href="a/">A · Approach</a></th><th><a href="b/">B · Account</a></th><th><a href="c/">C · Sheet</a></th></tr></thead>
+        <tbody>
+          <tr><th>First thing seen</th><td>The name, then the sign</td><td>A paragraph about the place</td><td>The whole sheet at once</td></tr>
+          <tr><th>Where evidence sits</th><td>At the end, as the destination</td><td>Behind every sentence</td><td>In the notes, the title block and the empty details</td></tr>
+          <tr><th>Missing evidence</th><td>Named once, in the record</td><td>Drawn as empty frames; counted</td><td>Drawn as empty details 8–11</td></tr>
+          <tr><th>People</th><td>Credits in the record</td><td>Credits as sentences</td><td>The title block, role by role</td></tr>
+          <tr><th>Motion</th><td>A red locator on the rule</td><td>None; instant highlight</td><td>One: a detail opens from its place</td></tr>
+          <tr><th>On a phone</th><td>Swipe through; rule runs along the bottom</td><td>Read, tap a sentence, an exhibit rises</td><td>The sheet becomes a sequence</td></tr>
+          <tr><th>Speaks most to</th><td>Guests, operators</td><td>Owners and developers weighing a builder</td><td>Architects and interior designers</td></tr>
+          <tr><th>Risk</th><td>Closest to a familiar gallery</td><td>Candour may read as weakness</td><td>Dense; empty details are visible</td></tr>
+          <tr><th>Gets better with</th><td>Fixed-position field photographs</td><td>Any dated record</td><td>Shop drawings; a second sheet, PS-002</td></tr>
+        </tbody>
+      </table>
+      <p class="note">The three are not exclusive. A plausible public form leads with A, links each claim to B’s standard of proof, and offers C to the architects and designers Freeman wants to work with.</p>
+    </div>
+
+    <div class="panel prov" id="p-prov" role="tabpanel" aria-labelledby="t-prov">
+      <h3>Rules of this study</h3>
+      <ol>
+        <li>Only real material. No invented photographs, credits, client statements, dates, quantities or construction facts.</li>
+        <li>Photographs are the originals from Freeman’s published portfolio, unaltered. Captions and keynotes describe only what is visible.</li>
+        <li>No photograph has been matched to Freeman’s scope, so no visible element is attributed to Freeman’s work.</li>
+        <li>Design credit belongs to Chuck Marie Studio. Freeman is credited for construction only.</li>
+        <li>Square footage (2,000+) and completion year (2024) appear only in legacy template credits. The live site omits them; so do these studies.</li>
+        <li>Missing evidence is shown as missing, never filled in.</li>
+      </ol>
+      <h3>Source text · Freeman’s published project account, verbatim</h3>
+      <blockquote id="source-text"></blockquote>
+      <h3>Evidence that would complete the story</h3>
+      <ol id="awaiting"></ol>
+      <h3>Isolation</h3>
+      <p>Branch <code>study/project-story-001</code>, cut from the production release. Served only on its Cloudflare Access–protected preview. Not linked from the public site, marked noindex, and not merged into the production branch or main.</p>
+    </div>
+
+    <p class="foot"><span><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> open a study</span><span>Inside a study: <kbd>[</kbd> <kbd>]</kbd> previous / next</span><span><kbd>I</kbd> about</span><span><kbd>\</kbd> hide the lab frame</span></p>
+  </section>
+</div>
+
+<script src="evidence.js"></script>
+<script>
+(() => {
+  'use strict';
+  const S = window.STORY;
+  document.getElementById('source-text').textContent = '“' + S.sourceText + '”';
+  document.getElementById('awaiting').innerHTML = S.awaiting.map(a => `<li>${a}</li>`).join('');
+
+  const tabs = [...document.querySelectorAll('[role="tab"]')];
+  function pick(t) {
+    tabs.forEach(x => {
+      const on = x === t;
+      x.setAttribute('aria-selected', on);
+      document.getElementById(x.getAttribute('aria-controls')).classList.toggle('on', on);
+    });
+    history.replaceState(null, '', t.id === 't-studies' ? location.pathname : '#' + t.id.slice(2));
+  }
+  tabs.forEach(t => t.addEventListener('click', () => pick(t)));
+  const fromHash = document.getElementById('t-' + location.hash.slice(1));
+  if (fromHash) pick(fromHash);
+
+  addEventListener('keydown', e => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const go = { '1': 'a/', '2': 'b/', '3': 'c/', 'a': 'a/', 'b': 'b/', 'c': 'c/' }[e.key.toLowerCase()];
+    if (go) location.href = go;
+  });
+})();
+</script>
+</body>
+</html>

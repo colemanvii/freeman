@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#fff9f1">
+<title>C · Sheet — Project Story 001</title>
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="../lab.css">
+<style>
+html,body{overflow:hidden}
+
+/* One drawing sheet: notes, field of details, title block. */
+.sheet{position:fixed;top:60px;left:var(--gutter);right:var(--gutter);bottom:26px;border:1px solid var(--ink);display:grid;grid-template-columns:clamp(210px,17vw,270px) minmax(0,1fr) clamp(200px,15.5vw,240px)}
+.sheet>*{min-height:0;min-width:0}
+.notes{border-right:1px solid var(--ink);padding:16px 16px 14px;display:flex;flex-direction:column;gap:16px;overflow:hidden}
+.tb{border-left:1px solid var(--ink);display:flex;flex-direction:column}
+.h{font-size:9px;line-height:1.4;letter-spacing:.06em;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px}
+.notes ol{counter-reset:n;display:flex;flex-direction:column;gap:7px}
+.notes ol li{counter-increment:n;display:grid;grid-template-columns:20px 1fr;font-size:9px;line-height:1.5;letter-spacing:.03em;text-transform:uppercase}
+.notes ol li:before{content:counter(n) "."}
+.notes .ref{color:var(--red)}
+.legend{display:grid;grid-template-columns:22px 1fr;gap:6px 6px;align-items:center;font-size:9px;line-height:1.4;letter-spacing:.03em;text-transform:uppercase}
+.legend i{display:block;justify-self:start}
+.legend .k{width:7px;height:7px;background:var(--red)}
+.legend .a{width:16px;height:11px;border:1px dashed var(--red)}
+.legend .b{width:15px;height:15px;border:1px solid var(--ink);border-radius:50%}
+.withheld{display:flex;flex-direction:column;gap:6px}
+.withheld li{font-size:9px;line-height:1.5;letter-spacing:.03em;text-transform:uppercase;color:var(--muted)}
+.withheld li s{color:var(--ink)}
+.withheld li span{display:block}
+.lit{background:var(--red)!important;color:var(--paper)!important}
+[data-link]{cursor:var(--cursor-act)}
+
+/* The field. */
+.field{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:1.1fr .95fr 1.2fr;padding:6px 10px}
+.d{position:relative;display:flex;flex-direction:column;padding:10px 10px 8px;min-height:0;min-width:0;text-align:left}
+.d .view{flex:1;min-height:0;position:relative;display:flex;align-items:flex-end;justify-content:flex-start}
+.d .fit{position:relative;flex:none}
+.d .fit img{width:100%;height:100%}
+.d .pin{position:absolute;width:6px;height:6px;margin:-3px 0 0 -3px;background:var(--red);box-shadow:0 0 0 1px var(--paper);display:none}
+.d:hover .pin,.d:focus-visible .pin,.d.hot .pin{display:block}
+.d .ttl{flex:none;display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;margin-top:7px}
+.bub{width:24px;height:24px;border:1px solid var(--ink);border-radius:50%;display:grid;grid-template-rows:1fr 1fr;font-size:7px;line-height:1;text-align:center;overflow:hidden;background:var(--paper)}
+.bub span{display:flex;align-items:center;justify-content:center}
+.bub span:first-child{border-bottom:1px solid var(--ink);font-size:8px}
+.d .t{display:flex;flex-direction:column;gap:2px;min-width:0}
+.d .t b{font-weight:400;font-size:10px;line-height:1.3;letter-spacing:.04em;text-transform:uppercase;border-bottom:1px solid var(--ink);padding-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.d .t small{font-size:8px;line-height:1.3;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.d:hover .bub,.d:focus-visible .bub,.d.lit-d .bub{background:var(--red);border-color:var(--red);color:var(--paper)}
+.d:hover .bub span:first-child,.d.lit-d .bub span:first-child{border-color:var(--paper)}
+.d:focus-visible{outline:1px solid var(--red);outline-offset:-2px}
+.d.elev .fit img{mix-blend-mode:multiply}
+.await-group{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;min-height:0}
+.d.await .view{border:1px dashed var(--red);align-items:center;justify-content:center;text-align:center;padding:6px}
+.d.await .view p{font-size:8px;line-height:1.4;letter-spacing:.05em;text-transform:uppercase;color:var(--red)}
+.d.await .bub{border-style:dashed}
+.d.await.lit-d .view{background:rgba(249,56,34,.06)}
+
+/* Title block. */
+.tb .cell{border-bottom:1px solid var(--ink);padding:8px 12px;display:flex;flex-direction:column;gap:2px}
+.tb .cell:last-child{border-bottom:0}
+.tb .lbl{font-size:7.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.tb .val{font-size:10px;line-height:1.35;letter-spacing:.03em;text-transform:uppercase}
+.tb .brand{padding:12px}
+.tb .brand .val{font-weight:700;font-size:13px;letter-spacing:.01em}
+.tb .proj .val{font-size:14px;line-height:1.15;letter-spacing:-.01em}
+.tb .grow{flex:1}
+.tb .rev table{border-collapse:collapse;width:100%;font-size:8px;letter-spacing:.04em;text-transform:uppercase}
+.tb .rev td{padding:2px 4px 2px 0;vertical-align:top;border-top:1px solid var(--hair)}
+.tb .no{flex-direction:row;justify-content:space-between;align-items:flex-end}
+.tb .no .val{font-size:clamp(22px,2vw,30px);letter-spacing:-.04em;line-height:1}
+.tb [data-link]:hover .val,.tb [data-link]:focus-visible .val{background:var(--red);color:var(--paper)}
+
+/* Detail view: the detail grows out of its place on the sheet. */
+.zoom{position:fixed;inset:60px var(--gutter) 26px;background:var(--paper);border:1px solid var(--ink);z-index:30;display:none;grid-template-columns:minmax(0,1fr) clamp(240px,22vw,320px)}
+.zoom.open{display:grid}
+.zoom .zview{position:relative;display:flex;align-items:center;justify-content:center;padding:24px;min-height:0;min-width:0;border-right:1px solid var(--ink)}
+.zoom .fit{position:relative;flex:none}
+.zoom .fit img{width:100%;height:100%}
+.zoom .elev img{mix-blend-mode:multiply}
+.zoom .pin{position:absolute;width:15px;height:15px;margin:-7.5px 0 0 -7.5px;background:var(--red);color:var(--paper);font-size:8px;line-height:15px;text-align:center;box-shadow:0 0 0 1px var(--paper)}
+.zoom .pin.hot{background:var(--ink)}
+.zoom .zempty{position:absolute;inset:24px;border:1px dashed var(--red);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:30px}
+.zoom .zempty p{font-size:12px;line-height:1.6;max-width:40ch}
+.zoom .zempty .micro{color:var(--red)}
+.zoom aside{display:flex;flex-direction:column;gap:16px;padding:18px;min-height:0;overflow:auto}
+.zoom .zhead{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center}
+.zoom .zhead .bub{width:40px;height:40px;font-size:10px}
+.zoom .zhead .bub span:first-child{font-size:12px}
+.zoom h2{font-size:18px;line-height:1.15;letter-spacing:-.02em;text-transform:uppercase}
+.zoom .cap{font-size:11px;line-height:1.6}
+.zoom .keys{border-top:1px solid var(--hair)}
+.zoom .keys li{display:grid;grid-template-columns:26px 1fr;border-bottom:1px solid var(--hair);padding:6px 0;font-size:10px;line-height:1.5;letter-spacing:.03em;text-transform:uppercase;cursor:var(--cursor-act)}
+.zoom .keys li b{font-weight:400;color:var(--red)}
+.zoom .keys li.hot{background:var(--red);color:var(--paper)}
+.zoom .keys li.hot b{color:var(--paper)}
+.zoom .fine{font-size:9px;line-height:1.55;letter-spacing:.03em;text-transform:uppercase;color:var(--muted)}
+.zoom .znav{margin-top:auto;display:flex;justify-content:space-between;align-items:center;font-size:10px;letter-spacing:.035em;text-transform:uppercase;border-top:1px solid var(--hair);padding-top:12px}
+.zoom .znav button:hover{background:var(--red);color:var(--paper)}
+.ghost{position:fixed;z-index:35;pointer-events:none;border:1px solid var(--red);transition:all .22s cubic-bezier(.2,.7,.2,1)}
+
+@media(max-width:900px){
+  html,body{overflow:auto;height:auto}
+  .sheet{position:static;margin:56px var(--gutter) 30px;display:flex;flex-direction:column}
+  .tb{order:-1;border-left:0;border-bottom:1px solid var(--ink);display:grid;grid-template-columns:1fr 1fr}
+  .tb .cell{border-right:1px solid var(--hair)}
+  .tb .brand,.tb .proj{grid-column:1/-1}
+  .tb .grow{display:none}
+  .field{display:flex;flex-direction:column;padding:0}
+  .d{height:auto;padding:14px 12px;border-bottom:1px solid var(--hair)}
+  .d .view{height:56vw;max-height:420px;flex:none}
+  .d.tall .view{height:110vw;max-height:620px}
+  .await-group{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .await-group .d .view{height:32vw;min-height:110px}
+  .notes{order:2;border-right:0;border-top:1px solid var(--ink);overflow:visible}
+  .zoom{inset:0;top:0;grid-template-columns:1fr;grid-template-rows:minmax(0,1.3fr) minmax(0,1fr);border:0;z-index:70}
+  .zoom .zview{border-right:0;border-bottom:1px solid var(--ink);padding:14px}
+  .zoom aside{padding:14px var(--gutter) max(16px,env(safe-area-inset-bottom))}
+  .d .pin{display:none!important}
+}
+@media(max-height:720px) and (min-width:901px){
+  .notes{gap:10px}.notes ol{gap:4px}.notes ol li{font-size:8px}
+  .tb .cell{padding:5px 10px}.tb .val{font-size:9px}
+}
+</style>
+</head>
+<body data-study="c">
+<main class="sheet" id="sheet" aria-label="Sheet PS-001, The Optimist">
+  <section class="notes" aria-label="General notes">
+    <h2 class="h">General notes</h2>
+    <ol id="gen-notes">
+      <li><span>The work: refresh of the Oyster Bar at The Optimist, Atlanta, Georgia.</span></li>
+      <li><span>Schedule: three weeks. Finished on time and under budget, per Freeman’s published account. No schedule or cost record attached.</span></li>
+      <li><span data-link="d8">Custom radius window. <span class="ref">See 8.</span></span></li>
+      <li><span data-link="d9">Radius tile around the oven. <span class="ref">See 9.</span></span></li>
+      <li><span data-link="d10">Custom millwork pieces. <span class="ref">See 10.</span></span></li>
+      <li><span data-link="d11">Custom stainless steel pieces. <span class="ref">See 11.</span></span></li>
+      <li><span data-link="d1 d2 d3 d4 d5 d6 d7">Details 1–7 are photographs of the finished restaurant. They are not keyed to notes 3–6.</span></li>
+      <li><span>Keynotes identify only what is visible. They do not attribute work.</span></li>
+      <li><span>Interior design by Chuck Marie Studio. Freeman claims construction only.</span></li>
+      <li><span>Do not scale from photographs.</span></li>
+    </ol>
+    <h2 class="h">Legend</h2>
+    <div class="legend">
+      <i class="b"></i><span>Detail reference</span>
+      <i class="k"></i><span>Keynote, visible in photograph</span>
+      <i class="a"></i><span>Detail awaiting evidence</span>
+    </div>
+    <h2 class="h">Withheld</h2>
+    <ul class="withheld">
+      <li><s>2,000+ sq. ft.</s><span>Unconfirmed template credit</span></li>
+      <li><s>Complete 2024</s><span>Unconfirmed template credit</span></li>
+    </ul>
+  </section>
+
+  <section class="field" id="field" aria-label="Details"></section>
+
+  <section class="tb" aria-label="Title block">
+    <div class="cell brand"><span class="val">Freeman GC</span><span class="lbl">General contractors · Cartersville, Georgia</span></div>
+    <div class="cell proj"><span class="lbl">Project</span><span class="val">The Optimist</span><span class="lbl">Oyster Bar refresh · Hospitality</span></div>
+    <div class="cell" data-link="d7"><span class="lbl">Location</span><span class="val">Atlanta, Georgia</span><span class="lbl">Lat. 33°46′48.216″N, as lettered on a table · see 7</span></div>
+    <div class="cell"><span class="lbl">Client</span><span class="val">Rocket Farm Restaurants</span></div>
+    <div class="cell"><span class="lbl">Interior design</span><span class="val">Chuck Marie Studio</span></div>
+    <div class="cell"><span class="lbl">Construction</span><span class="val">Freeman GC</span></div>
+    <div class="cell" data-link="d1 d2 d3 d4 d5 d6 d7"><span class="lbl">Photography · details 1–7</span><span class="val">Jared Swafford</span></div>
+    <div class="cell" data-link="d0"><span class="lbl">Drawing · elevation</span><span class="val">Freeman GC archive</span></div>
+    <div class="cell"><span class="lbl">Schedule</span><span class="val">Three weeks</span></div>
+    <div class="cell grow"></div>
+    <div class="cell rev"><span class="lbl">Revisions</span>
+      <table><tr><td>0</td><td>—</td><td>Published account, freemangc.com</td></tr><tr><td>1</td><td>19.10.26</td><td>Project story, study 001</td></tr></table>
+    </div>
+    <div class="cell"><span class="lbl">Scale</span><span class="val">Not to scale</span></div>
+    <div class="cell no"><div><span class="lbl">Sheet</span><br><span class="val">PS-001</span></div><span class="lbl">Study · not for<br>publication</span></div>
+  </section>
+</main>
+
+<section class="zoom" id="zoom" role="dialog" aria-modal="true" aria-label="Detail">
+  <div class="zview" id="zview"></div>
+  <aside>
+    <div class="zhead"><span class="bub" id="zbub"><span></span><span>PS1</span></span><div><p class="micro muted" id="zkind"></p><h2 id="ztitle"></h2></div></div>
+    <p class="cap" id="zcap"></p>
+    <ol class="keys" id="zkeys"></ol>
+    <p class="fine" id="zfine"></p>
+    <nav class="znav"><button type="button" id="zprev">← Prev</button><span id="zcount"></span><button type="button" id="znext">Next →</button></nav>
+    <button type="button" class="micro" id="zclose" style="align-self:flex-start">× Back to sheet</button>
+  </aside>
+</section>
+
+<template id="about-study">
+  <h2>C · Sheet</h2>
+  <dl>
+    <dt>Thesis</dt><dd>Architects and designers read drawing sheets. Tell the project in their native document: one sheet, everything at once, with a title block that names every party and its exact role, and general notes that state the scope as a builder would.</dd>
+    <dt>Structure</dt><dd>Elevation (the archive drawing of the sign), seven photographic details, four details still awaiting evidence, general notes, legend, title block and revisions. The empty details are drawn as plainly as the full ones.</dd>
+    <dt>Interaction</dt><dd>Hover a detail to see its keynotes; click to open it out of its place on the sheet. Notes and title-block entries point to the details they refer to. Keys 0–9, ← →, Esc.</dd>
+    <dt>Leads with</dt><dd>The people and the record, in the form the architecture world already trusts.</dd>
+    <dt>Risks</dt><dd>Density. On a phone the sheet must become a sequence. Without field evidence, four of eleven details stay empty, which is honest but visible.</dd>
+    <dt>Needs</dt><dd>Field photographs, shop drawings and a matched photograph for each scope item would fill details 8–11 and could add a second sheet: PS-002, the field record.</dd>
+    <dt>Material</dt><dd>Seven photographs by Jared Swafford, the Freeman archive drawing, Freeman’s published account and credits. Keynotes describe only what is visible.</dd>
+  </dl>
+</template>
+
+<script src="../evidence.js"></script>
+<script src="../lab.js"></script>
+<script>
+(() => {
+  'use strict';
+  const S = window.STORY, P = S.plates;
+  // Details: id, plate or awaiting scope, grid placement on the 12-column field.
+  const D = [
+    { id: 'd0', no: 'E', plate: 'dr', kind: 'Elevation', title: 'The sign', sub: 'Freeman GC archive drawing', area: '1 / 1 / 2 / 6', elev: true },
+    { id: 'd1', no: '1', plate: 'p0', kind: 'Detail', area: '1 / 6 / 2 / 13' },
+    { id: 'd2', no: '2', plate: 'p6', kind: 'Detail', area: '2 / 1 / 3 / 5' },
+    { id: 'd3', no: '3', plate: 'p3', kind: 'Detail', area: '2 / 5 / 3 / 9' },
+    { id: 'd4', no: '4', plate: 'p2', kind: 'Detail', area: '2 / 9 / 3 / 13' },
+    { id: 'd5', no: '5', plate: 'p5', kind: 'Detail', area: '3 / 1 / 4 / 3', tall: true },
+    { id: 'd6', no: '6', plate: 'p1', kind: 'Detail', area: '3 / 3 / 4 / 5', tall: true },
+    { id: 'd7', no: '7', plate: 'p4', kind: 'Detail', area: '3 / 5 / 4 / 7', tall: true },
+    { id: 'd8', no: '8', scope: 0, kind: 'Detail awaiting evidence', need: 'Photograph the window and add its shop drawing.' },
+    { id: 'd9', no: '9', scope: 1, kind: 'Detail awaiting evidence', need: 'Photograph the oven surround, ideally while the tile is being set.' },
+    { id: 'd10', no: '10', scope: 2, kind: 'Detail awaiting evidence', need: 'Name the pieces; photograph each with its drawing.' },
+    { id: 'd11', no: '11', scope: 3, kind: 'Detail awaiting evidence', need: 'Name the pieces and their fabricator; photograph each.' }
+  ];
+  const field = document.getElementById('field');
+  const fits = [];
+
+  function detailEl(d) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'd' + (d.elev ? ' elev' : '') + (d.scope !== undefined ? ' await' : '') + (d.tall ? ' tall' : '');
+    b.dataset.id = d.id;
+    if (d.area) b.style.gridArea = d.area;
+    let title, sub, view;
+    if (d.plate) {
+      const p = P[d.plate];
+      title = d.title || p.title;
+      sub = d.sub || ('Photograph · J. Swafford · ' + p.notes.length + ' keynotes');
+      const src = '../assets/' + (p.kind === 'drawing' ? p.src : 'thumbs/' + p.src);
+      view = `<div class="view"><div class="fit"><img src="${src}" alt="${p.alt}" width="${p.w}" height="${p.h}" loading="lazy">` +
+        p.notes.map(([x, y]) => `<i class="pin" style="left:${x}%;top:${y}%"></i>`).join('') + '</div></div>';
+    } else {
+      title = S.scope[d.scope].text;
+      sub = 'Note ' + (d.scope + 3) + ' · not yet on file';
+      view = '<div class="view"><p>No photograph<br>or drawing on file</p></div>';
+    }
+    b.innerHTML = view + `<div class="ttl"><span class="bub"><span>${d.no}</span><span>PS1</span></span><span class="t"><b>${title}</b><small>${sub}</small></span></div>`;
+    b.setAttribute('aria-label', `${d.kind} ${d.no}: ${title}`);
+    if (d.plate) fits.push({ el: b.querySelector('.fit'), box: b.querySelector('.view'), w: P[d.plate].w, h: P[d.plate].h });
+    return b;
+  }
+  D.filter(d => d.scope === undefined).forEach(d => field.append(detailEl(d)));
+  const group = document.createElement('div');
+  group.className = 'await-group';
+  group.style.gridArea = '3 / 7 / 4 / 13';
+  D.filter(d => d.scope !== undefined).forEach(d => group.append(detailEl(d)));
+  field.append(group);
+
+  function fitAll() {
+    fits.forEach(f => {
+      const bw = f.box.clientWidth, bh = f.box.clientHeight;
+      if (!bw || !bh) return;
+      const k = Math.min(bw / f.w, bh / f.h);
+      f.el.style.width = Math.floor(f.w * k) + 'px';
+      f.el.style.height = Math.floor(f.h * k) + 'px';
+    });
+  }
+  new ResizeObserver(fitAll).observe(field);
+  fitAll();
+
+  // Cross-references: notes and title block point at details.
+  document.querySelectorAll('[data-link]').forEach(el => {
+    const ids = el.dataset.link.split(' ');
+    const on = v => ids.forEach(id => { const d = field.querySelector(`[data-id="${id}"]`); if (d) { d.classList.toggle('lit-d', v); d.classList.toggle('hot', v); } });
+    el.tabIndex = 0;
+    el.addEventListener('mouseenter', () => on(true));
+    el.addEventListener('mouseleave', () => on(false));
+    el.addEventListener('focus', () => on(true));
+    el.addEventListener('blur', () => on(false));
+    el.addEventListener('click', () => { if (ids.length === 1) open(D.findIndex(d => d.id === ids[0])); });
+  });
+
+  // Detail view.
+  const zoom = document.getElementById('zoom'), zview = document.getElementById('zview');
+  let cur = -1, zfit = null, opener = null;
+  function sizeZoom() {
+    if (!zfit) return;
+    const cs = getComputedStyle(zview);
+    const bw = zview.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    const bh = zview.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    const k = Math.min(bw / zfit.w, bh / zfit.h, zfit.kind === 'drawing' ? 1 : 2);
+    zfit.el.style.width = Math.floor(zfit.w * k) + 'px';
+    zfit.el.style.height = Math.floor(zfit.h * k) + 'px';
+  }
+  new ResizeObserver(sizeZoom).observe(zview);
+
+  function fill(i) {
+    cur = i;
+    const d = D[i];
+    const bub = document.getElementById('zbub');
+    bub.firstElementChild.textContent = d.no;
+    bub.style.borderStyle = d.scope !== undefined ? 'dashed' : '';
+    document.getElementById('zkind').textContent = d.kind + ' ' + d.no;
+    document.getElementById('zcount').textContent = `${i + 1} / ${D.length}`;
+    const keys = document.getElementById('zkeys');
+    zfit = null;
+    if (d.plate) {
+      const p = P[d.plate];
+      document.getElementById('ztitle').textContent = d.title || p.title;
+      document.getElementById('zcap').textContent = p.caption;
+      const full = '../assets/' + p.src;
+      zview.innerHTML = `<div class="fit${d.elev ? ' elev' : ''}"><img src="${p.kind === 'drawing' ? full : '../assets/thumbs/' + p.src}" alt="${p.alt}" width="${p.w}" height="${p.h}">` +
+        p.notes.map(([x, y], k) => `<span class="pin" data-k="${k}" style="left:${x}%;top:${y}%">${k + 1}</span>`).join('') + '</div>';
+      keys.innerHTML = p.notes.map(([, , t], k) => `<li data-k="${k}"><b>${d.no}.${k + 1}</b><span>${t}</span></li>`).join('');
+      document.getElementById('zfine').textContent = (p.kind === 'drawing' ? 'Drawing: ' : 'Photograph: ') + p.credit +
+        (p.kind === 'drawing' ? '.' : '. Keynotes identify what is visible; they do not attribute work to Freeman. Not keyed to the scope notes.');
+      zfit = { el: zview.firstElementChild, w: p.w, h: p.h, kind: p.kind };
+      if (p.kind !== 'drawing') {
+        const im = zview.querySelector('img'), hi = new Image();
+        hi.onload = () => { if (cur === i) im.src = full; };
+        hi.src = full;
+      }
+      sizeZoom();
+    } else {
+      const sc = S.scope[d.scope];
+      document.getElementById('ztitle').textContent = sc.text;
+      document.getElementById('zcap').textContent = `General note ${d.scope + 3}. Listed in Freeman’s published scope.`;
+      zview.innerHTML = `<div class="zempty"><p class="micro">No photograph or drawing on file</p><p>To complete this detail: ${d.need}</p></div>`;
+      keys.innerHTML = '';
+      document.getElementById('zfine').textContent = 'This detail is drawn empty on purpose. It marks evidence Freeman can still collect.';
+    }
+  }
+  function sync(k, v) {
+    zoom.querySelectorAll(`[data-k="${k}"]`).forEach(el => el.classList.toggle('hot', v));
+  }
+  zoom.addEventListener('mouseover', e => { const el = e.target.closest('[data-k]'); if (el) sync(el.dataset.k, true); });
+  zoom.addEventListener('mouseout', e => { const el = e.target.closest('[data-k]'); if (el) sync(el.dataset.k, false); });
+
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  function open(i) {
+    if (i < 0) return;
+    const cell = field.querySelector(`[data-id="${D[i].id}"]`);
+    opener = cell;
+    fill(i);
+    const wasOpen = zoom.classList.contains('open');
+    zoom.classList.add('open');
+    sizeZoom();
+    document.getElementById('zclose').focus({ preventScroll: true });
+    history.replaceState(null, '', '#' + D[i].id);
+    if (wasOpen || reduce.matches || !cell) return;
+    // One motion: a red outline travels from the detail's place on the sheet to the open view.
+    const a = cell.getBoundingClientRect(), b = zoom.getBoundingClientRect();
+    const g = document.createElement('div');
+    g.className = 'ghost';
+    Object.assign(g.style, { left: a.left + 'px', top: a.top + 'px', width: a.width + 'px', height: a.height + 'px' });
+    document.body.append(g);
+    zoom.style.visibility = 'hidden';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      Object.assign(g.style, { left: b.left + 'px', top: b.top + 'px', width: b.width + 'px', height: b.height + 'px' });
+    }));
+    const done = () => { zoom.style.visibility = ''; g.remove(); };
+    g.addEventListener('transitionend', done, { once: true });
+    setTimeout(done, 400);
+  }
+  function close() {
+    if (!zoom.classList.contains('open')) return;
+    zoom.classList.remove('open');
+    history.replaceState(null, '', location.pathname);
+    const back = field.querySelector(`[data-id="${D[cur].id}"]`) || opener;
+    if (back) back.focus({ preventScroll: false });
+  }
+  field.addEventListener('click', e => { const d = e.target.closest('.d'); if (d) open(D.findIndex(x => x.id === d.dataset.id)); });
+  document.getElementById('zclose').addEventListener('click', close);
+  document.getElementById('zprev').addEventListener('click', () => open((cur + D.length - 1) % D.length));
+  document.getElementById('znext').addEventListener('click', () => open((cur + 1) % D.length));
+
+  addEventListener('keydown', e => {
+    if (window.LAB.aboutOpen() || e.metaKey || e.ctrlKey || e.altKey) return;
+    const isOpen = zoom.classList.contains('open');
+    if (e.key === 'Escape' && isOpen) { e.preventDefault(); close(); return; }
+    if (isOpen && (e.key === 'ArrowRight' || e.key === 'ArrowDown')) { e.preventDefault(); open((cur + 1) % D.length); return; }
+    if (isOpen && (e.key === 'ArrowLeft' || e.key === 'ArrowUp')) { e.preventDefault(); open((cur + D.length - 1) % D.length); return; }
+    if (/^[0-9]$/.test(e.key)) {
+      if (e.key === '0') { isOpen ? close() : open(0); return; }
+      open(D.findIndex(d => d.no === e.key));
+    }
+  });
+
+  const start = D.findIndex(d => '#' + d.id === location.hash);
+  if (start > -1) open(start);
+})();
+</script>
+</body>
+</html>

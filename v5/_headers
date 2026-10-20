@@ -30,3 +30,13 @@
 /admin/*
   Cache-Control: private, no-store
   X-Robots-Tag: noindex, nofollow, noarchive
+
+# Project Story 001: laboratory study on study/project-story-001 only (Access-protected preview).
+# Never indexed, never held by a shared cache.
+/story-001
+  Cache-Control: private, no-cache
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/story-001/*
+  Cache-Control: private, no-cache
+  X-Robots-Tag: noindex, nofollow, noarchive

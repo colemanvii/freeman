@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#fff9f1">
+<title>B · Account — Project Story 001</title>
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="../lab.css">
+<style>
+html,body{overflow:hidden}
+#app{position:fixed;inset:0;display:grid;grid-template-columns:minmax(0,1.32fr) minmax(0,1fr);gap:clamp(36px,4.5vw,80px);padding:84px var(--gutter) 30px}
+
+/* Left: the account. */
+.account{display:flex;flex-direction:column;min-height:0}
+.account-head{display:flex;justify-content:space-between;align-items:baseline;gap:20px;border-bottom:1px solid var(--hair);padding-bottom:12px}
+.account-head .micro{color:var(--muted)}
+.marks-toggle{font-size:10px;letter-spacing:.035em;text-transform:uppercase}
+.marks-toggle:hover{background:var(--red);color:var(--paper)}
+.marks-toggle b{font-weight:400;color:var(--red)}
+.prose{flex:1;min-height:0;overflow:auto;padding:clamp(18px,3.4vh,40px) 0 10px;scrollbar-width:none}
+.prose::-webkit-scrollbar{display:none}
+.prose p{font-size:clamp(17px,1.62vw,26px);line-height:1.5;letter-spacing:-.012em;margin-bottom:.9em;max-width:34em}
+.s{cursor:var(--cursor-act);-webkit-box-decoration-break:clone;box-decoration-break:clone;outline:none}
+.s:hover,.s:focus-visible,.s.sel{background:var(--red);color:var(--paper)}
+.s.sel{background:var(--ink);color:var(--paper)}
+.s.sel:hover{background:var(--red)}
+.tag{display:none;font-size:8px;letter-spacing:.06em;text-transform:uppercase;vertical-align:super;line-height:0;margin:0 .35em 0 .2em;color:var(--muted)}
+.withheld{display:none}
+
+/* Marks: how much of the story is shown, and how much is only said. */
+.marks .tag{display:inline}
+.marks .s[data-status="stated"]{text-decoration:underline dashed var(--red);text-decoration-thickness:1px;text-underline-offset:.28em}
+.marks .s[data-status="seen"],.marks .s[data-status="credited"]{text-decoration:underline solid #b9ad9c;text-decoration-thickness:1px;text-underline-offset:.28em}
+.marks .s.sel,.marks .s:hover{text-decoration-color:currentColor}
+.marks .tag.stated{color:var(--red)}
+.marks .withheld{display:block}
+.marks .withheld .s{color:var(--muted);text-decoration:line-through;text-decoration-thickness:1px}
+.marks .withheld .s:hover,.marks .withheld .s.sel{color:var(--paper)}
+
+.tally{border-top:1px solid var(--hair);padding-top:14px;display:grid;grid-template-columns:auto 1fr;gap:10px 26px;align-items:center}
+.squares{display:flex;gap:4px}
+.squares button{width:11px;height:11px;border:1px solid var(--ink);background:var(--ink)}
+.squares button[data-status="stated"]{background:transparent;border-color:var(--red)}
+.squares button[data-status="withheld"]{background:transparent;border-color:var(--hair);display:none}
+.marks .squares button[data-status="withheld"]{display:block}
+.squares button.sel{outline:1px solid var(--ink);outline-offset:2px}
+.tally .counts{font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);display:flex;gap:16px;flex-wrap:wrap}
+.tally .counts b{font-weight:400;color:var(--ink)}
+.tally .finding{grid-column:1/-1;font-size:11px;line-height:1.6;max-width:60ch;display:none}
+.marks .tally .finding{display:block}
+
+/* Right: what stands behind the selected sentence. */
+.exhibit{display:flex;flex-direction:column;min-height:0;gap:14px}
+.ex-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--hair);padding-bottom:12px;font-size:10px;letter-spacing:.035em;text-transform:uppercase}
+.ex-head .status{color:var(--ink)}
+.ex-head .status[data-status="stated"]{color:var(--red)}
+.ex-head .status[data-status="withheld"]{color:var(--muted)}
+.frame{flex:1 1 auto;min-height:150px;position:relative;display:flex;align-items:center;justify-content:center}
+.fit{position:relative;flex:none}
+.fit img{width:100%;height:100%}
+.frame{overflow:hidden}
+.pin{position:absolute;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;background:var(--red);box-shadow:0 0 0 1px var(--paper)}
+.pin span{position:absolute;left:14px;top:-4px;white-space:nowrap;font-size:9px;line-height:1.5;letter-spacing:.04em;text-transform:uppercase;background:var(--paper);color:var(--ink);padding:1px 5px}
+.pin.left span{left:auto;right:14px}
+.empty{position:absolute;inset:0;border:1px dashed var(--red);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;text-align:center;padding:24px}
+.empty .micro{color:var(--red)}
+.empty p:last-child{font-size:12px;line-height:1.6;max-width:36ch}
+.empty.withheld-frame{border-color:var(--hair)}
+.empty.withheld-frame .micro{color:var(--muted)}
+.name-card{position:absolute;inset:0;border:1px solid var(--hair);display:flex;flex-direction:column;justify-content:center;padding:clamp(20px,3vw,44px);gap:14px}
+.name-card .micro{color:var(--muted)}
+.name-card strong{font-weight:400;font-size:clamp(24px,3vw,46px);line-height:1;letter-spacing:-.045em;text-transform:uppercase}
+.sheet7{position:absolute;inset:0;display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr;gap:6px;align-content:center}
+.sheet7 img{width:100%;height:100%;object-fit:cover;min-height:0}
+.ex-data{display:grid;grid-template-columns:118px 1fr;border-top:1px solid var(--hair);flex:none}
+.ex-data dt,.ex-data dd{border-bottom:1px solid var(--hair);padding:8px 0;font-size:11px;line-height:1.55}
+.ex-data dt{font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);padding-top:10px}
+.ex-data q{quotes:"“" "”"}
+.ex-data q:before,.ex-data q:after{color:var(--muted)}
+
+/* Phones: the account scrolls; the exhibit is a sheet that rises from the bottom. */
+.ex-close{display:none}
+@media(max-width:760px){
+  html,body{overflow:auto;height:auto}
+  #app{position:static;display:block;padding:64px var(--gutter) 40px}
+  .prose{overflow:visible;padding-top:18px}
+  .prose p{font-size:18px}
+  .exhibit{position:fixed;left:0;right:0;bottom:0;height:72dvh;background:var(--paper);border-top:1px solid var(--ink);padding:14px var(--gutter) max(16px,env(safe-area-inset-bottom));z-index:40;display:none;overflow:auto}
+  body.sheet-open .exhibit{display:flex}
+  .ex-close{display:block;font-size:10px;letter-spacing:.035em;text-transform:uppercase;align-self:flex-end;min-height:32px}
+  .frame{min-height:200px;flex:1 0 220px}
+  .ex-data{grid-template-columns:96px 1fr}
+  .tally{grid-template-columns:1fr}
+  .squares button{width:14px;height:14px}
+}
+@media(max-height:820px) and (min-width:761px){.ex-data dt,.ex-data dd{padding:5px 0}.prose p{font-size:clamp(15px,1.32vw,20px);margin-bottom:.7em}.prose{padding-top:16px}}
+</style>
+</head>
+<body data-study="b">
+<div id="app">
+  <section class="account" aria-labelledby="account-title">
+    <div class="account-head">
+      <h1 class="micro" id="account-title">The Optimist · an account in fourteen sentences</h1>
+      <button type="button" class="marks-toggle" id="marks" aria-pressed="false">Marks: <b>Off</b></button>
+    </div>
+    <div class="prose" id="prose"></div>
+    <div class="tally">
+      <div class="squares" id="squares" aria-label="Each sentence, by status"></div>
+      <p class="counts" id="counts"></p>
+      <p class="finding">Every sentence about the result can be shown. Every sentence about the work is, for now, only stated. The evidence that proves capability is the evidence still to be collected.</p>
+    </div>
+  </section>
+
+  <aside class="exhibit" id="exhibit" aria-live="polite" aria-label="Exhibit">
+    <button type="button" class="ex-close" id="ex-close">× Close</button>
+    <div class="ex-head"><span id="ex-num"></span><span class="status" id="ex-status"></span></div>
+    <div class="frame" id="frame"></div>
+    <dl class="ex-data" id="ex-data"></dl>
+  </aside>
+</div>
+
+<template id="about-study">
+  <h2>B · Account</h2>
+  <dl>
+    <dt>Thesis</dt><dd>The evidence proves capability, so make the story auditable. The project is told in fourteen plain sentences. Every sentence opens what stands behind it: a photograph, a drawing, a credit, or an honest empty frame.</dd>
+    <dt>Structure</dt><dd>One paragraph per subject (the place, the people, the work, the record). Beside it, the exhibit for the selected sentence, with its source, its status and, where it is missing, what would prove it.</dd>
+    <dt>Interaction</dt><dd>Hover or tab through the sentences; click to hold one. <em>Marks</em> exposes the status of each sentence and the two figures the study withholds. The row of squares is the same account at a glance.</dd>
+    <dt>Leads with</dt><dd>Evidence, including its absence.</dd>
+    <dt>Finding</dt><dd>Every sentence about the result can be shown. Every sentence about the work is, for now, only stated. The structure turns the missing evidence into a capture brief.</dd>
+    <dt>Risks</dt><dd>Candour can read as weakness to a visitor who expected a portfolio. Best as the internal standard behind any public story, or as the public form once field evidence exists.</dd>
+    <dt>Material</dt><dd>Freeman’s published account (quoted verbatim as source text), published credits, seven photographs by Jared Swafford, the Freeman archive drawing. Square footage and completion year are withheld as unconfirmed template credits.</dd>
+  </dl>
+</template>
+
+<script src="../evidence.js"></script>
+<script src="../lab.js"></script>
+<script>
+(() => {
+  'use strict';
+  const S = window.STORY, P = S.plates;
+  const ACCOUNT = 'Freeman’s published project account';
+  const CREDIT = 'Published project credit';
+  const LABEL = { seen: 'Shown', credited: 'Credited', stated: 'Stated, no record', withheld: 'Withheld' };
+  const TAG = { seen: 'shown', credited: 'credit', stated: 'stated', withheld: 'withheld' };
+
+  // The account. status: seen (visible in a photograph or drawing), credited (published credit),
+  // stated (Freeman's account, no record attached), withheld (unconfirmed; not used).
+  const S14 = [
+    { p: 0, t: 'The Optimist is an oyster bar and seafood restaurant in Atlanta, Georgia.', status: 'seen', ex: { plate: 'dr' },
+      source: 'Freeman archive drawing of the sign; location from the published project record.', note: 'The sign reads OYSTER BAR · SEAFOOD & SPIRITS.' },
+    { p: 0, t: 'Outside, tables stand under a dark canopy, facing a lawn.', status: 'seen', ex: { plate: 'p0', pins: [0] },
+      source: 'Photograph by Jared Swafford.' },
+    { p: 0, t: 'Inside, curved blue booths sit beneath a painted sign for country hams.', status: 'seen', ex: { plate: 'p3', pins: [0, 1] },
+      source: 'Photograph by Jared Swafford.' },
+    { p: 1, t: 'The client is Rocket Farm Restaurants.', status: 'credited', ex: { name: 'Rocket Farm Restaurants', role: 'Client' },
+      source: CREDIT + '.' },
+    { p: 1, t: 'The interiors are credited to Chuck Marie Studio.', status: 'credited', ex: { name: 'Chuck Marie Studio', role: 'Interior design' },
+      source: CREDIT + '.', note: 'Design authorship belongs to the studio. Freeman does not claim it.' },
+    { p: 2, t: 'Freeman was given the Oyster Bar to refresh,', status: 'stated', quote: 'was given the opportunity to refresh the Oyster Bar',
+      need: 'Photographs of the Oyster Bar before and after, taken from the same position.' },
+    { p: 2, t: 'on a deadline of three weeks.', status: 'stated', quote: 'This project was on a tight deadline of 3 weeks.',
+      need: 'Start and handover dates, and a dated photograph from the first and the last day.' },
+    { p: 2, t: 'The work included a custom radius window,', status: 'stated', quote: 'custom radius window',
+      need: 'A photograph that identifies the window, and its shop drawing.' },
+    { p: 2, t: 'radius tile around the oven,', status: 'stated', quote: 'radius tile around oven',
+      need: 'A photograph of the oven surround, ideally while the tile was being set.' },
+    { p: 2, t: 'custom millwork', status: 'stated', quote: 'custom millwork pieces',
+      need: 'Which pieces: a photograph of each, with its drawing.' },
+    { p: 2, t: 'and custom stainless steel.', status: 'stated', quote: 'custom stainless steel pieces',
+      need: 'Which pieces, and who fabricated them.' },
+    { p: 2, t: 'It finished on time and under budget.', status: 'stated', quote: 'FGC finished on time and under budget.',
+      need: 'The schedule and final cost against the contract, or a word from Rocket Farm Restaurants.' },
+    { p: 3, t: 'Jared Swafford photographed the finished restaurant.', status: 'credited', ex: { sheet: true },
+      source: CREDIT + '; seven photographs.', note: 'None of the seven has yet been matched to Freeman’s scope.' },
+    { p: 3, t: 'One table carries its latitude, lettered across the top: 33°46′48.216″N.', status: 'seen', ex: { plate: 'p4', pins: [0] },
+      source: 'Photograph by Jared Swafford.', note: 'The only measurement the room states about itself.' },
+    { p: 4, t: 'It measures more than 2,000 square feet.', status: 'withheld', why: S.withheld[0].why },
+    { p: 4, t: 'It was completed in 2024.', status: 'withheld', why: S.withheld[1].why }
+  ];
+  const shown = S14.filter(s => s.status !== 'withheld').length;
+
+  // Render prose.
+  const prose = document.getElementById('prose');
+  const paras = [];
+  S14.forEach((s, i) => {
+    if (!paras[s.p]) {
+      paras[s.p] = document.createElement('p');
+      if (s.status === 'withheld') paras[s.p].className = 'withheld';
+      prose.append(paras[s.p]);
+    }
+    const span = document.createElement('span');
+    span.className = 's';
+    span.tabIndex = 0;
+    span.setAttribute('role', 'button');
+    span.dataset.i = i;
+    span.dataset.status = s.status;
+    span.textContent = s.t;
+    const tag = document.createElement('sup');
+    tag.className = 'tag ' + s.status;
+    tag.textContent = TAG[s.status];
+    paras[s.p].append(span, tag, ' ');
+  });
+
+  // Tally.
+  const sq = document.getElementById('squares');
+  S14.forEach((s, i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.dataset.i = i; b.dataset.status = s.status;
+    b.setAttribute('aria-label', `Sentence ${i + 1}: ${LABEL[s.status]}`);
+    sq.append(b);
+  });
+  const n = k => S14.filter(s => s.status === k).length;
+  document.getElementById('counts').innerHTML =
+    `<span><b>${n('seen')}</b> shown</span><span><b>${n('credited')}</b> credited</span><span><b class="red">${n('stated')}</b> stated, no record</span><span class="w"><b>${n('withheld')}</b> withheld</span>`;
+
+  const app = document.body;
+  const marks = document.getElementById('marks');
+  function setMarks(on) {
+    prose.parentElement.parentElement.classList.toggle('marks', on);
+    marks.setAttribute('aria-pressed', on);
+    marks.querySelector('b').textContent = on ? 'On' : 'Off';
+    document.getElementById('counts').querySelector('.w').style.display = on ? '' : 'none';
+    if (!on && S14[sel] && S14[sel].status === 'withheld') select(0, true);
+  }
+  marks.addEventListener('click', () => setMarks(marks.getAttribute('aria-pressed') !== 'true'));
+
+  // Exhibit.
+  const frame = document.getElementById('frame');
+  let fitTarget = null;
+  function fit() {
+    if (!fitTarget) return;
+    const { el, w, h } = fitTarget;
+    const fw = frame.clientWidth, fh = frame.clientHeight;
+    const k = Math.min(fw / w, fh / h);
+    el.style.width = Math.floor(w * k) + 'px';
+    el.style.height = Math.floor(h * k) + 'px';
+  }
+  new ResizeObserver(fit).observe(frame);
+
+  function render(i) {
+    const s = S14[i];
+    document.getElementById('ex-num').textContent = s.status === 'withheld'
+      ? 'Withheld figure'
+      : `Sentence ${String(i + 1).padStart(2, '0')} / ${shown}`;
+    const st = document.getElementById('ex-status');
+    st.textContent = LABEL[s.status];
+    st.dataset.status = s.status;
+    fitTarget = null;
+    frame.innerHTML = '';
+    const ex = s.ex || {};
+    if (ex.plate) {
+      const p = P[ex.plate];
+      const box = document.createElement('div');
+      box.className = 'fit';
+      box.innerHTML = `<img src="../assets/${p.src}" alt="${p.alt}" width="${p.w}" height="${p.h}">` +
+        (ex.pins || []).map(k => { const [x, y, label] = p.notes[k]; return `<span class="pin${x > 50 ? ' left' : ''}" style="left:${x}%;top:${y}%"><span>${label}</span></span>`; }).join('');
+      frame.append(box);
+      fitTarget = { el: box, w: p.w, h: p.h };
+    } else if (ex.name) {
+      frame.innerHTML = `<div class="name-card"><p class="micro">${ex.role}</p><strong>${ex.name}</strong></div>`;
+    } else if (ex.sheet) {
+      frame.innerHTML = '<div class="sheet7">' + ['p0', 'p6', 'p3', 'p2', 'p5', 'p1', 'p4'].map(id =>
+        `<img src="../assets/thumbs/${P[id].src}" alt="${P[id].alt}" loading="lazy">`).join('') + '</div>';
+    } else if (s.status === 'withheld') {
+      frame.innerHTML = `<div class="empty withheld-frame"><p class="micro">Not used</p><p>${s.why}</p></div>`;
+    } else {
+      frame.innerHTML = '<div class="empty"><p class="micro">No exhibit on file</p><p>Stated in Freeman’s published account. Nothing on file shows it yet.</p></div>';
+    }
+
+    const rows = [];
+    if (s.status === 'stated') {
+      rows.push(['Source', ACCOUNT + '.']);
+      rows.push(['Source text', `<q>${s.quote}</q>`]);
+      rows.push(['Would prove it', s.need]);
+    } else if (s.status === 'withheld') {
+      rows.push(['Reason', s.why]);
+    } else {
+      rows.push(['Source', s.source]);
+      if (s.note) rows.push(['Note', s.note]);
+      if (ex.plate) rows.push(['Shows', P[ex.plate].caption]);
+    }
+    document.getElementById('ex-data').innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('');
+    fit();
+  }
+
+  let sel = 0;
+  const spans = [...prose.querySelectorAll('.s')];
+  const squares = [...sq.children];
+  function select(i, quiet) {
+    sel = i;
+    spans.forEach(el => el.classList.toggle('sel', +el.dataset.i === i));
+    squares.forEach(el => el.classList.toggle('sel', +el.dataset.i === i));
+    spans.forEach(el => el.setAttribute('aria-pressed', +el.dataset.i === i));
+    render(i);
+    if (!quiet && matchMedia('(max-width:760px)').matches) app.classList.add('sheet-open');
+  }
+
+  // Hover previews; click holds. Leaving the prose returns to the held sentence.
+  const fine = matchMedia('(hover:hover) and (pointer:fine)').matches;
+  prose.addEventListener('mouseover', e => { const el = e.target.closest('.s'); if (el && fine) render(+el.dataset.i); });
+  prose.addEventListener('mouseleave', () => { if (fine) render(sel); });
+  prose.addEventListener('click', e => { const el = e.target.closest('.s'); if (el) select(+el.dataset.i); });
+  prose.addEventListener('focusin', e => { const el = e.target.closest('.s'); if (el) render(+el.dataset.i); });
+  prose.addEventListener('keydown', e => {
+    const el = e.target.closest('.s'); if (!el) return;
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(+el.dataset.i); }
+  });
+  prose.addEventListener('focusout', e => { if (!prose.contains(e.relatedTarget)) render(sel); });
+  sq.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    select(+b.dataset.i);
+    const span = spans[+b.dataset.i]; if (span) span.scrollIntoView({ block: 'nearest' });
+  });
+  document.getElementById('ex-close').addEventListener('click', () => app.classList.remove('sheet-open'));
+
+  addEventListener('keydown', e => {
+    if (window.LAB.aboutOpen() || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === 'm' || e.key === 'M') { setMarks(marks.getAttribute('aria-pressed') !== 'true'); return; }
+    if (e.key === 'Escape') { app.classList.remove('sheet-open'); return; }
+    if (e.target.closest && e.target.closest('.s')) {
+      const max = marks.getAttribute('aria-pressed') === 'true' ? S14.length : shown;
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); const k = Math.min(max - 1, +e.target.dataset.i + 1); spans[k].focus(); select(k, true); }
+      if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); const k = Math.max(0, +e.target.dataset.i - 1); spans[k].focus(); select(k, true); }
+    }
+  });
+
+  setMarks(location.hash === '#marks');
+  select(13, true);
+})();
+</script>
+</body>
+</html>

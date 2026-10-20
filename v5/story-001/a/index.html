@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#fff9f1">
+<title>A · Approach — Project Story 001</title>
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="../lab.css">
+<style>
+html,body{overflow:hidden}
+#app{position:fixed;inset:0}
+
+/* The plate: one view at a time, placed, never cropped. */
+.stage{position:absolute;top:72px;bottom:118px;left:var(--gutter);right:200px;display:flex;align-items:center;justify-content:center}
+.stage img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;user-select:none;-webkit-user-drag:none}
+.stage img.drawing{max-width:min(100%,880px)}
+.stage[data-kind="plate"]{cursor:var(--cursor-act)}
+
+/* Title and record cards share the stage. */
+.card{width:100%;height:100%;display:flex;flex-direction:column;justify-content:center}
+.card[hidden]{display:none}
+.title-card h1{font-size:clamp(46px,9.2vw,150px);line-height:.9;letter-spacing:-.055em;text-transform:uppercase;margin-left:-.04em}
+.title-card .sub{margin-top:clamp(22px,3.4vh,40px);display:flex;gap:34px;flex-wrap:wrap;align-items:baseline}
+.title-card .lede{font-size:13px;line-height:1.6;max-width:36ch}
+.title-card .go{margin-top:clamp(28px,6vh,64px);align-self:flex-start;font-size:11px;letter-spacing:.035em;text-transform:uppercase}
+.title-card .go:hover{background:var(--red);color:var(--paper)}
+
+.record-card{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(30px,5vw,90px);align-items:center}
+.record-card .big{font-size:clamp(40px,7vw,118px);line-height:.92;letter-spacing:-.055em;text-transform:uppercase}
+.record-card .col{display:flex;flex-direction:column;gap:20px;min-width:0}
+.record-card p{font-size:12px;line-height:1.7;max-width:46ch}
+.record-card ol{counter-reset:s;border-top:1px solid var(--hair)}
+.record-card ol li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;border-bottom:1px solid var(--hair);padding:8px 0;font-size:12px;line-height:1.5}
+.record-card ol li:before{content:counter(s,decimal-leading-zero);font-size:9px;color:var(--muted);padding-top:2px}
+.record-card dl{display:grid;grid-template-columns:120px 1fr;font-size:11px;line-height:1.5}
+.record-card dt{color:var(--muted);font-size:9px;letter-spacing:.04em;text-transform:uppercase;padding:5px 0}
+.record-card dd{padding:4px 0}
+.record-card .honest{font-size:10px;line-height:1.6;color:var(--muted);max-width:52ch}
+.record-card .again{align-self:flex-start;font-size:10px;letter-spacing:.035em;text-transform:uppercase}
+.record-card .again:hover{background:var(--red);color:var(--paper)}
+
+/* Caption: the production project-plate register. */
+.caption{position:absolute;left:var(--gutter);right:200px;bottom:30px;border-top:1px solid var(--hair);padding-top:14px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:24px;align-items:end;min-height:62px}
+.caption .name{font-size:clamp(18px,2.3vw,34px);line-height:1.05;letter-spacing:-.035em;text-transform:uppercase}
+.caption .meta{display:flex;flex-direction:column;gap:5px;align-items:flex-end;text-align:right}
+.caption .meta .line{font-size:11px;line-height:1.55;max-width:62ch}
+.caption .meta .micro{color:var(--muted)}
+
+/* The distance rule: the only control, and the only thing that moves. */
+.rule{position:absolute;right:var(--gutter);top:72px;bottom:30px;width:150px}
+.rule:before{content:"";position:absolute;right:3px;top:0;bottom:0;width:1px;background:var(--ink)}
+.rule ol{position:absolute;inset:0}
+.rule li{position:absolute;right:0;left:0;height:0;top:var(--p)}
+.rule button{position:absolute;right:0;top:-10px;height:20px;width:100%;display:flex;justify-content:flex-end;align-items:center;gap:12px;font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.rule button .tick{width:7px;height:1px;background:var(--ink);flex:none}
+.rule li.major button .tick{width:13px}
+.rule button .lbl{visibility:hidden}
+.rule li.major button .lbl{visibility:visible}
+.rule button:hover .lbl{visibility:visible;color:var(--ink)}
+.rule li.on button{color:var(--red)}
+.rule li.on button .lbl{visibility:visible}
+.rule li.on button .tick{width:7px;height:7px;background:var(--red);margin-right:0}
+.rule .ends{position:absolute;right:16px;font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.rule .ends.top{top:-22px}
+.rule .ends.bottom{bottom:-2px;display:none}
+
+@media(max-width:760px){
+  .stage{top:62px;bottom:178px;right:var(--gutter)}
+  .caption{right:var(--gutter);bottom:max(20px,env(safe-area-inset-bottom));grid-template-columns:1fr;gap:8px;padding-top:10px}
+  .caption .meta{align-items:flex-start;text-align:left}
+  .caption .name{font-size:22px}
+  .rule{top:auto;left:var(--gutter);right:var(--gutter);width:auto;bottom:calc(max(20px,env(safe-area-inset-bottom)) + 104px);height:40px}
+  .rule:before{left:0;right:0;top:auto;bottom:6px;width:auto;height:1px}
+  .rule li{top:0;bottom:0;left:var(--p);right:auto;height:auto;width:0}
+  .rule button{top:auto;bottom:0;right:auto;left:-14px;width:28px;height:40px;flex-direction:column-reverse;justify-content:flex-start;align-items:center;gap:6px}
+  .rule button .tick{width:1px;height:7px}
+  .rule li.major button .tick{width:1px;height:12px}
+  .rule li.on button .tick{width:7px;height:7px;margin-bottom:3px}
+  .rule button .lbl,.rule li.major button .lbl{visibility:hidden;position:absolute;bottom:22px;white-space:nowrap}
+  .rule li.on button .lbl{visibility:visible}
+  .rule li:first-child.on button .lbl{left:0}
+  .rule li:last-child.on button .lbl{right:0}
+  .rule .ends{display:none}
+  .title-card h1{font-size:clamp(44px,15vw,84px)}
+  .record-card{grid-template-columns:1fr;gap:22px;align-content:start;overflow:auto;height:100%;padding-bottom:12px}
+  .record-card .big{font-size:clamp(36px,12vw,60px)}
+  .stage[data-kind="record"]{align-items:stretch}
+}
+@media(max-height:620px) and (min-width:761px){
+  .record-card ol li{padding:5px 0}
+  .record-card .col{gap:12px}
+}
+</style>
+</head>
+<body data-study="a">
+<div id="app">
+  <main class="stage" id="stage" aria-live="polite">
+    <section class="card title-card" id="title-card">
+      <p class="micro muted">Project story 001 · Hospitality</p>
+      <h1>The<br>Optimist</h1>
+      <div class="sub">
+        <p class="micro">Atlanta, Georgia</p>
+        <p class="lede">Eight views, from the street to the table. Then the record of what Freeman built.</p>
+      </div>
+      <button type="button" class="go" data-step="1">↓ Approach</button>
+    </section>
+    <img id="plate" alt="" hidden>
+    <section class="card record-card" id="record-card" hidden>
+      <div class="col">
+        <p class="micro muted">The record · Oyster Bar refresh</p>
+        <h2 class="big">Three<br>weeks.</h2>
+        <p>Freeman was given the Oyster Bar at The Optimist to refresh on a deadline of three weeks, and finished on time and under budget.</p>
+        <p class="honest">As stated in Freeman’s published project account. No schedule or cost record is attached yet.</p>
+      </div>
+      <div class="col">
+        <ol id="scope"></ol>
+        <dl id="parties"></dl>
+        <p class="honest">The eight views show the finished restaurant. None has yet been matched to Freeman’s scope, and no field photographs are on file. Those are the next pieces of evidence to collect.</p>
+        <button type="button" class="again" data-step="0">↑ Return to the street</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="caption" id="caption">
+    <p class="name" id="cap-name">The Optimist</p>
+    <div class="meta">
+      <p class="micro" id="cap-count"></p>
+      <p class="line" id="cap-line"></p>
+      <p class="micro" id="cap-credit"></p>
+    </div>
+  </footer>
+
+  <nav class="rule" aria-label="Distance">
+    <ol id="rule"></ol>
+  </nav>
+</div>
+
+<template id="about-study">
+  <h2>A · Approach</h2>
+  <dl>
+    <dt>Thesis</dt><dd>The result proves taste, so let the result speak first and uninterrupted. The story is a single walk inward, from the sign on the street to lettering on a tabletop. Only after arriving do you read what Freeman built.</dd>
+    <dt>Structure</dt><dd>Ten positions on one axis: title, eight views ordered by distance (street, lawn, room, wall, seat, table), the record. One view at a time, never cropped.</dd>
+    <dt>Interaction</dt><dd>The distance rule is the only control, and the red locator is the only thing that moves. Scroll, arrow keys, swipe, or click the plate (left third goes back). Each position has its own address (#0–#9).</dd>
+    <dt>Leads with</dt><dd>The result. Evidence arrives last, as the destination.</dd>
+    <dt>Risks</dt><dd>Closest to a conventional gallery. The evidence comes so late that a hurried visitor may never reach it.</dd>
+    <dt>Needs</dt><dd>Field photographs from a fixed position would let the walk run backwards in time as well as inwards in space.</dd>
+    <dt>Material</dt><dd>Seven published photographs by Jared Swafford and the Freeman archive drawing of the sign. Captions describe only what is visible. Freeman’s scope is quoted from its published account.</dd>
+  </dl>
+</template>
+
+<script src="../evidence.js"></script>
+<script src="../lab.js"></script>
+<script>
+(() => {
+  'use strict';
+  const S = window.STORY;
+  const P = S.plates;
+  // Ordered by distance. Stage names are categories, not measurements.
+  const seq = [
+    { kind: 'title', stage: 'Title' },
+    { kind: 'plate', id: 'dr', stage: 'Street' },
+    { kind: 'plate', id: 'p0', stage: 'Lawn' },
+    { kind: 'plate', id: 'p6', stage: 'Room' },
+    { kind: 'plate', id: 'p3', stage: 'Room' },
+    { kind: 'plate', id: 'p2', stage: 'Wall' },
+    { kind: 'plate', id: 'p5', stage: 'Seat' },
+    { kind: 'plate', id: 'p1', stage: 'Table' },
+    { kind: 'plate', id: 'p4', stage: 'Table' },
+    { kind: 'record', stage: 'Record' }
+  ];
+  const views = seq.filter(s => s.kind === 'plate').length;
+  const $ = id => document.getElementById(id);
+  const stage = $('stage'), img = $('plate');
+
+  // Record card content, from the shared record.
+  $('scope').innerHTML = S.scope.map(s => `<li>${s.text}</li>`).join('');
+  $('parties').innerHTML = S.parties.map(p => `<dt>${p.role}</dt><dd>${p.name}</dd>`).join('');
+
+  // The rule.
+  const rule = $('rule');
+  seq.forEach((s, i) => {
+    const li = document.createElement('li');
+    const major = i === 0 || seq[i - 1].stage !== s.stage;
+    if (major) li.className = 'major';
+    li.style.setProperty('--p', (i / (seq.length - 1) * 100) + '%');
+    li.innerHTML = `<button type="button" data-step="${i}" aria-label="${i}: ${s.stage}"><span class="lbl">${s.stage}</span><span class="tick"></span></button>`;
+    rule.append(li);
+  });
+  const ticks = [...rule.children];
+
+  let pos = -1;
+  function show(n, push) {
+    n = Math.max(0, Math.min(seq.length - 1, n));
+    if (n === pos) return;
+    pos = n;
+    const s = seq[n];
+    $('title-card').hidden = s.kind !== 'title';
+    $('record-card').hidden = s.kind !== 'record';
+    img.hidden = s.kind !== 'plate';
+    stage.dataset.kind = s.kind;
+    ticks.forEach((t, i) => { t.classList.toggle('on', i === n); t.querySelector('button').setAttribute('aria-current', i === n ? 'step' : 'false'); });
+
+    if (s.kind === 'plate') {
+      const p = P[s.id];
+      img.src = '../assets/' + p.src;
+      img.alt = p.alt;
+      img.width = p.w; img.height = p.h;
+      img.className = p.kind === 'drawing' ? 'drawing' : '';
+      $('cap-name').textContent = p.title;
+      $('cap-count').textContent = `${String(n).padStart(2, '0')} / ${String(views).padStart(2, '0')} · ${s.stage}`;
+      $('cap-line').textContent = p.caption;
+      $('cap-credit').textContent = (p.kind === 'drawing' ? 'Drawing: ' : 'Photograph: ') + p.credit;
+      [n - 1, n + 1].forEach(k => { const q = seq[k]; if (q && q.kind === 'plate') new Image().src = '../assets/' + P[q.id].src; });
+    } else if (s.kind === 'title') {
+      $('cap-name').textContent = S.project.name;
+      $('cap-count').textContent = `${S.project.location} · ${S.project.type}`;
+      $('cap-line').textContent = 'Scroll, use the arrow keys, or choose a distance on the rule.';
+      $('cap-credit').textContent = 'Photographs: Jared Swafford · Drawing: Freeman GC archive';
+    } else {
+      $('cap-name').textContent = 'What Freeman built';
+      $('cap-count').textContent = `${S.project.scope} · ${S.project.location}`;
+      $('cap-line').textContent = 'Scope and schedule as published by Freeman.';
+      $('cap-credit').textContent = S.project.latitude;
+    }
+    if (push !== false) history.replaceState(null, '', '#' + n);
+  }
+
+  // Input: one step per gesture.
+  let lock = 0, acc = 0;
+  addEventListener('wheel', e => {
+    if (window.LAB.aboutOpen()) return;
+    const inner = e.target.closest && e.target.closest('.record-card');
+    if (inner && inner.scrollHeight > inner.clientHeight + 2) {
+      const atTop = inner.scrollTop <= 0, atEnd = inner.scrollTop + inner.clientHeight >= inner.scrollHeight - 1;
+      if (!(e.deltaY < 0 && atTop) && !(e.deltaY > 0 && atEnd)) return;
+    }
+    e.preventDefault();
+    const now = performance.now();
+    if (now < lock) { acc = 0; return; }
+    acc += Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+    if (Math.abs(acc) > 40) { show(pos + Math.sign(acc)); acc = 0; lock = now + 520; }
+  }, { passive: false });
+
+  addEventListener('keydown', e => {
+    if (window.LAB.aboutOpen() || e.metaKey || e.ctrlKey || e.altKey) return;
+    const k = e.key;
+    if (['ArrowDown', 'ArrowRight', 'PageDown'].includes(k) || (k === ' ' && !e.shiftKey)) { e.preventDefault(); show(pos + 1); }
+    else if (['ArrowUp', 'ArrowLeft', 'PageUp'].includes(k) || (k === ' ' && e.shiftKey)) { e.preventDefault(); show(pos - 1); }
+    else if (k === 'Home') { e.preventDefault(); show(0); }
+    else if (k === 'End') { e.preventDefault(); show(seq.length - 1); }
+  });
+
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-step]');
+    if (b) { show(+b.dataset.step); return; }
+    if (e.target === img) {
+      const r = img.getBoundingClientRect();
+      show(pos + ((e.clientX - r.left) < r.width / 3 ? -1 : 1));
+    }
+  });
+
+  let t0 = null;
+  addEventListener('touchstart', e => { const t = e.touches[0]; t0 = (t.clientX < 24 || t.clientX > innerWidth - 24) ? null : { x: t.clientX, y: t.clientY }; }, { passive: true });
+  addEventListener('touchend', e => {
+    if (!t0 || window.LAB.aboutOpen()) return;
+    const t = e.changedTouches[0], dx = t.clientX - t0.x, dy = t.clientY - t0.y;
+    const inner = e.target.closest && e.target.closest('.record-card');
+    if (inner && Math.abs(dy) > Math.abs(dx)) return; // let the record scroll
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < 40) return;
+    show(pos + ((Math.abs(dx) > Math.abs(dy) ? dx : dy) < 0 ? 1 : -1));
+    t0 = null;
+  }, { passive: true });
+
+  addEventListener('hashchange', () => show(parseInt(location.hash.slice(1), 10) || 0, false));
+  show(parseInt(location.hash.slice(1), 10) || 0, false);
+})();
+</script>
+</body>
+</html>
