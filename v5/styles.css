@@ -473,3 +473,29 @@ body{position:fixed;inset:0;width:100%;height:100%;overflow:hidden;overscroll-be
  .viewport:has(>.pg){overflow:visible}
  .pg-arrow::after{top:-10px;transform:translateX(-50%)}
 }
+
+
+/* ETCETERA — first two found objects; blank canvas remains available. */
+body[data-route="etcetera"] .viewport{position:relative;overflow:hidden;min-height:0}
+.etc-canvas{position:absolute;inset:0;overflow:hidden}
+.etc-object{position:absolute;display:block;border:0;background:transparent;color:var(--ink);text-align:left;cursor:pointer;font:inherit;padding:0}
+.etc-ruskin{left:16%;top:10%;width:min(23vw,310px)}
+.etc-ruskin img{width:100%;max-height:55vh;object-fit:contain;display:block;filter:drop-shadow(2px 4px 5px #0002)}
+.etc-caption{font:9px/1.4 Monaco,"Courier New",monospace;color:var(--muted);display:block;padding-top:8px}
+.etc-optimist{left:53%;top:36%;width:min(30vw,390px);padding:20px 22px;border:1px solid var(--ink);min-height:176px}
+.etc-optimist:hover,.etc-optimist:focus-visible{border-color:var(--red)}
+.etc-number,.etc-open{display:block;color:var(--red);font:10px/1.4 Monaco,"Courier New",monospace}
+.etc-heading{display:block;font:normal clamp(19px,2.25vw,32px)/1.12 Monaco,"Courier New",monospace;letter-spacing:-.06em;margin:17px 0 26px}
+.etc-dialog{border:1px solid var(--ink);background:var(--paper);color:var(--ink);width:min(810px,calc(100vw - 28px));max-width:none;max-height:calc(100dvh - 28px);padding:0}
+.etc-dialog::backdrop{background:#181714a8}
+.etc-dialog-bar{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid var(--ink);font:11px Monaco,"Courier New",monospace}
+.etc-dialog-body{padding:clamp(18px,4vw,43px);max-height:calc(100dvh - 100px);overflow:auto}
+.etc-dialog-body h2{font:normal clamp(26px,3.5vw,47px)/1.1 Monaco,"Courier New",monospace;letter-spacing:-.05em;max-width:18ch}
+.etc-dialog-body p{font:normal clamp(14px,1.4vw,18px)/1.65 Monaco,"Courier New",monospace;max-width:62ch}
+.etc-dialog-body small{font:10px/1.5 Monaco,"Courier New",monospace;color:var(--muted)}
+.etc-detail-photo{max-width:100%;max-height:calc(100dvh - 150px);display:block;object-fit:contain;margin:auto}
+@media(max-width:760px){
+.etc-ruskin{left:5%;top:4%;width:55%}.etc-ruskin img{max-height:43vh}
+.etc-optimist{left:30%;top:54%;width:65%;min-height:140px;padding:13px}
+.etc-heading{font-size:clamp(18px,5vw,23px);margin:15px 0}
+}
