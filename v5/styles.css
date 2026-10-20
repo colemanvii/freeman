@@ -475,17 +475,18 @@ body{position:fixed;inset:0;width:100%;height:100%;overflow:hidden;overscroll-be
 }
 
 
-/* ETCETERA — first two found objects; blank canvas remains available. */
+/* ETCETERA — a two-column index with shared image and caption baselines. */
 body[data-route="etcetera"] .viewport{overflow:hidden;min-height:0}
-.etc-canvas{position:absolute;inset:0;overflow:hidden}
-.etc-object{position:absolute;display:block;border:0;background:transparent;color:var(--ink);text-align:left;cursor:pointer;font:inherit;padding:0}
-.etc-ruskin{left:16%;top:10%;width:min(23vw,310px)}
-.etc-ruskin img{width:100%;max-height:55vh;object-fit:contain;display:block;filter:drop-shadow(2px 4px 5px #0002)}
-.etc-caption{font:9px/1.4 Monaco,"Courier New",monospace;color:var(--muted);display:block;padding-top:8px}
-.etc-optimist{left:53%;top:36%;width:min(30vw,390px);padding:20px 22px;border:1px solid var(--ink);min-height:176px}
-.etc-optimist:hover,.etc-optimist:focus-visible{border-color:var(--red)}
-.etc-number,.etc-open{display:block;color:var(--red);font:10px/1.4 Monaco,"Courier New",monospace}
-.etc-heading{display:block;font:normal clamp(19px,2.25vw,32px)/1.12 Monaco,"Courier New",monospace;letter-spacing:-.06em;margin:17px 0 26px}
+.etc-canvas{position:absolute;inset:0;width:min(860px,86%);margin-inline:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));column-gap:clamp(40px,8vw,120px);row-gap:36px;padding-block:12px;overflow:hidden}
+.etc-object{display:grid;grid-template-rows:minmax(0,1fr) auto;gap:12px;min-width:0;min-height:0;border:0;background:transparent;color:var(--ink);text-align:left;cursor:pointer;font:inherit;padding:0}
+.etc-object-body{display:flex;min-width:0;min-height:0;align-items:flex-end;justify-content:flex-start}
+.etc-object-body img{display:block;width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain;object-position:left bottom;filter:none}
+.etc-caption{font:9px/1.5 Monaco,"Courier New",monospace;color:var(--muted);display:block}
+.etc-type{flex-direction:column;align-items:flex-start;justify-content:flex-end}
+.etc-heading{display:block;font:normal clamp(22px,2.3vw,32px)/1.2 Monaco,"Courier New",monospace;letter-spacing:-.05em;max-width:18ch}
+.etc-open{display:block;margin-top:20px;color:var(--red);font:9px/1.5 Monaco,"Courier New",monospace}
+.etc-number{display:block;color:var(--red);font:10px/1.4 Monaco,"Courier New",monospace}
+.etc-object:focus-visible{outline:1px solid var(--red);outline-offset:5px}
 .etc-dialog{border:1px solid var(--ink);background:var(--paper);color:var(--ink);width:min(810px,calc(100vw - 28px));max-width:none;max-height:calc(100dvh - 28px);padding:0}
 .etc-dialog::backdrop{background:#181714a8}
 .etc-dialog-bar{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid var(--ink);font:11px Monaco,"Courier New",monospace}
@@ -494,45 +495,22 @@ body[data-route="etcetera"] .viewport{overflow:hidden;min-height:0}
 .etc-dialog-body p{font:normal clamp(14px,1.4vw,18px)/1.65 Monaco,"Courier New",monospace;max-width:62ch}
 .etc-dialog-body small{font:10px/1.5 Monaco,"Courier New",monospace;color:var(--muted)}
 .etc-detail-photo{max-width:100%;max-height:calc(100dvh - 150px);display:block;object-fit:contain;margin:auto}
-@media(max-width:760px){
-.etc-ruskin{left:5%;top:4%;width:55%}.etc-ruskin img{max-height:43vh}
-.etc-optimist{left:30%;top:54%;width:65%;min-height:140px;padding:13px}
-.etc-heading{font-size:clamp(18px,5vw,23px);margin:15px 0}
-}
-
-/* Four independently placed objects, with room between their edges. */
-.etc-ruskin{left:7%;top:7%;width:23%}
-.etc-ruskin img{max-height:39dvh}
-.etc-optimist{left:42%;top:auto;bottom:4%;width:30%;min-height:0}
-.etc-industrial{left:76%;top:6%;width:14%}
-.etc-residential{left:39%;top:5%;width:26%}
-.etc-industrial img,.etc-residential img{display:block;width:100%;height:auto;object-fit:contain}
-.etc-object:focus-visible{outline:1px solid var(--red);outline-offset:6px}
 .etc-dialog-artwork{width:min(1200px,calc(100vw - 28px))}
 .etc-dialog-artwork .etc-dialog-body{padding:16px;overscroll-behavior:contain}
 .etc-dialog-artwork .etc-detail-photo{width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 115px)}
 .etc-dialog-bar button{min-height:44px;flex-shrink:0}
 @media(max-width:760px){
- .etc-ruskin{left:5%;top:3%;width:39%}
- .etc-ruskin img{max-height:27dvh}
- .etc-industrial{left:66%;top:5%;width:24%}
- .etc-residential{left:7%;top:46%;width:43%}
- .etc-optimist{left:57%;top:57%;bottom:auto;width:38%;padding:10px;min-height:0}
- .etc-heading{font-size:clamp(14px,3.6vw,23px);margin:12px 0}
- .etc-caption{font-size:8px}
+ .etc-canvas{width:100%;column-gap:24px;row-gap:32px;padding-block:12px}
+ .etc-object{gap:10px}
+ .etc-caption{font-size:9px;min-height:27px}
+ .etc-heading{font-size:clamp(16px,4.2vw,24px);line-height:1.22;letter-spacing:-.045em}
+ .etc-open{margin-top:16px;font-size:9px}
  .etc-dialog-bar{padding:4px 12px;gap:12px;font-size:10px}
 }
-@media(min-width:761px) and (max-height:600px){
- .etc-ruskin{width:21%}.etc-ruskin img{max-height:52dvh}
- .etc-industrial{width:11%}.etc-residential{width:25%}
- .etc-optimist{top:52%;bottom:auto;width:35%;padding:12px}
- .etc-heading{font-size:20px;margin:10px 0}
-}
-@media(min-width:600px) and (max-height:600px){
- .etc-ruskin{left:3%;top:5%;width:19%}.etc-ruskin img{max-height:45dvh}
- .etc-residential{left:28%;top:4%;width:28%}
- .etc-industrial{left:61%;top:3%;width:12%}
- .etc-optimist{left:77%;top:15%;bottom:auto;width:22%;padding:10px;min-height:0}
- .etc-heading{font-size:14px;margin:10px 0}
- .etc-caption{font-size:8px}
+@media(max-height:500px) and (min-width:600px){
+ .etc-canvas{width:min(860px,90%);row-gap:16px;padding-block:0}
+ .etc-object{gap:6px}
+ .etc-heading{font-size:16px;line-height:1.12;max-width:27ch}
+ .etc-open{margin-top:8px;font-size:8px}
+ .etc-caption{font-size:8px;min-height:0}
 }

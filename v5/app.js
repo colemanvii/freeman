@@ -643,21 +643,23 @@
     const vp = root.querySelector(".viewport");
     vp.innerHTML = `<div class="etc-canvas">
       <button class="etc-object etc-ruskin" type="button" data-etc-open="ruskin" aria-label="Open John Ruskin photograph">
-        <img src="/etcetera/ruskin.webp" alt="Photograph of a printed John Ruskin passage about building for future generations" />
+        <span class="etc-object-body"><img src="/etcetera/ruskin.webp" alt="Photograph of a printed John Ruskin passage about building for future generations" /></span>
         <span class="etc-caption">001 / JOHN RUSKIN · ON BUILDING</span>
       </button>
-      <button class="etc-object etc-optimist" type="button" data-etc-open="optimist" aria-label="Read our note on the challenges of hospitality buildouts">
-        <span class="etc-number">002 / A NOTE ON THE WORK</span>
-        <span class="etc-heading">On building a place people want to return to.</span>
-        <span class="etc-open">THE OPTIMIST / OPEN NOTE ↗</span>
-      </button>
       <button class="etc-object etc-industrial" type="button" data-etc-open="industrial" aria-label="Enlarge architectural drawing with utility poles">
-        <img src="/etcetera/architectural-industrial.webp" width="1290" height="1717" alt="Black-and-white architectural drawing of a small structure, stairs, utility poles and wires, with open paper space and a handwritten inscription along the lower margin">
+        <span class="etc-object-body"><img src="/etcetera/architectural-industrial.webp" width="1290" height="1717" alt="Black-and-white architectural drawing of a small structure, stairs, utility poles and wires, with open paper space and a handwritten inscription along the lower margin"></span>
         <span class="etc-caption">003 / ARCHITECTURAL DRAWING</span>
       </button>
       <button class="etc-object etc-residential" type="button" data-etc-open="residential" aria-label="Enlarge residential landscape drawing">
-        <img src="/etcetera/residential-landscape.webp" width="768" height="576" alt="Warm-toned perspective drawing of a long, low residence among trees and landscape, with paper margins and lettering along the lower edge">
+        <span class="etc-object-body"><img src="/etcetera/residential-landscape.webp" width="768" height="576" alt="Warm-toned perspective drawing of a long, low residence among trees and landscape, with paper margins and lettering along the lower edge"></span>
         <span class="etc-caption">004 / RESIDENTIAL PERSPECTIVE</span>
+      </button>
+      <button class="etc-object etc-optimist" type="button" data-etc-open="optimist" aria-label="Read our note on the challenges of hospitality buildouts">
+        <span class="etc-object-body etc-type">
+          <span class="etc-heading">On building a place people want to return to.</span>
+          <span class="etc-open">THE OPTIMIST / OPEN NOTE ↗</span>
+        </span>
+        <span class="etc-caption">002 / A NOTE ON THE WORK</span>
       </button>
     </div>
     <dialog class="etc-dialog" aria-labelledby="etc-detail-title">
