@@ -1,14 +1,15 @@
 "use strict";
 /*
  * Freeman GC — Project Monograph, an ETCETERA object (study 001).
- * app.js owns the route (etcetera-monograph-001), the section line with ETCETERA current, × CLOSE,
- * Escape and history. This module draws the monograph beneath that header: production's .viewport
- * frame, here the one place that scrolls, and production's sheet controls (PREV · 03 / 07 · NEXT).
+ * Composes the monograph as a short sequence of static plates, one viewport each. app.js owns
+ * everything else, exactly as on Company and Projects: the interior shell, the sheet controls
+ * (PREV · 03 / 05 · NEXT, ← →, ?sheet= in the URL), × CLOSE, Escape and history.
  *
- *   FreemanMonograph.mount(root, data, { scroll }) → { key(e), save(), destroy() }
+ *   FreemanMonograph.sheets(data, mode) → [{ label, html }]   mode: "desktop" | "phone" | "short"
  *
- * The opening sheet is the project gallery's own layout (.pg) with the ETCETERA cover photograph,
- * so the picture the visitor chose is the picture that opens. A new monograph is a new data file.
+ * Desktop has five plates. Phones (portrait) and short screens (phones in landscape) recompose two
+ * of them across two sheets each, as Company splits its philosophy on phones. No plate scrolls or clips: photographs are fitted to the frame
+ * (container units), never enlarged, and text plates are sized to fit.
  */
 (() => {
   const CREDIT_SITES = {
@@ -19,231 +20,104 @@
     String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
   const pad = (n, l = 2) => String(n).padStart(l, "0");
   const statusLabel = (s) => (s === "absent" ? "Not on file" : s).toUpperCase();
-
-  // Production's credit link (app.js creditLink), so credits read and behave identically.
+  // Production's credit link (app.js creditLink).
   const creditLink = (name) => {
     const href = CREDIT_SITES[name];
     return href
       ? `<a class="credit-external" href="${esc(href)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(name)} — visit website in new tab"><span class="tap-label">${esc(name)}<span aria-hidden="true" class="credit-arrow"> ↗</span></span></a>`
       : esc(name);
   };
+  const img = (p) =>
+    `<img src="${esc(p.src)}" width="${p.w}" height="${p.h}" alt="${esc(p.alt)}" decoding="async" draggable="false">`;
 
-  // Production's hover words (app.js words).
-  function words(scope) {
-    const walk = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT, {
-      acceptNode(n) {
-        return n.parentElement.closest("script,style,button,a,.hover-word,.phrase,.mg-status") || !/[A-Za-z0-9]/.test(n.nodeValue)
-          ? NodeFilter.FILTER_REJECT
-          : NodeFilter.FILTER_ACCEPT;
-      },
-    });
-    const nodes = [];
-    while (walk.nextNode()) nodes.push(walk.currentNode);
-    nodes.forEach((n) => {
-      const f = document.createDocumentFragment();
-      n.nodeValue.split(/(\s+)/).forEach((t) => {
-        if (!t) return;
-        if (!/\S/.test(t)) return f.append(t);
-        const s = document.createElement("span");
-        s.className = "hover-word";
-        s.textContent = t;
-        f.append(s);
-      });
-      n.replaceWith(f);
-    });
-  }
+  function sheets(M, mode) {
+    const split = mode !== "desktop", phone = mode === "phone";
+    const P = M.plates;
+    const value = (role) => (M.record.find(([k]) => k === role) || [])[1] || "";
+    const plateNo = (key) => pad(Object.keys(P).indexOf(key) + 1);
+    // A plate's heading line: number in Freeman red, name, and one note on the right (as .pi4-heading).
+    const head = (no, name, note) =>
+      `<header class="mg-head"><span class="mg-head-title"><b class="mg-no">${pad(no)}</b> / ${esc(name).toUpperCase()}</span><span class="mg-head-note">${esc(note).toUpperCase()}</span></header>`;
 
-  function render(M) {
-    const plate = (key) => M.plates[key];
+    // 01 — Cover. The gallery's own layout (.pg), opened on the ETCETERA cover photograph.
+    const cover = (labels) => `<div class="pg mg-cover">
+      <header class="pg-info"><p class="mg-kicker">PROJECT MONOGRAPH ${esc(M.number)}</p><h2 class="pg-name">${esc(M.name)}</h2><p class="pg-place">${esc(M.location)}</p>
+        <dl class="pg-credits"><div><dt>Client</dt><dd>${creditLink(value("Client"))}</dd></div><div><dt>Photography</dt><dd>${creditLink(value("Photography"))}</dd></div></dl>
+        <ol class="mg-contents" aria-label="Plates">${labels.map((l, i) => `<li><button type="button" data-sheet-link="${i}"><span>${pad(i + 1)}</span>${esc(l)}</button></li>`).join("")}</ol>
+      </header>
+      <section class="pg-stage"><div class="pg-frame"><div class="pg-track"><figure class="pg-slide">${img(P.threshold)}</figure></div></div></section>
+    </div>`;
+
+    // 02 — The room. One photograph as production's project plate (.project-plate).
+    const room = () => `<figure class="photo-sheet project-plate mg-room">${img(P.bar)}<figcaption class="project-plate-caption"><div class="project-plate-name">${esc(P.bar.title)}</div><div class="project-plate-meta"><span>PL. ${plateNo("bar")} / ${esc(M.name).toUpperCase()}</span><span>PHOTOGRAPH / ${esc(value("Photography")).toUpperCase()}</span></div></figcaption></figure>`;
+
+    // 03 — The account, in Company's register, and the record beside it.
+    const accountText = () => `<div class="mg-account-text"><p class="mg-kicker">P—${esc(M.id)} / ${esc(M.type).toUpperCase()} / ${esc(M.location).toUpperCase()}</p>
+      <h2>${esc(M.name)}<span class="co4-accent">.</span></h2>
+      <blockquote><p>${esc(M.account)}</p><footer>${esc(M.accountSource).toUpperCase()}</footer></blockquote></div>`;
+    const accountRecord = () => `<div class="mg-account-record"><p class="mg-label">THE RECORD</p>
+      <dl class="mg-claims">${M.record.map(([k, v, s]) => `<div><dt>${esc(k)}</dt><dd>${CREDIT_SITES[v] ? creditLink(v) : esc(v)}</dd><dd class="mg-status mg-status-${s}">${statusLabel(s)}</dd></div>`).join("")}</dl>
+      <p class="mg-note">Freeman red marks what Freeman has stated and nothing on file yet shows.</p></div>`;
+
+    // 04 — Material. Five crops at one height, numbered like an architectural plate, with a key.
+    // The strip's width is solved so its height plus the number line fits the frame:
+    //   W ≤ (H − rows × line − (rows − 1) × rowgap + gap × k) / inv,  inv = Σ 1/Σaspect, k = Σ (n−1)/Σaspect.
     const detail = (id) => M.details.find((d) => d.id === id);
-    const plateNo = (key) => pad(Object.keys(M.plates).indexOf(key) + 1);
-    const credit = (role) => (M.claims.find(([k]) => k === role) || [])[1] || "";
-    const shortTitle = (key) => plate(key).title.replace(/^The /, "").replace(/^./, (c) => c.toUpperCase());
-    const SHEETS = ["Plate", "Account", shortTitle(M.sequence.field), shortTitle(M.sequence.wide), "Detail", "Field record", "Record"];
-
-    const sheet = (i, body, cls = "") =>
-      `<section class="mg-sheet ${cls}" data-sheet="${i}" aria-label="${pad(i + 1)} ${esc(SHEETS[i])}">${body}</section>`;
-    // The margin: sheet number and name, then the sheet's own notes. Same column as the gallery's credits.
-    const margin = (i, inner = "") =>
-      `<header class="mg-margin"><p class="mg-folio"><span>${pad(i + 1)}</span> / ${esc(SHEETS[i]).toUpperCase()}</p>${inner}</header>`;
-    const img = (p, cls = "") =>
-      `<img class="${cls}" src="${esc(p.src)}" width="${p.w}" height="${p.h}" alt="${esc(p.alt)}" decoding="async" draggable="false">`;
-    const plateCaption = (key) => {
-      const p = plate(key);
-      return `<p class="mg-plate-no">PL. ${plateNo(key)} / ${esc(p.title).toUpperCase()}</p><p class="mg-caption">${esc(p.caption)}</p><p class="mg-source">PHOTOGRAPH / ${esc(credit("Photography")).toUpperCase()}<br>GALLERY ${pad(p.n)} / ${pad(Object.keys(M.plates).length)}</p>`;
-    };
-
-    // 01 — the gallery's layout (.pg), opened on the ETCETERA cover photograph.
-    function opening() {
-      const p = plate(M.sequence.opening);
-      const credits = [["Client", credit("Client")], ["Photography", credit("Photography")]].filter(([, v]) => v);
-      const contents = SHEETS.map((s, i) => `<li><button type="button" data-sheet-link="${i}"><span>${pad(i + 1)}</span>${esc(s)}</button></li>`).join("");
-      return sheet(0, `<div class="pg mg-opening">
-        <header class="pg-info"><p class="mg-kicker">PROJECT MONOGRAPH ${esc(M.number)}</p><h2 class="pg-name">${esc(M.name)}</h2><p class="pg-place">${esc(M.location)}</p>
-          <dl class="pg-credits">${credits.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${creditLink(v)}</dd></div>`).join("")}</dl>
-          <nav class="mg-contents" aria-label="Monograph sheets"><p>${pad(SHEETS.length)} SHEETS</p><ol>${contents}</ol></nav>
-        </header>
-        <section class="pg-stage"><div class="pg-frame"><div class="pg-track"><figure class="pg-slide">${img(p)}</figure></div></div>
-          <div class="pg-controls"><button type="button" class="mg-begin" data-sheet-link="1">BEGIN ↓</button></div></section>
-      </div>`, "mg-sheet-opening");
+    function material(no) {
+      const rows = phone ? M.detailRowsPhone : [M.details.map((d) => d.id)];
+      let inv = 0, k = 0;
+      rows.forEach((r) => {
+        const sum = r.reduce((s, id) => s + detail(id).w / detail(id).h, 0);
+        inv += 1 / sum;
+        k += (r.length - 1) / sum;
+      });
+      const strip = rows.map((r) => `<div class="mg-strip-row">${r.map((id) => {
+        const d = detail(id);
+        return `<figure style="--a:${(d.w / d.h).toFixed(4)}">${img(d)}<figcaption>D—${esc(d.id)}</figcaption></figure>`;
+      }).join("")}</div>`).join("");
+      const key = M.details.map((d) => `<li><b class="mg-no">D—${esc(d.id)}</b><span class="mg-key-text">${esc(d.caption)}</span><small>PL. ${plateNo(d.from)} / CROP</small></li>`).join("");
+      // Never enlarged: the strip's rows together stay within the smallest crop's natural height.
+      const hmax = rows.length * Math.min(...M.details.map((d) => d.h));
+      return `<div class="mg-material">${head(no, "Material", "Five details, cropped from PL. 01–03")}
+        <div class="mg-strip"><div class="mg-strip-inner" style="--rows:${rows.length};--inv:${inv.toFixed(5)};--k:${k.toFixed(5)};--hmax:${hmax}px">${strip}</div></div>
+        <ol class="mg-key">${key}</ol></div>`;
     }
 
-    // 02 — the published account, quoted, beside the status of every fact the monograph states.
-    function account() {
-      const rows = M.claims.map(([k, v, s]) =>
-        `<div class="mg-claim"><dt>${esc(k)}</dt><dd>${CREDIT_SITES[v] ? creditLink(v) : esc(v)}</dd><dd class="mg-status mg-status-${s}">${statusLabel(s)}</dd></div>`).join("");
-      const key = Object.entries(M.statuses).map(([k, v]) => `<li><span class="mg-status mg-status-${k}">${statusLabel(k)}</span> ${esc(v)}</li>`).join("");
-      return sheet(1, `${margin(1, `<p class="mg-caption">The account Freeman published for ${esc(M.name)}, quoted as published. Every statement in this monograph carries one status.</p><ul class="mg-key">${key}</ul>`)}
-        <div class="mg-field mg-account">
-          <p class="mg-kicker">P—${esc(M.id)} / ${esc(M.type).toUpperCase()} / ${esc(M.location).toUpperCase()}</p>
-          <h2>${esc(M.name)}<span class="co4-accent">.</span></h2>
-          <blockquote><p>${esc(M.account)}</p><footer>${esc(M.accountSource).toUpperCase()}</footer></blockquote>
-          <dl class="mg-claims">${rows}</dl>
-        </div>`);
-    }
+    // 05 — Field record. The finished room beside a frame of the same proportion, held open for
+    // construction evidence that is not on file. The gap is shown, never filled.
+    const r = P.room.w / P.room.h;
+    const pair = () => `<div class="mg-pair" data-stack="${phone ? 1 : 0}"><div class="mg-pair-inner" style="--r:${r.toFixed(4)}">
+        <figure>${img(P.room)}<figcaption><b class="mg-cap-label">FINISHED</b> PL. ${plateNo("room")} / ${esc(P.room.title).toUpperCase()}<br>PHOTOGRAPH / ${esc(value("Photography")).toUpperCase()}</figcaption></figure>
+        <figure><div class="mg-empty" role="img" aria-label="No construction photograph on file"><span>NOT ON FILE</span></div><figcaption><b class="mg-cap-label">CONSTRUCTION</b> NO PHOTOGRAPH, DRAWING OR<br>DATED RECORD OF THE BUILD IS ON FILE</figcaption></figure>
+      </div></div>`;
+    const onward = () => `<div class="mg-onward"><div><p class="mg-label">REQUESTED</p><ol>${M.awaiting.map((a) => `<li>${esc(a)}</li>`).join("")}</ol></div>
+      <nav aria-label="Continue"><p class="mg-label">CONTINUE</p>
+        <a class="phrase" href="${esc(M.gallery)}">${esc(M.name).toUpperCase()} / PROJECT ↗</a>
+        <a class="phrase" href="${esc(M.next.href)}">NEXT / ${esc(M.next.name).toUpperCase()} ↗</a>
+        <a class="phrase" href="etcetera.html" data-back="1">RETURN / ETCETERA ↗</a></nav></div>`;
+    const fieldRecord = (no) => `<div class="mg-evidence">${head(no, "Field record", "Finished, and what is not on file")}${pair()}${phone ? "" : onward()}</div>`;
 
-    // 03 — one photograph at full frame height, its caption in the margin.
-    function field() {
-      const key = M.sequence.field;
-      return sheet(2, `${margin(2, plateCaption(key))}<figure class="mg-field mg-plate">${img(plate(key))}</figure>`);
+    if (!split) {
+      const labels = [M.name, P.bar.title, "Account", "Material", "Field record"];
+      return [
+        { label: labels[0], html: cover(labels) },
+        { label: labels[1], html: room() },
+        { label: labels[2], html: `<div class="mg-account">${accountText()}${accountRecord()}</div>` },
+        { label: labels[3], html: material(4) },
+        { label: labels[4], html: fieldRecord(5) },
+      ];
     }
-
-    // 04 — one landscape photograph across the whole frame, captioned as a production project plate.
-    function wide() {
-      const key = M.sequence.wide;
-      const p = plate(key);
-      return sheet(3, `<figure class="mg-wide">${img(p)}<figcaption class="project-plate-caption"><div class="project-plate-name">${esc(p.title)}</div><div class="project-plate-meta"><span>PL. ${plateNo(key)} / ${esc(M.name).toUpperCase()}</span><span>PHOTOGRAPH / ${esc(credit("Photography")).toUpperCase()}</span></div></figcaption></figure>
-        <p class="mg-wide-caption">${esc(p.caption)}</p>`, "mg-sheet-wide");
-    }
-
-    // 05 — details at their own size, then one quiet photograph.
-    const detailFigure = (d) =>
-      `<figure class="mg-detail" style="--w:${d.w}px">${img(d)}<figcaption><span>D—${esc(d.id)}</span> ${esc(d.caption)}<small>FROM PL. ${plateNo(d.from)} / CROP</small></figcaption></figure>`;
-    function details() {
-      const rows = M.detailRows.map((r) =>
-        `<div class="mg-detail-row" data-count="${r.items.length}" data-align="${esc(r.align || "start")}"${r.offset ? ` style="--offset:${r.offset}"` : ""}>${r.items.map((id) => detailFigure(detail(id))).join("")}</div>`).join("");
-      const pause = M.sequence.pause;
-      const visible = M.visible.map((v) => `<li>${esc(v)}</li>`).join("");
-      return sheet(4, `${margin(4, `<p class="mg-caption">Material, as the photographs show it. Each detail is a crop of a credited photograph, shown no larger than its source.</p><p class="mg-label">VISIBLE IN THE PHOTOGRAPHS</p><ol class="mg-visible">${visible}</ol><p class="mg-source">NOT A SPECIFICATION. NO PRODUCT, MAKER OR INSTALLER IS ON FILE.</p>`)}
-        <div class="mg-field mg-details">${rows}
-          <figure class="mg-pause">${img(plate(pause))}<figcaption>${plateCaption(pause)}</figcaption></figure>
-        </div>`);
-    }
-
-    // 06 — the finished detail beside the frame held open for the evidence that would explain it.
-    function fieldRecord() {
-      const pairs = M.record.map((r) => {
-        const d = detail(r.detail);
-        return `<div class="mg-record-pair" style="--ratio:${d.w}/${d.h};--aspect:${(d.w / d.h).toFixed(4)};--w:${d.w}px">
-          <figure class="mg-record-finished">${img(d)}<figcaption><span>FINISHED</span> D—${esc(d.id)} / ${esc(d.caption)}</figcaption></figure>
-          <figure class="mg-record-field"><div class="mg-empty" role="img" aria-label="No field photograph on file"><span>NOT ON FILE</span></div><figcaption><span>FIELD</span> ${esc(r.request)}</figcaption></figure>
-        </div>`;
-      }).join("");
-      const awaiting = M.awaiting.map((a) => `<li>${esc(a)}</li>`).join("");
-      return sheet(5, `${margin(5, `<p class="mg-caption">No construction photographs, drawings or dated records for ${esc(M.name)} are on file. Each frame is held open for one, at the size of the finished detail it would explain.</p><p class="mg-label">ALSO REQUESTED</p><ol class="mg-visible">${awaiting}</ol>`)}
-        <div class="mg-field mg-record">${pairs}</div>`);
-    }
-
-    // 07 — the register, the sources, and the way on. Links are site routes, handled in place by app.js.
-    function record() {
-      const rows = [
-        ["Project", M.name],
-        ["Location", M.location],
-        ["Type", M.type],
-        ["Client", creditLink(credit("Client")), true],
-        ["Construction", "Freeman GC", false, "stated"],
-        ["Photography", creditLink(credit("Photography")), true],
-        ["Design", "—", false, "absent"],
-        ["Completed", "—", false, "absent"],
-      ].map(([k, v, html, s]) => `<div><dt>${esc(k)}</dt><dd>${html ? v : esc(v)}</dd><dd class="mg-status${s ? " mg-status-" + s : ""}">${s ? statusLabel(s) : ""}</dd></div>`).join("");
-      return sheet(6, `${margin(6, `<p class="mg-caption">Sources: Freeman’s published project record and its photographs. Details are crops of those photographs, unaltered except for cropping.</p>`)}
-        <div class="mg-field mg-register">
-          <dl class="mg-claims">${rows}</dl>
-          <nav class="mg-onward" aria-label="Continue">
-            <div><span>PROJECT</span><a class="phrase" href="${esc(M.gallery)}">${esc(M.name).toUpperCase()} ↗</a></div>
-            <div><span>NEXT / P—${esc(M.next.id)}</span><a class="phrase" href="${esc(M.next.href)}">${esc(M.next.name).toUpperCase()} ↗</a></div>
-            <div><span>RETURN</span><a class="phrase" href="etcetera.html" data-back="1">ETCETERA ↗</a></div>
-          </nav>
-        </div>`, "mg-sheet-record");
-    }
-
-    return {
-      SHEETS,
-      html: `<section class="viewport mg-viewport" tabindex="-1" aria-label="${esc(M.name)} monograph">${[opening(), account(), field(), wide(), details(), fieldRecord(), record()].join("")}</section>
-        <footer class="sheet-controls"><span class="section-link">MONOGRAPH ${esc(M.number)} / <span class="mg-current"></span></span><nav aria-label="Sheet navigation"><button id="previous" class="phrase" type="button">PREV</button><span class="count" aria-live="polite"></span><button id="next" class="phrase" type="button">NEXT</button></nav></footer>`,
-    };
+    const labels = [M.name, P.bar.title, "Account", "Record", "Material", "Field record", "Continue"];
+    return [
+      { label: labels[0], html: cover(labels) },
+      { label: labels[1], html: room() },
+      { label: labels[2], html: `<div class="mg-account">${accountText()}</div>` },
+      { label: labels[3], html: `<div class="mg-account">${accountRecord()}</div>` },
+      { label: labels[4], html: material(5) },
+      { label: labels[5], html: fieldRecord(6) },
+      { label: labels[6], html: `<div class="mg-evidence">${head(7, "Continue", "What would prove it")}${onward()}</div>` },
+    ];
   }
 
-  function mount(root, M, { scroll } = {}) {
-    const { SHEETS, html } = render(M);
-    root.insertAdjacentHTML("beforeend", html);
-    const vp = root.querySelector(".mg-viewport");
-    words(vp);
-    const sheets = [...vp.querySelectorAll(".mg-sheet")];
-    const prev = root.querySelector("#previous"), next = root.querySelector("#next");
-    const countEl = root.querySelector(".count"), currentEl = root.querySelector(".mg-current");
-    let index = 0;
-
-    // The sheet in view is the last one whose top has reached the upper third of the frame.
-    function current() {
-      const line = vp.getBoundingClientRect().top + vp.clientHeight / 3;
-      let i = 0;
-      sheets.forEach((s, n) => { if (s.getBoundingClientRect().top <= line) i = n; });
-      if (vp.scrollTop + vp.clientHeight >= vp.scrollHeight - 2) i = sheets.length - 1;
-      return i;
-    }
-    function count() {
-      index = current();
-      countEl.textContent = `${pad(index + 1)} / ${pad(sheets.length)}`;
-      currentEl.textContent = SHEETS[index].toUpperCase();
-      prev.disabled = index === 0;
-      next.disabled = index === sheets.length - 1;
-      vp.querySelectorAll(".mg-contents [data-sheet-link]").forEach((b) => b.toggleAttribute("aria-current", Number(b.dataset.sheetLink) === index));
-    }
-    // A sheet's leading whitespace separates it from the last one; a move lands on its content.
-    // Production moves are immediate (no transitions); so is this one.
-    function go(i) {
-      i = Math.max(0, Math.min(sheets.length - 1, i));
-      const s = sheets[i];
-      vp.scrollTop = s.offsetTop - sheets[0].offsetTop + parseFloat(getComputedStyle(s).paddingTop);
-      count();
-    }
-
-    prev.addEventListener("click", () => go(index - 1));
-    next.addEventListener("click", () => go(index + 1));
-    vp.addEventListener("click", (e) => {
-      const b = e.target.closest("[data-sheet-link]");
-      if (b) go(Number(b.dataset.sheetLink));
-    });
-    // A reload keeps the place too. Safari throws when history is written too often: write once
-    // scrolling settles, keeping app.js's own state (depth, palette) in the entry.
-    let ticking = false, saveTimer;
-    vp.addEventListener("scroll", () => {
-      clearTimeout(saveTimer);
-      saveTimer = setTimeout(() => {
-        try { history.replaceState({ ...(history.state || {}), mgScroll: vp.scrollTop }, ""); } catch (e) {}
-      }, 200);
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => { ticking = false; count(); });
-    }, { passive: true });
-
-    // Back / Forward and reload return to the same place in the story (app.js keeps it in history).
-    if (typeof scroll === "number") vp.scrollTop = scroll;
-    count();
-    try { vp.focus({ preventScroll: true }); } catch (e) {}
-
-    return {
-      key(e) {
-        if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return false;
-        e.preventDefault();
-        go(index + (e.key === "ArrowRight" ? 1 : -1));
-        return true;
-      },
-      save: () => ({ mgScroll: vp.scrollTop }),
-      destroy: () => clearTimeout(saveTimer),
-    };
-  }
-
-  window.FreemanMonograph = { mount };
+  window.FreemanMonograph = { sheets };
 })();

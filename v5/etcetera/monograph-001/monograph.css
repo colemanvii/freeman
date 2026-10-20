@@ -1,140 +1,147 @@
 /* Project Monograph, an ETCETERA object (study 001). Production styles.css supplies every token,
-   the interior shell, the ETCETERA collection, the gallery (.pg) and the project plate caption.
-   This file only adds what the monograph needs beyond them: its cover in ETCETERA, a frame that
-   scrolls, and the 220px information column continued as a margin. Loaded by app.js. */
+   the interior shell, the ETCETERA collection, the gallery (.pg), the project plate and Company's
+   register. This file adds only the monograph's ETCETERA entry and the composition of its plates.
+   Nothing scrolls: every plate is composed inside production's fixed .viewport frame. */
 
-/* ETCETERA: the monograph is a third column beside the approved two-column collection, one object
-   spanning both rows. The four objects keep their order, alignment and caption baselines. */
-.etc-canvas.etc-with-monograph{width:min(1240px,92%);grid-template-columns:repeat(3,minmax(0,1fr))}
-.etc-monograph{grid-column:3;grid-row:1 / span 2}
-.etc-monograph .etc-caption{color:var(--ink)}
-.etc-monograph .etc-caption span{color:var(--orange)}
-.etc-monograph:hover .etc-caption,.etc-monograph:focus-visible .etc-caption{background:var(--orange);color:var(--paper)}
-.etc-monograph:hover .etc-caption span,.etc-monograph:focus-visible .etc-caption span{color:var(--paper)}
-@media(max-width:760px){
- /* Phones: the collection keeps its 2 × 2; the monograph is one line above it. */
- .etc-canvas.etc-with-monograph{width:100%;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto repeat(2,minmax(0,1fr))}
- .etc-monograph{grid-column:1 / span 2;grid-row:1;grid-template-rows:auto;border-bottom:1px solid var(--hair);padding-bottom:12px}
- .etc-monograph .etc-object-body{display:none}
- .etc-monograph .etc-caption{min-height:0;font-size:10px}
-}
+/* ---------- ETCETERA: object 005 ----------
+   The approved 2 × 2 keeps its order, columns and caption baselines. The monograph is entered
+   below it as one index line on a hairline, set on the same two columns, in the collection's
+   own caption and OPEN ↗ language: a fifth object of a different kind, not a fifth picture. */
+.etc-canvas.etc-with-monograph{grid-template-rows:repeat(2,minmax(0,1fr)) auto}
+.etc-monograph{grid-column:1 / -1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto;column-gap:clamp(40px,8vw,120px);align-items:baseline;border-top:1px solid var(--hair);padding-top:10px;text-decoration:none}
+.etc-monograph .etc-caption{grid-column:1;min-height:0}
+.etc-monograph .etc-open{grid-column:2;justify-self:start;margin:0;color:var(--orange)}
+.etc-monograph:hover .etc-open,.etc-monograph:focus-visible .etc-open{background:var(--orange);color:var(--paper)}
+.etc-monograph:focus-visible{outline:1px solid var(--orange);outline-offset:5px}
+@media(max-width:760px){.etc-monograph{column-gap:24px}}
+@media(max-height:500px) and (min-width:600px){.etc-monograph{padding-top:6px}}
+@media(pointer:coarse){.etc-monograph:hover .etc-open{background:transparent;color:var(--orange)}.etc-monograph:active .etc-open{background:var(--orange);color:var(--paper)}}
 
-/* The frame: production's .viewport, scrolling inside its own edges. Header and controls stay fixed. */
-.mg-viewport{overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--hair) transparent;outline:none}
-.mg-viewport img{background:var(--hair);user-select:none;-webkit-user-drag:none}
+/* ---------- Plates ---------- */
+body[data-route="monograph"] .viewport{overflow:hidden}
+.mg-sheet{height:100%;min-height:0}
+.mg-sheet>*{height:100%;min-height:0}
+.mg-viewport img{user-select:none;-webkit-user-drag:none}
+/* A plate's heading line, as the Projects index heading: number in Freeman red, note muted. */
+.mg-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--hair);font:10px/1.5 var(--mono);letter-spacing:.035em}
+.mg-no{font-weight:400;color:var(--orange)}
+.mg-head-note{color:var(--muted);text-align:right}
+.mg-kicker,.mg-label{margin:0;font:9px/1.5 var(--mono);letter-spacing:.04em;color:var(--muted)}
 
-/* Every sheet after the opening: margin column + field, the gallery's own geometry. */
-.mg-sheet{display:grid;grid-template-columns:220px minmax(0,1fr);column-gap:clamp(32px,4vw,64px);padding-top:clamp(96px,19vh,210px)}
-.mg-sheet-opening{display:block;height:100%;padding:0}
-.mg-margin{position:sticky;top:0;align-self:start;display:flex;flex-direction:column;gap:12px;min-width:0}
-.mg-folio{margin:0;border-top:1px solid var(--hair);padding-top:8px;font-size:9px;line-height:1.5;letter-spacing:.04em;color:var(--muted)}
-.mg-folio span{color:var(--orange)}
-.mg-caption{margin:0;font-size:11px;line-height:1.6;max-width:34ch}
-.mg-label,.mg-plate-no,.mg-source{margin:0;font-size:9px;line-height:1.5;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
-.mg-label{margin-top:10px}
-.mg-visible{list-style:none;margin:0;padding:0;font-size:10px;line-height:1.5}
-.mg-visible li{border-top:1px solid var(--hair);padding:5px 0}
-.mg-field{min-width:0;margin:0}
-
-/* 01 Opening: the production gallery, plus the sheet list where its column has room. */
-.mg-opening .pg-info{min-height:0}
-.mg-contents{margin-top:auto;padding-top:24px}
-.mg-contents p{margin:0 0 8px;font-size:9px;line-height:1.5;letter-spacing:.04em;color:var(--muted)}
-.mg-contents ol{list-style:none;margin:0;padding:0;border-bottom:1px solid var(--hair)}
-.mg-contents button{width:100%;display:grid;grid-template-columns:28px 1fr;text-align:left;border-top:1px solid var(--hair);padding:6px 0;font-size:10px;line-height:1.5;letter-spacing:.04em;text-transform:uppercase}
+/* 01 Cover: the gallery layout, with the plate list where its column has room. */
+.mg-cover .pg-info{min-height:0}
+.mg-cover .mg-kicker{margin-bottom:10px}
+.mg-cover .pg-track{transition:none}
+.mg-contents{list-style:none;margin:auto 0 0;padding:20px 0 0}
+.mg-contents li{border-top:1px solid var(--hair)}
+.mg-contents li:last-child{border-bottom:1px solid var(--hair)}
+.mg-contents button{width:100%;display:grid;grid-template-columns:28px 1fr;text-align:left;padding:6px 0;font:10px/1.5 var(--mono);letter-spacing:.04em;text-transform:uppercase}
 .mg-contents button span{color:var(--muted)}
-.mg-contents button[aria-current] span{color:var(--orange)}
-.mg-contents button:hover{color:var(--orange)}
-.mg-opening .mg-kicker{margin:0 0 10px;font-size:9px}
-.mg-begin{font-size:11px;line-height:1.5;letter-spacing:.04em;color:var(--muted)}
-.mg-begin:hover,.mg-begin:focus-visible{background:var(--orange);color:var(--paper)}
+.mg-contents button:hover,.mg-contents button:focus-visible{color:var(--orange)}
 
-/* 02 Account: Company's headline register, the published text quoted, then the status of each fact. */
-.mg-account{max-width:640px}
-.mg-kicker{margin:0 0 20px;font-size:10px;line-height:1.5;letter-spacing:.04em;color:var(--muted)}
-.mg-account h2{font:400 clamp(25px,2.3vw,33px)/1.28 var(--mono);margin:0 0 25px}
+/* 02 The room: production's project plate, unchanged. */
+.mg-room{padding-bottom:6px}
+.mg-room img{object-position:left center}
+
+/* 03 Account: Company's headline register; the record beside it. */
+.mg-account{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(48px,6vw,110px);align-content:center;width:min(1160px,100%);margin:0 auto}
+.mg-account-text h2{font:400 clamp(25px,2.3vw,33px)/1.28 var(--mono);margin:12px 0 22px}
 .mg-account blockquote{margin:0}
-.mg-account blockquote p{font-size:13px;line-height:1.75;max-width:560px}
-.mg-account blockquote footer{margin-top:12px;font-size:9px;line-height:1.5;letter-spacing:.04em;color:var(--muted)}
-.mg-claims{margin:44px 0 0;font-size:11px;line-height:1.6;border-bottom:1px solid var(--hair)}
-.mg-claims div{display:grid;grid-template-columns:140px minmax(0,1fr) 92px;gap:16px;border-top:1px solid var(--hair);padding:10px 0;align-items:baseline}
+.mg-account blockquote p{font:13px/1.75 var(--mono);max-width:520px}
+.mg-account blockquote footer{margin-top:12px;font:9px/1.5 var(--mono);letter-spacing:.04em;color:var(--muted)}
+.mg-account-record .mg-label{padding-bottom:10px}
+.mg-claims{margin:0;border-bottom:1px solid var(--hair);font:11px/1.5 var(--mono)}
+.mg-claims div{display:grid;grid-template-columns:110px minmax(0,1fr) 88px;gap:14px;border-top:1px solid var(--hair);padding:9px 0;align-items:baseline}
 .mg-claims dt{font-size:9px;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
 .mg-claims dd{margin:0;min-width:0}
-.mg-status{font-size:9px;letter-spacing:.04em;text-align:right;color:var(--ink)}
+.mg-status{font-size:9px;letter-spacing:.04em;text-align:right}
 /* Freeman red marks a claim Freeman has stated but nothing on file yet shows. */
 .mg-status-stated{color:var(--orange)}
 .mg-status-absent{color:var(--muted)}
-.mg-key{list-style:none;margin:6px 0 0;padding:0;font-size:9px;line-height:1.5;color:var(--muted)}
-.mg-key li{border-top:1px solid var(--hair);padding:6px 0}
-.mg-key .mg-status{display:block;text-align:left}
+.mg-note{margin-top:12px;font:9px/1.5 var(--mono);letter-spacing:.02em;color:var(--muted)}
 
-/* 03 Field plate: one photograph at the frame's full height, never enlarged. */
-.mg-plate img{width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 182px)}
+/* 04 Material: crops at one height, numbered, with a key. The strip's width is solved from the
+   frame's own size (container units) so its height always fits: nothing is clipped. */
+.mg-material{display:grid;grid-template-rows:auto minmax(0,1fr) auto;row-gap:18px}
+.mg-strip{min-height:0;container-type:size;display:flex;align-items:center}
+.mg-strip-inner{--gap:clamp(12px,1.8vw,26px);--line:22px;--rowgap:14px;
+  width:min(100cqw,calc((100cqh - var(--rows) * var(--line) - (var(--rows) - 1) * var(--rowgap) + var(--gap) * var(--k)) / var(--inv)),calc((var(--hmax) + var(--gap) * var(--k)) / var(--inv)));
+  display:flex;flex-direction:column;gap:var(--rowgap)}
+.mg-strip-row{display:flex;gap:var(--gap)}
+.mg-strip figure{margin:0;flex:var(--a) 1 0;min-width:0}
+.mg-strip img{display:block;width:100%;height:auto}
+.mg-strip figcaption{height:var(--line);padding-top:6px;font:9px/1.5 var(--mono);letter-spacing:.04em;color:var(--muted)}
+.mg-key{list-style:none;margin:0;padding:12px 0 0;border-top:1px solid var(--hair);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;font:10px/1.5 var(--mono)}
+.mg-key .mg-no{margin-right:6px}
+.mg-key small{display:block;font-size:9px;letter-spacing:.04em;color:var(--muted)}
 
-/* 04 Wide: one photograph across margin and field, captioned as a production project plate. */
-.mg-sheet-wide{display:block}
-.mg-wide{margin:0;width:fit-content;max-width:100%}
-.mg-wide img{width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 310px)}
-.mg-wide .project-plate-caption{margin-top:15px}
-.mg-wide-caption{margin:14px 0 0 calc(220px + clamp(32px,4vw,64px));max-width:52ch;font-size:11px;line-height:1.6}
+/* 05 Field record: the finished room beside a frame of the same proportion, held open. */
+.mg-evidence{display:grid;grid-template-rows:auto minmax(0,1fr) auto;row-gap:18px}
+.mg-pair{min-height:0;container-type:size;display:flex;align-items:center}
+.mg-pair-inner{--gap:clamp(20px,3vw,48px);--cap:40px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap);
+  width:min(100cqw,calc((100cqh - var(--cap)) * var(--r) * 2 + var(--gap)))}
+.mg-pair figure{margin:0;min-width:0}
+.mg-pair img{display:block;width:100%;height:auto}
+.mg-empty{aspect-ratio:var(--r);border:1px solid var(--hair);background:color-mix(in srgb,var(--ink) 2%,var(--paper));display:flex;align-items:center;justify-content:center}
+.mg-empty span{font:9px/1.5 var(--mono);letter-spacing:.04em;color:var(--muted)}
+.mg-pair figcaption{height:var(--cap);padding-top:8px;font:9px/1.5 var(--mono);letter-spacing:.04em;color:var(--ink)}
+.mg-cap-label{font-weight:400;color:var(--muted);margin-right:6px}
+.mg-onward{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,3vw,48px);border-top:1px solid var(--hair);padding-top:12px}
+.mg-onward ol{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:20px;font:10px/1.6 var(--mono)}
+.mg-onward nav{display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+.mg-onward nav .mg-label{margin-bottom:4px}
+.mg-onward a{font:11px/1.6 var(--mono);letter-spacing:.035em}
 
-/* 05 Detail: crops at their own size, in rows of one or two; then one quiet photograph. */
-.mg-detail-row{display:flex;gap:clamp(32px,5vw,80px);margin-bottom:clamp(56px,11vh,128px)}
-.mg-detail-row[data-align="end"]{align-items:flex-end}
-.mg-detail-row[data-align="start"]{align-items:flex-start}
-.mg-detail-row[data-count="1"]{padding-left:calc(var(--offset,0) * 8.333%)}
-.mg-detail{margin:0;flex:0 1 var(--w);max-width:var(--w);min-width:0}
-.mg-detail img{width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 240px)}
-.mg-detail figcaption,.mg-record-pair figcaption{margin-top:9px;font-size:10px;line-height:1.5;max-width:46ch}
-.mg-detail figcaption span,.mg-record-pair figcaption span{color:var(--muted);letter-spacing:.04em;margin-right:6px}
-.mg-detail figcaption small{display:block;margin-top:3px;font-size:9px;letter-spacing:.04em;color:var(--muted)}
-.mg-pause{margin:clamp(72px,16vh,180px) auto clamp(40px,8vh,80px);width:min(52%,560px)}
-.mg-pause img{width:100%;height:auto}
-.mg-pause figcaption{margin-top:12px;display:flex;flex-direction:column;gap:6px}
-
-/* 06 Field record: the finished detail beside an open frame of the same proportion. */
-.mg-record-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(24px,3vw,48px);max-width:calc(2 * var(--w) + 48px);margin-bottom:clamp(56px,10vh,104px);align-items:start}
-.mg-record-pair figure{margin:0;width:min(100%,var(--w),calc(58dvh * var(--aspect)))}
-.mg-record-pair img{width:100%;height:auto}
-.mg-empty{width:100%;aspect-ratio:var(--ratio);border:1px solid var(--hair);background:color-mix(in srgb,var(--ink) 2%,var(--paper));display:flex;align-items:center;justify-content:center}
-.mg-empty span{font-size:9px;line-height:1.5;letter-spacing:.04em;color:var(--muted)}
-
-/* 07 Record: the register, then the way on. The last sheet ends at the frame's foot. */
-.mg-sheet-record{min-height:100%;align-content:start;padding-bottom:12px}
-.mg-register{max-width:640px}
-.mg-register .mg-claims{margin-top:0}
-.mg-onward{margin-top:56px;display:grid;gap:0;border-bottom:1px solid var(--hair)}
-.mg-onward div{display:grid;grid-template-columns:140px minmax(0,1fr);gap:16px;border-top:1px solid var(--hair);padding:14px 0;align-items:baseline}
-.mg-onward span{font-size:9px;letter-spacing:.04em;color:var(--muted)}
-.mg-onward a{justify-self:start;font-size:13px;line-height:1.45;letter-spacing:.04em}
-
-.sheet-controls .section-link{color:var(--muted);letter-spacing:.04em}
-.mg-current{color:var(--ink)}
-
-@media(max-width:760px){
- .mg-sheet{grid-template-columns:minmax(0,1fr);row-gap:18px;padding-top:88px}
- .mg-sheet-opening{padding:0}
- .mg-margin{position:static}
- .mg-caption{max-width:none}
- .mg-contents{display:none}
- .mg-plate img{max-height:none}
- .mg-wide img{max-height:none}
- .mg-wide-caption{margin-left:0}
- .mg-detail-row{flex-direction:column;align-items:flex-start!important;gap:40px;margin-bottom:48px}
- .mg-detail-row[data-count="1"]{padding-left:0}
- .mg-detail{flex:none;width:100%}
- .mg-detail img{max-height:72dvh}
- .mg-pause{width:78%;margin-top:64px}
- .mg-record-pair{gap:14px;margin-bottom:48px}
- .mg-record-pair figure{width:min(100%,var(--w),calc(46dvh * var(--aspect)))}
+/* ---------- Phones (portrait): each plate recomposed, never clipped ---------- */
+@media(max-width:760px) and (min-height:501px){
+ .mg-cover .mg-contents{display:none}
+ .mg-cover .pg-slide{align-items:flex-start}
+ .mg-account{grid-template-columns:minmax(0,1fr);align-content:start;gap:0}
+ .mg-account-text h2{font-size:clamp(23px,6vw,29px);margin:10px 0 16px}
+ .mg-account blockquote p{font-size:12px;line-height:1.65}
  .mg-claims div{grid-template-columns:96px minmax(0,1fr);row-gap:2px}
  .mg-claims .mg-status{grid-column:2;text-align:left}
- .mg-onward div{grid-template-columns:96px minmax(0,1fr)}
- .sheet-controls .section-link{max-width:none}
+ .mg-material,.mg-evidence{row-gap:14px}
+ .mg-key{grid-template-columns:minmax(0,1fr);gap:4px;padding-top:10px}
+ .mg-key li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;column-gap:8px;align-items:baseline}
+ .mg-key .mg-no{margin:0}
+ .mg-pair-inner{--cap:52px;grid-template-columns:minmax(0,1fr);width:min(100cqw,calc((100cqh - 2 * var(--cap) - var(--gap)) / 2 * var(--r)))}
+ /* The bar: photograph and caption as one group, centred in the frame, not a tall empty box. */
+ .mg-room{grid-template-rows:auto auto;align-content:center}
+ .mg-room img{height:auto;max-height:100%}
+ .mg-onward{grid-template-columns:minmax(0,1fr);gap:22px;border-top:0;padding-top:0;align-content:start}
+ .mg-onward ol{grid-template-columns:minmax(0,1fr)}
+ .mg-onward ol li{border-top:1px solid var(--hair);padding:6px 0}
+ .mg-onward a{font-size:12px;min-height:32px;display:inline-flex;align-items:center}
+ .mg-evidence:has(>.mg-onward:last-child) {grid-template-rows:auto minmax(0,1fr)}
 }
-@media(pointer:coarse){
- .mg-begin,.mg-onward a{position:relative}
- .mg-onward a::after,.mg-begin::after{content:"";position:absolute;inset:-12px -6px}
- .mg-onward a:hover,.mg-begin:hover{background:transparent;color:inherit}
- .mg-onward a:active,.mg-begin:active{background:var(--orange);color:var(--paper)}
+/* ---------- Short screens (phones in landscape): split sheets, side by side, tighter type ---------- */
+@media(max-height:500px){
+ .mg-cover .mg-contents{display:none}
+ .mg-cover .pg-credits div{padding:4px 0}
+ .mg-account{grid-template-columns:minmax(0,1fr);width:min(720px,100%)}
+ .mg-account-text h2{font-size:20px;margin:6px 0 10px}
+ .mg-account blockquote p{font-size:11px;line-height:1.55;max-width:none}
+ .mg-account blockquote footer{margin-top:6px}
+ .mg-account-record .mg-label{padding-bottom:4px}
+ .mg-claims{font-size:10px}
+ .mg-claims div{padding:4px 0;grid-template-columns:110px minmax(0,1fr) 88px}
+ .mg-note{margin-top:6px}
+ .mg-head{padding-bottom:6px}
+ .mg-material,.mg-evidence{row-gap:8px}
+ .mg-strip-inner{--line:18px;--gap:10px}
+ .mg-strip figcaption{padding-top:3px}
+ .mg-key{padding-top:6px;gap:10px;font-size:9px;line-height:1.4}
+ .mg-pair-inner{--cap:32px;--gap:20px}
+ .mg-pair figcaption{padding-top:4px;font-size:8px}
+ .mg-onward{padding-top:8px}
+ .mg-onward ol{font-size:9px;line-height:1.5}
+ .mg-onward a{font-size:10px;line-height:1.5}
+ .mg-evidence:has(>.mg-onward:last-child){grid-template-rows:auto minmax(0,1fr);align-content:start}
+}
+@media(min-width:761px) and (min-height:501px) and (max-height:690px){
+ .mg-account-text h2{margin:8px 0 14px}
+ .mg-account blockquote p{font-size:12px;line-height:1.6}
+ .mg-claims div{padding:6px 0}
+ .mg-material,.mg-evidence{row-gap:12px}
 }

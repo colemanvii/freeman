@@ -673,8 +673,8 @@
         <span class="etc-caption">002 / A NOTE ON THE WORK</span>
       </button>
       <a class="etc-object etc-monograph" href="etcetera-monograph-001.html" aria-label="Open Project Monograph 001, Beetlecat">
-        <span class="etc-object-body"><img src="/assets/projects/beetlecat-interior-2.jpg" width="1440" height="1920" alt="Beetlecat: a yellow door with rounded openings beside a wave-patterned glass screen and a red ribbed counter front"></span>
-        <span class="etc-caption">005 / PROJECT MONOGRAPH 001 · BEETLECAT <span aria-hidden="true">↗</span></span>
+        <span class="etc-caption">005 / PROJECT MONOGRAPH 001 · BEETLECAT</span>
+        <span class="etc-open">OPEN MONOGRAPH ↗</span>
       </a>
     </div>
     <dialog class="etc-dialog" aria-labelledby="etc-detail-title">
@@ -719,10 +719,10 @@
   }
 
   /* ---------- Etcetera / Project Monograph 001 (study) ----------
-     Its own route under ETCETERA. The monograph's scripts and styles load on first use; the
-     module draws beneath this section line and × CLOSE, so history, palette, Escape and the
-     return to ETCETERA are the site's own. */
-  const MONOGRAPH_DIR = "/etcetera/monograph-001/", MONOGRAPH_V = "?v=001-5";
+     Its own route under ETCETERA: a short sequence of static plates, one viewport each, in the
+     interior shell. The monograph's scripts and styles load on first use; history, palette,
+     sheets, Escape and the return to ETCETERA are the site's own. */
+  const MONOGRAPH_DIR = "/etcetera/monograph-001/", MONOGRAPH_V = "?v=001-13";
   function loadMonographStyles() {
     if (document.querySelector("link[data-monograph]")) return;
     const css = document.createElement("link");
@@ -744,18 +744,66 @@
     if (!monographLoad) monographLoad = add("beetlecat.js").then(() => add("monograph.js"));
     return monographLoad;
   }
-  function monograph(state) {
-    root.innerHTML = `<header class="panel-head"><h1 class="sr-only">Etcetera / Project Monograph 001 / Beetlecat</h1>${siteNav("etcetera", { href: "etcetera.html", focus: "monograph-001" })}${closeMarkup()}</header>`;
-    let mg = null, live = true;
+  // Production's own paging (chrome, go, count, ?sheet=, ← →): a phone recomposes some plates
+  // across two sheets, as Company does. Swipes page like the project gallery's.
+  function monograph() {
+    chrome({ title: "Etcetera / Project Monograph 001 / Beetlecat", section: "etcetera", parent: { href: "etcetera.html", focus: "monograph-001" } });
+    const vp = root.querySelector(".viewport");
+    const label = root.querySelector(".section-link");
+    vp.classList.add("mg-viewport");
+    // Until the plates load, keep ?sheet= (count() would clamp it to a single sheet).
+    root.querySelector(".sheet-controls nav").hidden = true;
+    // Phones in portrait and short screens (phones in landscape) have their own compositions.
+    const phone = matchMedia(PHONE), short = matchMedia("(max-height:500px)");
+    const mode = () => (short.matches ? "short" : phone.matches ? "phone" : "desktop");
+    let live = true, sheets = [];
+    function compose() {
+      const was = pageCount;
+      sheets = window.FreemanMonograph.sheets(window.MONOGRAPH, mode());
+      pageCount = sheets.length;
+      // Keep the place when a resize changes the number of sheets.
+      if (was > 1 && was !== pageCount) pageIndex = Math.round((pageIndex * (pageCount - 1)) / (was - 1));
+      renderPage = () => {
+        const s = sheets[pageIndex];
+        vp.innerHTML = `<div class="mg-sheet" data-sheet="${pageIndex}">${s.html}</div>`;
+        label.textContent = `MONOGRAPH 001 / ${s.label.toUpperCase()}`;
+        words(vp);
+      };
+      pageIndex = Math.min(pageIndex, pageCount - 1);
+      renderPage();
+      count();
+    }
     loadMonograph().then(
-      () => { if (live) mg = window.FreemanMonograph.mount(root, window.MONOGRAPH, { scroll: state.mgScroll }); },
-      () => { if (live) root.insertAdjacentHTML("beforeend", `<section class="viewport"><article class="reading"><p>The monograph could not be loaded.</p></article></section>`); },
+      () => {
+        if (!live) return;
+        compose();
+        // Plates change in place: fetch every photograph once, so no plate opens blank.
+        const M = window.MONOGRAPH;
+        [...Object.values(M.plates), ...M.details].forEach((p) => { new Image().src = p.src; });
+      },
+      () => { if (live) vp.innerHTML = `<article class="reading"><p>The monograph could not be loaded.</p></article>`; },
     );
-    return {
-      key: (e) => (mg ? mg.key(e) : false),
-      save: () => (mg ? mg.save() : {}),
-      destroy: () => { live = false; if (mg) mg.destroy(); },
-    };
+    const recompose = () => live && window.FreemanMonograph && compose();
+    phone.addEventListener("change", recompose);
+    short.addEventListener("change", recompose);
+    vp.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-sheet-link]");
+      if (b) go(Number(b.dataset.sheetLink));
+    });
+    const EDGE = 24;
+    let x0 = 0, y0 = 0, tracking = false;
+    vp.addEventListener("touchstart", (e) => {
+      const t = e.touches[0];
+      tracking = e.touches.length === 1 && t.clientX > EDGE && t.clientX < innerWidth - EDGE;
+      x0 = t.clientX; y0 = t.clientY;
+    }, { passive: true });
+    vp.addEventListener("touchend", (e) => {
+      if (!tracking) return;
+      tracking = false;
+      const t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) go(pageIndex + (dx < 0 ? 1 : -1));
+    }, { passive: true });
+    return { destroy: () => { live = false; phone.removeEventListener("change", recompose); short.removeEventListener("change", recompose); } };
   }
 
   function contact() {
@@ -914,7 +962,7 @@
       else if (route.kind === "project") project(route.item);
       else if (route.kind === "contact") contact();
       else if (route.kind === "etcetera") etcetera();
-      else if (route.kind === "monograph") Object.assign(view, monograph(state));
+      else if (route.kind === "monograph") Object.assign(view, monograph());
       else notFound();
       document.title = (route.item ? route.item.name : TITLES[route.kind]) + " — Freeman GC";
     }
