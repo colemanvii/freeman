@@ -1,0 +1,42 @@
+[
+  {
+    "engine": "chromium",
+    "mobile": false,
+    "final_rgba_differences": 0,
+    "studies": 3,
+    "palettes": 2,
+    "reduced_motion": "pass",
+    "controls": "pass",
+    "placement": "pass"
+  },
+  {
+    "engine": "chromium",
+    "mobile": true,
+    "final_rgba_differences": 0,
+    "studies": 3,
+    "palettes": 2,
+    "reduced_motion": "pass",
+    "controls": "pass",
+    "placement": "pass"
+  },
+  {
+    "engine": "webkit",
+    "mobile": false,
+    "final_rgba_differences": 0,
+    "studies": 3,
+    "palettes": 2,
+    "reduced_motion": "pass",
+    "controls": "pass",
+    "placement": "pass"
+  },
+  {
+    "engine": "webkit",
+    "mobile": true,
+    "final_rgba_differences": 0,
+    "studies": 3,
+    "palettes": 2,
+    "reduced_motion": "pass",
+    "controls": "pass",
+    "placement": "pass"
+  }
+]
