@@ -13,6 +13,7 @@
   const modules = {
     plate: { src: ["experiences/plate.js"], css: ["experiences/plate.css"] },
     essay: { src: ["experiences/essay.js"], css: ["experiences/essay.css"] },
+    credo: { src: ["experiences/credo.js"], css: ["experiences/credo.css"] },
     film: { src: ["experiences/film.js"], css: ["experiences/film.css"] },
     snapshot: {
       src: ["snapshot-001/beetlecat.js", "snapshot-001/snapshot.js", "experiences/snapshot.js"],
@@ -25,7 +26,7 @@
       image: { src: "/etcetera/ruskin.webp", w: 1536, h: 2048, alt: "Photograph of a printed John Ruskin passage about building for future generations" } },
     { slug: "residential-perspective", title: "Residential perspective", experience: "plate",
       image: { src: "/etcetera/residential-landscape.webp", w: 768, h: 576, alt: "Warm-toned perspective drawing of a long, low residence among trees and landscape, with paper margins and lettering along the lower edge" } },
-    { slug: "built-for-generations", title: "Built for generations.", experience: "essay", files: ["texts/built-for-generations.js"] },
+    { slug: "built-for-generations", title: "Built for generations.", experience: "credo", files: ["texts/built-for-generations.js"] },
     { slug: "beetlecat", title: "Beetlecat", experience: "snapshot",
       image: { src: "/assets/projects/beetlecat-interior-2.jpg", w: 1440, h: 1920, alt: "Beetlecat: a yellow door with rounded openings beside yellow-framed windows, a red ribbed counter front and plaid carpet" } },
     { slug: "film-001", title: "Film", experience: "film", video: { src: "", w: 16, h: 9 } },

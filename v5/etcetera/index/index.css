@@ -5,8 +5,10 @@ body[data-route="etcetera"] .viewport{overflow:hidden}
 .ix-item{position:absolute;display:block;color:var(--ink);outline:none}
 .ix-item img{display:block;width:100%;height:100%;user-select:none;-webkit-user-drag:none}
 .ix-words{display:block;white-space:nowrap;letter-spacing:-.045em}
-.ix-film{display:grid;place-items:center;width:100%;height:100%;background:var(--hair)}
-.ix-play{width:0;height:0;border-style:solid;border-width:6px 0 6px 10px;border-color:transparent transparent transparent var(--ink)}
+/* The film's play mark: a solid triangle filling its box, its point at the right. */
+.ix-play{display:block;width:100%;height:100%;background:var(--ink);clip-path:polygon(8% 0,92% 50%,8% 100%)}
+/* The mark is small; its target is not. */
+.ix-film::before{content:"";position:absolute;inset:-14px}
 /* The title, only while the entry is pointed at; it hangs below the entry and takes no space. */
 .ix-cap{position:absolute;left:0;top:calc(100% + 12px);white-space:nowrap;font-size:9px;line-height:1.5;letter-spacing:.04em;text-transform:uppercase;visibility:hidden}
 @media(hover:hover){
