@@ -332,10 +332,9 @@
     </div>`;
     const copy=vp.querySelector("#co4-copy");
     const philosophyParagraphs=[
-      "Freeman is a Georgia-based general contractor building hospitality, commercial, and residential projects.",
-      "Hospitality is our focus. A restaurant is more than a building. It's the owner's vision and the architect's ideas, made real for the people who walk through the door.",
-      "We've made a deliberate commitment to this work. Building these places takes close relationships, an understanding of design, and attention to the details that make a place feel complete.",
-      "We take pride in the work, and in the people we build with."
+      "We're a Georgia-based general contractor with a deliberate focus on hospitality.",
+      "We work closely with owners, architects, and designers to bring ambitious ideas to life. Our approach is built on strong relationships, careful execution, and pride in the finished work.",
+      "We build places made to last."
     ];
     function renderCompanySheet() {
       if(currentTab!=="philosophy")return;
