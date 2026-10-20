@@ -34,3 +34,11 @@ Run `python3 -m http.server 8791 --directory motion-studies`, then with Python P
 Chromium and WebKit are checked at 1440×900 DPR1 and 390×844 DPR3. All three final SVG frames are rasterized at native resolution and compared RGBA byte-for-byte to the original `FreemanPixelMark.mount(...,{play:false})` renderer, in both colors. Checks also cover stationary placement, construction boundaries, pause, controls, reduced motion, horizontal overflow and JS errors. Results and screenshots are in `qa/`. WebKit mobile emulation is not a physical iPhone test.
 
 For deterministic inspection append `?inspect`; `studyInspector.select(0..2)` and `studyInspector.seek(ms)` expose rendered frames. This hook is absent from normal page loads.
+
+## Working preview
+
+- Stable: https://study-signature-motion.freeman-maintenance-preview.pages.dev/
+- Immutable deployment: https://31d4960e.freeman-maintenance-preview.pages.dev/
+- Runtime source commit: `40d59bc` on `study/signature-motion`.
+
+The complete browser suite also passed against the immutable public deployment. The first deployment on the Freeman project is behind its existing Cloudflare Access policy; the separate preview project above provides direct access. No Access policy was changed. A post-deployment fetch confirmed the production homepage HTML SHA-256 was unchanged (`bdd06403bc4dcdc174b2dc483c76a862d9df73c0c87a42a5e21fedd047e19009`).
