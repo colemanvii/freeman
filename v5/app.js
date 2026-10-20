@@ -28,6 +28,7 @@
   const DESTINATIONS = [
     ["COMPANY", "company.html", ""],
     ["PROJECTS", "projects.html", ""],
+    ["ETCETERA", "etcetera.html", ""],
     // RECORD is being developed privately; restore navigation only after approval.
     ["CONTACT", "contact.html", ""],
   ];
@@ -37,6 +38,7 @@
     projects: "Work",
     fieldwork: "Fieldwork",
     contact: "Contact",
+    etcetera: "Etcetera",
     notfound: "Record not found",
   };
   const PHONE = "(max-width:760px)";
@@ -104,7 +106,7 @@
     file = file.replace(/\.html$/, "") || "index";
     const r = { file, url, params: url.searchParams, kind: "notfound" };
     if (file === "index") r.kind = "entrance";
-    else if (["company", "projects", "contact"].includes(file)) r.kind = file;
+    else if (["company", "projects", "etcetera", "contact"].includes(file)) r.kind = file;
     // Fieldwork exists only in local --fieldwork builds (see v5-source/generate.py); publicly it is not found.
     else if (file === "fieldwork" && window.FreemanFieldwork) r.kind = file;
     else if (file.startsWith("project-")) {
@@ -633,6 +635,14 @@
       try { sessionStorage.setItem("freeman-contact-draft", v); } catch (e) {}
     },
   };
+  function etcetera() {
+    chrome({ title: "Etcetera / Freeman General Contracting", section: "etcetera" });
+    pageCount = 1;
+    renderPage = () => {};
+    count();
+    // Intentionally blank: a native no-scroll Freeman sheet, ready for future work.
+  }
+
   function contact() {
     chrome({ title: "Contact / Freeman General Contracting", section: "contact" });
     pageCount = 1;
@@ -781,13 +791,14 @@
           const scroller = root.querySelector(".pi-scroller");
           return { focus: currentFocus(), projScroll: scroller ? scroller.scrollTop : 0 };
         },
-        resize: ["company", "projects", "contact"].includes(route.kind) ? null : () => render(parse(location.href), { ...hist.state, focus: currentFocus() }),
+        resize: ["company", "projects", "etcetera", "contact"].includes(route.kind) ? null : () => render(parse(location.href), { ...hist.state, focus: currentFocus() }),
       };
       if (route.kind === "entrance") Object.assign(view, entrance({ play: !pop }));
       else if (route.kind === "company") company();
       else if (route.kind === "projects") projectsIndex(state);
       else if (route.kind === "project") project(route.item);
       else if (route.kind === "contact") contact();
+      else if (route.kind === "etcetera") etcetera();
       else notFound();
       document.title = (route.item ? route.item.name : TITLES[route.kind]) + " — Freeman GC";
     }
