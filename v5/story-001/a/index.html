@@ -38,6 +38,10 @@ html,body{overflow:hidden}
 .record-card dt{color:var(--muted);font-size:9px;letter-spacing:.04em;text-transform:uppercase;padding:5px 0}
 .record-card dd{padding:4px 0}
 .record-card .honest{font-size:10px;line-height:1.6;color:var(--muted);max-width:52ch}
+.onward{display:flex;flex-direction:column;border-top:1px solid var(--ink)}
+.onward a{display:grid;grid-template-columns:minmax(0,190px) 1fr;gap:12px;align-items:baseline;border-bottom:1px solid var(--hair);padding:9px 0;font-size:12px;line-height:1.5}
+.onward a:hover span:last-child{background:var(--red);color:var(--paper)}
+@media screen and (max-width:760px){.onward a{grid-template-columns:1fr;gap:2px}}
 .record-card .again{align-self:flex-start;font-size:10px;letter-spacing:.035em;text-transform:uppercase}
 .record-card .again:hover{background:var(--red);color:var(--paper)}
 
@@ -66,7 +70,7 @@ html,body{overflow:hidden}
 .rule .ends.top{top:-22px}
 .rule .ends.bottom{bottom:-2px;display:none}
 
-@media(max-width:760px){
+@media screen and (max-width:760px){
   .stage{top:62px;bottom:178px;right:var(--gutter)}
   .caption{right:var(--gutter);bottom:max(20px,env(safe-area-inset-bottom));grid-template-columns:1fr;gap:8px;padding-top:10px}
   .caption .meta{align-items:flex-start;text-align:left}
@@ -117,7 +121,11 @@ html,body{overflow:hidden}
       <div class="col">
         <ol id="scope"></ol>
         <dl id="parties"></dl>
-        <p class="honest">The eight views show the finished restaurant. None has yet been matched to Freeman’s scope, and no field photographs are on file. Those are the next pieces of evidence to collect.</p>
+        <p class="honest">The eight views show the finished restaurant. None has yet been matched to Freeman’s scope, and no field photographs are on file.</p>
+        <nav class="onward" aria-label="Further">
+          <a href="../b/#marks"><span class="micro muted">The proof</span><span>Every claim, and what stands behind it →</span></a>
+          <a href="../c/"><span class="micro muted">For architects and designers</span><span>Sheet PS-001, The Optimist →</span></a>
+        </nav>
         <button type="button" class="again" data-step="0">↑ Return to the street</button>
       </div>
     </section>
@@ -138,8 +146,9 @@ html,body{overflow:hidden}
 </div>
 
 <template id="about-study">
-  <h2>A · Approach</h2>
+  <h2>A · Approach — the public entry</h2>
   <dl>
+    <dt>Role</dt><dd>The way a guest, an operator or a prospective client first meets a Freeman project. It ends by handing the visitor to the proof (B) and, for architects and designers, to the sheet (C).</dd>
     <dt>Thesis</dt><dd>The result proves taste, so let the result speak first and uninterrupted. The story is a single walk inward, from the sign on the street to lettering on a tabletop. Only after arriving do you read what Freeman built.</dd>
     <dt>Structure</dt><dd>Ten positions on one axis: title, eight views ordered by distance (street, lawn, room, wall, seat, table), the record. One view at a time, never cropped.</dd>
     <dt>Interaction</dt><dd>The distance rule is the only control, and the red locator is the only thing that moves. Scroll, arrow keys, swipe, or click the plate (left third goes back). Each position has its own address (#0–#9).</dd>

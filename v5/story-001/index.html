@@ -70,7 +70,7 @@ html,body{overflow:hidden}
 .foot{font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border-top:1px solid var(--hair);padding-top:12px;display:flex;gap:18px;flex-wrap:wrap}
 .foot kbd{font:inherit;color:var(--ink)}
 
-@media(max-width:860px){
+@media screen and (max-width:860px){
   html,body{overflow:auto;height:auto}
   .top{position:static;padding:max(18px,env(safe-area-inset-top)) var(--gutter) 0;flex-direction:column;gap:4px}
   .wrap{position:static;display:flex;flex-direction:column;gap:36px;padding:34px var(--gutter) 40px}
@@ -82,7 +82,7 @@ html,body{overflow:hidden}
   .compare table{min-width:620px}
   .foot{display:none}
 }
-@media(max-height:760px) and (min-width:861px){.study p.line{margin-bottom:6px}.study dl{gap:1px 12px}.thesis{gap:14px}.ledger th,.ledger td{padding:4px 0}}
+@media(max-height:820px) and (min-width:861px){.study{padding:10px 0}.study h2{margin-bottom:4px}.study p.line{font-size:11px;line-height:1.5;margin-bottom:5px}.study dl{gap:0 12px;font-size:9.5px}.study dl dt:nth-of-type(3),.study dl dd:nth-of-type(3){display:none}.study svg{height:80px}.thesis{gap:14px}.ledger th,.ledger td{padding:4px 0}}
 </style>
 </head>
 <body>
@@ -123,7 +123,7 @@ html,body{overflow:hidden}
         <div>
           <h2><span class="phrase">Approach</span></h2>
           <p class="line">From the sign on the street to lettering on a tabletop. The result first, one view at a time, ordered by distance. The record of what Freeman built is the destination.</p>
-          <dl><dt>Leads with</dt><dd>The result</dd><dt>Structure</dt><dd>One axis, by distance</dd><dt>Control</dt><dd>A distance rule</dd></dl>
+          <dl><dt>Role</dt><dd class="red">Public entry</dd><dt>Leads with</dt><dd>The result</dd><dt>Structure</dt><dd>One axis, by distance</dd><dt>Control</dt><dd>A distance rule</dd></dl>
         </div>
         <svg viewBox="0 0 150 96" aria-hidden="true"><rect x="6" y="10" width="104" height="70" fill="none" stroke="#332e20"/><line x1="142" y1="6" x2="142" y2="92" stroke="#332e20"/><g stroke="#332e20"><line x1="134" y1="10" x2="142" y2="10"/><line x1="137" y1="22" x2="142" y2="22"/><line x1="134" y1="34" x2="142" y2="34"/><line x1="137" y1="46" x2="142" y2="46"/><line x1="134" y1="70" x2="142" y2="70"/><line x1="134" y1="82" x2="142" y2="82"/></g><rect x="138.5" y="54.5" width="7" height="7" fill="#f93822"/><line x1="6" y1="88" x2="110" y2="88" stroke="#d5cec3"/></svg>
       </a>
@@ -131,8 +131,8 @@ html,body{overflow:hidden}
         <span class="k">B</span>
         <div>
           <h2><span class="phrase">Account</span></h2>
-          <p class="line">Fourteen plain sentences. Each opens what stands behind it: a photograph, a drawing, a credit, or an honest empty frame. Marks show how much is shown and how much is only stated.</p>
-          <dl><dt>Leads with</dt><dd>The evidence, and its absence</dd><dt>Structure</dt><dd>An argument, sentence by sentence</dd><dt>Control</dt><dd>The sentences themselves</dd></dl>
+          <p class="line">Fourteen plain sentences. Each opens what stands behind it: a photograph, a drawing, a credit, or an honest empty frame. Marks show how much is shown and how much is only stated; a printable capture brief turns the gaps into work.</p>
+          <dl><dt>Role</dt><dd class="red">The standard of proof</dd><dt>Leads with</dt><dd>The evidence, and its absence</dd><dt>Structure</dt><dd>An argument, sentence by sentence</dd><dt>Control</dt><dd>The sentences themselves</dd></dl>
         </div>
         <svg viewBox="0 0 150 96" aria-hidden="true"><g stroke="#332e20"><line x1="4" y1="14" x2="76" y2="14"/><line x1="4" y1="24" x2="70" y2="24"/><line x1="4" y1="34" x2="78" y2="34"/><line x1="4" y1="54" x2="72" y2="54"/><line x1="4" y1="64" x2="60" y2="64"/></g><rect x="4" y="41" width="56" height="6" fill="#f93822"/><rect x="92" y="10" width="54" height="56" fill="none" stroke="#f93822" stroke-dasharray="3 2"/><g fill="#332e20"><rect x="4" y="82" width="5" height="5"/><rect x="11" y="82" width="5" height="5"/><rect x="18" y="82" width="5" height="5"/></g><g fill="none" stroke="#f93822"><rect x="25.5" y="82.5" width="4" height="4"/><rect x="32.5" y="82.5" width="4" height="4"/><rect x="39.5" y="82.5" width="4" height="4"/></g><line x1="92" y1="76" x2="146" y2="76" stroke="#d5cec3"/><line x1="92" y1="84" x2="146" y2="84" stroke="#d5cec3"/></svg>
       </a>
@@ -140,8 +140,8 @@ html,body{overflow:hidden}
         <span class="k">C</span>
         <div>
           <h2><span class="phrase">Sheet</span></h2>
-          <p class="line">The project told in the architecture world’s own document: one drawing sheet with general notes, an elevation, eleven details and a title block naming every party. Four details are drawn empty, awaiting evidence.</p>
-          <dl><dt>Leads with</dt><dd>The people and the record</dd><dt>Structure</dt><dd>Everything at once</dd><dt>Control</dt><dd>Detail callouts</dd></dl>
+          <p class="line">The project told in the architecture world’s own document: one drawing sheet with general notes, an elevation, eleven details and a title block naming every party. Four details are drawn empty; sheet PS-002 issues them for capture. Both print as tabloid sheets.</p>
+          <dl><dt>Role</dt><dd class="red">For architects and designers</dd><dt>Leads with</dt><dd>The people and the record</dd><dt>Structure</dt><dd>Everything at once</dd><dt>Control</dt><dd>Detail callouts</dd></dl>
         </div>
         <svg viewBox="0 0 150 96" aria-hidden="true"><rect x="3" y="6" width="144" height="86" fill="none" stroke="#332e20"/><line x1="28" y1="6" x2="28" y2="92" stroke="#332e20"/><line x1="122" y1="6" x2="122" y2="92" stroke="#332e20"/><g fill="none" stroke="#332e20"><rect x="33" y="11" width="30" height="22"/><rect x="67" y="11" width="50" height="22"/><rect x="33" y="38" width="25" height="20"/><rect x="62" y="38" width="25" height="20"/><rect x="91" y="38" width="26" height="20"/><rect x="33" y="63" width="12" height="24"/><rect x="48" y="63" width="12" height="24"/><rect x="63" y="63" width="12" height="24"/></g><g fill="none" stroke="#f93822" stroke-dasharray="2 2"><rect x="80" y="63" width="17" height="10"/><rect x="100" y="63" width="17" height="10"/><rect x="80" y="77" width="17" height="10"/><rect x="100" y="77" width="17" height="10"/></g><g stroke="#332e20"><line x1="122" y1="22" x2="147" y2="22"/><line x1="122" y1="34" x2="147" y2="34"/><line x1="122" y1="46" x2="147" y2="46"/><line x1="122" y1="78" x2="147" y2="78"/></g><g stroke="#d5cec3"><line x1="7" y1="14" x2="24" y2="14"/><line x1="7" y1="20" x2="24" y2="20"/><line x1="7" y1="26" x2="22" y2="26"/><line x1="7" y1="32" x2="24" y2="32"/></g></svg>
       </a>
@@ -151,6 +151,7 @@ html,body{overflow:hidden}
       <table>
         <thead><tr><th></th><th><a href="a/">A · Approach</a></th><th><a href="b/">B · Account</a></th><th><a href="c/">C · Sheet</a></th></tr></thead>
         <tbody>
+          <tr><th>Role</th><td class="red">Public entry</td><td class="red">Standard of proof</td><td class="red">Architects and designers</td></tr>
           <tr><th>First thing seen</th><td>The name, then the sign</td><td>A paragraph about the place</td><td>The whole sheet at once</td></tr>
           <tr><th>Where evidence sits</th><td>At the end, as the destination</td><td>Behind every sentence</td><td>In the notes, the title block and the empty details</td></tr>
           <tr><th>Missing evidence</th><td>Named once, in the record</td><td>Drawn as empty frames; counted</td><td>Drawn as empty details 8–11</td></tr>
@@ -162,7 +163,7 @@ html,body{overflow:hidden}
           <tr><th>Gets better with</th><td>Fixed-position field photographs</td><td>Any dated record</td><td>Shop drawings; a second sheet, PS-002</td></tr>
         </tbody>
       </table>
-      <p class="note">The three are not exclusive. A plausible public form leads with A, links each claim to B’s standard of proof, and offers C to the architects and designers Freeman wants to work with.</p>
+      <p class="note">Round two, 19 Oct 2026: A is the public entry and ends by handing visitors to B and C. B is the standard every claim is held to, and produces the capture brief. C speaks to architects and designers, with PS-002 issuing the missing details for capture. All three read one shared record.</p>
     </div>
 
     <div class="panel prov" id="p-prov" role="tabpanel" aria-labelledby="t-prov">

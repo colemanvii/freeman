@@ -10,32 +10,36 @@
 <link rel="stylesheet" href="../lab.css">
 <style>
 html,body{overflow:hidden}
-#app{position:fixed;inset:0;display:grid;grid-template-columns:minmax(0,1.32fr) minmax(0,1fr);gap:clamp(36px,4.5vw,80px);padding:84px var(--gutter) 30px}
+#app{position:fixed;inset:84px var(--gutter) 30px;display:grid;grid-template-columns:minmax(0,1.32fr) minmax(0,1fr);gap:clamp(36px,4.5vw,80px)}
+body[data-view="brief"] #app{grid-template-columns:minmax(0,1fr)}
+body[data-view="brief"] .exhibit,body[data-view="brief"] .tally,body[data-view="brief"] .prose{display:none}
+body:not([data-view="brief"]) .brief{display:none}
 
 /* Left: the account. */
 .account{display:flex;flex-direction:column;min-height:0}
 .account-head{display:flex;justify-content:space-between;align-items:baseline;gap:20px;border-bottom:1px solid var(--hair);padding-bottom:12px}
 .account-head .micro{color:var(--muted)}
-.marks-toggle{font-size:10px;letter-spacing:.035em;text-transform:uppercase}
-.marks-toggle:hover{background:var(--red);color:var(--paper)}
-.marks-toggle b{font-weight:400;color:var(--red)}
+.views{display:flex;gap:18px;font-size:10px;letter-spacing:.035em;text-transform:uppercase}
+.views button[aria-pressed="true"]{color:var(--red)}
+.views button:hover{background:var(--red);color:var(--paper)}
 .prose{flex:1;min-height:0;overflow:auto;padding:clamp(18px,3.4vh,40px) 0 10px;scrollbar-width:none}
 .prose::-webkit-scrollbar{display:none}
 .prose p{font-size:clamp(17px,1.62vw,26px);line-height:1.5;letter-spacing:-.012em;margin-bottom:.9em;max-width:34em}
 .s{cursor:var(--cursor-act);-webkit-box-decoration-break:clone;box-decoration-break:clone;outline:none}
-.s:hover,.s:focus-visible,.s.sel{background:var(--red);color:var(--paper)}
+.s:hover,.s:focus-visible{background:var(--red);color:var(--paper)}
 .s.sel{background:var(--ink);color:var(--paper)}
 .s.sel:hover{background:var(--red)}
 .tag{display:none;font-size:8px;letter-spacing:.06em;text-transform:uppercase;vertical-align:super;line-height:0;margin:0 .35em 0 .2em;color:var(--muted)}
 .withheld{display:none}
 
-/* Marks: how much of the story is shown, and how much is only said. */
+/* Marks: how much of the story is shown, and how much is only stated. */
 .marks .tag{display:inline}
 .marks .s[data-status="stated"]{text-decoration:underline dashed var(--red);text-decoration-thickness:1px;text-underline-offset:.28em}
-.marks .s[data-status="seen"],.marks .s[data-status="credited"]{text-decoration:underline solid #b9ad9c;text-decoration-thickness:1px;text-underline-offset:.28em}
+.marks .s[data-status="shown"],.marks .s[data-status="credited"]{text-decoration:underline solid #b9ad9c;text-decoration-thickness:1px;text-underline-offset:.28em}
 .marks .s.sel,.marks .s:hover{text-decoration-color:currentColor}
 .marks .tag.stated{color:var(--red)}
 .marks .withheld{display:block}
+.marks .prose p{font-size:clamp(15px,1.42vw,23px)}
 .marks .withheld .s{color:var(--muted);text-decoration:line-through;text-decoration-thickness:1px}
 .marks .withheld .s:hover,.marks .withheld .s.sel{color:var(--paper)}
 
@@ -48,19 +52,21 @@ html,body{overflow:hidden}
 .squares button.sel{outline:1px solid var(--ink);outline-offset:2px}
 .tally .counts{font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);display:flex;gap:16px;flex-wrap:wrap}
 .tally .counts b{font-weight:400;color:var(--ink)}
+.tally .counts .w{display:none}
+.marks .tally .counts .w{display:inline}
 .tally .finding{grid-column:1/-1;font-size:11px;line-height:1.6;max-width:60ch;display:none}
 .marks .tally .finding{display:block}
+.tally .finding button{text-decoration:underline;text-underline-offset:3px}
+.tally .finding button:hover{background:var(--red);color:var(--paper)}
 
 /* Right: what stands behind the selected sentence. */
 .exhibit{display:flex;flex-direction:column;min-height:0;gap:14px}
 .ex-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--hair);padding-bottom:12px;font-size:10px;letter-spacing:.035em;text-transform:uppercase}
-.ex-head .status{color:var(--ink)}
 .ex-head .status[data-status="stated"]{color:var(--red)}
 .ex-head .status[data-status="withheld"]{color:var(--muted)}
-.frame{flex:1 1 auto;min-height:150px;position:relative;display:flex;align-items:center;justify-content:center}
+.frame{flex:1 1 auto;min-height:150px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .fit{position:relative;flex:none}
 .fit img{width:100%;height:100%}
-.frame{overflow:hidden}
 .pin{position:absolute;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;background:var(--red);box-shadow:0 0 0 1px var(--paper)}
 .pin span{position:absolute;left:14px;top:-4px;white-space:nowrap;font-size:9px;line-height:1.5;letter-spacing:.04em;text-transform:uppercase;background:var(--paper);color:var(--ink);padding:1px 5px}
 .pin.left span{left:auto;right:14px}
@@ -78,39 +84,97 @@ html,body{overflow:hidden}
 .ex-data dt,.ex-data dd{border-bottom:1px solid var(--hair);padding:8px 0;font-size:11px;line-height:1.55}
 .ex-data dt{font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);padding-top:10px}
 .ex-data q{quotes:"“" "”"}
-.ex-data q:before,.ex-data q:after{color:var(--muted)}
+.ex-data a{text-transform:uppercase;font-size:10px;letter-spacing:.035em}
+.ex-data a:hover{background:var(--red);color:var(--paper)}
+
+/* Brief: the stated claims as work to be done. One document, printable. */
+.brief{flex:1;min-height:0;overflow:auto;padding:22px 0 10px}
+.brief-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end;margin-bottom:26px}
+.brief-head h2{font-size:clamp(24px,3vw,46px);line-height:1;letter-spacing:-.045em;text-transform:uppercase}
+.brief-head p{font-size:12px;line-height:1.6;max-width:62ch;margin-top:12px}
+.brief-head .print{font-size:10px;letter-spacing:.035em;text-transform:uppercase;white-space:nowrap}
+.brief-head .print:hover{background:var(--red);color:var(--paper)}
+.brief table{width:100%;border-collapse:collapse}
+.brief th,.brief td{text-align:left;vertical-align:top;font-weight:400;border-top:1px solid var(--hair);padding:10px 14px 10px 0;font-size:11px;line-height:1.55}
+.brief thead th{font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border-top:1px solid var(--ink)}
+.brief td.no{width:40px;font-size:9px;color:var(--red);padding-top:12px}
+.brief td.claim{width:24%}
+.brief td.claim a:hover{background:var(--red);color:var(--paper)}
+.brief td.claim small{display:block;color:var(--muted);font-size:9px;letter-spacing:.03em;text-transform:uppercase;margin-top:4px}
+.brief td.box{width:70px;padding-right:0}
+.brief td.box span{display:block;width:12px;height:12px;border:1px solid var(--ink);margin-top:2px}
+.brief .cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,80px);margin-top:34px}
+.brief h3{font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--ink);padding-bottom:8px;margin-bottom:4px}
+.brief ol{counter-reset:r}
+.brief ol li{counter-increment:r;display:grid;grid-template-columns:28px 1fr;border-bottom:1px solid var(--hair);padding:8px 0;font-size:11px;line-height:1.55}
+.brief ol li:before{content:counter(r,decimal-leading-zero);font-size:9px;color:var(--muted);padding-top:2px}
+.brief dl{display:grid;grid-template-columns:120px 1fr}
+.brief dl dt,.brief dl dd{border-bottom:1px solid var(--hair);padding:8px 0;font-size:11px;line-height:1.55}
+.brief dl dt{font-size:9px;letter-spacing:.04em;text-transform:uppercase;padding-top:10px}
+.brief dl dt.st-stated{color:var(--red)}
+.brief .upgrade{font-size:11px;line-height:1.6;margin-top:12px;max-width:60ch}
+.brief .source{font-size:9px;line-height:1.6;color:var(--muted);letter-spacing:.03em;text-transform:uppercase;margin-top:24px}
 
 /* Phones: the account scrolls; the exhibit is a sheet that rises from the bottom. */
 .ex-close{display:none}
-@media(max-width:760px){
+@media screen and (max-width:760px){
   html,body{overflow:auto;height:auto}
   #app{position:static;display:block;padding:64px var(--gutter) 40px}
-  .prose{overflow:visible;padding-top:18px}
+  .account-head{flex-direction:column;gap:10px}
+  .prose,.brief{overflow:visible;padding-top:18px}
   .prose p{font-size:18px}
   .exhibit{position:fixed;left:0;right:0;bottom:0;height:72dvh;background:var(--paper);border-top:1px solid var(--ink);padding:14px var(--gutter) max(16px,env(safe-area-inset-bottom));z-index:40;display:none;overflow:auto}
-  body.sheet-open .exhibit{display:flex}
+  body.sheet-open:not([data-view="brief"]) .exhibit{display:flex}
   .ex-close{display:block;font-size:10px;letter-spacing:.035em;text-transform:uppercase;align-self:flex-end;min-height:32px}
   .frame{min-height:200px;flex:1 0 220px}
   .ex-data{grid-template-columns:96px 1fr}
   .tally{grid-template-columns:1fr}
   .squares button{width:14px;height:14px}
+  .brief-head{grid-template-columns:1fr}
+  .brief table,.brief tbody,.brief tr,.brief td{display:block;width:auto!important}
+  .brief thead{display:none}
+  .brief tr{border-top:1px solid var(--ink);padding:10px 0}
+  .brief td{border:0;padding:4px 0}
+  .brief td.now:before{content:"Collect now";display:block;font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+  .brief td.next:before{content:"Next project";display:block;font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+  .brief td.box{display:none}
+  .brief .cols{grid-template-columns:1fr}
 }
 @media(max-height:820px) and (min-width:761px){.ex-data dt,.ex-data dd{padding:5px 0}.prose p{font-size:clamp(15px,1.32vw,20px);margin-bottom:.7em}.prose{padding-top:16px}}
+
+/* Print: the capture brief, on paper. */
+@media print{
+  @page{size:letter portrait;margin:14mm}
+  html,body{overflow:visible;height:auto;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .lab,.about,.views,.exhibit,.tally,.prose,.print,.ex-close{display:none!important}
+  #app{position:static;display:block;inset:auto}
+  .account-head{border-color:#999}
+  .brief{display:block!important;overflow:visible;padding-top:12px}
+  .brief-head h2{font-size:28px}
+  .brief th,.brief td,.brief ol li,.brief dl dt,.brief dl dd{font-size:9.5pt}
+  .brief tr{break-inside:avoid}
+  .brief td.claim a{color:inherit}
+}
 </style>
 </head>
-<body data-study="b">
+<body data-study="b" data-view="read">
 <div id="app">
   <section class="account" aria-labelledby="account-title">
     <div class="account-head">
       <h1 class="micro" id="account-title">The Optimist · an account in fourteen sentences</h1>
-      <button type="button" class="marks-toggle" id="marks" aria-pressed="false">Marks: <b>Off</b></button>
+      <div class="views" role="group" aria-label="View">
+        <button type="button" data-view="read" aria-pressed="true">Read</button>
+        <button type="button" data-view="marks" aria-pressed="false">Marks</button>
+        <button type="button" data-view="brief" aria-pressed="false">Capture brief</button>
+      </div>
     </div>
     <div class="prose" id="prose"></div>
     <div class="tally">
       <div class="squares" id="squares" aria-label="Each sentence, by status"></div>
       <p class="counts" id="counts"></p>
-      <p class="finding">Every sentence about the result can be shown. Every sentence about the work is, for now, only stated. The evidence that proves capability is the evidence still to be collected.</p>
+      <p class="finding">Every sentence about the result can be shown. Every sentence about the work is, for now, only stated. <button type="button" data-view="brief">The capture brief</button> lists what would prove each one.</p>
     </div>
+    <article class="brief" id="capture-brief" aria-label="Capture brief"></article>
   </section>
 
   <aside class="exhibit" id="exhibit" aria-live="polite" aria-label="Exhibit">
@@ -122,15 +186,15 @@ html,body{overflow:hidden}
 </div>
 
 <template id="about-study">
-  <h2>B · Account</h2>
+  <h2>B · Account — the standard of proof</h2>
   <dl>
-    <dt>Thesis</dt><dd>The evidence proves capability, so make the story auditable. The project is told in fourteen plain sentences. Every sentence opens what stands behind it: a photograph, a drawing, a credit, or an honest empty frame.</dd>
-    <dt>Structure</dt><dd>One paragraph per subject (the place, the people, the work, the record). Beside it, the exhibit for the selected sentence, with its source, its status and, where it is missing, what would prove it.</dd>
-    <dt>Interaction</dt><dd>Hover or tab through the sentences; click to hold one. <em>Marks</em> exposes the status of each sentence and the two figures the study withholds. The row of squares is the same account at a glance.</dd>
-    <dt>Leads with</dt><dd>Evidence, including its absence.</dd>
-    <dt>Finding</dt><dd>Every sentence about the result can be shown. Every sentence about the work is, for now, only stated. The structure turns the missing evidence into a capture brief.</dd>
-    <dt>Risks</dt><dd>Candour can read as weakness to a visitor who expected a portfolio. Best as the internal standard behind any public story, or as the public form once field evidence exists.</dd>
-    <dt>Material</dt><dd>Freeman’s published account (quoted verbatim as source text), published credits, seven photographs by Jared Swafford, the Freeman archive drawing. Square footage and completion year are withheld as unconfirmed template credits.</dd>
+    <dt>Role</dt><dd>The standard every Freeman project story is held to. Whatever the public form (A), each claim it makes must have a status here, and a stated claim must have a request for the evidence that would prove it.</dd>
+    <dt>Structure</dt><dd>Fourteen plain sentences in four paragraphs: the place, the people, the work, the record. Beside them, the exhibit for the selected sentence, its source, its status, and where the same thing appears on sheet PS-001.</dd>
+    <dt>Views</dt><dd><em>Read</em> is the story. <em>Marks</em> shows every sentence’s status and the two withheld figures. <em>Capture brief</em> turns the stated sentences into work: what to collect now, what to capture on the next project, Freeman’s capture protocol, and the standard itself. Printing the page prints the brief.</dd>
+    <dt>Statuses</dt><dd>Shown: visible in a photograph or drawing on file. Credited: a published credit. Stated, no record: Freeman’s own account, with nothing on file to show it. Withheld: unconfirmed, never used.</dd>
+    <dt>Finding</dt><dd>Every sentence about the result can be shown. Every sentence about the work is, for now, only stated.</dd>
+    <dt>Keys</dt><dd>R, M, C switch views. Tab or arrow keys move between sentences; Enter holds one. Each sentence has its own address (#s01–#s14, or #marks-s09); #brief opens the brief.</dd>
+    <dt>Material</dt><dd>Freeman’s published account (quoted verbatim as source text), published credits, seven photographs by Jared Swafford, the Freeman archive drawing, and the capture protocol from Freeman’s Project Record pilot.</dd>
   </dl>
 </template>
 
@@ -139,92 +203,77 @@ html,body{overflow:hidden}
 <script>
 (() => {
   'use strict';
-  const S = window.STORY, P = S.plates;
+  const S = window.STORY, P = S.plates, ST = S.statuses;
   const ACCOUNT = 'Freeman’s published project account';
-  const CREDIT = 'Published project credit';
-  const LABEL = { seen: 'Shown', credited: 'Credited', stated: 'Stated, no record', withheld: 'Withheld' };
-  const TAG = { seen: 'shown', credited: 'credit', stated: 'stated', withheld: 'withheld' };
+  const TAG = { shown: 'shown', credited: 'credit', stated: 'stated', withheld: 'withheld' };
+  const party = role => S.parties.find(p => p.role === role);
+  const pad = n => String(n).padStart(2, '0');
 
-  // The account. status: seen (visible in a photograph or drawing), credited (published credit),
-  // stated (Freeman's account, no record attached), withheld (unconfirmed; not used).
-  const S14 = [
-    { p: 0, t: 'The Optimist is an oyster bar and seafood restaurant in Atlanta, Georgia.', status: 'seen', ex: { plate: 'dr' },
-      source: 'Freeman archive drawing of the sign; location from the published project record.', note: 'The sign reads OYSTER BAR · SEAFOOD & SPIRITS.' },
-    { p: 0, t: 'Outside, tables stand under a dark canopy, facing a lawn.', status: 'seen', ex: { plate: 'p0', pins: [0] },
-      source: 'Photograph by Jared Swafford.' },
-    { p: 0, t: 'Inside, curved blue booths sit beneath a painted sign for country hams.', status: 'seen', ex: { plate: 'p3', pins: [0, 1] },
-      source: 'Photograph by Jared Swafford.' },
-    { p: 1, t: 'The client is Rocket Farm Restaurants.', status: 'credited', ex: { name: 'Rocket Farm Restaurants', role: 'Client' },
-      source: CREDIT + '.' },
-    { p: 1, t: 'The interiors are credited to Chuck Marie Studio.', status: 'credited', ex: { name: 'Chuck Marie Studio', role: 'Interior design' },
-      source: CREDIT + '.', note: 'Design authorship belongs to the studio. Freeman does not claim it.' },
-    { p: 2, t: 'Freeman was given the Oyster Bar to refresh,', status: 'stated', quote: 'was given the opportunity to refresh the Oyster Bar',
-      need: 'Photographs of the Oyster Bar before and after, taken from the same position.' },
-    { p: 2, t: 'on a deadline of three weeks.', status: 'stated', quote: 'This project was on a tight deadline of 3 weeks.',
-      need: 'Start and handover dates, and a dated photograph from the first and the last day.' },
-    { p: 2, t: 'The work included a custom radius window,', status: 'stated', quote: 'custom radius window',
-      need: 'A photograph that identifies the window, and its shop drawing.' },
-    { p: 2, t: 'radius tile around the oven,', status: 'stated', quote: 'radius tile around oven',
-      need: 'A photograph of the oven surround, ideally while the tile was being set.' },
-    { p: 2, t: 'custom millwork', status: 'stated', quote: 'custom millwork pieces',
-      need: 'Which pieces: a photograph of each, with its drawing.' },
-    { p: 2, t: 'and custom stainless steel.', status: 'stated', quote: 'custom stainless steel pieces',
-      need: 'Which pieces, and who fabricated them.' },
-    { p: 2, t: 'It finished on time and under budget.', status: 'stated', quote: 'FGC finished on time and under budget.',
-      need: 'The schedule and final cost against the contract, or a word from Rocket Farm Restaurants.' },
-    { p: 3, t: 'Jared Swafford photographed the finished restaurant.', status: 'credited', ex: { sheet: true },
-      source: CREDIT + '; seven photographs.', note: 'None of the seven has yet been matched to Freeman’s scope.' },
-    { p: 3, t: 'One table carries its latitude, lettered across the top: 33°46′48.216″N.', status: 'seen', ex: { plate: 'p4', pins: [0] },
-      source: 'Photograph by Jared Swafford.', note: 'The only measurement the room states about itself.' },
-    { p: 4, t: 'It measures more than 2,000 square feet.', status: 'withheld', why: S.withheld[0].why },
-    { p: 4, t: 'It was completed in 2024.', status: 'withheld', why: S.withheld[1].why }
-  ];
-  const shown = S14.filter(s => s.status !== 'withheld').length;
+  const C = S.claims.concat(S.withheld.map((w, k) => ({ id: 'w' + (k + 1), p: 4, status: 'withheld',
+    text: ['It measures more than 2,000 square feet.', 'It was completed in 2024.'][k], why: w.why })));
+  const shown = S.claims.length;
+  const n = k => C.filter(s => s.status === k).length;
 
-  // Render prose.
+  // Prose.
   const prose = document.getElementById('prose');
   const paras = [];
-  S14.forEach((s, i) => {
+  C.forEach((s, i) => {
     if (!paras[s.p]) {
       paras[s.p] = document.createElement('p');
       if (s.status === 'withheld') paras[s.p].className = 'withheld';
       prose.append(paras[s.p]);
     }
     const span = document.createElement('span');
-    span.className = 's';
-    span.tabIndex = 0;
+    Object.assign(span, { className: 's', tabIndex: 0, textContent: s.text });
     span.setAttribute('role', 'button');
     span.dataset.i = i;
     span.dataset.status = s.status;
-    span.textContent = s.t;
     const tag = document.createElement('sup');
     tag.className = 'tag ' + s.status;
     tag.textContent = TAG[s.status];
     paras[s.p].append(span, tag, ' ');
   });
+  const spans = [...prose.querySelectorAll('.s')];
 
   // Tally.
   const sq = document.getElementById('squares');
-  S14.forEach((s, i) => {
+  C.forEach((s, i) => {
     const b = document.createElement('button');
     b.type = 'button'; b.dataset.i = i; b.dataset.status = s.status;
-    b.setAttribute('aria-label', `Sentence ${i + 1}: ${LABEL[s.status]}`);
+    b.setAttribute('aria-label', `Sentence ${i + 1}: ${ST[s.status].label}`);
     sq.append(b);
   });
-  const n = k => S14.filter(s => s.status === k).length;
+  const squares = [...sq.children];
   document.getElementById('counts').innerHTML =
-    `<span><b>${n('seen')}</b> shown</span><span><b>${n('credited')}</b> credited</span><span><b class="red">${n('stated')}</b> stated, no record</span><span class="w"><b>${n('withheld')}</b> withheld</span>`;
+    `<span><b>${n('shown')}</b> shown</span><span><b>${n('credited')}</b> credited</span><span><b class="red">${n('stated')}</b> stated, no record</span><span class="w"><b>${n('withheld')}</b> withheld</span>`;
 
-  const app = document.body;
-  const marks = document.getElementById('marks');
-  function setMarks(on) {
-    prose.parentElement.parentElement.classList.toggle('marks', on);
-    marks.setAttribute('aria-pressed', on);
-    marks.querySelector('b').textContent = on ? 'On' : 'Off';
-    document.getElementById('counts').querySelector('.w').style.display = on ? '' : 'none';
-    if (!on && S14[sel] && S14[sel].status === 'withheld') select(0, true);
-  }
-  marks.addEventListener('click', () => setMarks(marks.getAttribute('aria-pressed') !== 'true'));
+  // Capture brief.
+  const stated = S.claims.map((s, i) => ({ s, i })).filter(x => x.s.status === 'stated');
+  document.getElementById('capture-brief').innerHTML = `
+    <div class="brief-head">
+      <div>
+        <p class="micro muted">Capture brief · ${S.project.name}, ${S.project.location} · issued ${S.issued}</p>
+        <h2>${stated.length} claims,<br>no record yet.</h2>
+        <p>Each line is a sentence from Freeman’s account of the ${S.project.scope}. Each is published, but nothing on file shows it. Collect what still exists now; capture the rest during the work on the next project.</p>
+      </div>
+      <button type="button" class="print" id="print">Print brief</button>
+    </div>
+    <table>
+      <thead><tr><th>No.</th><th>Claim</th><th>Collect now · this project</th><th>Next project · during the work</th><th>Filed</th></tr></thead>
+      <tbody>${stated.map(({ s, i }) => `<tr>
+        <td class="no">${pad(i + 1)}</td>
+        <td class="claim"><a href="#marks-${s.id}" data-goto="${i}">${s.text.replace(/[,.]$/, '').replace(/^./, m => m.toUpperCase())}</a><small>Source text: “${s.quote}”</small>${s.detail ? `<small>Sheet PS-001, detail ${s.detail.slice(1)}</small>` : ''}</td>
+        <td class="now">${s.now}</td>
+        <td class="next">${s.next}</td>
+        <td class="box"><span></span></td></tr>`).join('')}
+      </tbody>
+    </table>
+    <div class="cols">
+      <section><h3>Capture protocol · Freeman Project Record</h3><ol>${S.protocol.map(p => `<li>${p}</li>`).join('')}</ol></section>
+      <section><h3>The proof standard</h3><dl>${Object.entries(ST).map(([k, v]) => `<dt class="st-${k}">${v.label}</dt><dd>${v.def}</dd>`).join('')}</dl><p class="upgrade">${S.upgrade}</p></section>
+    </div>
+    <p class="source">Project Story 001 · study, not published · this brief requests evidence; beyond the quoted source text it states nothing about the project.</p>`;
+  document.getElementById('print').addEventListener('click', () => print());
 
   // Exhibit.
   const frame = document.getElementById('frame');
@@ -232,24 +281,21 @@ html,body{overflow:hidden}
   function fit() {
     if (!fitTarget) return;
     const { el, w, h } = fitTarget;
-    const fw = frame.clientWidth, fh = frame.clientHeight;
-    const k = Math.min(fw / w, fh / h);
+    const k = Math.min(frame.clientWidth / w, frame.clientHeight / h);
     el.style.width = Math.floor(w * k) + 'px';
     el.style.height = Math.floor(h * k) + 'px';
   }
   new ResizeObserver(fit).observe(frame);
 
   function render(i) {
-    const s = S14[i];
-    document.getElementById('ex-num').textContent = s.status === 'withheld'
-      ? 'Withheld figure'
-      : `Sentence ${String(i + 1).padStart(2, '0')} / ${shown}`;
+    const s = C[i];
+    document.getElementById('ex-num').textContent = s.status === 'withheld' ? 'Withheld figure' : `Sentence ${pad(i + 1)} / ${shown}`;
     const st = document.getElementById('ex-status');
-    st.textContent = LABEL[s.status];
+    st.textContent = ST[s.status].label;
     st.dataset.status = s.status;
     fitTarget = null;
     frame.innerHTML = '';
-    const ex = s.ex || {};
+    const ex = s.exhibit || {};
     if (ex.plate) {
       const p = P[ex.plate];
       const box = document.createElement('div');
@@ -258,8 +304,8 @@ html,body{overflow:hidden}
         (ex.pins || []).map(k => { const [x, y, label] = p.notes[k]; return `<span class="pin${x > 50 ? ' left' : ''}" style="left:${x}%;top:${y}%"><span>${label}</span></span>`; }).join('');
       frame.append(box);
       fitTarget = { el: box, w: p.w, h: p.h };
-    } else if (ex.name) {
-      frame.innerHTML = `<div class="name-card"><p class="micro">${ex.role}</p><strong>${ex.name}</strong></div>`;
+    } else if (ex.party) {
+      frame.innerHTML = `<div class="name-card"><p class="micro">${ex.party}</p><strong>${party(ex.party).name}</strong></div>`;
     } else if (ex.sheet) {
       frame.innerHTML = '<div class="sheet7">' + ['p0', 'p6', 'p3', 'p2', 'p5', 'p1', 'p4'].map(id =>
         `<img src="../assets/thumbs/${P[id].src}" alt="${P[id].alt}" loading="lazy">`).join('') + '</div>';
@@ -271,9 +317,7 @@ html,body{overflow:hidden}
 
     const rows = [];
     if (s.status === 'stated') {
-      rows.push(['Source', ACCOUNT + '.']);
-      rows.push(['Source text', `<q>${s.quote}</q>`]);
-      rows.push(['Would prove it', s.need]);
+      rows.push(['Source', ACCOUNT + '.'], ['Source text', `<q>${s.quote}</q>`], ['Collect now', s.now], ['Next project', s.next]);
     } else if (s.status === 'withheld') {
       rows.push(['Reason', s.why]);
     } else {
@@ -281,21 +325,43 @@ html,body{overflow:hidden}
       if (s.note) rows.push(['Note', s.note]);
       if (ex.plate) rows.push(['Shows', P[ex.plate].caption]);
     }
+    rows.push(['Status means', ST[s.status].def]);
+    if (s.detail) rows.push(['On the sheet', `<a href="../c/#${s.detail}">PS-001 · ${s.detail === 'd0' ? 'Elevation' : 'Detail ' + s.detail.slice(1)} →</a>`]);
     document.getElementById('ex-data').innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('');
     fit();
   }
 
-  let sel = 0;
-  const spans = [...prose.querySelectorAll('.s')];
-  const squares = [...sq.children];
+  // State: view and selected sentence, both in the address.
+  let sel = 13, view = 'read';
+  function writeHash() {
+    const id = C[sel].id;
+    const h = view === 'brief' ? 'brief' : (view === 'marks' ? 'marks-' + id : id);
+    history.replaceState(null, '', '#' + h);
+  }
+  function setView(v) {
+    view = v;
+    document.body.dataset.view = v;
+    document.querySelector('.account').classList.toggle('marks', v === 'marks');
+    document.querySelectorAll('.views button').forEach(b => b.setAttribute('aria-pressed', b.dataset.view === v));
+    if (v !== 'marks' && C[sel].status === 'withheld') select(13, true);
+    if (v === 'brief') document.getElementById('capture-brief').scrollTop = 0;
+    writeHash();
+  }
   function select(i, quiet) {
     sel = i;
-    spans.forEach(el => el.classList.toggle('sel', +el.dataset.i === i));
+    spans.forEach(el => { const on = +el.dataset.i === i; el.classList.toggle('sel', on); el.setAttribute('aria-pressed', on); });
     squares.forEach(el => el.classList.toggle('sel', +el.dataset.i === i));
-    spans.forEach(el => el.setAttribute('aria-pressed', +el.dataset.i === i));
     render(i);
-    if (!quiet && matchMedia('(max-width:760px)').matches) app.classList.add('sheet-open');
+    writeHash();
+    if (!quiet && matchMedia('(max-width:760px)').matches) document.body.classList.add('sheet-open');
   }
+
+  document.addEventListener('click', e => {
+    const v = e.target.closest('button[data-view]');
+    if (v) { setView(v.dataset.view); return; }
+    const g = e.target.closest('[data-goto]');
+    if (g) { e.preventDefault(); setView('marks'); select(+g.dataset.goto, true); spans[+g.dataset.goto].focus(); }
+  });
 
   // Hover previews; click holds. Leaving the prose returns to the held sentence.
   const fine = matchMedia('(hover:hover) and (pointer:fine)').matches;
@@ -303,31 +369,43 @@ html,body{overflow:hidden}
   prose.addEventListener('mouseleave', () => { if (fine) render(sel); });
   prose.addEventListener('click', e => { const el = e.target.closest('.s'); if (el) select(+el.dataset.i); });
   prose.addEventListener('focusin', e => { const el = e.target.closest('.s'); if (el) render(+el.dataset.i); });
+  prose.addEventListener('focusout', e => { if (!prose.contains(e.relatedTarget)) render(sel); });
   prose.addEventListener('keydown', e => {
     const el = e.target.closest('.s'); if (!el) return;
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(+el.dataset.i); }
   });
-  prose.addEventListener('focusout', e => { if (!prose.contains(e.relatedTarget)) render(sel); });
   sq.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
     select(+b.dataset.i);
-    const span = spans[+b.dataset.i]; if (span) span.scrollIntoView({ block: 'nearest' });
+    spans[+b.dataset.i].scrollIntoView({ block: 'nearest' });
   });
-  document.getElementById('ex-close').addEventListener('click', () => app.classList.remove('sheet-open'));
+  document.getElementById('ex-close').addEventListener('click', () => document.body.classList.remove('sheet-open'));
 
   addEventListener('keydown', e => {
     if (window.LAB.aboutOpen() || e.metaKey || e.ctrlKey || e.altKey) return;
-    if (e.key === 'm' || e.key === 'M') { setMarks(marks.getAttribute('aria-pressed') !== 'true'); return; }
-    if (e.key === 'Escape') { app.classList.remove('sheet-open'); return; }
+    const k = e.key.toLowerCase();
+    if (k === 'r') { setView('read'); return; }
+    if (k === 'm') { setView(view === 'marks' ? 'read' : 'marks'); return; }
+    if (k === 'c') { setView('brief'); return; }
+    if (e.key === 'Escape') { document.body.classList.remove('sheet-open'); return; }
     if (e.target.closest && e.target.closest('.s')) {
-      const max = marks.getAttribute('aria-pressed') === 'true' ? S14.length : shown;
-      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); const k = Math.min(max - 1, +e.target.dataset.i + 1); spans[k].focus(); select(k, true); }
-      if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); const k = Math.max(0, +e.target.dataset.i - 1); spans[k].focus(); select(k, true); }
+      const max = view === 'marks' ? C.length : shown;
+      const step = (e.key === 'ArrowDown' || e.key === 'ArrowRight') ? 1 : (e.key === 'ArrowUp' || e.key === 'ArrowLeft') ? -1 : 0;
+      if (step) { e.preventDefault(); const j = Math.max(0, Math.min(max - 1, +e.target.dataset.i + step)); spans[j].focus(); select(j, true); }
     }
   });
 
-  setMarks(location.hash === '#marks');
-  select(13, true);
+  function fromHash() {
+    const h = location.hash.slice(1);
+    const m = /^(marks-|)(s\d\d|w\d)$/.exec(h);
+    const v = h === 'brief' ? 'brief' : (h === 'marks' || (m && (m[1] || m[2][0] === 'w'))) ? 'marks' : 'read';
+    const i = m ? C.findIndex(c => c.id === m[2]) : 13;
+    setView(v);
+    select(i > -1 ? i : 13, true);
+    if (m && i > -1) spans[i].scrollIntoView({ block: 'nearest' });
+  }
+  addEventListener('hashchange', fromHash);
+  fromHash();
 })();
 </script>
 </body>

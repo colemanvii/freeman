@@ -16,6 +16,12 @@ Three working editorial structures for one hospitality project, built from the s
 
 The index (`story-001/`) holds the governing idea, the material ledger, a comparison table and the provenance rules.
 
+## Round two (19 Oct 2026): roles decided
+
+- **A · Approach is the public entry.** Its record now hands the visitor on: “The proof” → B in marks view; “For architects and designers” → C.
+- **B · Account is the standard of proof.** The fourteen claims, their statuses, sources and evidence requests now live in the shared record (`evidence.js` → `statuses`, `claims`, `upgrade`). Three views: Read, Marks, Capture brief. The brief lists each stated claim with what to collect now and what to capture on the next project, Freeman’s own capture protocol (from `PROJECT-RECORD.md`) and the proof standard; printing the page prints the brief (letter, two pages). Every sentence has an address (`#s01`, `#marks-s09`, `#brief`) and links to its detail on the sheet.
+- **C · Sheet is for architects and designers.** Title block now indexes two sheets. PS-001 links each detail to its sentence in the account. New **PS-002 · Field record, issued for capture**: seven frames (sentences 06–12) plus a reference frame, each with collect-now / next-project requests and blank Position / Date / By / File fields; general notes and the capture protocol. Each sheet prints on one 17 × 11 in tabloid page.
+
 ## Finding
 
 B makes it explicit: every sentence about the **result** can be shown; every sentence about the **work** is, for now, only stated. Freeman has the photographs that prove taste, but no field evidence on file to prove capability. Whichever direction is chosen, the next step is capture, not design.
@@ -52,7 +58,7 @@ Production tokens only (`v5/styles.css`): `#fff9f1` paper, `#332e20` ink, `#f938
 
 ## Keys
 
-Index: `1` `2` `3`. In a study: `[` `]` previous/next study, `I` about, `\` hide the lab frame. A: arrows, wheel, swipe, `Home`/`End`. B: `M` marks, arrows between sentences. C: `1`–`9`, arrows, `Esc`.
+Index: `1` `2` `3`. In a study: `[` `]` previous/next study, `I` about, `\` hide the lab frame. A: arrows, wheel, swipe, `Home`/`End`. B: `R` read, `M` marks, `C` capture brief, arrows between sentences. C: `1`–`9`, arrows, `Esc`, `S` switch sheet.
 
 ## Next
 

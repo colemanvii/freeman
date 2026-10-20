@@ -49,7 +49,7 @@ body.lab-hidden .lab{visibility:hidden}
 .about .close-about{position:fixed;top:24px;right:var(--gutter);font-size:10px;letter-spacing:.035em;text-transform:uppercase}
 .about .close-about:hover{background:var(--red);color:var(--paper)}
 
-@media(max-width:760px){
+@media screen and (max-width:760px){
   :root{--gutter:18px}
   .lab{padding-top:max(16px,env(safe-area-inset-top));font-size:9px;flex-direction:row}
   .lab .sep{padding:0 4px}

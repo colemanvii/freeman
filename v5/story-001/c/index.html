@@ -73,6 +73,33 @@ html,body{overflow:hidden}
 .tb .no .val{font-size:clamp(22px,2vw,30px);letter-spacing:-.04em;line-height:1}
 .tb [data-link]:hover .val,.tb [data-link]:focus-visible .val{background:var(--red);color:var(--paper)}
 
+.tb .sheets{gap:3px}
+.tb .sheets button{text-align:left;font-size:9px}
+.tb .sheets button[aria-current="page"]{color:var(--red)}
+.tb .sheets button:hover{background:var(--red);color:var(--paper)}
+.notes .srcnote{font-size:8px;line-height:1.5;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+
+/* PS-002: frames issued for capture. */
+.field2{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:1fr 1fr;gap:0;padding:6px 10px}
+.cf{display:flex;flex-direction:column;padding:12px 10px 10px;min-height:0;min-width:0}
+.cf .ttl{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;margin-bottom:8px}
+.cf .bub{border-style:dashed}
+.cf .t b{font-weight:400;font-size:10px;line-height:1.3;letter-spacing:.04em;text-transform:uppercase;display:block}
+.cf .t a{font-size:8px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.cf .t a:hover{background:var(--red);color:var(--paper)}
+.cf .box{flex:1;min-height:60px;border:1px dashed var(--red);display:flex;flex-direction:column;justify-content:center;gap:8px;padding:10px 12px}
+.cf .box p{font-size:9px;line-height:1.5;letter-spacing:.02em}
+.cf .box p b{display:block;font-weight:400;font-size:7.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--red);margin-bottom:2px}
+.cf .box p.next b{color:var(--muted)}
+.cf .blanks{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin-top:8px}
+.cf .blanks span{font-size:7.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--ink);padding-bottom:9px}
+.cf.ref .box{border-color:var(--ink)}
+.cf.ref .box p b{color:var(--ink)}
+.cf.lit-f .box{background:rgba(249,56,34,.06)}
+.zoom .xref{display:flex;flex-direction:column;gap:6px;font-size:10px;letter-spacing:.035em;text-transform:uppercase}
+.zoom .xref a,.zoom .xref button{text-align:left;text-transform:inherit;letter-spacing:inherit;font-size:inherit}
+.zoom .xref a:hover,.zoom .xref button:hover{background:var(--red);color:var(--paper)}
+
 /* Detail view: the detail grows out of its place on the sheet. */
 .zoom{position:fixed;inset:60px var(--gutter) 26px;background:var(--paper);border:1px solid var(--ink);z-index:30;display:none;grid-template-columns:minmax(0,1fr) clamp(240px,22vw,320px)}
 .zoom.open{display:grid}
@@ -101,7 +128,7 @@ html,body{overflow:hidden}
 .zoom .znav button:hover{background:var(--red);color:var(--paper)}
 .ghost{position:fixed;z-index:35;pointer-events:none;border:1px solid var(--red);transition:all .22s cubic-bezier(.2,.7,.2,1)}
 
-@media(max-width:900px){
+@media screen and (max-width:900px){
   html,body{overflow:auto;height:auto}
   .sheet{position:static;margin:56px var(--gutter) 30px;display:flex;flex-direction:column}
   .tb{order:-1;border-left:0;border-bottom:1px solid var(--ink);display:grid;grid-template-columns:1fr 1fr}
@@ -119,6 +146,22 @@ html,body{overflow:hidden}
   .zoom .zview{border-right:0;border-bottom:1px solid var(--ink);padding:14px}
   .zoom aside{padding:14px var(--gutter) max(16px,env(safe-area-inset-bottom))}
   .d .pin{display:none!important}
+  .field2{display:flex;flex-direction:column;padding:0}
+  .cf{border-bottom:1px solid var(--hair);padding:14px 12px}
+  .cf .box{min-height:120px}
+}
+
+/* Print: the current sheet on one tabloid page. */
+@media print{
+  @page{size:17in 11in;margin:.35in}
+  html,body{overflow:visible;height:auto;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .lab,.about,.zoom,.ghost{display:none!important}
+  .sheet{position:relative;inset:auto;width:100%;height:10.25in;break-inside:avoid}
+  .sheet[hidden]{display:none!important}
+  .d .fit{width:100%!important;height:100%!important}
+  .d .fit img{object-fit:contain;object-position:left bottom}
+  .d .pin{display:none!important}
+  .tb .sheets button{color:var(--ink)!important}
 }
 @media(max-height:720px) and (min-width:901px){
   .notes{gap:10px}.notes ol{gap:4px}.notes ol li{font-size:8px}
@@ -167,6 +210,7 @@ html,body{overflow:hidden}
     <div class="cell" data-link="d1 d2 d3 d4 d5 d6 d7"><span class="lbl">Photography · details 1–7</span><span class="val">Jared Swafford</span></div>
     <div class="cell" data-link="d0"><span class="lbl">Drawing · elevation</span><span class="val">Freeman GC archive</span></div>
     <div class="cell"><span class="lbl">Schedule</span><span class="val">Three weeks</span></div>
+    <div class="cell sheets"><span class="lbl">Sheets</span><button type="button" class="val" data-sheet="sheet">PS-001 · Project story</button><button type="button" class="val" data-sheet="sheet2">PS-002 · Field record</button></div>
     <div class="cell grow"></div>
     <div class="cell rev"><span class="lbl">Revisions</span>
       <table><tr><td>0</td><td>—</td><td>Published account, freemangc.com</td></tr><tr><td>1</td><td>19.10.26</td><td>Project story, study 001</td></tr></table>
@@ -176,6 +220,23 @@ html,body{overflow:hidden}
   </section>
 </main>
 
+<main class="sheet" id="sheet2" aria-label="Sheet PS-002, field record" hidden>
+  <section class="notes" aria-label="General notes">
+    <h2 class="h">General notes</h2>
+    <ol>
+      <li><span>Issued for capture. Not for construction, and not a record until a file is attached to a frame.</span></li>
+      <li><span>Frames 1–7 are sentences 06–12 of the account: stated in Freeman’s published account, with nothing on file.</span></li>
+      <li><span>The Optimist: collect what still exists. Next project: capture during the work.</span></li>
+      <li><span>Every frame records its position, date and the person who captured it.</span></li>
+      <li><span data-link2="f3 f4">Frames 3 and 4 complete details 8 and 9 on PS-001; frames 5 and 6 complete 10 and 11.</span></li>
+    </ol>
+    <h2 class="h">Capture protocol</h2>
+    <ol id="protocol"></ol>
+    <p class="srcnote">From Freeman’s Project Record pilot.</p>
+  </section>
+  <section class="field field2" id="field2" aria-label="Capture frames"></section>
+</main>
+
 <section class="zoom" id="zoom" role="dialog" aria-modal="true" aria-label="Detail">
   <div class="zview" id="zview"></div>
   <aside>
@@ -183,6 +244,7 @@ html,body{overflow:hidden}
     <p class="cap" id="zcap"></p>
     <ol class="keys" id="zkeys"></ol>
     <p class="fine" id="zfine"></p>
+    <p class="xref" id="zxref"></p>
     <nav class="znav"><button type="button" id="zprev">← Prev</button><span id="zcount"></span><button type="button" id="znext">Next →</button></nav>
     <button type="button" class="micro" id="zclose" style="align-self:flex-start">× Back to sheet</button>
   </aside>
@@ -223,6 +285,7 @@ html,body{overflow:hidden}
     { id: 'd11', no: '11', scope: 3, kind: 'Detail awaiting evidence', need: 'Name the pieces and their fabricator; photograph each.' }
   ];
   const field = document.getElementById('field');
+  const pad = n => String(n).padStart(2, '0');
   const fits = [];
 
   function detailEl(d) {
@@ -280,6 +343,53 @@ html,body{overflow:hidden}
     el.addEventListener('click', () => { if (ids.length === 1) open(D.findIndex(d => d.id === ids[0])); });
   });
 
+  // PS-002: the title block is PS-001's, re-issued.
+  const sheet1 = document.getElementById('sheet'), sheet2 = document.getElementById('sheet2');
+  const tb2 = sheet1.querySelector('.tb').cloneNode(true);
+  tb2.querySelectorAll('[data-link]').forEach(el => el.removeAttribute('data-link'));
+  tb2.querySelector('.no .val').textContent = 'PS-002';
+  tb2.querySelector('.no > .lbl').innerHTML = 'Issued for<br>capture';
+  tb2.querySelector('.rev table').innerHTML = '<tr><td>0</td><td>19.10.26</td><td>Issued for capture</td></tr>';
+  tb2.querySelectorAll('.cell').forEach(el => { if (/^(Photography|Drawing)/.test(el.querySelector('.lbl')?.textContent || '')) el.remove(); });
+  sheet2.append(tb2);
+  document.getElementById('protocol').innerHTML = S.protocol.map(p => `<li><span>${p}</span></li>`).join('');
+
+  const stated = S.claims.map((c, i) => ({ c, i })).filter(x => x.c.status === 'stated');
+  const field2 = document.getElementById('field2');
+  field2.innerHTML = stated.map(({ c, i }, k) => `<article class="cf" data-f="f${k + 1}">
+      <div class="ttl"><span class="bub"><span>${k + 1}</span><span>PS2</span></span>
+        <span class="t"><b>${c.text.replace(/[,.]$/, '').replace(/^(.)/, m => m.toUpperCase())}</b>
+        <a href="../b/#marks-${c.id}">Account · sentence ${pad(i + 1)}</a>${c.detail ? ` · <a href="#${c.detail}" data-open="${c.detail}">PS-001 detail ${c.detail.slice(1)}</a>` : ''}</span></div>
+      <div class="box"><p><b>Collect now</b>${c.now}</p><p class="next"><b>Next project</b>${c.next}</p></div>
+      <div class="blanks"><span>Position</span><span>Date</span><span>By</span><span>File</span></div>
+    </article>`).join('') + `<article class="cf ref" data-f="f8">
+      <div class="ttl"><span class="bub"><span>R</span><span>PS2</span></span><span class="t"><b>Reference frame</b><a>For the next project · protocol 1</a></span></div>
+      <div class="box"><p><b>Before work starts</b>One safe, repeatable position for the whole job. Photograph it and keep it as the reference every later frame is matched to.</p></div>
+      <div class="blanks"><span>Position</span><span>Camera height</span><span>Lens</span><span>By</span></div>
+    </article>`;
+  document.querySelectorAll('[data-link2]').forEach(el => {
+    const ids = el.dataset.link2.split(' ');
+    el.tabIndex = 0; el.style.cursor = 'var(--cursor-act)';
+    const on = v => ids.forEach(id => field2.querySelector(`[data-f="${id}"]`).classList.toggle('lit-f', v));
+    el.addEventListener('mouseenter', () => on(true)); el.addEventListener('mouseleave', () => on(false));
+    el.addEventListener('focus', () => on(true)); el.addEventListener('blur', () => on(false));
+  });
+
+  const sheetButtons = document.querySelectorAll('[data-sheet]');
+  function showSheet(id, quiet) {
+    sheet1.hidden = id !== 'sheet';
+    sheet2.hidden = id !== 'sheet2';
+    sheetButtons.forEach(b => b.setAttribute('aria-current', b.dataset.sheet === id ? 'page' : 'false'));
+    if (!quiet) history.replaceState(null, '', id === 'sheet2' ? '#ps-002' : location.pathname);
+    if (id === 'sheet') fitAll();
+  }
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-sheet]');
+    if (b) { if (zoom.classList.contains('open')) close(); showSheet(b.dataset.sheet); return; }
+    const o = e.target.closest('[data-open]');
+    if (o) { e.preventDefault(); showSheet('sheet', true); open(D.findIndex(d => d.id === o.dataset.open)); }
+  });
+
   // Detail view.
   const zoom = document.getElementById('zoom'), zview = document.getElementById('zview');
   let cur = -1, zfit = null, opener = null;
@@ -297,6 +407,7 @@ html,body{overflow:hidden}
   function fill(i) {
     cur = i;
     const d = D[i];
+    xref(d);
     const bub = document.getElementById('zbub');
     bub.firstElementChild.textContent = d.no;
     bub.style.borderStyle = d.scope !== undefined ? 'dashed' : '';
@@ -329,6 +440,13 @@ html,body{overflow:hidden}
       keys.innerHTML = '';
       document.getElementById('zfine').textContent = 'This detail is drawn empty on purpose. It marks evidence Freeman can still collect.';
     }
+  }
+  function xref(d) {
+    const links = S.claims.map((c, i) => ({ c, i })).filter(x => x.c.detail === d.id || (d.plate && d.plate !== 'dr' && x.c.id === 's13'))
+      .map(({ c, i }) => `<a href="../b/#${c.status === 'stated' ? 'marks-' : ''}${c.id}">In the account · sentence ${pad(i + 1)} →</a>`);
+    const f = stated.findIndex(x => x.c.detail === d.id);
+    if (f > -1) links.push(`<button type="button" data-sheet="sheet2">PS-002 · capture frame ${f + 1} →</button>`);
+    document.getElementById('zxref').innerHTML = links.join('');
   }
   function sync(k, v) {
     zoom.querySelectorAll(`[data-k="${k}"]`).forEach(el => el.classList.toggle('hot', v));
@@ -380,12 +498,15 @@ html,body{overflow:hidden}
     if (e.key === 'Escape' && isOpen) { e.preventDefault(); close(); return; }
     if (isOpen && (e.key === 'ArrowRight' || e.key === 'ArrowDown')) { e.preventDefault(); open((cur + 1) % D.length); return; }
     if (isOpen && (e.key === 'ArrowLeft' || e.key === 'ArrowUp')) { e.preventDefault(); open((cur + D.length - 1) % D.length); return; }
+    if (e.key === 's' || e.key === 'S') { if (isOpen) close(); showSheet(sheet2.hidden ? 'sheet2' : 'sheet'); return; }
+    if (!sheet2.hidden) return;
     if (/^[0-9]$/.test(e.key)) {
       if (e.key === '0') { isOpen ? close() : open(0); return; }
       open(D.findIndex(d => d.no === e.key));
     }
   });
 
+  showSheet(location.hash === '#ps-002' ? 'sheet2' : 'sheet', true);
   const start = D.findIndex(d => '#' + d.id === location.hash);
   if (start > -1) open(start);
 })();
