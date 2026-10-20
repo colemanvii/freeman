@@ -322,6 +322,19 @@
         .co4-letter-link{display:inline-block;margin-top:15px;color:inherit;text-decoration:none;font-size:11px;letter-spacing:.03em;border-bottom:1px solid currentColor;padding-bottom:5px;min-height:26px}
         .co4-letter-link:hover{color:var(--accent,#bd4d36)}
         .co4-letter-link:focus-visible{outline:2px solid currentColor;outline-offset:4px}
+        .co4-letter-dialog{border:1px solid currentColor;background:#f4f1e9;color:#282722;width:min(620px,calc(100vw - 32px));max-height:min(78dvh,720px);padding:0;box-shadow:none;font-family:Monaco,"Courier New",monospace}
+        .co4-letter-dialog::backdrop{background:rgba(25,23,19,.49)}
+        .co4-letter-head{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:14px 23px;border-bottom:1px solid #cfcac0;font-size:10px}
+        .co4-letter-close{border:0;background:transparent;color:inherit;cursor:pointer;font:inherit;font-size:11px;min-height:44px;min-width:44px}
+        .co4-letter-scroll{overflow-y:auto;overscroll-behavior:contain;max-height:calc(min(78dvh,720px) - 111px);padding:clamp(28px,5vw,54px) clamp(22px,5vw,58px)}
+        .co4-letter-scroll h2{font-size:clamp(26px,4vw,40px);line-height:1.1;letter-spacing:-.055em;margin:0 0 32px;font-weight:500}
+        .co4-letter-scroll p{font-size:clamp(13px,1.3vw,16px);line-height:1.85;letter-spacing:-.03em;margin:0 0 1.4em}
+        .co4-letter-overline,.co4-letter-foot{font-size:10px;letter-spacing:.02em;color:#ad4935}
+        .co4-letter-overline{margin-bottom:18px}
+        .co4-letter-foot{margin-top:30px}
+        .co4-letter-draft{padding:14px 23px;border-top:1px solid #cfcac0;color:#77736c;font-size:9px}
+        .co4-letter-close:focus-visible{outline:2px solid currentColor;outline-offset:-4px}
+        @media(max-width:700px){.co4-letter-dialog{max-height:85dvh}.co4-letter-scroll{max-height:calc(85dvh - 111px)}}
         @media(max-width:700px){.co4-stage{width:100%;height:100%}}
       </style>
       <div class="co4-stage">
@@ -334,7 +347,25 @@
           <div class="co4-copy" id="co4-copy"></div>
         </section>
       </div>
+      <dialog class="co4-letter-dialog" aria-labelledby="co4-letter-title">
+        <div class="co4-letter-head"><span>FREEMAN / A LETTER</span><button type="button" class="co4-letter-close" aria-label="Close letter">× CLOSE</button></div>
+        <div class="co4-letter-scroll" tabindex="0">
+          <div class="co4-letter-overline">A LETTER</div>
+          <h2 id="co4-letter-title">Built for generations.</h2>
+          <p>The places we build become part of people's lives. They hold first meetings and familiar rituals, long conversations and ordinary evenings. The best of them give people a reason to return.</p>
+          <p>Hospitality is an important part of our work. We believe the spaces people inhabit shape how they gather, work, connect, and experience the world around them.</p>
+          <p>Every project begins with a different ambition. Our responsibility is to understand that ambition, bring the right people together, and carry it through the realities of construction.</p>
+          <p>The work demands more than technical execution. It requires judgment, collaboration, and a commitment to doing things well—even in the details most people will never see.</p>
+          <p>We believe care is visible in the finished place, but also in how it was made—in the relationships, decisions, and details that hold it together.</p>
+          <p>The things worth making are worth making well.</p>
+          <div class="co4-letter-foot">FREEMAN GENERAL CONTRACTING / BUILT FOR GENERATIONS</div>
+        </div>
+        <div class="co4-letter-draft">WORKING DRAFT — NOT APPROVED BY GABE</div>
+      </dialog>
     </div>`;
+    const letterDialog=vp.querySelector(".co4-letter-dialog");
+    vp.querySelector(".co4-letter-close").addEventListener("click",()=>letterDialog.close());
+    letterDialog.addEventListener("click",e=>{if(e.target===letterDialog)letterDialog.close()});
     const copy=vp.querySelector("#co4-copy");
     const philosophyParagraphs=[
       "We're a Georgia-based general contractor with a deliberate focus on hospitality.",
@@ -345,7 +376,7 @@
       if(currentTab!=="philosophy")return;
       const split=matchMedia("(max-width:760px)").matches;
       const paragraphs=split ? (pageIndex===0 ? philosophyParagraphs.slice(0,2) : philosophyParagraphs.slice(2)) : philosophyParagraphs;
-      copy.innerHTML=`<h2>Built for generations<span class="co4-accent">.</span></h2>${paragraphs.map(p=>`<p>${esc(p)}</p>`).join("")}${(!split || pageIndex===1) ? '<a class="co4-letter-link" href="/studies/company-letter/">READ OUR LETTER ↗</a>' : ""}`;
+      copy.innerHTML=`<h2>Built for generations<span class="co4-accent">.</span></h2>${paragraphs.map(p=>`<p>${esc(p)}</p>`).join("")}${(!split || pageIndex===1) ? '<button type="button" class="co4-letter-link" data-co4-letter>READ OUR LETTER ↗</button>' : ""}`;
     }
     function setCompanySheets() {
       pageCount=currentTab==="philosophy" && matchMedia("(max-width:760px)").matches ? 2 : 1;
@@ -376,6 +407,7 @@
     }
     vp.addEventListener("click",e=>{
       const tab=e.target.closest("[data-co4-tab]"),service=e.target.closest("[data-co4-service]"),person=e.target.closest("[data-co4-person]");
+      if(e.target.closest("[data-co4-letter]")){letterDialog.querySelector(".co4-letter-scroll").scrollTop=0;letterDialog.showModal();return;}
       if(tab){show(tab.dataset.co4Tab);return;}
       if(service){currentService=Number(service.dataset.co4Service);vp.querySelectorAll("[data-co4-service]").forEach(el=>el.setAttribute("aria-pressed",String(Number(el.dataset.co4Service)===currentService)));vp.querySelector("#co4-service-text").textContent=services[currentService].detail;return;}
       if(person){currentPerson=Number(person.dataset.co4Person);show("people");}
