@@ -1,39 +1,38 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Freeman / Letter Studies</title>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>A Letter — Freeman General Contracting (Study)</title>
 <style>
-:root{--paper:#f4f1e9;--ink:#26251f;--muted:#77756f;--red:#bb4b32}*{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden}body{font-family:Monaco,"Courier New",monospace;background:var(--paper);color:var(--ink)}
-button{font:inherit;cursor:pointer;color:inherit;background:transparent;border:0;padding:10px 4px;min-height:44px}
-button:focus-visible{outline:2px solid currentColor;outline-offset:3px}button[aria-pressed=true]{text-decoration:underline;text-underline-offset:5px}
-.shell{height:100dvh;min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr) auto;padding:clamp(16px,3vw,36px);gap:12px}
-header,footer{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:10px;letter-spacing:.04em}
-.controls{display:flex;align-items:center;gap:16px}.stage{position:relative;min-height:0;display:grid;place-items:center}
-.sheet{display:grid;width:min(100%,1080px);height:100%;min-height:0;grid-template-columns:repeat(12,1fr);grid-template-rows:auto 1fr auto;align-items:center}
-.kicker{grid-column:2/-2;align-self:end;color:var(--red);font-size:11px}
-.bodycopy{grid-column:2/span 9;max-width:760px;align-self:center}
-.title{font-size:clamp(29px,5.2vw,75px);line-height:1.04;letter-spacing:-.055em;font-weight:500;margin:0 0 clamp(16px,3vw,36px)}
-.paragraph{font-size:clamp(13px,1.35vw,19px);line-height:1.66;letter-spacing:-.03em;margin:0;max-width:750px}
-.paragraph+.paragraph{margin-top:1em}.folio{grid-column:2/-2;color:var(--muted);font-size:10px}
-footer{color:var(--muted)}.arrows{display:flex;gap:12px}.arrows button{min-width:44px;border:1px solid currentColor}
-.note{white-space:nowrap}
-body[data-mode=B]{background:#26251f;color:#f3eee5}body[data-mode=B] .kicker{color:#d86848}body[data-mode=B] footer,body[data-mode=B] .folio{color:#b0aca4}
-body[data-mode=B] .sheet{width:min(100%,1160px)}body[data-mode=B] .bodycopy{grid-column:1/-1;max-width:1050px}
-body[data-mode=B] .title{text-transform:uppercase;font-size:clamp(37px,7.3vw,108px);line-height:.97}
-body[data-mode=B] .paragraph{max-width:740px;font-size:clamp(15px,1.5vw,21px)}
-body[data-mode=B] .kicker,body[data-mode=B] .folio{grid-column:1/-1}
-@media(max-width:640px){header,footer{font-size:9px}.controls{gap:6px}.sheet,.bodycopy{width:100%}.sheet{grid-template-columns:repeat(12,1fr)}.bodycopy{grid-column:1/-1}.kicker,.folio{grid-column:1/-1}.title{font-size:clamp(30px,9vw,56px)}.paragraph{font-size:clamp(14px,3.6vw,17px);line-height:1.55}body[data-mode=B] .title{font-size:clamp(36px,10vw,63px)}.note{white-space:normal}.shell{padding:14px;gap:5px}}
-@media(prefers-reduced-motion:no-preference){.bodycopy{animation:appear .2s ease}@keyframes appear{from{opacity:.65}to{opacity:1}}}
-</style></head><body data-mode="A"><main class="shell">
-<header><span>FREEMAN GENERAL CONTRACTING</span><div class="controls" role="group" aria-label="Design direction"><button id="a" aria-pressed="true">A / LETTER</button><button id="b" aria-pressed="false">B / DECLARATION</button></div></header>
-<section class="stage" aria-label="Letter study"><article class="sheet"><div class="kicker" id="kicker"></div><div class="bodycopy" id="copy" aria-live="polite"></div><div class="folio" id="folio"></div></article></section>
-<footer><span class="note">DESIGN STUDY · DRAFT LANGUAGE · NOT APPROVED BY GABE</span><div class="arrows"><button id="prev" aria-label="Previous page">←</button><button id="next" aria-label="Next page">→</button></div></footer></main>
-<script>
-const pages=[
-{tag:"A LETTER / 01",title:"Built for generations.",paragraphs:["The places we build become part of people's lives. They hold first meetings and familiar rituals, long conversations and ordinary evenings. The best of them give people a reason to return."]},
-{tag:"A LETTER / 02",title:"Hospitality is our focus.",paragraphs:["A restaurant is more than a structure. Every choice—how a room feels, how it works, and how people move through it—contributes to the experience its owner hopes to create.","Building it well means taking that ambition seriously."]},
-{tag:"A LETTER / 03",title:"Good work is collective.",paragraphs:["Owners, architects, designers, tradespeople, and builders each bring something essential to the work. Our responsibility is to listen carefully, work closely, and carry the intent through the realities of construction.","The result depends on hundreds of decisions most guests will never see."]},
-{tag:"A LETTER / 04",title:"The things worth making are worth making well.",paragraphs:["We believe care is visible in the finished place, but also in how it was made—in the relationships, decisions, and details that hold it together.","Built for Generations is the standard we aspire to meet, project after project."]}
-];let page=0,mode="A";const $=id=>document.getElementById(id);
-function draw(){document.body.dataset.mode=mode;$("a").setAttribute("aria-pressed",mode==="A");$("b").setAttribute("aria-pressed",mode==="B");const p=pages[page];$("kicker").textContent=p.tag;$("copy").innerHTML='<h1 class="title">'+p.title+'</h1>'+p.paragraphs.map(t=>'<p class="paragraph">'+t+'</p>').join('');$("folio").textContent=String(page+1).padStart(2,"0")+" / "+String(pages.length).padStart(2,"0");$("prev").disabled=page===0;$("next").disabled=page===pages.length-1;$("prev").style.opacity=page===0?".25":"1";$("next").style.opacity=page===pages.length-1?".25":"1";}
-$("a").onclick=()=>{mode="A";draw()};$("b").onclick=()=>{mode="B";draw()};$("prev").onclick=()=>{page=Math.max(0,page-1);draw()};$("next").onclick=()=>{page=Math.min(pages.length-1,page+1);draw()};window.addEventListener("keydown",e=>{if(e.key==="ArrowLeft")$("prev").click();if(e.key==="ArrowRight")$("next").click()});draw();
-</script></body></html>
+:root{--paper:#f4f1e9;--ink:#282722;--muted:#77736c;--accent:#ad4935}
+*{box-sizing:border-box}html{background:var(--paper);color:var(--ink)}body{margin:0;min-height:100dvh;font-family:Monaco,"Courier New",monospace;-webkit-font-smoothing:antialiased}
+.header,.footer{display:flex;justify-content:space-between;gap:20px;align-items:center;padding:clamp(18px,3vw,35px);font-size:10px;letter-spacing:.015em}
+.header a{color:inherit;text-decoration:none}.header a:hover{text-decoration:underline}
+main{max-width:790px;margin:0 auto;padding:clamp(66px,11vh,140px) 28px clamp(70px,12vh,150px)}
+.eyebrow{color:var(--accent);font-size:11px;margin-bottom:24px}
+h1{font-size:clamp(36px,5vw,64px);font-weight:500;line-height:1.04;letter-spacing:-.065em;margin:0 0 clamp(38px,6vw,70px)}
+.copy{max-width:645px}
+.copy p{font-size:clamp(15px,1.55vw,19px);line-height:1.85;letter-spacing:-.035em;margin:0 0 1.55em}
+.close{margin-top:55px;font-size:12px;letter-spacing:-.02em}
+.footer{color:var(--muted);border-top:1px solid #d9d5ca}
+@media(max-width:640px){main{padding:74px 24px 100px}.header,.footer{padding:20px 24px;font-size:9px}.copy p{line-height:1.75}h1{margin-bottom:42px}}
+</style>
+</head>
+<body>
+<header class="header"><span>FREEMAN GENERAL CONTRACTING</span><span>A LETTER / STUDY 001</span></header>
+<main>
+<div class="eyebrow">A LETTER</div>
+<h1>Built for generations.</h1>
+<div class="copy">
+<p>The places we build become part of people's lives. They hold first meetings and familiar rituals, long conversations and ordinary evenings. The best of them give people a reason to return.</p>
+<p>Hospitality is our focus. A restaurant is more than a structure. Every choice—how a room feels, how it works, and how people move through it—contributes to the experience its owner hopes to create.</p>
+<p>Building it well means taking that ambition seriously.</p>
+<p>Owners, architects, designers, tradespeople, and builders each bring something essential to the work. Our responsibility is to listen carefully, work closely, and carry the intent through the realities of construction. The result depends on hundreds of decisions most guests will never see.</p>
+<p>We believe care is visible in the finished place, but also in how it was made—in the relationships, decisions, and details that hold it together.</p>
+<p>The things worth making are worth making well.</p>
+</div>
+<div class="close">FREEMAN GENERAL CONTRACTING<br>BUILT FOR GENERATIONS</div>
+</main>
+<footer class="footer"><span>WORKING DRAFT — NOT APPROVED BY GABE</span><span>CAR​TERSVILLE, GEORGIA</span></footer>
+</body></html>
