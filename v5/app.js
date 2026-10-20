@@ -726,7 +726,8 @@
       home.style.setProperty("--y", snap(innerHeight * (phone ? 0.48 : 0.5) - group.offsetHeight / 2) + "px");
     }
     fit();
-    const mark = window.FreemanPixelMark ? window.FreemanPixelMark.mount(canvas, { play }) : null;
+    const signature = window.FreemanHandMark || window.FreemanPixelMark;
+    const mark = signature ? signature.mount(canvas, { play }) : null;
     const button = root.querySelector(".v4-home-mark");
     if (mark) button.addEventListener("click", () => mark.replay());
     else button.disabled = true;
