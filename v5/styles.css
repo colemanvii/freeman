@@ -477,13 +477,13 @@ body{position:fixed;inset:0;width:100%;height:100%;overflow:hidden;overscroll-be
 
 /* ETCETERA — first two found objects; blank canvas remains available. */
 body[data-route="etcetera"] .viewport{overflow:hidden;min-height:0}
-.etc-canvas{position:absolute;inset:0;overflow:hidden}
-.etc-object{position:absolute;display:block;border:0;background:transparent;color:var(--ink);text-align:left;cursor:pointer;font:inherit;padding:0}
-.etc-ruskin{left:16%;top:10%;width:min(23vw,310px)}
+.etc-canvas{position:absolute;inset:0;display:grid;grid-template-columns:minmax(0,310px) minmax(0,390px);align-items:center;justify-content:center;gap:clamp(40px,8vw,130px);padding:20px;overflow:hidden}
+.etc-object{position:relative;min-width:0;display:block;border:0;background:transparent;color:var(--ink);text-align:left;cursor:pointer;font:inherit;padding:0}
+.etc-ruskin{width:100%;align-self:center}
 .etc-ruskin img{width:100%;max-height:55vh;object-fit:contain;display:block;filter:drop-shadow(2px 4px 5px #0002)}
 .etc-caption{font:9px/1.4 Monaco,"Courier New",monospace;color:var(--muted);display:block;padding-top:8px}
-.etc-optimist{left:53%;top:36%;width:min(30vw,390px);padding:20px 22px;border:1px solid var(--ink);min-height:176px}
-.etc-optimist:hover,.etc-optimist:focus-visible{border-color:var(--red)}
+.etc-optimist{width:100%;padding:0;border:0}
+.etc-optimist:hover .etc-heading{text-decoration:underline;text-underline-offset:5px}
 .etc-number,.etc-open{display:block;color:var(--red);font:10px/1.4 Monaco,"Courier New",monospace}
 .etc-heading{display:block;font:normal clamp(19px,2.25vw,32px)/1.12 Monaco,"Courier New",monospace;letter-spacing:-.06em;margin:17px 0 26px}
 .etc-dialog{border:1px solid var(--ink);background:var(--paper);color:var(--ink);width:min(810px,calc(100vw - 28px));max-width:none;max-height:calc(100dvh - 28px);padding:0}
@@ -495,7 +495,12 @@ body[data-route="etcetera"] .viewport{overflow:hidden;min-height:0}
 .etc-dialog-body small{font:10px/1.5 Monaco,"Courier New",monospace;color:var(--muted)}
 .etc-detail-photo{max-width:100%;max-height:calc(100dvh - 150px);display:block;object-fit:contain;margin:auto}
 @media(max-width:760px){
-.etc-ruskin{left:5%;top:4%;width:55%}.etc-ruskin img{max-height:43vh}
-.etc-optimist{left:30%;top:54%;width:65%;min-height:140px;padding:13px}
-.etc-heading{font-size:clamp(18px,5vw,23px);margin:15px 0}
+.etc-canvas{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;align-content:start;align-items:start;gap:28px;padding:10px 16px 20px}
+.etc-ruskin{width:100%;height:100%;min-height:0;display:flex;flex-direction:column;align-items:flex-start;align-self:start}
+.etc-ruskin img{width:auto;height:calc(100% - 28px);max-width:100%;max-height:340px;object-position:left center;flex:0 1 auto;min-height:0}
+.etc-caption{font-size:9px;line-height:1.5;padding-top:10px;flex:none}
+.etc-optimist{width:100%;min-height:0;padding:0}
+.etc-heading{font-size:clamp(18px,5vw,23px);line-height:1.2;letter-spacing:-.04em;max-width:26ch;margin:12px 0 16px}
+.etc-open{min-height:24px}
+
 }
