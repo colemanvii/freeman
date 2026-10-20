@@ -1,16 +1,17 @@
-# ETCETERA — study 001, round 2: one line
+# ETCETERA — study 001, round 3: a composed index
 
 Isolated study on `study/etcetera-index-001` (cut from production `release/approved-v5-2026-10-18` at 44cb8cc). Not merged, not deployed. Round 1 (three index studies, a review sheet, footer switches, labels) was judged clunky and over-explained and is replaced; it remains in this branch's history at 2dc33fd.
 
 Preview: `/etcetera` on the branch preview, or http://localhost:8816/etcetera.html (`etcetera-index-001` in `.claude/launch.json`).
 
-## The direction
+## The index (round 3: composed by hand)
 
-Taken from the site's strongest compositions: the entrance (one centred line in open paper, almost nothing else), the approved 2 × 2 (objects resting on a common baseline) and the project gallery (one thing, large).
+Round 2's single horizon read as unrelated items on a shelf, spaced by an algorithm. Round 3 places each of the seven entries individually on the site's grid (`v5/etcetera/index/index.js`, where every placement is written out):
 
-- **Index**: every entry on one horizon in the middle of the page. Photographs and drawings at one height; words set as type at a size tied to that height, the title's full stop in Freeman orange; the film as a frame at its own proportion with a small play mark. All rest on one baseline, evenly spaced, with paper at both ends. No labels, numbers, types, copy or controls.
-- **Selectable without instruction**: the orange cursor over every object; pointing at one makes the rest step back and its title appear beneath it. Keyboard focus does the same. One click or tap opens the experience directly.
-- **Fit**: one line whenever its material can stand at a comfortable height (desktop and laptop, 1280 × 720 up); otherwise as few lines as keep it there (tablet two, phone three). It would page with production's sheet controls only if even the smallest line could not fit.
+- **Landscape** (desktop, laptop, tablet sideways, phone sideways), twelve columns. Beetlecat, the one colour photograph, stands at the full height of the frame in columns 5–9: the dominant. *Built for generations.* is set large in 10–12 on Beetlecat's top line: the second voice. Ruskin and the architectural drawing are a small pair at top left on the same top line. The residential perspective rests on the baseline beneath them. The Optimist note, as small type, takes the residential drawing's top line across the way. The film is a small frame on the baseline at right. One top line and one baseline hold the composition; the left and right columns answer each other across Beetlecat.
+- **Portrait** (phones, tablet upright), six columns, composed separately. The words first, large; Beetlecat with the two printed sheets beside it, aligned to its top and its foot; the residential drawing, the note and the film as a quiet group at the bottom. It scales as a whole to fit the screen.
+- Text entries are set as typography with their line breaks chosen; only the leading words end in Freeman orange. No labels, numbers, borders or copy. Pointing at an entry, or focusing it, steps the rest back and shows its title beneath it.
+- A new entry needs a place written into both compositions.
 
 ## The experiences, with only the navigation they need
 
@@ -27,4 +28,4 @@ The production shell everywhere: section line (ETCETERA current, returns to the 
 
 ## Verified
 
-Scripted fit test, no page scroll and nothing outside the frame: index at 1920 × 1080, 1440 × 900, 1366 × 768, 1280 × 720 (one line), 1024 × 768, 768 × 1024, 844 × 390, 667 × 375 (two lines), 390 × 844, 360 × 640 (three lines); every experience at 1440 × 900, 1024 × 768, 844 × 390, 390 × 844, 360 × 640. In the browser: hover and keyboard focus, Enter to open, Escape back with focus restored, Back/Forward. Not verified: real touch devices, Safari, video playback (no asset).
+Scripted fit test of the index at 2560 × 1440, 1920 × 1080, 1440 × 900, 1366 × 768, 1280 × 720, 1024 × 768, 1024 × 600, 844 × 390, 667 × 375 (landscape) and 768 × 1024, 430 × 932, 390 × 844, 375 × 667, 360 × 640 (portrait): no page scroll, every entry inside the frame, no two entries within 8px of each other. Viewed at 1920, 1440, 1280, the tablet, a phone, the smallest phone and a phone sideways; hover checked. Experiences unchanged since round 2. Not verified: real touch devices, Safari, video playback (no asset).
