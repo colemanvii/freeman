@@ -476,7 +476,7 @@ body{position:fixed;inset:0;width:100%;height:100%;overflow:hidden;overscroll-be
 
 
 /* ETCETERA — first two found objects; blank canvas remains available. */
-body[data-route="etcetera"] .viewport{position:relative;overflow:hidden;min-height:0}
+body[data-route="etcetera"] .viewport{overflow:hidden;min-height:0}
 .etc-canvas{position:absolute;inset:0;overflow:hidden}
 .etc-object{position:absolute;display:block;border:0;background:transparent;color:var(--ink);text-align:left;cursor:pointer;font:inherit;padding:0}
 .etc-ruskin{left:16%;top:10%;width:min(23vw,310px)}
