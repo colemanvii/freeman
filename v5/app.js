@@ -340,7 +340,7 @@
       if(currentTab!=="philosophy")return;
       const split=matchMedia("(max-width:760px)").matches;
       const paragraphs=split ? (pageIndex===0 ? philosophyParagraphs.slice(0,2) : philosophyParagraphs.slice(2)) : philosophyParagraphs;
-      copy.innerHTML=`<h2>Built for generations.</h2>${paragraphs.map(p=>`<p>${esc(p)}</p>`).join("")}`;
+      copy.innerHTML=`<h2>Built for generations<span class="co4-accent">.</span></h2>${paragraphs.map(p=>`<p>${esc(p)}</p>`).join("")}`;
     }
     function setCompanySheets() {
       pageCount=currentTab==="philosophy" && matchMedia("(max-width:760px)").matches ? 2 : 1;
