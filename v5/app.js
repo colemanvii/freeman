@@ -39,6 +39,7 @@
     fieldwork: "Fieldwork",
     contact: "Contact",
     etcetera: "Etcetera",
+    monograph: "Project Monograph 001",
     notfound: "Record not found",
   };
   const PHONE = "(max-width:760px)";
@@ -107,6 +108,8 @@
     const r = { file, url, params: url.searchParams, kind: "notfound" };
     if (file === "index") r.kind = "entrance";
     else if (["company", "projects", "etcetera", "contact"].includes(file)) r.kind = file;
+    // Study (project-monograph-001): an ETCETERA object with its own route.
+    else if (file === "etcetera-monograph-001") r.kind = "monograph";
     // Fieldwork exists only in local --fieldwork builds (see v5-source/generate.py); publicly it is not found.
     else if (file === "fieldwork" && window.FreemanFieldwork) r.kind = file;
     else if (file.startsWith("project-")) {
@@ -642,12 +645,14 @@
     count();
     const vp = root.querySelector(".viewport");
     // Temporary public holding state. Preserve the full collection implementation below.
-    const etceteraPublicHolding = true;
+    // Study branch (project-monograph-001): the approved collection is shown so the monograph can sit within it.
+    const etceteraPublicHolding = false;
     if (etceteraPublicHolding) {
       vp.innerHTML = `<div style="width:100%;height:100%;display:grid;place-items:center"><span style="font-size:12px;letter-spacing:.04em">UNDER CONSTRUCTION</span></div>`;
       return;
     }
-    vp.innerHTML = `<div class="etc-canvas">
+    loadMonographStyles();
+    vp.innerHTML = `<div class="etc-canvas etc-with-monograph">
       <button class="etc-object etc-ruskin" type="button" data-etc-open="ruskin" aria-label="Open John Ruskin photograph">
         <span class="etc-object-body"><img src="/etcetera/ruskin.webp" alt="Photograph of a printed John Ruskin passage about building for future generations" /></span>
         <span class="etc-caption">001 / JOHN RUSKIN · ON BUILDING</span>
@@ -667,6 +672,10 @@
         </span>
         <span class="etc-caption">002 / A NOTE ON THE WORK</span>
       </button>
+      <a class="etc-object etc-monograph" href="etcetera-monograph-001.html" aria-label="Open Project Monograph 001, Beetlecat">
+        <span class="etc-object-body"><img src="/assets/projects/beetlecat-interior-2.jpg" width="1440" height="1920" alt="Beetlecat: a yellow door with rounded openings beside a wave-patterned glass screen and a red ribbed counter front"></span>
+        <span class="etc-caption">005 / PROJECT MONOGRAPH 001 · BEETLECAT <span aria-hidden="true">↗</span></span>
+      </a>
     </div>
     <dialog class="etc-dialog" aria-labelledby="etc-detail-title">
       <div class="etc-dialog-bar"><span id="etc-detail-title" data-etc-title></span><button class="phrase" data-etc-close type="button">× CLOSE</button></div>
@@ -707,6 +716,46 @@
           <small>WORKING EDITORIAL REFLECTION / PROJECT-SPECIFIC CONSTRUCTION DETAILS NOT YET VERIFIED</small>`;
       dialog.showModal();
     }));
+  }
+
+  /* ---------- Etcetera / Project Monograph 001 (study) ----------
+     Its own route under ETCETERA. The monograph's scripts and styles load on first use; the
+     module draws beneath this section line and × CLOSE, so history, palette, Escape and the
+     return to ETCETERA are the site's own. */
+  const MONOGRAPH_DIR = "/etcetera/monograph-001/", MONOGRAPH_V = "?v=001-5";
+  function loadMonographStyles() {
+    if (document.querySelector("link[data-monograph]")) return;
+    const css = document.createElement("link");
+    css.rel = "stylesheet";
+    css.href = MONOGRAPH_DIR + "monograph.css" + MONOGRAPH_V;
+    css.dataset.monograph = "";
+    document.head.append(css);
+  }
+  let monographLoad = null;
+  function loadMonograph() {
+    loadMonographStyles();
+    const add = (src) => new Promise((ok, fail) => {
+      const s = document.createElement("script");
+      s.src = MONOGRAPH_DIR + src + MONOGRAPH_V;
+      s.onload = ok;
+      s.onerror = fail;
+      document.head.append(s);
+    });
+    if (!monographLoad) monographLoad = add("beetlecat.js").then(() => add("monograph.js"));
+    return monographLoad;
+  }
+  function monograph(state) {
+    root.innerHTML = `<header class="panel-head"><h1 class="sr-only">Etcetera / Project Monograph 001 / Beetlecat</h1>${siteNav("etcetera", { href: "etcetera.html", focus: "monograph-001" })}${closeMarkup()}</header>`;
+    let mg = null, live = true;
+    loadMonograph().then(
+      () => { if (live) mg = window.FreemanMonograph.mount(root, window.MONOGRAPH, { scroll: state.mgScroll }); },
+      () => { if (live) root.insertAdjacentHTML("beforeend", `<section class="viewport"><article class="reading"><p>The monograph could not be loaded.</p></article></section>`); },
+    );
+    return {
+      key: (e) => (mg ? mg.key(e) : false),
+      save: () => (mg ? mg.save() : {}),
+      destroy: () => { live = false; if (mg) mg.destroy(); },
+    };
   }
 
   function contact() {
@@ -850,14 +899,14 @@
       galleryKey = null;
       view = {
         kind: route.kind,
-        detail: () => route.kind === "project",
+        detail: () => route.kind === "project" || route.kind === "monograph",
         key: (e) => (galleryKey ? galleryKey(e) : false),
         save: () => {
           if (route.kind !== "projects") return {};
           const scroller = root.querySelector(".pi-scroller");
           return { focus: currentFocus(), projScroll: scroller ? scroller.scrollTop : 0 };
         },
-        resize: ["company", "projects", "etcetera", "contact"].includes(route.kind) ? null : () => render(parse(location.href), { ...hist.state, focus: currentFocus() }),
+        resize: ["company", "projects", "etcetera", "contact", "monograph"].includes(route.kind) ? null : () => render(parse(location.href), { ...hist.state, focus: currentFocus() }),
       };
       if (route.kind === "entrance") Object.assign(view, entrance({ play: !pop }));
       else if (route.kind === "company") company();
@@ -865,6 +914,7 @@
       else if (route.kind === "project") project(route.item);
       else if (route.kind === "contact") contact();
       else if (route.kind === "etcetera") etcetera();
+      else if (route.kind === "monograph") Object.assign(view, monograph(state));
       else notFound();
       document.title = (route.item ? route.item.name : TITLES[route.kind]) + " — Freeman GC";
     }

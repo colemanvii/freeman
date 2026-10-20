@@ -1,6 +1,23 @@
-/* Project Monograph (study 001). Production styles.css supplies every token, the interior shell,
-   the gallery (.pg) and the project plate caption. This file only adds what the monograph needs
-   beyond the gallery: the frame scrolls, and the 220px information column continues as a margin. */
+/* Project Monograph, an ETCETERA object (study 001). Production styles.css supplies every token,
+   the interior shell, the ETCETERA collection, the gallery (.pg) and the project plate caption.
+   This file only adds what the monograph needs beyond them: its cover in ETCETERA, a frame that
+   scrolls, and the 220px information column continued as a margin. Loaded by app.js. */
+
+/* ETCETERA: the monograph is a third column beside the approved two-column collection, one object
+   spanning both rows. The four objects keep their order, alignment and caption baselines. */
+.etc-canvas.etc-with-monograph{width:min(1240px,92%);grid-template-columns:repeat(3,minmax(0,1fr))}
+.etc-monograph{grid-column:3;grid-row:1 / span 2}
+.etc-monograph .etc-caption{color:var(--ink)}
+.etc-monograph .etc-caption span{color:var(--orange)}
+.etc-monograph:hover .etc-caption,.etc-monograph:focus-visible .etc-caption{background:var(--orange);color:var(--paper)}
+.etc-monograph:hover .etc-caption span,.etc-monograph:focus-visible .etc-caption span{color:var(--paper)}
+@media(max-width:760px){
+ /* Phones: the collection keeps its 2 × 2; the monograph is one line above it. */
+ .etc-canvas.etc-with-monograph{width:100%;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto repeat(2,minmax(0,1fr))}
+ .etc-monograph{grid-column:1 / span 2;grid-row:1;grid-template-rows:auto;border-bottom:1px solid var(--hair);padding-bottom:12px}
+ .etc-monograph .etc-object-body{display:none}
+ .etc-monograph .etc-caption{min-height:0;font-size:10px}
+}
 
 /* The frame: production's .viewport, scrolling inside its own edges. Header and controls stay fixed. */
 .mg-viewport{overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--hair) transparent;outline:none}
@@ -24,10 +41,11 @@
 .mg-contents{margin-top:auto;padding-top:24px}
 .mg-contents p{margin:0 0 8px;font-size:9px;line-height:1.5;letter-spacing:.04em;color:var(--muted)}
 .mg-contents ol{list-style:none;margin:0;padding:0;border-bottom:1px solid var(--hair)}
-.mg-contents a{display:grid;grid-template-columns:28px 1fr;border-top:1px solid var(--hair);padding:6px 0;font-size:10px;line-height:1.5;letter-spacing:.04em;text-transform:uppercase}
-.mg-contents a span{color:var(--muted)}
-.mg-contents a[aria-current] span{color:var(--orange)}
-.mg-contents a:hover{color:var(--orange)}
+.mg-contents button{width:100%;display:grid;grid-template-columns:28px 1fr;text-align:left;border-top:1px solid var(--hair);padding:6px 0;font-size:10px;line-height:1.5;letter-spacing:.04em;text-transform:uppercase}
+.mg-contents button span{color:var(--muted)}
+.mg-contents button[aria-current] span{color:var(--orange)}
+.mg-contents button:hover{color:var(--orange)}
+.mg-opening .mg-kicker{margin:0 0 10px;font-size:9px}
 .mg-begin{font-size:11px;line-height:1.5;letter-spacing:.04em;color:var(--muted)}
 .mg-begin:hover,.mg-begin:focus-visible{background:var(--orange);color:var(--paper)}
 
@@ -50,8 +68,8 @@
 .mg-key li{border-top:1px solid var(--hair);padding:6px 0}
 .mg-key .mg-status{display:block;text-align:left}
 
-/* 03 Portrait: one photograph, the frame's full height, never enlarged. */
-.mg-portrait img{width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 182px)}
+/* 03 Field plate: one photograph at the frame's full height, never enlarged. */
+.mg-plate img{width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 182px)}
 
 /* 04 Wide: one photograph across margin and field, captioned as a production project plate. */
 .mg-sheet-wide{display:block}
@@ -99,7 +117,7 @@
  .mg-margin{position:static}
  .mg-caption{max-width:none}
  .mg-contents{display:none}
- .mg-portrait img{max-height:none}
+ .mg-plate img{max-height:none}
  .mg-wide img{max-height:none}
  .mg-wide-caption{margin-left:0}
  .mg-detail-row{flex-direction:column;align-items:flex-start!important;gap:40px;margin-bottom:48px}
@@ -115,7 +133,7 @@
  .sheet-controls .section-link{max-width:none}
 }
 @media(pointer:coarse){
- .mg-contents a,.mg-begin,.mg-onward a{position:relative}
+ .mg-begin,.mg-onward a{position:relative}
  .mg-onward a::after,.mg-begin::after{content:"";position:absolute;inset:-12px -6px}
  .mg-onward a:hover,.mg-begin:hover{background:transparent;color:inherit}
  .mg-onward a:active,.mg-begin:active{background:var(--orange);color:var(--paper)}
