@@ -319,6 +319,9 @@
       <style>
         .co4-stage{width:min(760px,calc(100% - 48px));grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr)!important;gap:0!important}
         .co4-editorial{grid-column:1!important;grid-row:1!important}
+        .co4-letter-link{display:inline-block;margin-top:15px;color:inherit;text-decoration:none;font-size:11px;letter-spacing:.03em;border-bottom:1px solid currentColor;padding-bottom:5px;min-height:26px}
+        .co4-letter-link:hover{color:var(--accent,#bd4d36)}
+        .co4-letter-link:focus-visible{outline:2px solid currentColor;outline-offset:4px}
         @media(max-width:700px){.co4-stage{width:100%;height:100%}}
       </style>
       <div class="co4-stage">
@@ -880,6 +883,7 @@
       return;
     }
     const url = new URL(a.getAttribute("href"), document.baseURI);
+    if (url.pathname.startsWith("/studies/company-letter/")) return;
     if (!isAppUrl(url)) return;
     e.preventDefault();
     navigate(url.href, { focus: a.dataset.focus });
