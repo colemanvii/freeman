@@ -1,0 +1,122 @@
+/* Project Monograph (study 001). Production styles.css supplies every token, the interior shell,
+   the gallery (.pg) and the project plate caption. This file only adds what the monograph needs
+   beyond the gallery: the frame scrolls, and the 220px information column continues as a margin. */
+
+/* The frame: production's .viewport, scrolling inside its own edges. Header and controls stay fixed. */
+.mg-viewport{overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--hair) transparent;outline:none}
+.mg-viewport img{background:var(--hair);user-select:none;-webkit-user-drag:none}
+
+/* Every sheet after the opening: margin column + field, the gallery's own geometry. */
+.mg-sheet{display:grid;grid-template-columns:220px minmax(0,1fr);column-gap:clamp(32px,4vw,64px);padding-top:clamp(96px,19vh,210px)}
+.mg-sheet-opening{display:block;height:100%;padding:0}
+.mg-margin{position:sticky;top:0;align-self:start;display:flex;flex-direction:column;gap:12px;min-width:0}
+.mg-folio{margin:0;border-top:1px solid var(--hair);padding-top:8px;font-size:9px;line-height:1.5;letter-spacing:.04em;color:var(--muted)}
+.mg-folio span{color:var(--orange)}
+.mg-caption{margin:0;font-size:11px;line-height:1.6;max-width:34ch}
+.mg-label,.mg-plate-no,.mg-source{margin:0;font-size:9px;line-height:1.5;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+.mg-label{margin-top:10px}
+.mg-visible{list-style:none;margin:0;padding:0;font-size:10px;line-height:1.5}
+.mg-visible li{border-top:1px solid var(--hair);padding:5px 0}
+.mg-field{min-width:0;margin:0}
+
+/* 01 Opening: the production gallery, plus the sheet list where its column has room. */
+.mg-opening .pg-info{min-height:0}
+.mg-contents{margin-top:auto;padding-top:24px}
+.mg-contents p{margin:0 0 8px;font-size:9px;line-height:1.5;letter-spacing:.04em;color:var(--muted)}
+.mg-contents ol{list-style:none;margin:0;padding:0;border-bottom:1px solid var(--hair)}
+.mg-contents a{display:grid;grid-template-columns:28px 1fr;border-top:1px solid var(--hair);padding:6px 0;font-size:10px;line-height:1.5;letter-spacing:.04em;text-transform:uppercase}
+.mg-contents a span{color:var(--muted)}
+.mg-contents a[aria-current] span{color:var(--orange)}
+.mg-contents a:hover{color:var(--orange)}
+.mg-begin{font-size:11px;line-height:1.5;letter-spacing:.04em;color:var(--muted)}
+.mg-begin:hover,.mg-begin:focus-visible{background:var(--orange);color:var(--paper)}
+
+/* 02 Account: Company's headline register, the published text quoted, then the status of each fact. */
+.mg-account{max-width:640px}
+.mg-kicker{margin:0 0 20px;font-size:10px;line-height:1.5;letter-spacing:.04em;color:var(--muted)}
+.mg-account h2{font:400 clamp(25px,2.3vw,33px)/1.28 var(--mono);margin:0 0 25px}
+.mg-account blockquote{margin:0}
+.mg-account blockquote p{font-size:13px;line-height:1.75;max-width:560px}
+.mg-account blockquote footer{margin-top:12px;font-size:9px;line-height:1.5;letter-spacing:.04em;color:var(--muted)}
+.mg-claims{margin:44px 0 0;font-size:11px;line-height:1.6;border-bottom:1px solid var(--hair)}
+.mg-claims div{display:grid;grid-template-columns:140px minmax(0,1fr) 92px;gap:16px;border-top:1px solid var(--hair);padding:10px 0;align-items:baseline}
+.mg-claims dt{font-size:9px;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+.mg-claims dd{margin:0;min-width:0}
+.mg-status{font-size:9px;letter-spacing:.04em;text-align:right;color:var(--ink)}
+/* Freeman red marks a claim Freeman has stated but nothing on file yet shows. */
+.mg-status-stated{color:var(--orange)}
+.mg-status-absent{color:var(--muted)}
+.mg-key{list-style:none;margin:6px 0 0;padding:0;font-size:9px;line-height:1.5;color:var(--muted)}
+.mg-key li{border-top:1px solid var(--hair);padding:6px 0}
+.mg-key .mg-status{display:block;text-align:left}
+
+/* 03 Portrait: one photograph, the frame's full height, never enlarged. */
+.mg-portrait img{width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 182px)}
+
+/* 04 Wide: one photograph across margin and field, captioned as a production project plate. */
+.mg-sheet-wide{display:block}
+.mg-wide{margin:0;width:fit-content;max-width:100%}
+.mg-wide img{width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 310px)}
+.mg-wide .project-plate-caption{margin-top:15px}
+.mg-wide-caption{margin:14px 0 0 calc(220px + clamp(32px,4vw,64px));max-width:52ch;font-size:11px;line-height:1.6}
+
+/* 05 Detail: crops at their own size, in rows of one or two; then one quiet photograph. */
+.mg-detail-row{display:flex;gap:clamp(32px,5vw,80px);margin-bottom:clamp(56px,11vh,128px)}
+.mg-detail-row[data-align="end"]{align-items:flex-end}
+.mg-detail-row[data-align="start"]{align-items:flex-start}
+.mg-detail-row[data-count="1"]{padding-left:calc(var(--offset,0) * 8.333%)}
+.mg-detail{margin:0;flex:0 1 var(--w);max-width:var(--w);min-width:0}
+.mg-detail img{width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 240px)}
+.mg-detail figcaption,.mg-record-pair figcaption{margin-top:9px;font-size:10px;line-height:1.5;max-width:46ch}
+.mg-detail figcaption span,.mg-record-pair figcaption span{color:var(--muted);letter-spacing:.04em;margin-right:6px}
+.mg-detail figcaption small{display:block;margin-top:3px;font-size:9px;letter-spacing:.04em;color:var(--muted)}
+.mg-pause{margin:clamp(72px,16vh,180px) auto clamp(40px,8vh,80px);width:min(52%,560px)}
+.mg-pause img{width:100%;height:auto}
+.mg-pause figcaption{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+
+/* 06 Field record: the finished detail beside an open frame of the same proportion. */
+.mg-record-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(24px,3vw,48px);max-width:calc(2 * var(--w) + 48px);margin-bottom:clamp(56px,10vh,104px);align-items:start}
+.mg-record-pair figure{margin:0;width:min(100%,var(--w),calc(58dvh * var(--aspect)))}
+.mg-record-pair img{width:100%;height:auto}
+.mg-empty{width:100%;aspect-ratio:var(--ratio);border:1px solid var(--hair);background:color-mix(in srgb,var(--ink) 2%,var(--paper));display:flex;align-items:center;justify-content:center}
+.mg-empty span{font-size:9px;line-height:1.5;letter-spacing:.04em;color:var(--muted)}
+
+/* 07 Record: the register, then the way on. The last sheet ends at the frame's foot. */
+.mg-sheet-record{min-height:100%;align-content:start;padding-bottom:12px}
+.mg-register{max-width:640px}
+.mg-register .mg-claims{margin-top:0}
+.mg-onward{margin-top:56px;display:grid;gap:0;border-bottom:1px solid var(--hair)}
+.mg-onward div{display:grid;grid-template-columns:140px minmax(0,1fr);gap:16px;border-top:1px solid var(--hair);padding:14px 0;align-items:baseline}
+.mg-onward span{font-size:9px;letter-spacing:.04em;color:var(--muted)}
+.mg-onward a{justify-self:start;font-size:13px;line-height:1.45;letter-spacing:.04em}
+
+.sheet-controls .section-link{color:var(--muted);letter-spacing:.04em}
+.mg-current{color:var(--ink)}
+
+@media(max-width:760px){
+ .mg-sheet{grid-template-columns:minmax(0,1fr);row-gap:18px;padding-top:88px}
+ .mg-sheet-opening{padding:0}
+ .mg-margin{position:static}
+ .mg-caption{max-width:none}
+ .mg-contents{display:none}
+ .mg-portrait img{max-height:none}
+ .mg-wide img{max-height:none}
+ .mg-wide-caption{margin-left:0}
+ .mg-detail-row{flex-direction:column;align-items:flex-start!important;gap:40px;margin-bottom:48px}
+ .mg-detail-row[data-count="1"]{padding-left:0}
+ .mg-detail{flex:none;width:100%}
+ .mg-detail img{max-height:72dvh}
+ .mg-pause{width:78%;margin-top:64px}
+ .mg-record-pair{gap:14px;margin-bottom:48px}
+ .mg-record-pair figure{width:min(100%,var(--w),calc(46dvh * var(--aspect)))}
+ .mg-claims div{grid-template-columns:96px minmax(0,1fr);row-gap:2px}
+ .mg-claims .mg-status{grid-column:2;text-align:left}
+ .mg-onward div{grid-template-columns:96px minmax(0,1fr)}
+ .sheet-controls .section-link{max-width:none}
+}
+@media(pointer:coarse){
+ .mg-contents a,.mg-begin,.mg-onward a{position:relative}
+ .mg-onward a::after,.mg-begin::after{content:"";position:absolute;inset:-12px -6px}
+ .mg-onward a:hover,.mg-begin:hover{background:transparent;color:inherit}
+ .mg-onward a:active,.mg-begin:active{background:var(--orange);color:var(--paper)}
+}
