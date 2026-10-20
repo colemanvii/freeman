@@ -641,16 +641,12 @@
     },
   };
   /* ---------- ETCETERA (study etcetera-index-001) ----------
-     One registry (etcetera/entries.js) feeds three index studies and opens every entry in its own
-     experience. Index studies: ?index=a|b|c, switched in the footer (same view, so it replaces
-     history); the choice is kept for the visit. ?index=approved shows the approved 2 × 2 (cc00dae).
-     The index is one viewport and pages with production's sheet controls (?sheet=, ← →, swipe).
-     Registry, index and experience files load on first use. */
-  const ETC_DIR = "/etcetera/", ETC_V = "?v=etc-index-001-2";
-  const ETC_INDEXES = [["a", "Typographic"], ["b", "Visual"], ["c", "Composed"]];
+     One registry (etcetera/entries.js), one index (etcetera/index/) and an experience per entry
+     (etcetera/experiences/), each loaded on first use. The index is one viewport; should the
+     collection outgrow it, it pages with production's sheet controls (← →, swipe on phones). */
+  const ETC_DIR = "/etcetera/", ETC_V = "?v=etc-index-001-8";
   const etcFiles = {};
-  // Stylesheets load in parallel with the scripts, and both must be in place before anything is
-  // composed: the index measures its frame to paginate.
+  // Stylesheets and scripts must both be in place before anything is composed: the index measures.
   function etcLoad({ src = [], css = [] }) {
     const sheets = css.map((f) => (etcFiles[f] = etcFiles[f] || new Promise((ok, fail) => {
       const l = document.createElement("link");
@@ -669,13 +665,6 @@
     }));
     return Promise.all([...sheets, src.reduce((p, f) => p.then(() => add(f)), Promise.resolve())]);
   }
-  function etcIndexStudy() {
-    const ok = (id) => id === "approved" || ETC_INDEXES.some(([k]) => k === id);
-    const asked = new URL(location.href).searchParams.get("index");
-    if (ok(asked)) { ss.set("freeman-etc-index", asked); return asked; }
-    return ok(ss.get("freeman-etc-index")) ? ss.get("freeman-etc-index") : "a";
-  }
-  const etcIndexHref = () => `etcetera.html?index=${etcIndexStudy()}`;
   const etcFailed = (vp) => { vp.innerHTML = `<article class="reading"><p>Etcetera could not be loaded.</p></article>`; };
 
   function etcetera(state = {}) {
@@ -690,13 +679,6 @@
       vp.innerHTML = `<div style="width:100%;height:100%;display:grid;place-items:center"><span style="font-size:12px;letter-spacing:.04em">UNDER CONSTRUCTION</span></div>`;
       return {};
     }
-    const study = etcIndexStudy();
-    const params = new URL(location.href).searchParams;
-    const fill = Math.min(96, Math.max(0, Number(params.get("fill")) || 0));
-    root.querySelector(".section-link").innerHTML = `<span class="etc-switch">INDEX ${ETC_INDEXES.map(([id, name]) =>
-      `<a class="phrase${id === study ? " is-current" : ""}" href="etcetera.html?index=${id}${fill ? "&fill=" + fill : ""}"${id === study ? ' aria-current="true"' : ""} title="${name}">${id.toUpperCase()}</a>`).join("")}</span>${fill ? `<span class="etc-fill">CAPACITY TEST / ${fill} RESERVED</span>` : ""}`;
-    if (study === "approved") { etceteraCollection(vp); return {}; }
-    vp.innerHTML = "";
     let live = true, index = null, last = state.focus;
     const layout = (focus) => {
       pageCount = index.paginate();
@@ -708,26 +690,12 @@
       const el = focus && vp.querySelector(`[data-slug="${CSS.escape(focus)}"]`);
       if (el) try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); }
     };
-    etcLoad({ src: ["entries.js", "index/index.js"], css: ["shell.css", "index/index.css"] }).then(() => {
+    etcLoad({ src: ["entries.js", "index/index.js"], css: ["index/index.css"] }).then(() => {
       if (!live) return;
-      index = window.FreemanEtcIndex.mount(vp, {
-        study,
-        entries: window.ETCETERA.entries,
-        fill,
-        type: params.get("type") || "",
-        setType(type) {
-          const u = new URL(location.href);
-          if (type) u.searchParams.set("type", type); else u.searchParams.delete("type");
-          u.searchParams.delete("sheet");
-          hist.write("replaceState", { ...hist.state }, u.href);
-          pageIndex = 0;
-          layout();
-        },
-      });
+      index = window.FreemanEtcIndex.mount(vp, window.ETCETERA.entries);
       layout(state.focus);
     }, () => live && etcFailed(vp));
     vp.addEventListener("click", (e) => { const a = e.target.closest("[data-slug]"); if (a) last = a.dataset.slug; });
-    // Phones: a horizontal swipe turns the sheet. Edge touches are left to the browser's swipe-back.
     let x0 = null, y0 = 0;
     vp.addEventListener("touchstart", (e) => {
       const t = e.touches[0];
@@ -740,118 +708,40 @@
       if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) go(pageIndex + (dx < 0 ? 1 : -1));
       x0 = null;
     });
-    return {
-      save: () => ({ focus: last }),
-      resize: () => index && layout(),
-      destroy: () => { live = false; },
-    };
+    return { save: () => ({ focus: last }), resize: () => index && layout(), destroy: () => { live = false; } };
   }
 
-  /* An ETCETERA experience: the interior shell (ETCETERA current, × CLOSE, Escape) around a module
-     named by the entry (etcetera/experiences/). Modules own their frame and may scroll; the shell
-     never does. The footer identifies the entry and steps to its neighbours without adding history,
-     so × CLOSE still returns to the index. */
+  /* An ETCETERA experience: the interior shell (ETCETERA current, × CLOSE, Escape) around the module
+     the entry names. The module owns the frame and may scroll it; the page never scrolls. */
   function experience(route) {
-    chrome({ title: "Etcetera", section: "etcetera", parent: { href: etcIndexHref(), focus: route.slug } });
+    chrome({ title: "Etcetera", section: "etcetera", parent: { href: "etcetera.html", focus: route.slug } });
     pageCount = 1;
     count();
     const vp = root.querySelector(".viewport");
     let live = true, mounted = null;
-    etcLoad({ src: ["entries.js"], css: ["shell.css"] }).then(() => {
+    etcLoad({ src: ["entries.js"] }).then(() => {
       if (!live) return;
       const { entries, modules } = window.ETCETERA;
-      const i = entries.findIndex((e) => e.slug === route.slug);
-      const entry = entries[i];
+      const entry = entries.find((e) => e.slug === route.slug);
       if (!entry) {
-        vp.innerHTML = `<article class="reading"><h1>Entry not found.</h1><p>${link("RETURN TO ETCETERA", "etcetera.html", "text-link phrase")}</p></article>`;
+        vp.innerHTML = `<article class="reading"><h1>Not found.</h1><p>${link("RETURN TO ETCETERA", "etcetera.html", "text-link phrase")}</p></article>`;
         document.title = "Record not found — Freeman GC";
         return;
       }
-      const mod = modules[entry.experience.module];
-      document.title = `${entry.title} — Etcetera — Freeman GC`;
-      root.querySelector(".panel-head h1").textContent = `Etcetera / ${entry.no} / ${entry.title}`;
-      document.body.dataset.experience = entry.experience.module;
-      const near = (n) => entries[i + n] || null;
-      const prev = near(-1), next = near(1);
-      root.querySelector(".section-link").innerHTML = `<span>ETCETERA ${esc(entry.no)} / ${esc(entry.type.toUpperCase())}</span>`;
-      root.querySelector(".sheet-controls").insertAdjacentHTML("beforeend", `<nav class="etc-near" aria-label="Neighbouring entries">${
-        prev ? `<a class="phrase" href="etcetera-${esc(prev.slug)}.html" data-replace="1" aria-label="Previous entry: ${esc(prev.title)}">← ${esc(prev.no)}</a>` : '<span aria-hidden="true">← —</span>'}${
-        next ? `<a class="phrase" href="etcetera-${esc(next.slug)}.html" data-replace="1" aria-label="Next entry: ${esc(next.title)}">${esc(next.no)} →</a>` : '<span aria-hidden="true">— →</span>'}</nav>`);
-      return etcLoad({ src: [...mod.src, ...(entry.experience.files || [])], css: mod.css || [] }).then(() => {
+      const mod = modules[entry.experience];
+      const name = entry.title.replace(/\.$/, "");
+      document.title = `${name} — Etcetera — Freeman GC`;
+      root.querySelector(".panel-head h1").textContent = `Etcetera / ${name}`;
+      document.body.dataset.experience = entry.experience;
+      return etcLoad({ src: [...mod.src, ...(entry.files || [])], css: mod.css || [] }).then(() => {
         if (!live) return;
-        mounted = window.FreemanExperiences[entry.experience.module].mount({
-          root, viewport: vp, entry, params: new URL(location.href).searchParams, words, esc, pad,
-        }) || {};
+        mounted = window.FreemanExperiences[entry.experience].mount({ root, viewport: vp, entry, words, esc }) || {};
       });
     }).catch(() => live && etcFailed(vp));
     return {
       key: (e) => !!(mounted && mounted.key && mounted.key(e)),
       destroy: () => { live = false; if (mounted && mounted.destroy) mounted.destroy(); },
     };
-  }
-
-  // The approved 2 × 2 collection (cc00dae), kept intact for comparison at ?index=approved.
-  function etceteraCollection(vp) {
-    vp.innerHTML = `<div class="etc-canvas">
-      <button class="etc-object etc-ruskin" type="button" data-etc-open="ruskin" aria-label="Open John Ruskin photograph">
-        <span class="etc-object-body"><img src="/etcetera/ruskin.webp" alt="Photograph of a printed John Ruskin passage about building for future generations" /></span>
-        <span class="etc-caption">001 / JOHN RUSKIN · ON BUILDING</span>
-      </button>
-      <button class="etc-object etc-industrial" type="button" data-etc-open="industrial" aria-label="Enlarge architectural drawing with utility poles">
-        <span class="etc-object-body"><img src="/etcetera/architectural-industrial.webp" width="1290" height="1717" alt="Black-and-white architectural drawing of a small structure, stairs, utility poles and wires, with open paper space and a handwritten inscription along the lower margin"></span>
-        <span class="etc-caption">003 / ARCHITECTURAL DRAWING</span>
-      </button>
-      <button class="etc-object etc-residential" type="button" data-etc-open="residential" aria-label="Enlarge residential landscape drawing">
-        <span class="etc-object-body"><img src="/etcetera/residential-landscape.webp" width="768" height="576" alt="Warm-toned perspective drawing of a long, low residence among trees and landscape, with paper margins and lettering along the lower edge"></span>
-        <span class="etc-caption">004 / RESIDENTIAL PERSPECTIVE</span>
-      </button>
-      <button class="etc-object etc-optimist" type="button" data-etc-open="optimist" aria-label="Read our note on the challenges of hospitality buildouts">
-        <span class="etc-object-body etc-type">
-          <span class="etc-heading">On building a place people want to return to.</span>
-          <span class="etc-open">THE OPTIMIST / OPEN NOTE ↗</span>
-        </span>
-        <span class="etc-caption">002 / A NOTE ON THE WORK</span>
-      </button>
-    </div>
-    <dialog class="etc-dialog" aria-labelledby="etc-detail-title">
-      <div class="etc-dialog-bar"><span id="etc-detail-title" data-etc-title></span><button class="phrase" data-etc-close type="button">× CLOSE</button></div>
-      <article class="etc-dialog-body" data-etc-body></article>
-    </dialog>`;
-    const dialog = vp.querySelector(".etc-dialog");
-    const detail = vp.querySelector("[data-etc-body]");
-    const title = vp.querySelector("[data-etc-title]");
-    vp.querySelector("[data-etc-close]").addEventListener("click", () => dialog.close());
-    dialog.addEventListener("click", (e) => { if (e.target === dialog) dialog.close(); });
-    vp.querySelectorAll("[data-etc-open]").forEach((btn) => btn.addEventListener("click", () => {
-      const artwork = {
-        industrial: ["003 / ARCHITECTURAL DRAWING", "/etcetera/architectural-industrial.webp"],
-        residential: ["004 / RESIDENTIAL PERSPECTIVE", "/etcetera/residential-landscape.webp"]
-      }[btn.dataset.etcOpen];
-      dialog.classList.toggle("etc-dialog-artwork", Boolean(artwork));
-      detail.scrollTop = 0;
-      if (artwork) {
-        title.textContent = artwork[0];
-        const image = document.createElement("img");
-        image.className = "etc-detail-photo";
-        image.src = artwork[1];
-        image.alt = btn.querySelector("img").alt;
-        detail.replaceChildren(image);
-        dialog.showModal();
-        return;
-      }
-      const ruskin = btn.dataset.etcOpen === "ruskin";
-      title.textContent = ruskin ? "001 / JOHN RUSKIN" : "002 / THE OPTIMIST";
-      detail.innerHTML = ruskin
-        ? '<img class="etc-detail-photo" src="/etcetera/ruskin.webp" alt="Photographed John Ruskin passage about building for future generations">'
-        : `<div class="etc-number">ETCETERA / AN EDITORIAL NOTE</div>
-          <h2>On building a place people want to return to.</h2>
-          <p>A restaurant is experienced as a whole. The light on a table, the curve of a booth, the sounds of service, the ease with which people move through a room. But behind that apparent ease is a concentration of decisions made by many people.</p>
-          <p>Hospitality buildouts ask construction to reconcile different kinds of pressure at once: the designer's intent, the operator's day-to-day requirements, durability, craft, budgets, and the calendar. A beautiful detail also has to survive a busy Saturday night.</p>
-          <p>The Optimist's oyster-bar refresh gives us a useful place to examine that tension. Its finished rooms offer a starting point; what we'd like to document next is the less visible work—coordination, sequencing, material choices, and judgment that makes a space feel effortless.</p>
-          <p>Not just what a place looks like after the work is finished, but what it took to get there.</p>
-          <small>WORKING EDITORIAL REFLECTION / PROJECT-SPECIFIC CONSTRUCTION DETAILS NOT YET VERIFIED</small>`;
-      dialog.showModal();
-    }));
   }
 
   function contact() {
@@ -1061,7 +951,7 @@
     const url = new URL(a.getAttribute("href"), document.baseURI);
     if (!isAppUrl(url)) return;
     e.preventDefault();
-    navigate(url.href, { focus: a.dataset.focus, replace: !!a.dataset.replace });
+    navigate(url.href, { focus: a.dataset.focus });
   });
   window.addEventListener("popstate", (e) => {
     const state = e.state && typeof e.state === "object" ? e.state : {};

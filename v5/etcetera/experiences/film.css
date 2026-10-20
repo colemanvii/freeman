@@ -1,14 +1,9 @@
-/* ETCETERA experience: film. One frame centred in the viewport; one line of controls beneath.
-   The frame takes at most 86% of the frame's height with its line and never more than 1120px, so
-   the paper always surrounds it; on phones it runs the full width of the margins. */
+/* ETCETERA experience: film. The frame takes at most 80% of the frame's height and 1120px of width,
+   so paper always surrounds it. */
 body[data-experience="film"] .viewport{container-type:size;display:grid;place-items:center}
-.ex-film{--line:34px;display:flex;flex-direction:column;align-items:stretch;width:min(100cqw,1120px,calc((86cqh - var(--line)) * var(--r)))}
-.ex-film-frame{aspect-ratio:var(--ratio);width:100%;background:var(--hair)}
-.ex-film-frame video{display:block;width:100%;height:100%;object-fit:contain;background:#000;cursor:var(--cursor-orange)}
-.ex-film-empty{width:100%;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:16px 18px;color:var(--ink);font-size:9px;line-height:1.5;letter-spacing:.04em;text-transform:uppercase}
-.ex-film-empty span:last-child{align-self:flex-end;opacity:.6}
-.ex-film-line{height:var(--line);display:flex;align-items:flex-end;gap:24px;font-size:9px;line-height:1.5;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
-.ex-film-line button{color:var(--ink);font-size:9px;letter-spacing:.04em}
-.ex-film-line [data-film-full]{margin-left:auto}
-.ex-film-time{font-variant-numeric:tabular-nums}
-@media(pointer:coarse){.ex-film-line button{position:relative}.ex-film-line button::after{content:"";position:absolute;inset:-14px -8px}}
+.ex-film{position:relative;width:min(100cqw,1120px,calc(80cqh * var(--r)));aspect-ratio:var(--r);background:var(--hair);cursor:var(--cursor-orange)}
+.ex-film video{display:block;width:100%;height:100%;object-fit:contain;background:#000}
+.ex-film-play{position:absolute;inset:0;width:100%;display:grid;place-items:center}
+.ex-film-play::before{content:"";width:0;height:0;border-style:solid;border-width:9px 0 9px 15px;border-color:transparent transparent transparent var(--paper)}
+.ex-film.is-playing .ex-film-play::before{display:none}
+.ex-film-empty{position:absolute;inset:0;display:grid;place-items:center;font-size:9px;letter-spacing:.04em;color:var(--muted);cursor:var(--cursor-crosshair)}

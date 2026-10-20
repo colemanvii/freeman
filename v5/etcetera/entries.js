@@ -1,25 +1,13 @@
-/* ETCETERA — the registry (study etcetera-index-001). Every index study and every experience reads
-   this file; nothing else lists entries. To publish an entry, add one object here and, if it needs
-   one, an experience module. Each entry opens at /etcetera-<slug> (a route file beside etcetera.html).
+/* ETCETERA — the collection (study etcetera-index-001). The index and every experience read this
+   file. An entry opens at /etcetera-<slug> (a route file beside etcetera.html).
 
-   Entry fields
-     no          three-digit catalogue number, in order of entry; never reused
-     slug        route name: etcetera-<slug>.html
-     title       as it should be read; sentence case
-     type        editorial type, shown in capitals by the index (and used by Index A's filter)
-     date        "YYYY-MM": when the entry joined the collection
-     dek         optional one line the index may show on hover or focus
-     image       optional { src, w, h, alt }: the entry's visual material in the index
-     video       optional { src, poster, w, h }: film entries; without src the film is a placeholder
-     weight      optional 1–3, Index C's emphasis (3 may lead a sheet, 2 may be set as a figure)
-     experience  { module, files?, data? }: the module that presents it and its own data files
+     slug, title   route name; the title is announced and shown on hover, never as a label
+     image         { src, w, h }: the entry's material in the index
+     video         { src, w, h }: a film; without src the frame stands empty
+     experience    the module that presents it (modules, below); files: its own data
 
-   Modules: src and css load on first use, relative to /etcetera/. A module registers itself as
-   window.FreemanExperiences[name] = { mount(ctx) → { destroy?, key? } }; see experiences/README.md.
-
-   Evidence. Entries 001–004 are the approved collection (production cc00dae), unchanged in content.
-   005 is the approved Beetlecat snapshot (study/project-monograph-001, 35264b1). 006 is working copy.
-   007 is an honest placeholder: no Freeman film is on file. */
+   Order is the order on the index. Material is real: the four approved objects (production cc00dae),
+   Beetlecat's own photograph, the essay's own words. No Freeman film is on file. */
 (() => {
   "use strict";
   const modules = {
@@ -33,50 +21,17 @@
   };
 
   const entries = [
-    {
-      no: "001", slug: "ruskin", title: "John Ruskin, on building", type: "Found text", date: "2026-10",
-      dek: "A printed passage on building for those who come after, photographed.",
-      image: { src: "/etcetera/ruskin.webp", w: 1536, h: 2048, alt: "Photograph of a printed John Ruskin passage about building for future generations" },
-      weight: 2,
-      experience: { module: "plate" },
-    },
-    {
-      no: "002", slug: "optimist-note", title: "On building a place people want to return to.", type: "Note", date: "2026-10",
-      dek: "A working reflection on hospitality buildouts, from The Optimist.",
-      experience: { module: "essay", files: ["texts/optimist-note.js"] },
-    },
-    {
-      no: "003", slug: "architectural-drawing", title: "Architectural drawing", type: "Drawing", date: "2026-10",
-      dek: "A small structure, stairs, utility poles and wires, in black and white.",
-      image: { src: "/etcetera/architectural-industrial.webp", w: 1290, h: 1717, alt: "Black-and-white architectural drawing of a small structure, stairs, utility poles and wires, with open paper space and a handwritten inscription along the lower margin" },
-      experience: { module: "plate" },
-    },
-    {
-      no: "004", slug: "residential-perspective", title: "Residential perspective", type: "Drawing", date: "2026-10",
-      dek: "A long, low residence among trees, in warm tones.",
-      image: { src: "/etcetera/residential-landscape.webp", w: 768, h: 576, alt: "Warm-toned perspective drawing of a long, low residence among trees and landscape, with paper margins and lettering along the lower edge" },
-      experience: { module: "plate" },
-    },
-    {
-      no: "005", slug: "beetlecat", title: "Beetlecat: two colours, one curve", type: "Photographic study", date: "2026-10",
-      dek: "Five photographs, one observation and our reading of it.",
-      image: { src: "/assets/projects/beetlecat-interior-2.jpg", w: 1440, h: 1920, alt: "Beetlecat: a yellow door with three rounded openings beside yellow-framed windows, a red ribbed counter front and plaid carpet" },
-      weight: 2,
-      experience: { module: "snapshot" },
-    },
-    {
-      no: "006", slug: "built-for-generations", title: "Built for generations", type: "Essay", date: "2026-10",
-      dek: "Working copy on the idea at the bottom of every page.",
-      weight: 3,
-      experience: { module: "essay", files: ["texts/built-for-generations.js"] },
-    },
-    {
-      no: "007", slug: "film-001", title: "Film", type: "Film", date: "2026-10",
-      dek: "Placeholder. No footage has been supplied.",
-      video: { src: "", poster: "", w: 1920, h: 1080 },
-      weight: 2,
-      experience: { module: "film" },
-    },
+    { slug: "ruskin", title: "John Ruskin, on building", experience: "plate",
+      image: { src: "/etcetera/ruskin.webp", w: 1536, h: 2048, alt: "Photograph of a printed John Ruskin passage about building for future generations" } },
+    { slug: "residential-perspective", title: "Residential perspective", experience: "plate",
+      image: { src: "/etcetera/residential-landscape.webp", w: 768, h: 576, alt: "Warm-toned perspective drawing of a long, low residence among trees and landscape, with paper margins and lettering along the lower edge" } },
+    { slug: "built-for-generations", title: "Built for generations.", experience: "essay", files: ["texts/built-for-generations.js"] },
+    { slug: "beetlecat", title: "Beetlecat", experience: "snapshot",
+      image: { src: "/assets/projects/beetlecat-interior-2.jpg", w: 1440, h: 1920, alt: "Beetlecat: a yellow door with rounded openings beside yellow-framed windows, a red ribbed counter front and plaid carpet" } },
+    { slug: "film-001", title: "Film", experience: "film", video: { src: "", w: 16, h: 9 } },
+    { slug: "architectural-drawing", title: "Architectural drawing", experience: "plate",
+      image: { src: "/etcetera/architectural-industrial.webp", w: 1290, h: 1717, alt: "Black-and-white architectural drawing of a small structure, stairs, utility poles and wires, with open paper space and a handwritten inscription along the lower margin" } },
+    { slug: "optimist-note", title: "On building a place people want to return to.", experience: "essay", files: ["texts/optimist-note.js"] },
   ];
 
   window.ETCETERA = { modules, entries };

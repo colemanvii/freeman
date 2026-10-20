@@ -1,7 +1,2 @@
-/* ETCETERA experience: plate. One image, centred, its caption on the image's own edge. */
-body[data-experience="plate"] .viewport{display:grid;place-items:center}
-.ex-plate{display:flex;flex-direction:column;gap:14px;margin:0;min-width:0}
-.ex-plate img{display:block;max-width:none;user-select:none;-webkit-user-drag:none}
-.ex-plate figcaption{display:grid;grid-template-columns:auto minmax(0,1fr) auto;column-gap:16px;font-size:9px;line-height:1.5;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
-.ex-plate figcaption span:nth-child(2){color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-@media(max-width:420px){.ex-plate figcaption{grid-template-columns:auto minmax(0,1fr)}.ex-plate figcaption span:nth-child(3){display:none}}
+/* ETCETERA experience: plate. Centred in the frame, scaled down to fit, never enlarged. */
+.ex-plate{position:absolute;inset:0;margin:auto;display:block;width:auto;height:auto;max-width:100%;max-height:100%;user-select:none;-webkit-user-drag:none}
