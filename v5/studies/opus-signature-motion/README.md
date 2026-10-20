@@ -10,7 +10,7 @@ Archived as tag `archive/signature-motion-opus-001` on branch `study/opus-signat
 
 | | Hand | Desktop | Mobile | Writing order |
 |---|---|---|---|---|
-| 01 | **Practiced** | 1,986 ms | 1,550 ms | F cap → stem → crossbar → *reeman* → flourish |
+| 01 | **Practiced** (selected, refined) | 2,164 ms | 1,881 ms | F cap → stem → crossbar → *reeman* → flourish |
 | 02 | **Considered** | 2,706 ms | 2,166 ms | F cap → stem → *reeman* → crossbar → flourish |
 | 03 | **One Breath** | 1,526 ms | 1,222 ms | F cap hooked into stem → crossbar → *reeman* → flourish |
 
@@ -23,6 +23,36 @@ Archived as tag `archive/signature-motion-opus-001` on branch `study/opus-signat
   lift, the crossbar is a dash, the name comes in quick beats, and the underline is a hard whip.
 
 The production entrance animation (pixels converging over 1,850 ms) is included as a reference.
+
+## Refinement 002 — Practiced (selected direction)
+
+Practiced was chosen. One focused pass on timing, movement, transitions and the final hold; the
+writing order, strokes, nib model, palette, placement and final frame are unchanged, and the
+other two hands are untouched.
+
+| | Before | After |
+|---|---|---|
+| Blank paper before touchdown | 180 ms (140 mobile) | 300 ms (258 mobile) |
+| Mobile compression | ×0.78 | ×0.86 |
+| Flourish profile | symmetric bell, peak 0.93 px/ms at 52%, releases at 0.32 | ballistic, peak 1.13 px/ms at 36%, releases at 0.49 |
+| Flourish vs. fastest name stroke | slower (0.93 vs 0.97) | fastest stroke of the piece (1.13 vs 0.94) |
+| Pen leaves the paper | 1,974 ms (1,538 mobile) | 2,014 ms (1,731 mobile) |
+| Final hold | tip pixels fade in ≤ 12 ms; motion stops dead | last 26 px of the taper settle over up to 150 ms |
+| Clock step per frame | up to 100 ms (a slow frame could skip the F cap) | ≤ 34 ms; clock starts after blank paper is painted |
+
+- **Opening beat.** The page now paints blank paper, starts the clock on the next frame and
+  holds 300 ms, so the first touchdown is seen rather than lost to page load.
+- **Phones.** Mobile timing was 22% faster than desktop, moving the nib up to ~20 bitmap px per
+  60 Hz frame. At ×0.86 the motion steps less, while the piece stays under two seconds.
+- **The throw.** The underline launches hard out of the *n*, peaks early and is still moving when
+  it leaves the paper, as the study describes. Before, it braked into the release.
+- **The hold.** The hairline tip of the underline lands a beat behind the lifted pen (`settle`),
+  so the finished signature arrives and rests instead of stopping on the last frame.
+- **Playback.** A slow frame slows the clock rather than skipping ink. A Replay mid-play no
+  longer leaves a second render loop drawing every frame.
+
+A one-frame minimum ink fade was tried and rejected: at throw speed it left a ~20 px soft trail
+behind the nib, which contradicts the study's crisp point of contact.
 
 ## What makes it read as a hand
 

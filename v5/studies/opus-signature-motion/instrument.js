@@ -52,7 +52,7 @@
   const getBuild = (id, mobile) => (builds[id + mobile] ||= window.FreemanHand.build(pixels, id, { mobile }));
 
   /* ---------- state ---------- */
-  const st = { hand: "practiced", timing: "auto", slow: false, pen: false, t: 0, playing: false, last: 0, refBase: 0 };
+  const st = { hand: "practiced", timing: "auto", slow: false, pen: false, t: 0, playing: false, last: 0, refBase: 0, run: 0 };
   const mobile = () => st.timing === "auto" ? matchMedia(PHONE).matches : st.timing === "mobile";
   const isRef = () => st.hand === "production";
   const B = () => isRef() ? null : getBuild(st.hand, mobile());
@@ -134,23 +134,29 @@
   }
 
   /* ---------- clock ---------- */
-  function tick(now) {
-    if (!st.playing) return;
-    const dt = Math.min(100, now - st.last); st.last = now;
+  function tick(now, run = st.run) {
+    // Only the latest run drives the clock; a Replay mid-play must not leave a second loop drawing every frame.
+    if (!st.playing || run !== st.run) return;
+    // A slow frame (page load, a phone catching up) slows the clock instead of skipping ink:
+    // at most about two 60 Hz frames advance at once, so no stroke can appear in a single jump.
+    const dt = Math.min(34, Math.max(0, now - st.last)); st.last = now;
     st.t += dt * (st.slow ? 0.25 : 1);
     const T = total();
     if (st.t >= T) { st.t = T; st.playing = false; }
     render();
-    if (st.playing) nativeRAF(tick); else finished();
+    if (st.playing) nativeRAF((t) => tick(t, run)); else finished();
   }
   function play() {
+    const run = ++st.run;
     st.t = 0;
     $("#check").textContent = "";
     if (isRef()) { ref.replay(); st.refBase = performance.now(); }
-    if (reduced()) { st.t = total(); if (isRef()) drawRef(1e6); render(); finished(); return; }
-    st.playing = true; st.last = performance.now();
+    if (reduced()) { st.playing = false; st.t = total(); if (isRef()) drawRef(1e6); render(); finished(); return; }
+    // Blank paper is painted first; the clock starts on the following frame, so the opening
+    // pause is seen in full rather than spent while the page is still settling.
+    st.playing = true;
     render();
-    nativeRAF(tick);
+    nativeRAF(() => nativeRAF((now) => { if (run !== st.run || !st.playing) return; st.last = now; tick(now, run); }));
   }
   function finished() {
     if (isRef()) { drawRef(1e6); }

@@ -147,11 +147,14 @@
     practiced: {
       name: "Practiced",
       note: "A signature written thousands of times. Classic order; the hand never hesitates, and the name runs straight into the flourish as one throw.",
-      pause: 180, end: 1980, mobile: 0.78,
-      iso: 0.55, flow: 0.3, turn: 1.0, retrace: 2.2, touch: 0,
+      // Refinement 002: a held beat of blank paper before touchdown; phones compressed less (fewer
+      // pixels jumped per frame); the flourish is a true throw, launched hard out of the n, fastest
+      // stroke of the piece and released at speed; the hairline tip then settles into the hold.
+      pause: 300, end: 2020, mobile: 0.86,
+      iso: 0.55, flow: 0.3, turn: 1.0, retrace: 2.2, touch: 0, settle: { px: 26, ms: 150 },
       order: [
         { s: "cap", tempo: [1.25, 1.0] }, { s: "stem", lift: 46, tempo: [1.0, 0.9] }, { s: "bar", lift: 58 }, { s: "word", lift: 50, tempo: [1.1, 0.82] },
-        { s: "flourish", flow: true, single: true, throw: [1.3, 1.2, 0.42], gain: 1.25 },
+        { s: "flourish", flow: true, single: true, throw: [0.8, 1.6, 0.55], gain: 0.95 },
       ],
     },
     considered: {
@@ -324,6 +327,16 @@
       q.fade = Math.max(2.5, Math.min(12, 1.1 / Math.max(v, 1e-3)));
       q.stroke = paths[q.pi].o.s;
     }
+    // `settle`: the pen leaves the paper while still moving; the hairline tip of the last stroke
+    // then lands a beat behind it, so the finished mark arrives and holds rather than stopping dead.
+    if (hand.settle) {
+      const P = paths[paths.length - 1], from = P.len - hand.settle.px;
+      for (const q of out) {
+        if (q.pi !== paths.length - 1) continue;
+        const f = (P.S[q.i].s - from) / hand.settle.px;
+        if (f > 0) q.fade = Math.max(q.fade, hand.settle.ms * Math.pow(Math.min(1, f), 1.6));
+      }
+    }
     const total = Math.max(...out.map((q) => q.t + q.fade));
 
     // speed trace for the instrument (px/ms over time) and the pen path for the trace layer
@@ -336,7 +349,7 @@
       _paths: paths, hand, handId, mobile: !!opts.mobile, pixels: out, total, FADE, pause, end, lifts, trace, warnings,
       paths: paths.map((P) => ({ stroke: P.o.s, t0: P.t0, t1: P.t1, len: P.len, lift: P.o.lift || 0, flow: !!P.o.flow })),
       // alpha of every pixel at time ms (0..1); equal to 1 everywhere from `total` on
-      alphaAt(ms) { return out.map((q) => Math.max(0, Math.min(1, (ms - q.t) / q.fade))); },
+      alphaAt(ms) { return out.map((q) => ms >= total ? 1 : Math.max(0, Math.min(1, (ms - q.t) / q.fade))); },
       // where the nib is at time ms (null in the air)
       penAt(ms) {
         for (const P of paths) {
