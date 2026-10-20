@@ -1,253 +1,205 @@
-/* Freeman signature — Magnetic Assembly (study 001).
-   Built on the original pixel engine (/pixel-mark.js), not the handwriting player. The artwork is
-   read from pixel-mark.js's own finished frame, and every unit's loose position comes from the
-   original hash(): the same pixel that started 13 px up-left in the original starts a few pixels
-   up-left here. Nothing about the artwork is restated in this file.
+/* Freeman signature — Magnetic Assembly, round 2: the original, plus one moment.
+   This is pixel-mark.js's draw() with one seam opened up: where the original computes a pixel's
+   progress and position from the clock, each study bends that computation a little. Everything
+   else is the original: the 160×61 canvas scaled with whole pixels, the same pixels, hash, ±13 ×
+   ±9 offsets, start stagger (70 + r·630 ms), cubic ease-out, fade (t·2.3), rounding to whole
+   cells, clipping at the canvas edge, colour from --mark.
 
-   Phases: DISPERSE (fade in already loose) → HOVER (independent drift, slowly drawn in) →
-   SNAP (accelerate onto the exact original coordinate) → HOLD (still).
-
-   Rendering: the canvas is drawn at device resolution with a margin, so a suspended pixel can sit
-   between bitmap cells and drift by a fraction of a cell. The finished frame is drawn on whole
-   cells only and equals the production frame exactly (verify()).
+   control     the original, verbatim (verify() replays production pixel-mark.js frame by frame
+               against it)
+   suspension  01 the original's clock slows almost to a stop for a moment two-fifths of the way
+               in, so the loose signature hangs, then the original assembly carries on
+   magnetic    02 each pixel eases most of the way home, hesitates, then is pulled the last few
+               cells in sharply; landings stay staggered across ~650 ms in the original's order
+   breathing   03 the dispersed signature appears first, faint, and drifts for about a second
+               before the original assembly begins from where it drifted to
 
    mount(canvas, { variant, play, rate, onFrame }) → { replay, paint, seek, resize, destroy,
-   setRate, total }. Same contract as FreemanPixelMark.mount: colour from --mark on every draw, play:false
-   draws the finished frame, reduced motion draws the finished frame immediately. */
+   setRate, total }. Same contract as FreemanPixelMark.mount. */
 (() => {
   "use strict";
-  const W = 160, H = 61, PAD = 14, TAU = Math.PI * 2;
-  // pixel-mark.js hash, unchanged
+  const W = 160, H = 61, D = 1850, TAU = Math.PI * 2;
+  // pixel-mark.js hash and ease, unchanged
   function hash(x, y) { let t = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return t - Math.floor(t); }
+  function ease(t) { return 1 - Math.pow(1 - t, 3); }
   const clamp = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
   const smooth = (t) => t * t * (3 - 2 * t);
 
-  let XY = null;
-  function artwork() {
-    if (XY) return XY;
+  let PX = null;
+  function pixels() {
+    if (PX) return PX;
     const c = document.createElement("canvas"); c.width = W; c.height = H;
     const m = window.FreemanPixelMark.mount(c, { play: false }); m.destroy();
     const d = c.getContext("2d").getImageData(0, 0, W, H).data, out = [];
-    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (d[(y * W + x) * 4 + 3]) out.push(x, y);
-    return (XY = out);
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (d[(y * W + x) * 4 + 3]) {
+      // pixel-mark.js per-pixel constants, unchanged …
+      const r = hash(x, y);
+      out.push({
+        x, y, r, start: 70 + r * 630, ox: (hash(y + 11, x) * 2 - 1) * 13, oy: (hash(y, x + 17) * 2 - 1) * 9,
+        // … plus a drift phase/frequency of its own, for the studies that let pixels float.
+        p1: hash(x + 3.1, y + 7.7), p2: hash(x + 5.3, y + 1.9), f: 0.18 + 0.2 * hash(x + 6.7, y + 3.3), j: hash(x + 8.2, y + 4.4),
+      });
+    }
+    return (PX = out);
+  }
+  // A slow float of about a cell: whole-cell rounding turns it into an occasional one-cell step.
+  function drift(p, ms, amp) {
+    const s = ms / 1000;
+    return [amp * Math.sin(TAU * (p.f * s + p.p1)), amp * 0.7 * Math.sin(TAU * (p.f * 0.83 * s + p.p2))];
   }
 
-  /* Variants. spread scales the original offsets (±13 × ±9 bitmap px). tile groups pixels into
-     rigid fragments. drift is in bitmap px. Snap: "stagger" lands units one after another
-     (hash order, like the original); "together" times every unit so all land on one frame. */
-  const VARIANTS = {
-    original: { name: "Original", original: true, total: 1850 },
-    settle: {
-      name: "Settle", spread: 0.14, tile: 1,
-      fade: 300, fadeStagger: 260, hover: 760, gather: 0.15, drift: 0.35, rate: 0.55,
-      snap: "stagger", snapStagger: 220, snapDur: 300, power: 2.4, inout: true, recoil: 0,
+  /* Each study: total length, and state(p, ms) → [progress e (0 = loose, 1 = home), alpha, dx, dy]
+     where dx/dy is extra displacement in cells. phase(ms) names the moment for the readout. */
+  const original = (p, ms) => { const t = clamp((ms - p.start) / (D - p.start - 60)); return [ease(t), Math.min(1, t * 2.3), 0, 0, t]; };
+
+  // 01 — clock warp: rate falls smoothly to RHO over L ms starting at A, then returns to 1.
+  const S = { A: 640, L: 760, RHO: 0.06, drift: 0.9 };
+  S.lost = ((1 - S.RHO) * S.L) / 2;
+  function warp(ms) {
+    if (ms <= S.A) return ms;
+    if (ms >= S.A + S.L) return ms - S.lost;
+    const u = ms - S.A;
+    return ms - (1 - S.RHO) * (u / 2 - (S.L / (4 * Math.PI)) * Math.sin((TAU * u) / S.L));
+  }
+  // 02 — landing time per pixel: the original's own order (r), lightly shuffled.
+  const M = { first: 1080, spread: 600, jitter: 90, pull: 120, at: 0.76 };
+  // 03 — opening length, haze strength, drift in cells.
+  const B = { pre: 1100, haze: 0.5, drift: 0.8 };
+
+  const STUDIES = {
+    control: { name: "Original", total: D, state: original, phase: (ms) => (ms < D ? "assemble" : "hold") },
+    suspension: {
+      name: "Suspension", total: Math.round(D + S.lost),
+      state(p, ms) {
+        const [e, a] = original(p, warp(ms));
+        const hang = ms > S.A && ms < S.A + S.L ? Math.sin((Math.PI * (ms - S.A)) / S.L) ** 2 : 0;
+        const [dx, dy] = hang ? drift(p, ms, S.drift * hang) : [0, 0];
+        return [e, a, dx * (1 - e), dy * (1 - e)];
+      },
+      phase: (ms) => (ms >= STUDIES.suspension.total ? "hold" : ms > S.A + S.L * 0.15 && ms < S.A + S.L * 0.85 ? "suspend" : "assemble"),
     },
-    lodestone: {
-      name: "Lodestone", spread: 0.28, tile: 5,
-      fade: 340, fadeStagger: 300, hover: 960, gather: 0.2, drift: 0.5, rate: 0.5,
-      snap: "together", land: 1200, snapMin: 110, snapMax: 230, power: 3, recoil: 0,
+    magnetic: {
+      name: "Magnetic Finish", total: D,
+      state(p, ms) {
+        const t = clamp((ms - p.start) / (D - p.start - 60)), a = Math.min(1, t * 2.3);
+        const land = M.first + p.r * M.spread + p.j * M.jitter, pull = land - M.pull;
+        let e;
+        if (ms >= land) e = 1;
+        else if (ms <= pull) e = M.at * ease(clamp((ms - p.start) / (pull - p.start))); // the original's curve, stopping short
+        else e = M.at + (1 - M.at) * Math.pow((ms - pull) / M.pull, 3); // then pulled in, accelerating
+        return [e, a, 0, 0];
+      },
+      phase: (ms) => (ms >= D ? "hold" : ms < M.first - M.pull ? "assemble" : "snap"),
     },
-    field: {
-      name: "Field", spread: 0.45, tile: 7,
-      fade: 380, fadeStagger: 340, hover: 1120, gather: 0.28, drift: 0.75, rate: 0.42,
-      snap: "together", land: 1400, snapMin: 130, snapMax: 280, power: 3.4, recoil: 0.35, recoilDur: 150,
+    breathing: {
+      name: "Breathing Room", total: B.pre + D,
+      state(p, ms) {
+        // Opening: the loose signature fades up faint, in the original's order, and floats.
+        const haze = B.haze * smooth(clamp((ms - p.r * 520) / 480));
+        const [e, a0] = original(p, ms - B.pre);
+        const g = 1 - 0.08 * smooth(clamp(ms / B.pre)); // drawn in by a breath before the pull begins
+        const [dx, dy] = drift(p, ms, B.drift);
+        return [1 - (1 - e) * g, Math.max(haze, a0), dx * (1 - e), dy * (1 - e)];
+      },
+      phase: (ms) => (ms >= B.pre + D ? "hold" : ms < B.pre ? "drift" : "assemble"),
     },
   };
 
-  function build(v) {
-    const xy = artwork(), n = xy.length / 2;
-    if (v.original) {
-      const px = [];
-      for (let i = 0; i < n; i++) {
-        const x = xy[2 * i], y = xy[2 * i + 1], r = hash(x, y);
-        px.push({ x, y, start: 70 + r * 630, ox: (hash(y + 11, x) * 2 - 1) * 13, oy: (hash(y, x + 17) * 2 - 1) * 9 });
-      }
-      return { px, total: v.total, phases: [700, 700, 1850] };
-    }
-    const t = v.tile, map = new Map(), units = [];
-    for (let i = 0; i < n; i++) {
-      const x = xy[2 * i], y = xy[2 * i + 1];
-      // Fragments are cells of a jittered grid (nearest seed), so they follow no axis and break
-      // a stroke into irregular pieces rather than squares. tile 1 = every pixel on its own.
-      let tx = x, ty = y;
-      if (t > 1) {
-        const gx = Math.floor(x / t), gy = Math.floor(y / t);
-        let best = Infinity;
-        for (let j = gy - 1; j <= gy + 1; j++) for (let i2 = gx - 1; i2 <= gx + 1; i2++) {
-          const sx = (i2 + hash(i2 + 0.3, j + 0.7)) * t, sy = (j + hash(i2 + 0.9, j + 0.1)) * t;
-          const d = (sx - x - 0.5) ** 2 + (sy - y - 0.5) ** 2;
-          if (d < best) { best = d; tx = i2; ty = j; }
-        }
-      }
-      const k = (tx + 100) * 1000 + ty + 100;
-      let u = map.get(k);
-      if (!u) {
-        // The original's per-pixel offset, taken at the fragment's anchor cell.
-        const ax = tx * t, ay = ty * t;
-        u = {
-          m: [], ox: (hash(ay + 11, ax) * 2 - 1) * 13 * v.spread, oy: (hash(ay, ax + 17) * 2 - 1) * 9 * v.spread,
-          a: hash(ax, ay) * v.fadeStagger,
-          p1: hash(ax + 3.1, ay + 7.7), p2: hash(ax + 5.3, ay + 1.9), p3: hash(ax + 8.2, ay + 4.4), p4: hash(ax + 2.6, ay + 9.1),
-          f1: 0.45 + 0.35 * hash(ax + 6.7, ay + 3.3), f2: 0.8 + 0.5 * hash(ax + 4.9, ay + 6.1),
-        };
-        map.set(k, u); units.push(u);
-      }
-      u.m.push(x, y);
-    }
-    let oMax = 0;
-    for (const u of units) oMax = Math.max(oMax, Math.hypot(u.ox, u.oy));
-    let end = 0, first = Infinity;
-    for (const u of units) {
-      if (v.snap === "together") {
-        // Farther units leave earlier; everything arrives on the same frame.
-        u.d = v.snapMin + (v.snapMax - v.snapMin) * Math.sqrt(Math.hypot(u.ox, u.oy) / oMax);
-        u.s = v.land - u.d;
-      } else {
-        u.d = v.snapDur;
-        u.s = v.hover + hash(u.m[0] + 0.5, u.m[1] + 0.5) * v.snapStagger;
-      }
-      end = Math.max(end, u.s + u.d); first = Math.min(first, u.s);
-    }
-    const total = Math.ceil(end + (v.recoil ? v.recoilDur : 0));
-    return { units, total, phases: [v.fade + v.fadeStagger, first, end] };
-  }
-  const cache = {};
-  const model = (id) => cache[id] || (cache[id] = build(VARIANTS[id]));
-
-  // Drifting, slowly gathering position of a suspended unit (bitmap px from home).
-  function loose(u, v, ms) {
-    const s = ms / 1000, g = 1 - v.gather * smooth(clamp(ms / v.hover)), A = v.drift;
-    return [
-      u.ox * g + A * (0.62 * Math.sin(TAU * (u.f1 * s * v.rate * 2 + u.p1)) + 0.38 * Math.sin(TAU * (u.f2 * s * v.rate * 2 + u.p2))),
-      u.oy * g + A * 0.75 * (0.6 * Math.sin(TAU * (u.f2 * s * v.rate * 2 + u.p3)) + 0.4 * Math.sin(TAU * (u.f1 * s * v.rate * 2 + u.p4))),
-    ];
-  }
-  function ease(v, u) {
-    if (v.inout) return u < 0.5 ? Math.pow(2 * u, v.power) / 2 : 1 - Math.pow(2 - 2 * u, v.power) / 2;
-    return Math.pow(u, v.power); // magnetic: accelerating all the way in, stopped by the target
-  }
-
-  function ink(el) {
-    const root = document.documentElement, css = getComputedStyle(el);
+  function ink() {
+    const root = document.documentElement, css = getComputedStyle(root);
     return css.getPropertyValue("--mark").trim() || (root.dataset.palette === "sand" ? "#f93822" : (css.getPropertyValue("--ink").trim() || "#332e20"));
   }
+  // Panes in the Light / Dark view carry their own --mark; read it where the canvas is.
+  function inkAt(el) { const v = getComputedStyle(el).getPropertyValue("--mark").trim(); return v || ink(); }
 
   function mount(canvas, opts = {}) {
+    canvas.width = W; canvas.height = H;
     const ctx = canvas.getContext("2d", { alpha: true });
-    const id = VARIANTS[opts.variant] ? opts.variant : "lodestone", v = VARIANTS[id], M = model(id);
-    if (!ctx) return { replay() {}, paint() {}, resize() {}, destroy() {}, setRate() {}, total: M.total };
-    let frame = 0, run = 0, last = M.total, rate = opts.rate || 1, n = 1;
-
-    function resize() {
-      // One bitmap pixel = a whole number of device pixels (production fit() sets --px that way).
-      const dpr = window.devicePixelRatio || 1;
-      const px = parseFloat(getComputedStyle(canvas).getPropertyValue("--px")) || 3;
-      n = Math.max(1, Math.round(px * dpr));
-      const css = n / dpr;
-      canvas.width = (W + 2 * PAD) * n; canvas.height = (H + 2 * PAD) * n;
-      Object.assign(canvas.style, {
-        width: (W + 2 * PAD) * css + "px", height: (H + 2 * PAD) * css + "px",
-        margin: -PAD * css + "px", imageRendering: "auto",
-      });
-      draw(last);
-    }
-    function cell(x, y) {
-      const X = Math.round((PAD + x) * n), Y = Math.round((PAD + y) * n);
-      ctx.fillRect(X, Y, Math.round((PAD + x) * n + n) - X, Math.round((PAD + y) * n + n) - Y);
-    }
+    const id = STUDIES[opts.variant] ? opts.variant : "control", st = STUDIES[id], total = st.total;
+    if (!ctx) return { replay() {}, paint() {}, seek() {}, resize() {}, destroy() {}, setRate() {}, total };
+    let frame = 0, run = 0, last = total, rate = opts.rate || 1;
+    const px = pixels();
     function draw(ms) {
-      last = ms;
-      ctx.globalAlpha = 1;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = ink(canvas);
-      const done = ms >= M.total;
-      if (done) { const xy = artwork(); for (let i = 0; i < xy.length; i += 2) ctx.fillRect((PAD + xy[i]) * n, (PAD + xy[i + 1]) * n, n, n); return; }
-      if (v.original) {
-        // pixel-mark.js draw(), unchanged: whole bitmap cells, clipped to the 160×61 canvas.
-        ctx.save(); ctx.beginPath(); ctx.rect(PAD * n, PAD * n, W * n, H * n); ctx.clip();
-        for (const p of M.px) {
-          const t = clamp((ms - p.start) / (M.total - p.start - 60)); if (t === 0) continue;
-          const e = 1 - Math.pow(1 - t, 3);
-          ctx.globalAlpha = Math.min(1, t * 2.3);
-          ctx.fillRect((PAD + Math.round(p.x + p.ox * (1 - e))) * n, (PAD + Math.round(p.y + p.oy * (1 - e))) * n, n, n);
-        }
-        ctx.restore(); ctx.globalAlpha = 1; return;
-      }
-      for (const u of M.units) {
-        const a = clamp((ms - u.a) / v.fade); if (a === 0) continue;
-        let [dx, dy] = loose(u, v, ms);
-        const k = (ms - u.s) / u.d;
-        if (k >= 1) {
-          dx = dy = 0;
-          if (v.recoil) {
-            // A trace of overtravel past home, then still: the stop is felt, not seen.
-            const r = (ms - u.s - u.d) / v.recoilDur;
-            if (r < 1) {
-              const [lx, ly] = loose(u, v, u.s + u.d), L = Math.hypot(lx, ly) || 1, o = -v.recoil * Math.sin(Math.PI * r) * (1 - r);
-              dx = (lx / L) * o; dy = (ly / L) * o;
-            }
-          }
-        } else if (k > 0) { const e = 1 - ease(v, k); dx *= e; dy *= e; }
-        ctx.globalAlpha = a < 1 ? smooth(a) : 1;
-        const m = u.m;
-        for (let i = 0; i < m.length; i += 2) cell(m[i] + dx, m[i + 1] + dy);
+      last = ms; ctx.clearRect(0, 0, W, H); ctx.fillStyle = inkAt(canvas);
+      const done = ms >= total;
+      for (const p of px) {
+        if (done) { ctx.globalAlpha = 1; ctx.fillRect(p.x, p.y, 1, 1); continue; }
+        const [e, a, dx, dy] = st.state(p, ms);
+        if (a <= 0) continue;
+        ctx.globalAlpha = a;
+        ctx.fillRect(Math.round(p.x + p.ox * (1 - e) + dx), Math.round(p.y + p.oy * (1 - e) + dy), 1, 1);
       }
       ctx.globalAlpha = 1;
     }
-    function phase(ms) {
-      const p = M.phases;
-      return ms >= M.total ? "hold" : ms < p[0] && ms < p[1] ? "disperse" : ms < p[1] ? "hover" : "snap";
-    }
+    const report = (ms) => opts.onFrame && opts.onFrame(Math.min(ms, total), st.phase(ms));
     function replay() {
       cancelAnimationFrame(frame);
       const me = ++run; let start = null;
-      if (matchMedia("(prefers-reduced-motion:reduce)").matches) { draw(M.total); opts.onFrame && opts.onFrame(M.total, "hold"); return; }
+      if (matchMedia("(prefers-reduced-motion:reduce)").matches) { draw(total); report(total); return; }
       function loop(now) {
         if (me !== run) return;
         if (start === null) start = now;
         const ms = (now - start) * rate;
-        draw(ms);
-        opts.onFrame && opts.onFrame(Math.min(ms, M.total), phase(ms));
-        if (ms < M.total) frame = requestAnimationFrame(loop);
+        draw(ms); report(ms);
+        if (ms < total) frame = requestAnimationFrame(loop);
       }
       frame = requestAnimationFrame(loop);
     }
-    resize();
-    if (opts.play === false) draw(M.total); else replay();
+    if (opts.play === false) draw(total); else replay();
     return {
-      replay, resize, total: M.total, variant: id,
+      replay, total, variant: id, resize() {},
       paint() { draw(last); },
-      seek(ms) { run++; cancelAnimationFrame(frame); draw(ms); opts.onFrame && opts.onFrame(Math.min(ms, M.total), phase(ms)); },
+      seek(ms) { run++; cancelAnimationFrame(frame); draw(ms); report(ms); },
       setRate(r) { rate = r; },
       destroy() { run++; cancelAnimationFrame(frame); },
     };
   }
 
-  /* The finished frame of every variant, read back cell by cell, against the production frame. */
+  /* 1. Every study's finished frame equals the production finished frame, byte for byte.
+     2. The control equals production pixel-mark.js on every frame: production is driven with a
+        fake clock (requestAnimationFrame swapped out for the duration of the check). */
   function verify() {
-    const xy = artwork(), want = new Set();
-    for (let i = 0; i < xy.length; i += 2) want.add(xy[i] + "," + xy[i + 1]);
-    const out = {};
-    for (const id of Object.keys(VARIANTS)) {
-      const c = document.createElement("canvas"); c.style.setProperty("--px", "1px");
-      document.body.appendChild(c);
-      const m = mount(c, { variant: id, play: false }); m.destroy();
-      const k = c.width / (W + 2 * PAD), d = c.getContext("2d").getImageData(0, 0, c.width, c.height).data;
-      let bad = 0, count = 0;
-      for (let y = -PAD; y < H + PAD; y++) for (let x = -PAD; x < W + PAD; x++) {
-        const cx = Math.floor((PAD + x + 0.5) * k), cy = Math.floor((PAD + y + 0.5) * k);
-        const on = d[(cy * c.width + cx) * 4 + 3] === 255;
-        if (on) count++;
-        if (on !== want.has(x + "," + y)) bad++;
-      }
-      c.remove();
-      out[id] = { pixels: count, expected: want.size, mismatches: bad };
+    const grab = (c) => c.getContext("2d").getImageData(0, 0, W, H).data;
+    const same = (a, b) => { let n = 0; for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) n++; return n; };
+    const prod = document.createElement("canvas"); prod.width = W; prod.height = H;
+    window.FreemanPixelMark.mount(prod, { play: false }).destroy();
+    const finals = {};
+    for (const id of Object.keys(STUDIES)) {
+      const c = document.createElement("canvas");
+      mount(c, { variant: id, play: false }).destroy();
+      finals[id] = same(grab(c), grab(prod));
     }
-    return out;
+    const raf = window.requestAnimationFrame, queue = [];
+    let frames = 0, differ = 0;
+    try {
+      window.requestAnimationFrame = (f) => (queue.push(f), queue.length);
+      const a = document.createElement("canvas"); a.width = W; a.height = H;
+      const b = document.createElement("canvas");
+      const pm = window.FreemanPixelMark.mount(a, {});
+      const me = mount(b, { variant: "control", play: false });
+      if (queue.length) queue.shift()(1000); // production takes its start time from the first frame
+      for (let ms = 0; ms <= D + 20; ms += 10) {
+        const f = queue.shift(); if (!f) break;
+        f(1000 + ms); me.seek(ms);
+        frames++; if (same(grab(a), grab(b))) differ++;
+      }
+      pm.destroy(); me.destroy();
+    } finally { window.requestAnimationFrame = raf; }
+    return { finals, control: { frames, differ } };
   }
 
   window.FreemanMagneticMark = {
-    mount, verify, variants: VARIANTS, total: (id) => model(id).total,
-    tune(id, p) { Object.assign(VARIANTS[id], p); delete cache[id]; }, // study only: live tuning
+    mount, verify, variants: STUDIES, total: (id) => STUDIES[id].total, params: { S, M, B },
+    // Study only: how many pixels change cell between consecutive 60 fps frames (stillness check).
+    steps(id, from, to) {
+      const st = STUDIES[id], px = pixels(), out = [];
+      let prev = null;
+      for (let ms = from; ms <= to; ms += 1000 / 60) {
+        const cur = px.map((p) => { const [e, , dx, dy] = st.state(p, ms); return Math.round(p.x + p.ox * (1 - e) + dx) * 1000 + Math.round(p.y + p.oy * (1 - e) + dy); });
+        if (prev) { let n = 0; for (let i = 0; i < cur.length; i++) if (cur[i] !== prev[i]) n++; out.push(n); }
+        prev = cur;
+      }
+      return out;
+    },
   };
 })();

@@ -1,24 +1,24 @@
-/* Magnetic Assembly — comparison instrument. Three views of the same engine:
+/* Magnetic Assembly, round 2 — comparison instrument. Three views:
    ENTRANCE (the selected motion in the live entrance composition), COMPARE (all four, replayed
    together) and LIGHT / DARK (the selected motion in both colorways at once).
    Keys: 1–4 variation, R or Space replay, S slow, V view. State is kept in the URL (?v=&view=). */
 (() => {
   "use strict";
   const MM = window.FreemanMagneticMark;
-  const ORDER = ["settle", "lodestone", "field", "original"];
-  const NUM = { settle: "01", lodestone: "02", field: "03", original: "—" };
+  const ORDER = ["suspension", "magnetic", "breathing", "control"];
+  const NUM = { suspension: "01", magnetic: "02", breathing: "03", control: "—" };
   const NOTES = {
-    settle: "Slight dispersion: every pixel on its own, about ±2 px out (0.14× the original offsets). It hangs as a fine grain, then lands in the original's own hash order across 220 ms on a soft in-out curve. The closest relative of the production motion.",
-    lodestone: "Moderate dispersion: the script breaks into irregular shards of ~5 px, about ±3.5 px out (0.28×). They hover and drift in, then each accelerates toward home on its own clock so every shard arrives on the same frame and stops dead.",
-    field: "Wider dispersion: larger shards (~7 px), about ±6 px out (0.45×), and a longer hover. The same single-frame arrival, with a trace of overtravel at the stop.",
-    original: "Production baseline, unchanged: ±13 × ±9 px offsets, staggered fade-in, cubic ease-out over 1,850 ms, drawn on whole bitmap cells.",
+    suspension: "The original, with one held breath. Two-fifths of the way in, while the signature is still loose, its clock slows almost to a stop for about three-quarters of a second; the pixels hang and stir by a cell, then the original assembly carries on exactly as before.",
+    magnetic: "The original's dispersion, pixels and order, with a different arrival. Each pixel eases three-quarters of the way home and hesitates; then, in the original's order across ~650 ms, each is pulled the last few cells in sharply. Never all at once.",
+    breathing: "A longer opening. The loose signature fades up at half strength and drifts for about a second — a cell or so, slowly — then the original assembly runs from wherever each pixel drifted to.",
+    control: "Production pixel-mark.js, unchanged: ±13 × ±9 px offsets, staggered fade-in, cubic ease-out, whole cells.",
   };
   const VIEWS = [["entrance", "Entrance"], ["compare", "Compare"], ["split", "Light / Dark"]];
   const PHONE = "(max-width:760px)";
 
   const home = document.getElementById("home");
   const q = new URLSearchParams(location.search);
-  let variant = ORDER.includes(q.get("v")) ? q.get("v") : "lodestone";
+  let variant = ORDER.includes(q.get("v")) ? q.get("v") : "suspension";
   let view = VIEWS.some(([v]) => v === q.get("view")) ? q.get("view") : "entrance";
   let slow = false, marks = [];
   const clock = document.getElementById("clock"), phaseEl = document.getElementById("phase");
@@ -125,11 +125,12 @@
   setPalette(["chalk", "umber", "sand"].includes(saved) ? saved : "chalk");
   build();
 
-  // The finished frame of every variation must be the production frame, pixel for pixel.
-  const v = MM.verify(), ok = Object.values(v).every((r) => r.mismatches === 0 && r.pixels === r.expected);
-  document.getElementById("check").textContent = ok
-    ? `Final frame = production, ${v.original.expected.toLocaleString("en-US")} px, 0 differ`
-    : "Final frame differs from production — see console";
-  if (!ok) console.warn("Magnetic Assembly verify", v);
+  // Every study ends on the production frame; the control is production, frame for frame.
+  const v = MM.verify();
+  const finals = Object.values(v.finals).every((n) => n === 0), ctrl = v.control.frames > 100 && v.control.differ === 0;
+  document.getElementById("check").textContent = finals && ctrl
+    ? `Final frames = production · control = production on ${v.control.frames} frames`
+    : "Mismatch against production — see console";
+  if (!(finals && ctrl)) console.warn("Magnetic Assembly verify", v);
   window.__maVerify = v;
 })();
