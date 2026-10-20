@@ -1,21 +1,36 @@
-/* ETCETERA — the index. Production styles.css supplies the tokens and the fixed .viewport frame;
-   index.js places every entry. */
+/* ETCETERA — the contents. Production styles.css supplies the tokens, the shell and the fixed
+   .viewport frame. Twelve columns, as the site's frame: titles in 2–7, the preview in 9–12. */
 body[data-route="etcetera"] .viewport{overflow:hidden}
-.ix{position:relative;width:100%;height:100%}
-.ix-item{position:absolute;display:block;color:var(--ink);outline:none}
-.ix-item img{display:block;width:100%;height:100%;user-select:none;-webkit-user-drag:none}
-.ix-words{display:block;white-space:nowrap;letter-spacing:-.045em}
-/* The film's play mark: a solid triangle filling its box, its point at the right. */
-.ix-play{display:block;width:100%;height:100%;background:var(--ink);clip-path:polygon(8% 0,92% 50%,8% 100%)}
-/* The mark is small; its target is not. */
-.ix-film::before{content:"";position:absolute;inset:-14px}
-/* The title, only while the entry is pointed at; it hangs below the entry and takes no space. */
-.ix-cap{position:absolute;left:0;top:calc(100% + 12px);white-space:nowrap;font-size:9px;line-height:1.5;letter-spacing:.04em;text-transform:uppercase;visibility:hidden}
-@media(hover:hover){
- .ix-item:hover .ix-cap{visibility:visible}
- .ix:has(.ix-item:hover) .ix-item:not(:hover){opacity:.22}
+.toc{height:100%;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:auto;column-gap:24px;align-content:center;align-items:stretch}
+/* The list sits a little above the middle of the frame, as the entrance's line does. */
+.toc-list{grid-column:2 / 8;grid-row:1;list-style:none;margin:0 0 4vh;padding:0;display:flex;flex-direction:column}
+/* Chapters: the leading entries, large and close. Sections: the rest, smaller, after a pause. */
+.toc-list li{margin:0 0 clamp(6px,1.2vh,12px)}
+.toc-list li.is-lead{margin-bottom:clamp(4px,.9vh,10px)}
+.toc-list li.is-lead+li:not(.is-lead){margin-top:clamp(36px,7vh,72px)}
+.toc-entry{display:inline-block;font-size:clamp(14px,1.15vw,17px);line-height:1.3;letter-spacing:-.02em;color:var(--ink);outline:none}
+.is-lead .toc-entry{font-size:clamp(28px,3.05vw,46px);line-height:1.08;letter-spacing:-.055em}
+.toc-entry:focus-visible{outline:1px solid var(--orange);outline-offset:6px}
+/* The selected title stays; the rest recede. */
+@media(hover:hover){.toc-list:has(.toc-entry:hover) .toc-entry:not(:hover){opacity:.22}}
+/* Keyboard focus does the same, unless the pointer is over the list: then the pointer decides. */
+.toc-list:not(:hover):has(.toc-entry:focus-visible) .toc-entry:not(:focus-visible){opacity:.22}
+/* The preview: the list's own height, beside it; one figure at a time, from its top-left corner. */
+.toc-preview{grid-column:9 / 13;grid-row:1;align-self:stretch;position:relative;margin:0 0 4vh;pointer-events:none}
+.toc-figure{position:absolute;inset:0;visibility:hidden}
+.toc-figure.is-shown{visibility:visible}
+.toc-figure img{position:absolute;left:0;top:0;width:auto;height:auto;max-width:100%;max-height:100%}
+.toc-play{position:absolute;left:0;top:4px;width:22px;height:22px;background:var(--ink);clip-path:polygon(8% 0,92% 50%,8% 100%)}
+@media(max-width:1000px){.toc{column-gap:16px}.toc-list{grid-column:1 / 8}}
+/* Phones and narrow frames: the titles alone, from the left margin; a tap opens. */
+@media(max-width:760px){
+ .toc{display:flex;align-items:center}
+ .toc-list{margin:0 0 2vh}
+ .toc-list li{margin-bottom:clamp(10px,1.8vh,16px)}
+ .toc-list li.is-lead{margin-bottom:clamp(6px,1.2vh,10px)}
+ .toc-list li.is-lead+li:not(.is-lead){margin-top:clamp(28px,6vh,52px)}
+ .toc-entry{font-size:16px;line-height:1.3}
+ .is-lead .toc-entry{font-size:clamp(30px,9.4vw,40px)}
+ .toc-preview{display:none}
 }
-.ix-item:focus-visible .ix-cap{visibility:visible}
-.ix:has(.ix-item:focus-visible) .ix-item:not(:focus-visible){opacity:.22}
-.ix-item:focus-visible{outline:1px solid var(--orange);outline-offset:6px}
-@media(pointer:coarse){.ix-item:active{opacity:.6}}
+@media(pointer:coarse){.toc-entry{padding:4px 0}.toc-entry:active{opacity:.55}}

@@ -1,17 +1,18 @@
-# ETCETERA — study 001, round 4: composition refined, and the credo
+# ETCETERA — Index Study 002 (on top of study 001, round 4)
 
-Isolated study on `study/etcetera-index-001` (cut from production `release/approved-v5-2026-10-18` at 44cb8cc). Not merged, not deployed. Round 1 (three index studies, a review sheet, footer switches, labels) was judged clunky and over-explained and is replaced; it remains in this branch's history at 2dc33fd.
+Index Study 002 is on `study/etcetera-index-002`, cut from `study/etcetera-index-001` at 854cf60; the round 4 index is kept as tag `archive/etcetera-index-001-round4`. Study 001 was an isolated study on `study/etcetera-index-001` (cut from production `release/approved-v5-2026-10-18` at 44cb8cc). Not merged, not deployed. Round 1 (three index studies, a review sheet, footer switches, labels) was judged clunky and over-explained and is replaced; it remains in this branch's history at 2dc33fd.
 
 Preview: `/etcetera` on the branch preview, or http://localhost:8816/etcetera.html (`etcetera-index-001` in `.claude/launch.json`).
 
-## The index (round 4)
+## The index: a table of contents (Index Study 002)
 
-Placed by hand on the site's twelve-column grid (`v5/etcetera/index/index.js` writes out every placement). Round 3 let Beetlecat dominate and read as vertical zones; round 4 composes one page:
+The collage compositions are retired (round 4 recoverable at tag `archive/etcetera-index-001-round4`). Taking only the clarity of terrain.com/productions (one quiet list, generous spacing) and none of its rows, dividers, thumbnails or type:
 
-- **Top line.** *Built for generations.* is the large graphic element, top left (columns 1–5), its full stop the one touch of red. Ruskin's printed passage on building for those who come after answers it, small, at the far right of the same line.
-- **Baseline.** The two drawings stand together at left, the perspective wide and the elevation narrower and lower. Beetlecat rests at right at a medium scale, with open paper between it and the drawings. The Optimist note, the other restaurant piece, begins on Beetlecat's top line. The film, which has no footage yet, is only its play mark, closing the baseline like a full stop.
-- **Phones** have their own six-column composition: the words, then Beetlecat with Ruskin and the note beside it, then the drawings, the play mark on the perspective's top line.
-- Unchanged: pointing at an entry brings it forward, the rest recede, and its title appears. Keyboard focus does the same.
+- **One list** in columns 2–7 of the site's twelve-column frame, a little above the middle, as the entrance's line sits. Every title ends in a Freeman orange full stop, the way the site sets its headings ("Built for generations." "What we do." "Our people." on Company).
+- **Two levels.** The three experiences (Built for generations, Beetlecat, Film) are set large and close, as chapters; after a pause, the four approved objects follow, small, as sections. Marked by `lead: true` in `entries.js`; the order of `entries.js` is the order of the contents.
+- **One small preview.** Columns 9–12 hold a frame exactly the list's height, empty at rest. Pointing at (or focusing) an entry shows its material from the frame's top-left corner, on the first title's cap line: the photograph or drawing, the film's play mark, nothing for words. The selected title stays; the others recede. While the pointer is over the list it decides; otherwise keyboard focus does.
+- **Phones:** the titles alone, large and small; a tap opens the experience directly.
+- **Pagination:** only when a frame cannot hold the list (e.g. 667 × 375), with production's PREV / NEXT, ← → and swipe; a sheet never ends on the first entry of a new group.
 
 ## The experiences, with only the navigation they need
 
@@ -26,9 +27,9 @@ The production shell everywhere: section line (ETCETERA current, returns to the 
 
 `v5/etcetera/entries.js` (the collection, in index order), `index/`, `experiences/` (plate, essay, film, snapshot), `texts/`, `snapshot-001/`; routes `v5/etcetera-<slug>.html`; `v5/app.js` (ETCETERA routes and loader; holding flag `false` on this branch); every `v5/*.html` bumps the `app.js` cache version.
 
-## Verified
+## Verified (Index Study 002)
 
-- Index, scripted: 2560 × 1440, 1920 × 1080, 1440 × 900, 1366 × 768, 1280 × 720, 1024 × 768, 1024 × 600, 844 × 390, 667 × 375 (landscape); 768 × 1024, 430 × 932, 390 × 844, 375 × 667, 360 × 640 (portrait). No page scroll, every entry inside the frame, no two entries closer than a gutter.
-- Credo, scripted, both closings: 2560 × 1440 down to 320 × 568. The column always fits the frame, no hand-set line rewraps, the credo scrolls, and the eagle is visible at the end of the scroll.
-- In the browser (Chromium): index → credo → Space scrolls → × CLOSE returns to the index with the entry focused; × CLOSE after a direct arrival returns to the index; hover and keyboard focus on the index.
-- Not tested: Safari or iOS (no WebKit browser can be driven here), real touch devices, video playback (no asset). The credo uses only features Safari supports (`dvh`, flexbox, `clip-path: polygon`; the scrollbar is hidden with both the standard and the WebKit property).
+- Fit, scripted: 2560 × 1440 → 320 × 568 (15 sizes, desktop, tablet, phones upright and sideways). No page scroll, every title and the preview inside the frame. One sheet everywhere except 667 × 375 (two sheets: the experiences, then the objects).
+- In the browser (Chromium): hover (title forward, others recede, preview), keyboard (Tab through titles shows the preview, Enter opens, Escape returns with the entry focused), touch emulation (no hover state; a tap opens Film; Back returns with Film focused), history (Projects → ETCETERA → Beetlecat → Escape → Back → Forward), sheet paging with ← →, light and dark palettes.
+- Experiences, texts and route files: unchanged since round 4 (`git diff archive/etcetera-index-001-round4` touches only the index, `entries.js` order and cache versions).
+- Not tested: Safari / iOS, real touch devices.

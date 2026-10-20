@@ -644,7 +644,7 @@
      One registry (etcetera/entries.js), one index (etcetera/index/) and an experience per entry
      (etcetera/experiences/), each loaded on first use. The index is one viewport; should the
      collection outgrow it, it pages with production's sheet controls (← →, swipe on phones). */
-  const ETC_DIR = "/etcetera/", ETC_V = "?v=etc-index-001-16";
+  const ETC_DIR = "/etcetera/", ETC_V = "?v=etc-index-002-5";
   const etcFiles = {};
   // Stylesheets and scripts must both be in place before anything is composed: the index measures.
   function etcLoad({ src = [], css = [] }) {
