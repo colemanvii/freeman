@@ -1,0 +1,61 @@
+/* Magnetic Assembly — study instrument. Production styles.css supplies the palette, Monaco, the
+   entrance composition (.v4-home, corners, colorway squares). This file adds only the instrument. */
+.ma-mark{display:block;padding:0;line-height:0;cursor:var(--cursor-orange)}
+.ma-mark canvas{display:block}
+.ma-view[hidden]{display:none!important}
+
+.ma-panel{position:absolute;left:30px;top:28px;width:272px;z-index:10;font-size:10px;line-height:1.5;letter-spacing:.035em;text-transform:uppercase}
+.ma-title{font-size:10px;line-height:1.5;color:var(--muted);margin-bottom:16px}
+.ma-variants{display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+.ma-variants button,.ma-controls button{font-size:10px;line-height:1.5;letter-spacing:.035em;text-transform:uppercase;padding:1px 0;color:var(--ink);cursor:var(--cursor-orange)}
+.ma-variants .n{display:inline-block;width:28px;color:var(--muted)}
+.ma-variants button[aria-checked="true"],.ma-variants button[aria-checked="true"] .n{color:var(--orange)}
+.ma-variants button:hover:not([aria-checked="true"]){background:var(--orange);color:var(--paper)}
+.ma-variants button:hover:not([aria-checked="true"]) .n{color:var(--paper)}
+.ma-note{margin-top:16px;font-size:10px;line-height:1.6;letter-spacing:.02em;text-transform:none;color:var(--muted);min-height:80px}
+.ma-read{display:flex;gap:18px;margin-top:10px;font-size:9px;color:var(--muted);font-variant-numeric:tabular-nums}
+#clock{color:var(--ink);width:32px}
+.ma-check{margin-top:8px;font-size:9px;color:var(--muted);min-height:14px}
+
+.ma-controls{position:absolute;right:30px;top:28px;z-index:10;display:flex;gap:22px}
+.ma-controls button[aria-pressed="true"]{color:var(--orange)}
+.ma-controls button:hover{background:var(--orange);color:var(--paper)}
+#replay{color:var(--orange)}
+#replay:hover{color:var(--paper)}
+.v4-way[aria-pressed="true"]{outline:1px solid var(--orange);outline-offset:3px}
+:root[data-palette="chalk"]{--muted:#706659}
+
+/* Compare: the four motions side by side, replayed together. */
+.ma-grid{position:absolute;inset:72px 30px 84px 332px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr))}
+.ma-cell{position:relative;display:grid;place-items:center;margin:0;border-top:1px solid var(--hair)}
+.ma-cell:nth-child(odd){border-right:1px solid var(--hair)}
+.ma-cell figcaption{position:absolute;left:14px;top:12px;font-size:9px;line-height:1.5;letter-spacing:.035em;text-transform:uppercase;color:var(--muted)}
+.ma-cell figcaption b{font-weight:400;color:var(--ink);margin-right:10px}
+.ma-cell.is-current figcaption b{color:var(--orange)}
+
+/* Light / Dark: the selected motion in both colorways at once. */
+.ma-split{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr}
+.ma-pane{position:relative;display:grid;place-items:center;background:var(--paper);color:var(--ink)}
+.ma-pane[data-tone="light"]{--paper:#fff9f1;--ink:#332e20;--mark:#332e20;--muted:#706659}
+.ma-pane[data-tone="dark"]{--paper:#332e20;--ink:#fff9f1;--mark:#fff9f1;--muted:#c5b9a7}
+.ma-tag{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.v4-home[data-view="split"] .legal,.v4-home[data-view="split"] .mark,.v4-home[data-view="split"] .v4-colorways{display:none}
+.v4-home[data-view="split"] .ma-panel,.v4-home[data-view="split"] .ma-controls{--paper:#fff9f1;--ink:#332e20;--muted:#706659}
+.v4-home[data-view="split"] .ma-controls{--paper:#332e20;--ink:#fff9f1;--muted:#c5b9a7}
+
+@media(max-width:760px){
+  .ma-panel{left:18px;right:18px;top:max(18px,env(safe-area-inset-top));width:auto}
+  .ma-title{margin-bottom:10px}
+  .ma-variants{flex-direction:row;flex-wrap:wrap;gap:2px 16px}
+  .ma-variants .n{width:auto;margin-right:6px}
+  .ma-variants button,.ma-controls button{font-size:11px;padding:6px 0}
+  .ma-note{display:none}
+  .ma-controls{top:auto;right:18px;left:18px;bottom:max(64px,calc(env(safe-area-inset-bottom) + 52px));justify-content:center;gap:24px}
+  .ma-grid{inset:128px 12px 120px;grid-template-columns:1fr;grid-template-rows:repeat(4,minmax(0,1fr))}
+  .ma-cell:nth-child(odd){border-right:0}
+  .ma-cell figcaption{left:6px;top:6px}
+  .ma-split{grid-template-columns:1fr;grid-template-rows:1fr 1fr}
+  .ma-tag{left:auto;right:18px;transform:none;bottom:14px}
+  .ma-pane[data-tone="dark"] .ma-tag{bottom:auto;top:14px}
+  .v4-home[data-view="split"] .ma-controls{bottom:max(24px,calc(env(safe-area-inset-bottom) + 12px))}
+}
