@@ -28,7 +28,7 @@
   const DESTINATIONS = [
     ["COMPANY", "company.html", ""],
     ["PROJECTS", "projects.html", ""],
-    ["NOTES", "etcetera.html", ""],
+    // NOTES temporarily hidden from public navigation; its editorial work remains archived at /etcetera.
     // RECORD is being developed privately; restore navigation only after approval.
     ["CONTACT", "contact.html", ""],
   ];
