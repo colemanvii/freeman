@@ -549,3 +549,6 @@ body[data-route="etcetera"] .viewport{overflow:hidden;min-height:0}
 .fw-essay p:last-child{margin-bottom:0}
 .fw-foot{flex-shrink:0}
 @media(max-width:760px){.fw-essay h2{font-size:clamp(15px,3.5vw,23px)}.fw-essay p{font-size:clamp(9px,2.4vw,11px);line-height:1.45}.fw-lead{gap:6px}}
+
+/* FIELDWORK: single right-hand editorial item after removing Ruskin. */
+.fw-register{grid-template-rows:minmax(0,1fr)}
