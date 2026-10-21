@@ -659,8 +659,8 @@
       </article>
       <div class="fw-register" aria-label="Selected fieldwork">
         <button class="fw-entry fw-entry-note" type="button" data-etc-open="optimist">
-          <span class="fw-entry-visual"><span class="fw-entry-heading">On building a place people want to return to.</span><span class="fw-entry-action">OPEN NOTE ↗</span></span>
-          <span class="fw-entry-caption">003 / THE OPTIMIST — A NOTE ON THE WORK</span>
+          <span class="fw-entry-visual"><img src="/assets/project-1.jpg" alt="Guests gathering on the outdoor patio at The Optimist" loading="eager"></span>
+          <span class="fw-entry-caption">002 / THE OPTIMIST — READ THE NOTE ↗</span>
         </button>
       </div>
     </div>
