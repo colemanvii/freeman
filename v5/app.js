@@ -28,7 +28,7 @@
   const DESTINATIONS = [
     ["COMPANY", "company.html", ""],
     ["PROJECTS", "projects.html", ""],
-    ["FIELDWORK", "etcetera.html", ""],
+    ["NOTES", "etcetera.html", ""],
     // RECORD is being developed privately; restore navigation only after approval.
     ["CONTACT", "contact.html", ""],
   ];
@@ -38,7 +38,7 @@
     projects: "Work",
     fieldwork: "Fieldwork",
     contact: "Contact",
-    etcetera: "Fieldwork",
+    etcetera: "Notes",
     notfound: "Record not found",
   };
   const PHONE = "(max-width:760px)";
@@ -636,37 +636,33 @@
     },
   };
   function etcetera() {
-    chrome({ title: "Fieldwork / Freeman General Contracting", section: "etcetera" });
+    chrome({ title: "Notes / Freeman General Contracting", section: "etcetera" });
     pageCount = 1;
     renderPage = () => {};
     count();
     const vp = root.querySelector(".viewport");
-    // Temporary public holding state. Preserve the full collection implementation below.
-    const etceteraPublicHolding = true;
-    if (etceteraPublicHolding) {
-      vp.innerHTML = `<div style="width:100%;height:100%;display:grid;place-items:center"><span style="font-size:12px;letter-spacing:.04em">UNDER CONSTRUCTION</span></div>`;
-      return;
-    }
-    vp.innerHTML = `<div class="etc-canvas">
-      <button class="etc-object etc-ruskin" type="button" data-etc-open="ruskin" aria-label="Open John Ruskin photograph">
-        <span class="etc-object-body"><img src="/etcetera/ruskin.webp" alt="Photograph of a printed John Ruskin passage about building for future generations" /></span>
-        <span class="etc-caption">001 / JOHN RUSKIN · ON BUILDING</span>
-      </button>
-      <button class="etc-object etc-industrial" type="button" data-etc-open="industrial" aria-label="Enlarge architectural drawing with utility poles">
-        <span class="etc-object-body"><img src="/etcetera/architectural-industrial.webp" width="1290" height="1717" alt="Black-and-white architectural drawing of a small structure, stairs, utility poles and wires, with open paper space and a handwritten inscription along the lower margin"></span>
-        <span class="etc-caption">003 / ARCHITECTURAL DRAWING</span>
-      </button>
-      <button class="etc-object etc-residential" type="button" data-etc-open="residential" aria-label="Enlarge residential landscape drawing">
-        <span class="etc-object-body"><img src="/etcetera/residential-landscape.webp" width="768" height="576" alt="Warm-toned perspective drawing of a long, low residence among trees and landscape, with paper margins and lettering along the lower edge"></span>
-        <span class="etc-caption">004 / RESIDENTIAL PERSPECTIVE</span>
-      </button>
-      <button class="etc-object etc-optimist" type="button" data-etc-open="optimist" aria-label="Read our note on the challenges of hospitality buildouts">
-        <span class="etc-object-body etc-type">
-          <span class="etc-heading">On building a place people want to return to.</span>
-          <span class="etc-open">THE OPTIMIST / OPEN NOTE ↗</span>
-        </span>
-        <span class="etc-caption">002 / A NOTE ON THE WORK</span>
-      </button>
+    vp.innerHTML = `<div class="fw-editorial" aria-label="Fieldwork editorial index">
+      <article class="fw-lead" aria-labelledby="fw-essay-title">
+        <span class="fw-eyebrow">001 / A POINT OF VIEW</span>
+        <div class="fw-essay">
+          <h2 id="fw-essay-title">BUILT FOR GENERATIONS.</h2>
+          <p>Buildings outlive the people who build them.</p>
+          <p>They become restaurants where families gather, places where friendships begin, and familiar corners of neighborhoods that change around them. The names of the people responsible may be forgotten. The work remains.</p>
+          <p>There is a responsibility that comes with building something another person will inherit. It means thinking past opening day: how a place will be used, how it will age, how it will be maintained, and what it will give to the people who encounter it.</p>
+          <p>Good construction is often invisible in the finished result. Behind every well-considered space are thousands of decisions, most of which no one will ever notice.</p>
+          <p>Those decisions matter.</p>
+          <p>We work alongside architects, designers, craftspeople, and owners who believe the things worth making are worth making well.</p>
+          <p>We believe the process deserves as much attention as the result, and that the quality of our work should be evident long after we've left the jobsite.</p>
+          <p>Built for Generations is a statement about what makes something worth keeping.</p>
+        </div>
+        <span class="fw-foot">FREEMAN GENERAL CONTRACTING / EDITORIAL DRAFT 02</span>
+      </article>
+      <div class="fw-register" aria-label="Selected fieldwork">
+        <button class="fw-entry fw-entry-note" type="button" data-etc-open="optimist">
+          <span class="fw-entry-visual"><span class="fw-entry-heading">On building a place people want to return to.</span><span class="fw-entry-action">OPEN NOTE ↗</span></span>
+          <span class="fw-entry-caption">003 / THE OPTIMIST — A NOTE ON THE WORK</span>
+        </button>
+      </div>
     </div>
     <dialog class="etc-dialog" aria-labelledby="etc-detail-title">
       <div class="etc-dialog-bar"><span id="etc-detail-title" data-etc-title></span><button class="phrase" data-etc-close type="button">× CLOSE</button></div>
@@ -678,6 +674,24 @@
     vp.querySelector("[data-etc-close]").addEventListener("click", () => dialog.close());
     dialog.addEventListener("click", (e) => { if (e.target === dialog) dialog.close(); });
     vp.querySelectorAll("[data-etc-open]").forEach((btn) => btn.addEventListener("click", () => {
+      if (btn.dataset.etcOpen === "letter") {
+        dialog.classList.remove("etc-dialog-artwork");
+        title.textContent = "001 / BUILT FOR GENERATIONS";
+        detail.scrollTop = 0;
+        detail.innerHTML = `<div class="etc-number">NOTES / A POINT OF VIEW</div>
+          <h2>Built for Generations</h2>
+          <p>Buildings outlive the people who build them.</p>
+          <p>They become restaurants where families gather, places where friendships begin, and familiar corners of neighborhoods that change around them. The names of the people responsible may be forgotten. The work remains.</p>
+          <p>There is a responsibility that comes with building something another person will inherit. It means thinking past opening day: how a place will be used, how it will age, how it will be maintained, and what it will give to the people who encounter it.</p>
+          <p>Good construction is often invisible in the finished result. Behind every well-considered space are thousands of decisions, most of which no one will ever notice.</p>
+          <p>Those decisions matter.</p>
+          <p>We work alongside architects, designers, craftspeople, and owners who believe the things worth making are worth making well.</p>
+          <p>We believe the process deserves as much attention as the result, and that the quality of our work should be evident long after we've left the jobsite.</p>
+          <p>Built for Generations is a statement about what makes something worth keeping.</p>
+          <small>EDITORIAL DRAFT 02 / PENDING REVIEW</small>`;
+        dialog.showModal();
+        return;
+      }
       const artwork = {
         industrial: ["003 / ARCHITECTURAL DRAWING", "/etcetera/architectural-industrial.webp"],
         residential: ["004 / RESIDENTIAL PERSPECTIVE", "/etcetera/residential-landscape.webp"]
@@ -698,7 +712,7 @@
       title.textContent = ruskin ? "001 / JOHN RUSKIN" : "002 / THE OPTIMIST";
       detail.innerHTML = ruskin
         ? '<img class="etc-detail-photo" src="/etcetera/ruskin.webp" alt="Photographed John Ruskin passage about building for future generations">'
-        : `<div class="etc-number">FIELDWORK / AN EDITORIAL NOTE</div>
+        : `<div class="etc-number">NOTES / AN EDITORIAL NOTE</div>
           <h2>On building a place people want to return to.</h2>
           <p>A restaurant is experienced as a whole. The light on a table, the curve of a booth, the sounds of service, the ease with which people move through a room. But behind that apparent ease is a concentration of decisions made by many people.</p>
           <p>Hospitality buildouts ask construction to reconcile different kinds of pressure at once: the designer's intent, the operator's day-to-day requirements, durability, craft, budgets, and the calendar. A beautiful detail also has to survive a busy Saturday night.</p>
