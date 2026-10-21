@@ -792,7 +792,7 @@
       const ctx = cv.getContext("2d");
       const color = getComputedStyle(document.documentElement).getPropertyValue("--ink").trim();
       const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (!reduced) await new Promise((r) => setTimeout(r, 400));
+      // Begin impression as soon as the bitmap has loaded; no artificial pause.
       if (cv.isConnected) FreemanBitmapEagle.play(ctx, "impression", { color, reduced });
     }, () => cv.remove());
   }
