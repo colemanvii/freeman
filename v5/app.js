@@ -752,6 +752,49 @@
       }
     });
     count();
+    contactEagle();
+  }
+  /* The approved bitmap eagle (Stamp, round 4) in the bottom-left corner, drawn by its own
+     engine at whole device pixels and played once with the Impression motion. It steps out of
+     the way whenever the page is too small to keep it clear of the contact information. */
+  let eagleEngine;
+  const loadEagle = () => eagleEngine || (eagleEngine = new Promise((ok, fail) => {
+    if (window.FreemanBitmapEagle) return ok();
+    const s = document.createElement("script");
+    s.src = "/eagle/eagle-motion.js";
+    s.onload = ok;
+    s.onerror = fail;
+    document.head.append(s);
+  }).then(() => FreemanBitmapEagle.load("/eagle/stamp.pbm")).catch(() => { eagleEngine = null; throw 0; }));
+  function contactEagle() {
+    const cv = document.createElement("canvas");
+    cv.className = "contact-eagle";
+    cv.width = 192;
+    cv.height = 60;
+    cv.setAttribute("aria-hidden", "true");
+    const layout = root.querySelector(".contact-layout");
+    layout.append(cv);
+    const fit = () => {
+      if (!cv.isConnected) return removeEventListener("resize", fit);
+      // whole device pixels per bitmap pixel: about 1 CSS px on desktop, two thirds of that on phones
+      const dpr = devicePixelRatio || 1, phone = matchMedia("(max-width:760px)").matches;
+      const p = Math.max(1, Math.round(dpr * (phone ? 2 / 3 : 1))) / dpr;
+      Object.assign(cv.style, { width: 192 * p + "px", height: 60 * p + "px" });
+      // Never make the brand mark silently disappear on regular viewports.
+      // The old 40px proximity test hid it even when no elements overlapped.
+      // Keep the mark visible and let the page layout establish clearance.
+      cv.hidden = false;
+    };
+    fit();
+    addEventListener("resize", fit);
+    loadEagle().then(async () => {
+      if (!cv.isConnected) return;
+      const ctx = cv.getContext("2d");
+      const color = getComputedStyle(document.documentElement).getPropertyValue("--ink").trim();
+      const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!reduced) await new Promise((r) => setTimeout(r, 400));
+      if (cv.isConnected) FreemanBitmapEagle.play(ctx, "impression", { color, reduced });
+    }, () => cv.remove());
   }
   function notFound() {
     chrome({ title: "Record not found", section: "" });
