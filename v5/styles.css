@@ -617,3 +617,13 @@ body[data-route="etcetera"] .viewport{overflow:hidden;min-height:0}
  body[data-route="company"] .co4-editorial,body[data-route="company"] .co4-copy{width:100%;max-width:none;text-align:left}
  body[data-route="company"] .co4-copy p{max-width:none;text-align:left}
 }
+
+/* Company is one sheet per tab; center the actual mobile editorial block. */
+body[data-route="company"] .sheet-controls{display:none}
+@media(max-width:760px){
+ body[data-route="company"] .viewport{top:70px;bottom:70px}
+ body[data-route="company"] .co4{align-items:center}
+ body[data-route="company"] .co4-stage{width:100%;height:auto;display:block}
+ body[data-route="company"] .co4-editorial{height:auto;margin:0;padding:0;overflow:visible}
+ body[data-route="company"] .co4-copy p:last-child{margin-bottom:0}
+}

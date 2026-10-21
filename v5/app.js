@@ -342,12 +342,11 @@
     ];
     function renderCompanySheet() {
       if(currentTab!=="philosophy")return;
-      const split=matchMedia("(max-width:760px)").matches;
-      const paragraphs=split ? (pageIndex===0 ? philosophyParagraphs.slice(0,2) : philosophyParagraphs.slice(2)) : philosophyParagraphs;
+      const paragraphs=philosophyParagraphs;
       copy.innerHTML=`<h2>Built for generations<span class="co4-accent">.</span></h2>${paragraphs.map(p=>`<p>${esc(p)}</p>`).join("")}`;
     }
     function setCompanySheets() {
-      pageCount=currentTab==="philosophy" && matchMedia("(max-width:760px)").matches ? 2 : 1;
+      pageCount=1;
       pageIndex=Math.min(pageIndex,pageCount-1);
       renderPage=renderCompanySheet;
       renderPage();
@@ -386,8 +385,6 @@
       e.preventDefault();const next=tabs[(i+(e.key==="ArrowRight"?1:tabs.length-1))%tabs.length];next.focus();show(next.dataset.co4Tab);
     });
     show("philosophy");
-    const companyScreen=matchMedia("(max-width:760px)");
-    companyScreen.addEventListener("change",()=>setCompanySheets());
   }
 
   /* ---------- Projects ---------- */
