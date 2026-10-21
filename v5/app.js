@@ -316,11 +316,6 @@
     ];
     let currentTab="philosophy",currentPerson=0,currentService=0;
     vp.innerHTML = `<div class="co4" data-co4-view="philosophy">
-      <style>
-        .co4-stage{width:min(760px,calc(100% - 48px));grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr)!important;gap:0!important}
-        .co4-editorial{grid-column:1!important;grid-row:1!important}
-        @media(max-width:700px){.co4-stage{width:100%;height:100%}}
-      </style>
       <div class="co4-stage">
         <section class="co4-editorial" id="co4-panel" role="tabpanel" aria-live="polite">
           <nav class="co4-nav" aria-label="Company views" role="tablist">
@@ -330,9 +325,17 @@
           </nav>
           <div class="co4-copy" id="co4-copy"></div>
         </section>
+        <figure class="co4-visual co4-placeholder-visual" aria-live="polite"><div class="co4-media"><div class="co4-image-placeholder" id="co4-image-placeholder">ADD IMAGE HERE</div></div><figcaption id="co4-image-caption">PHILOSOPHY / IMAGE TO COME</figcaption></figure>
       </div>
     </div>`;
     const copy=vp.querySelector("#co4-copy");
+    const imageCaption=vp.querySelector("#co4-image-caption");
+    const imagePlaceholder=vp.querySelector("#co4-image-placeholder");
+    function updateImageSpace(){
+      const item=currentTab==="people" ? people[currentPerson] : currentTab==="services" ? services[currentService] : null;
+      imagePlaceholder.textContent="ADD IMAGE HERE";
+      imageCaption.textContent=currentTab==="people" ? item.name.toUpperCase()+" / HEADSHOT TO COME" : currentTab==="services" ? item.name.toUpperCase()+" / IMAGE TO COME" : "PHILOSOPHY / IMAGE TO COME";
+    }
     const philosophyParagraphs=[
       "We're a Georgia-based general contractor with a deliberate focus on hospitality.",
       "We work closely with owners, architects, and designers to preserve what makes each hospitality concept distinctive through the work of building it. Our approach is built on strong relationships, careful execution, and pride in the finished work.",
@@ -354,6 +357,7 @@
     function show(tab) {
       currentTab=tab;
       vp.querySelector(".co4").dataset.co4View=tab;
+      updateImageSpace();
       vp.querySelectorAll("[data-co4-tab]").forEach(el=>el.setAttribute("aria-selected",String(el.dataset.co4Tab===tab)));
       pageIndex=0;
       if(tab==="philosophy"){
@@ -374,7 +378,7 @@
     vp.addEventListener("click",e=>{
       const tab=e.target.closest("[data-co4-tab]"),service=e.target.closest("[data-co4-service]"),person=e.target.closest("[data-co4-person]");
       if(tab){show(tab.dataset.co4Tab);return;}
-      if(service){currentService=Number(service.dataset.co4Service);vp.querySelectorAll("[data-co4-service]").forEach(el=>el.setAttribute("aria-pressed",String(Number(el.dataset.co4Service)===currentService)));vp.querySelector("#co4-service-text").textContent=services[currentService].detail;return;}
+      if(service){currentService=Number(service.dataset.co4Service);vp.querySelectorAll("[data-co4-service]").forEach(el=>el.setAttribute("aria-pressed",String(Number(el.dataset.co4Service)===currentService)));vp.querySelector("#co4-service-text").textContent=services[currentService].detail;updateImageSpace();return;}
       if(person){currentPerson=Number(person.dataset.co4Person);show("people");}
     });
     vp.querySelector(".co4-nav").addEventListener("keydown",e=>{
