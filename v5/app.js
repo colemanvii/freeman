@@ -28,7 +28,7 @@
   const DESTINATIONS = [
     ["COMPANY", "company.html", ""],
     ["PROJECTS", "projects.html", ""],
-    ["FIELDWORK", "etcetera.html", ""],
+    ["NOTES", "etcetera.html", ""],
     // RECORD is being developed privately; restore navigation only after approval.
     ["CONTACT", "contact.html", ""],
   ];
@@ -38,7 +38,7 @@
     projects: "Work",
     fieldwork: "Fieldwork",
     contact: "Contact",
-    etcetera: "Fieldwork",
+    etcetera: "Notes",
     notfound: "Record not found",
   };
   const PHONE = "(max-width:760px)";
@@ -636,7 +636,7 @@
     },
   };
   function etcetera() {
-    chrome({ title: "Fieldwork / Freeman General Contracting", section: "etcetera" });
+    chrome({ title: "Notes / Freeman General Contracting", section: "etcetera" });
     pageCount = 1;
     renderPage = () => {};
     count();
@@ -678,7 +678,7 @@
         dialog.classList.remove("etc-dialog-artwork");
         title.textContent = "001 / BUILT FOR GENERATIONS";
         detail.scrollTop = 0;
-        detail.innerHTML = `<div class="etc-number">FIELDWORK / A POINT OF VIEW</div>
+        detail.innerHTML = `<div class="etc-number">NOTES / A POINT OF VIEW</div>
           <h2>Built for Generations</h2>
           <p>Buildings outlive the people who build them.</p>
           <p>They become restaurants where families gather, places where friendships begin, and familiar corners of neighborhoods that change around them. The names of the people responsible may be forgotten. The work remains.</p>
@@ -712,7 +712,7 @@
       title.textContent = ruskin ? "001 / JOHN RUSKIN" : "002 / THE OPTIMIST";
       detail.innerHTML = ruskin
         ? '<img class="etc-detail-photo" src="/etcetera/ruskin.webp" alt="Photographed John Ruskin passage about building for future generations">'
-        : `<div class="etc-number">FIELDWORK / AN EDITORIAL NOTE</div>
+        : `<div class="etc-number">NOTES / AN EDITORIAL NOTE</div>
           <h2>On building a place people want to return to.</h2>
           <p>A restaurant is experienced as a whole. The light on a table, the curve of a booth, the sounds of service, the ease with which people move through a room. But behind that apparent ease is a concentration of decisions made by many people.</p>
           <p>Hospitality buildouts ask construction to reconcile different kinds of pressure at once: the designer's intent, the operator's day-to-day requirements, durability, craft, budgets, and the calendar. A beautiful detail also has to survive a busy Saturday night.</p>
