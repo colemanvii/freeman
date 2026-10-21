@@ -780,9 +780,10 @@
       const dpr = devicePixelRatio || 1, phone = matchMedia("(max-width:760px)").matches;
       const p = Math.max(1, Math.round(dpr * (phone ? 2 / 3 : 1))) / dpr;
       Object.assign(cv.style, { width: 192 * p + "px", height: 60 * p + "px" });
+      // Never make the brand mark silently disappear on regular viewports.
+      // The old 40px proximity test hid it even when no elements overlapped.
+      // Keep the mark visible and let the page layout establish clearance.
       cv.hidden = false;
-      const a = cv.getBoundingClientRect(), b = layout.getBoundingClientRect(), gap = 40;
-      cv.hidden = a.right + gap > b.left && a.left - gap < b.right && a.bottom + gap > b.top && a.top - gap < b.bottom;
     };
     fit();
     addEventListener("resize", fit);
