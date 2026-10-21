@@ -552,3 +552,10 @@ body[data-route="etcetera"] .viewport{overflow:hidden;min-height:0}
 
 /* NOTES: single right-hand editorial item after removing Ruskin. */
 .fw-register{grid-template-rows:minmax(0,1fr)}
+
+/* NOTES: featured Optimist photograph, original aspect ratio and no card treatment. */
+.fw-entry-note{display:flex;flex-direction:column;justify-content:center;gap:12px}
+.fw-entry-note .fw-entry-visual{width:100%;height:auto;max-height:65vh;display:block;overflow:hidden}
+.fw-entry-note .fw-entry-visual img{display:block;width:100%;height:auto;max-width:100%;max-height:65vh;object-fit:contain;object-position:left center}
+.fw-entry-note .fw-entry-caption{flex-shrink:0}
+@media(max-width:760px){.fw-entry-note{justify-content:center;gap:8px}.fw-entry-note .fw-entry-visual,.fw-entry-note .fw-entry-visual img{max-height:48vh}}
