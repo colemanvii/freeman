@@ -518,6 +518,7 @@ body[data-route="etcetera"] .viewport{overflow:hidden;min-height:0}
 /* Contact: eagle below the left-column copy, aligned with its left edge. */
 .contact-layout{position:relative}
 .contact-eagle{position:absolute;left:0;bottom:52px;display:block;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none}
+:root[data-palette="sand"] .contact-eagle{color:var(--orange)}
 .contact-eagle[hidden]{display:none}
 @media(max-width:760px){.contact-eagle{position:static;align-self:flex-start;flex-shrink:0;margin-top:12px}}
 
