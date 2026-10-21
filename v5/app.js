@@ -642,15 +642,21 @@
     count();
     const vp = root.querySelector(".viewport");
     vp.innerHTML = `<div class="fw-editorial" aria-label="Fieldwork editorial index">
-      <button class="fw-lead" type="button" data-etc-open="letter" aria-label="Read Built for Generations">
+      <article class="fw-lead" aria-labelledby="fw-essay-title">
         <span class="fw-eyebrow">001 / A POINT OF VIEW</span>
-        <span class="fw-lead-copy">
-          <span class="fw-title">BUILT FOR<br>GENERATIONS.</span>
-          <span class="fw-deck">Buildings outlive the people who build them.<br><br>The work remains.</span>
-          <span class="fw-read">READ THE LETTER ↗</span>
-        </span>
-        <span class="fw-foot">FREEMAN GENERAL CONTRACTING</span>
-      </button>
+        <div class="fw-essay">
+          <h2 id="fw-essay-title">BUILT FOR GENERATIONS.</h2>
+          <p>Buildings outlive the people who build them.</p>
+          <p>They become restaurants where families gather, places where friendships begin, and familiar corners of neighborhoods that change around them. The names of the people responsible may be forgotten. The work remains.</p>
+          <p>There is a responsibility that comes with building something another person will inherit. It means thinking past opening day: how a place will be used, how it will age, how it will be maintained, and what it will give to the people who encounter it.</p>
+          <p>Good construction is often invisible in the finished result. Behind every well-considered space are thousands of decisions, most of which no one will ever notice.</p>
+          <p>Those decisions matter.</p>
+          <p>We work alongside architects, designers, craftspeople, and owners who believe the things worth making are worth making well.</p>
+          <p>We believe the process deserves as much attention as the result, and that the quality of our work should be evident long after we've left the jobsite.</p>
+          <p>Built for Generations is a statement about what makes something worth keeping.</p>
+        </div>
+        <span class="fw-foot">FREEMAN GENERAL CONTRACTING / EDITORIAL DRAFT 02</span>
+      </article>
       <div class="fw-register" aria-label="Selected fieldwork">
         <button class="fw-entry" type="button" data-etc-open="ruskin">
           <span class="fw-entry-visual"><img src="/etcetera/ruskin.webp" alt="John Ruskin passage on building for future generations"></span>
