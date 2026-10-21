@@ -610,3 +610,10 @@ body[data-route="etcetera"] .viewport{overflow:hidden;min-height:0}
  .co4-stage{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:0}
  .co4-editorial{grid-column:1;grid-row:1}
 }
+
+/* COMPANY / centered column, left-aligned copy (approved composition). */
+@media (min-width:761px){
+ body[data-route="company"] .co4-stage{width:min(590px,calc(100% - 64px));margin-inline:auto;grid-template-columns:minmax(0,1fr);justify-content:stretch}
+ body[data-route="company"] .co4-editorial,body[data-route="company"] .co4-copy{width:100%;max-width:none;text-align:left}
+ body[data-route="company"] .co4-copy p{max-width:none;text-align:left}
+}
