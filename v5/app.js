@@ -643,7 +643,7 @@
     const vp = root.querySelector(".viewport");
     vp.innerHTML = `<div class="fw-editorial" aria-label="Fieldwork editorial index">
       <article class="fw-lead" aria-labelledby="fw-essay-title">
-        <span class="fw-eyebrow">001 / A POINT OF VIEW</span>
+        <span class="fw-eyebrow">001</span>
         <div class="fw-essay">
           <h2 id="fw-essay-title">BUILT FOR GENERATIONS.</h2>
           <p>Buildings outlive the people who build them.</p>
