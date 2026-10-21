@@ -588,3 +588,10 @@ body[data-route="etcetera"] .viewport{overflow:hidden;min-height:0}
  .co4-stage{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr);column-gap:25px}
  .co4-visual{grid-column:2;grid-row:1}
 }
+
+/* COMPANY / composition study: compact, centered editorial pair */
+@media(min-width:761px){
+ .co4-stage{width:min(990px,calc(100% - 64px));grid-template-columns:minmax(0,560px) minmax(0,240px);column-gap:clamp(34px,4vw,64px);justify-content:center;align-items:start}
+ .co4-visual{width:min(100%,220px,26dvh);justify-self:center}
+ .co4-copy{max-width:520px}
+}
