@@ -688,7 +688,7 @@
           <p>We work alongside architects, designers, craftspeople, and owners who believe the things worth making are worth making well.</p>
           <p>We believe the process deserves as much attention as the result, and that the quality of our work should be evident long after we've left the jobsite.</p>
           <p>Built for Generations is a statement about what makes something worth keeping.</p>
-          <small>EDITORIAL DRAFT 02 / PENDING REVIEW</small>`;
+          `;
         dialog.showModal();
         return;
       }
