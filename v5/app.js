@@ -641,32 +641,26 @@
     renderPage = () => {};
     count();
     const vp = root.querySelector(".viewport");
-    // Temporary public holding state. Preserve the full collection implementation below.
-    const etceteraPublicHolding = true;
-    if (etceteraPublicHolding) {
-      vp.innerHTML = `<div style="width:100%;height:100%;display:grid;place-items:center"><span style="font-size:12px;letter-spacing:.04em">UNDER CONSTRUCTION</span></div>`;
-      return;
-    }
-    vp.innerHTML = `<div class="etc-canvas">
-      <button class="etc-object etc-ruskin" type="button" data-etc-open="ruskin" aria-label="Open John Ruskin photograph">
-        <span class="etc-object-body"><img src="/etcetera/ruskin.webp" alt="Photograph of a printed John Ruskin passage about building for future generations" /></span>
-        <span class="etc-caption">001 / JOHN RUSKIN · ON BUILDING</span>
-      </button>
-      <button class="etc-object etc-industrial" type="button" data-etc-open="industrial" aria-label="Enlarge architectural drawing with utility poles">
-        <span class="etc-object-body"><img src="/etcetera/architectural-industrial.webp" width="1290" height="1717" alt="Black-and-white architectural drawing of a small structure, stairs, utility poles and wires, with open paper space and a handwritten inscription along the lower margin"></span>
-        <span class="etc-caption">003 / ARCHITECTURAL DRAWING</span>
-      </button>
-      <button class="etc-object etc-residential" type="button" data-etc-open="residential" aria-label="Enlarge residential landscape drawing">
-        <span class="etc-object-body"><img src="/etcetera/residential-landscape.webp" width="768" height="576" alt="Warm-toned perspective drawing of a long, low residence among trees and landscape, with paper margins and lettering along the lower edge"></span>
-        <span class="etc-caption">004 / RESIDENTIAL PERSPECTIVE</span>
-      </button>
-      <button class="etc-object etc-optimist" type="button" data-etc-open="optimist" aria-label="Read our note on the challenges of hospitality buildouts">
-        <span class="etc-object-body etc-type">
-          <span class="etc-heading">On building a place people want to return to.</span>
-          <span class="etc-open">THE OPTIMIST / OPEN NOTE ↗</span>
+    vp.innerHTML = `<div class="fw-editorial" aria-label="Fieldwork editorial index">
+      <button class="fw-lead" type="button" data-etc-open="letter" aria-label="Read Built for Generations">
+        <span class="fw-eyebrow">001 / A POINT OF VIEW</span>
+        <span class="fw-lead-copy">
+          <span class="fw-title">BUILT FOR<br>GENERATIONS.</span>
+          <span class="fw-deck">Buildings outlive the people who build them.<br><br>The work remains.</span>
+          <span class="fw-read">READ THE LETTER ↗</span>
         </span>
-        <span class="etc-caption">002 / A NOTE ON THE WORK</span>
+        <span class="fw-foot">FREEMAN GENERAL CONTRACTING</span>
       </button>
+      <div class="fw-register" aria-label="Selected fieldwork">
+        <button class="fw-entry" type="button" data-etc-open="ruskin">
+          <span class="fw-entry-visual"><img src="/etcetera/ruskin.webp" alt="John Ruskin passage on building for future generations"></span>
+          <span class="fw-entry-caption">002 / JOHN RUSKIN — ON BUILDING ↗</span>
+        </button>
+        <button class="fw-entry fw-entry-note" type="button" data-etc-open="optimist">
+          <span class="fw-entry-visual"><span class="fw-entry-heading">On building a place people want to return to.</span><span class="fw-entry-action">OPEN NOTE ↗</span></span>
+          <span class="fw-entry-caption">003 / THE OPTIMIST — A NOTE ON THE WORK</span>
+        </button>
+      </div>
     </div>
     <dialog class="etc-dialog" aria-labelledby="etc-detail-title">
       <div class="etc-dialog-bar"><span id="etc-detail-title" data-etc-title></span><button class="phrase" data-etc-close type="button">× CLOSE</button></div>
@@ -678,6 +672,24 @@
     vp.querySelector("[data-etc-close]").addEventListener("click", () => dialog.close());
     dialog.addEventListener("click", (e) => { if (e.target === dialog) dialog.close(); });
     vp.querySelectorAll("[data-etc-open]").forEach((btn) => btn.addEventListener("click", () => {
+      if (btn.dataset.etcOpen === "letter") {
+        dialog.classList.remove("etc-dialog-artwork");
+        title.textContent = "001 / BUILT FOR GENERATIONS";
+        detail.scrollTop = 0;
+        detail.innerHTML = `<div class="etc-number">FIELDWORK / A POINT OF VIEW</div>
+          <h2>Built for Generations</h2>
+          <p>Buildings outlive the people who build them.</p>
+          <p>They become restaurants where families gather, places where friendships begin, and familiar corners of neighborhoods that change around them. The names of the people responsible may be forgotten. The work remains.</p>
+          <p>There is a responsibility that comes with building something another person will inherit. It means thinking past opening day: how a place will be used, how it will age, how it will be maintained, and what it will give to the people who encounter it.</p>
+          <p>Good construction is often invisible in the finished result. Behind every well-considered space are thousands of decisions, most of which no one will ever notice.</p>
+          <p>Those decisions matter.</p>
+          <p>We work alongside architects, designers, craftspeople, and owners who believe the things worth making are worth making well.</p>
+          <p>We believe the process deserves as much attention as the result, and that the quality of our work should be evident long after we've left the jobsite.</p>
+          <p>Built for Generations is a statement about what makes something worth keeping.</p>
+          <small>EDITORIAL DRAFT 02 / PENDING REVIEW</small>`;
+        dialog.showModal();
+        return;
+      }
       const artwork = {
         industrial: ["003 / ARCHITECTURAL DRAWING", "/etcetera/architectural-industrial.webp"],
         residential: ["004 / RESIDENTIAL PERSPECTIVE", "/etcetera/residential-landscape.webp"]
