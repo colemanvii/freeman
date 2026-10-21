@@ -337,8 +337,8 @@
       imageCaption.textContent=currentTab==="people" ? item.name.toUpperCase()+" / HEADSHOT TO COME" : currentTab==="services" ? item.name.toUpperCase()+" / IMAGE TO COME" : "PHILOSOPHY / IMAGE TO COME";
     }
     const philosophyParagraphs=[
-      "We build hospitality spaces for people with a clear vision of what they want to create.",
-      "From early coordination through opening day, we bring the relationships, judgment, and construction expertise necessary to turn ambitious concepts into enduring places."
+      "Great places begin with a point of view.",
+      "We work alongside the architects, designers, restaurateurs, and developers who bring those places into being. With an understanding of design, hospitality, and the demands of construction, we help ambitious ideas become places worth remembering."
     ];
     function renderCompanySheet() {
       if(currentTab!=="philosophy")return;
