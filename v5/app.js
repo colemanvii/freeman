@@ -655,7 +655,7 @@
           <p>We believe the process deserves as much attention as the result, and that the quality of our work should be evident long after we've left the jobsite.</p>
           <p>Built for Generations is a statement about what makes something worth keeping.</p>
         </div>
-        <span class="fw-foot">FREEMAN GENERAL CONTRACTING / EDITORIAL DRAFT 02</span>
+        <span class="fw-foot">FREEMAN GENERAL CONTRACTING</span>
       </article>
       <div class="fw-register" aria-label="Selected fieldwork">
         <button class="fw-entry fw-entry-note" type="button" data-etc-open="optimist">
