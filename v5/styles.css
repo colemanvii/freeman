@@ -539,3 +539,13 @@ body[data-route="etcetera"] .viewport{overflow:hidden;min-height:0}
 .fw-lead:focus-visible,.fw-entry:focus-visible{outline:1px solid var(--orange);outline-offset:3px}
 @media(max-width:760px){.fw-editorial{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;padding:12px}.fw-lead{padding:12px}.fw-title{font-size:clamp(17px,4.3vw,28px)}.fw-deck{font-size:10px;line-height:1.5}.fw-eyebrow,.fw-foot,.fw-entry-caption{font-size:8px}.fw-entry-heading{font-size:clamp(13px,3.4vw,19px)}.fw-read,.fw-entry-action{font-size:9px}.fw-register{gap:12px}}
 @media(max-height:590px){.fw-editorial{padding-block:9px}.fw-lead{padding:12px}.fw-lead-copy{gap:10px}.fw-title{font-size:clamp(19px,2.5vw,32px)}.fw-deck{font-size:10px}.fw-register{gap:12px}}
+
+/* FIELDWORK / full essay present in the left-hand editorial sheet */
+.fw-lead{cursor:default;gap:12px;overflow:hidden}
+.fw-lead:hover .fw-read{background:none;color:var(--orange)}
+.fw-essay{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;width:100%;padding:clamp(7px,1.4vh,18px) 4px 8px 0}
+.fw-essay h2{font:400 clamp(19px,2.25vw,33px)/1.14 var(--mono);letter-spacing:-.055em;margin:0 0 clamp(15px,2vh,25px)}
+.fw-essay p{font:400 clamp(11px,.9vw,13px)/1.57 var(--mono);margin:0 0 1.05em;max-width:65ch}
+.fw-essay p:last-child{margin-bottom:0}
+.fw-foot{flex-shrink:0}
+@media(max-width:760px){.fw-essay h2{font-size:clamp(15px,3.5vw,23px)}.fw-essay p{font-size:clamp(9px,2.4vw,11px);line-height:1.45}.fw-lead{gap:6px}}
