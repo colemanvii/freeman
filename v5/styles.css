@@ -559,3 +559,6 @@ body[data-route="etcetera"] .viewport{overflow:hidden;min-height:0}
 .fw-entry-note .fw-entry-visual img{display:block;width:100%;height:auto;max-width:100%;max-height:65vh;object-fit:contain;object-position:left center}
 .fw-entry-note .fw-entry-caption{flex-shrink:0}
 @media(max-width:760px){.fw-entry-note{justify-content:center;gap:8px}.fw-entry-note .fw-entry-visual,.fw-entry-note .fw-entry-visual img{max-height:48vh}}
+
+/* NOTES composition 02: Cinematic Plate */
+@media(min-width:761px){.fw-editorial{grid-template-columns:minmax(0,1.6fr) minmax(0,3.4fr);gap:clamp(30px,4vw,75px);padding-right:0}.fw-lead{border:0;background:transparent;padding:0 15px 0 0}.fw-essay h2{font-size:clamp(23px,2.6vw,38px)}.fw-entry-note{justify-content:center}.fw-entry-note .fw-entry-visual{width:100%;max-height:75vh}.fw-entry-note .fw-entry-visual img{width:100%;height:min(66vh,700px);max-height:none;object-fit:cover;object-position:center}.fw-entry-caption{letter-spacing:.12em}}
