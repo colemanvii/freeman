@@ -559,3 +559,6 @@ body[data-route="etcetera"] .viewport{overflow:hidden;min-height:0}
 .fw-entry-note .fw-entry-visual img{display:block;width:100%;height:auto;max-width:100%;max-height:65vh;object-fit:contain;object-position:left center}
 .fw-entry-note .fw-entry-caption{flex-shrink:0}
 @media(max-width:760px){.fw-entry-note{justify-content:center;gap:8px}.fw-entry-note .fw-entry-visual,.fw-entry-note .fw-entry-visual img{max-height:48vh}}
+
+/* NOTES composition 03: Editorial Spread */
+@media(min-width:761px){.fw-editorial{grid-template-columns:minmax(0,2.4fr) minmax(0,2.6fr);gap:clamp(34px,5vw,90px)}.fw-lead{border:0;background:transparent;padding:0;justify-content:flex-start}.fw-eyebrow{border-bottom:1px solid var(--hair);width:100%;padding-bottom:20px}.fw-essay{padding-top:28px}.fw-essay h2{font-size:clamp(29px,3.3vw,49px);max-width:14ch}.fw-essay p{max-width:51ch}.fw-foot{border-top:1px solid var(--hair);width:100%;padding-top:12px}.fw-register{align-items:center}.fw-entry-note .fw-entry-visual img{width:100%;aspect-ratio:1.55;max-height:60vh;object-fit:cover;object-position:center}.fw-entry-caption{padding-top:14px;border-top:1px solid var(--hair)}}
