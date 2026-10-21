@@ -880,7 +880,7 @@
         },
         resize: ["company", "projects", "etcetera", "contact"].includes(route.kind) ? null : () => render(parse(location.href), { ...hist.state, focus: currentFocus() }),
       };
-      if (route.kind === "entrance") Object.assign(view, entrance({ play: !pop }));
+      if (route.kind === "entrance") Object.assign(view, entrance({ play: !pop && !nav }));
       else if (route.kind === "company") company();
       else if (route.kind === "projects") projectsIndex(state);
       else if (route.kind === "project") project(route.item);
