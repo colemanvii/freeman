@@ -515,8 +515,8 @@ body[data-route="etcetera"] .viewport{overflow:hidden;min-height:0}
  .etc-caption{font-size:8px;min-height:0}
 }
 
-/* Contact: mark aligns with the left column and the form's lower edge. */
+/* Contact: eagle below the left-column copy, aligned with its left edge. */
 .contact-layout{position:relative}
-.contact-eagle{position:absolute;left:0;bottom:0;display:block;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none}
+.contact-eagle{position:absolute;left:0;bottom:52px;display:block;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none}
 .contact-eagle[hidden]{display:none}
 @media(max-width:760px){.contact-eagle{position:static;align-self:flex-start;flex-shrink:0;margin-top:12px}}
