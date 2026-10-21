@@ -559,3 +559,6 @@ body[data-route="etcetera"] .viewport{overflow:hidden;min-height:0}
 .fw-entry-note .fw-entry-visual img{display:block;width:100%;height:auto;max-width:100%;max-height:65vh;object-fit:contain;object-position:left center}
 .fw-entry-note .fw-entry-caption{flex-shrink:0}
 @media(max-width:760px){.fw-entry-note{justify-content:center;gap:8px}.fw-entry-note .fw-entry-visual,.fw-entry-note .fw-entry-visual img{max-height:48vh}}
+
+/* NOTES composition 01: Unframed Letter */
+@media(min-width:761px){.fw-lead{border:0;background:transparent;padding:0 24px 0 0}.fw-essay h2{font-size:clamp(27px,3vw,45px)}.fw-editorial{grid-template-columns:minmax(0,1.95fr) minmax(0,3.05fr);gap:clamp(56px,7vw,110px)}.fw-entry-note .fw-entry-visual img{width:100%;max-height:72vh;object-fit:cover;aspect-ratio:1.35}.fw-entry-note{justify-content:center}}
