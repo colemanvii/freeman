@@ -337,9 +337,8 @@
       imageCaption.textContent=currentTab==="people" ? item.name.toUpperCase()+" / HEADSHOT TO COME" : currentTab==="services" ? item.name.toUpperCase()+" / IMAGE TO COME" : "PHILOSOPHY / IMAGE TO COME";
     }
     const philosophyParagraphs=[
-      "We're a Georgia-based general contractor with a deliberate focus on hospitality.",
-      "We work closely with owners, architects, and designers to preserve what makes each hospitality concept distinctive through the work of building it. Our approach is built on strong relationships, careful execution, and pride in the finished work.",
-      "We build places made to last."
+      "We build hospitality spaces for people with a distinct vision—and the expectation that it will be executed exceptionally well.",
+      "From early coordination through opening day, we bring the relationships, judgment, and construction expertise necessary to turn ambitious concepts into enduring places."
     ];
     function renderCompanySheet() {
       if(currentTab!=="philosophy")return;
