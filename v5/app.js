@@ -658,10 +658,6 @@
         <span class="fw-foot">FREEMAN GENERAL CONTRACTING / EDITORIAL DRAFT 02</span>
       </article>
       <div class="fw-register" aria-label="Selected fieldwork">
-        <button class="fw-entry" type="button" data-etc-open="ruskin">
-          <span class="fw-entry-visual"><img src="/etcetera/ruskin.webp" alt="John Ruskin passage on building for future generations"></span>
-          <span class="fw-entry-caption">002 / JOHN RUSKIN — ON BUILDING ↗</span>
-        </button>
         <button class="fw-entry fw-entry-note" type="button" data-etc-open="optimist">
           <span class="fw-entry-visual"><span class="fw-entry-heading">On building a place people want to return to.</span><span class="fw-entry-action">OPEN NOTE ↗</span></span>
           <span class="fw-entry-caption">003 / THE OPTIMIST — A NOTE ON THE WORK</span>
