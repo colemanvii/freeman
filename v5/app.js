@@ -28,7 +28,7 @@
   const DESTINATIONS = [
     ["COMPANY", "company.html", ""],
     ["PROJECTS", "projects.html", ""],
-    ["ETCETERA", "etcetera.html", ""],
+    ["FIELDWORK", "etcetera.html", ""],
     // RECORD is being developed privately; restore navigation only after approval.
     ["CONTACT", "contact.html", ""],
   ];
@@ -38,7 +38,7 @@
     projects: "Work",
     fieldwork: "Fieldwork",
     contact: "Contact",
-    etcetera: "Etcetera",
+    etcetera: "Fieldwork",
     notfound: "Record not found",
   };
   const PHONE = "(max-width:760px)";
@@ -636,7 +636,7 @@
     },
   };
   function etcetera() {
-    chrome({ title: "Etcetera / Freeman General Contracting", section: "etcetera" });
+    chrome({ title: "Fieldwork / Freeman General Contracting", section: "etcetera" });
     pageCount = 1;
     renderPage = () => {};
     count();
@@ -698,7 +698,7 @@
       title.textContent = ruskin ? "001 / JOHN RUSKIN" : "002 / THE OPTIMIST";
       detail.innerHTML = ruskin
         ? '<img class="etc-detail-photo" src="/etcetera/ruskin.webp" alt="Photographed John Ruskin passage about building for future generations">'
-        : `<div class="etc-number">ETCETERA / AN EDITORIAL NOTE</div>
+        : `<div class="etc-number">FIELDWORK / AN EDITORIAL NOTE</div>
           <h2>On building a place people want to return to.</h2>
           <p>A restaurant is experienced as a whole. The light on a table, the curve of a booth, the sounds of service, the ease with which people move through a room. But behind that apparent ease is a concentration of decisions made by many people.</p>
           <p>Hospitality buildouts ask construction to reconcile different kinds of pressure at once: the designer's intent, the operator's day-to-day requirements, durability, craft, budgets, and the calendar. A beautiful detail also has to survive a busy Saturday night.</p>
