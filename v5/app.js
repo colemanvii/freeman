@@ -772,8 +772,8 @@
     cv.width = 192;
     cv.height = 60;
     cv.setAttribute("aria-hidden", "true");
-    root.append(cv);
     const layout = root.querySelector(".contact-layout");
+    layout.append(cv);
     const fit = () => {
       if (!cv.isConnected) return removeEventListener("resize", fit);
       // whole device pixels per bitmap pixel: about 1 CSS px on desktop, two thirds of that on phones
