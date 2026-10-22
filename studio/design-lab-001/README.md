@@ -1,32 +1,48 @@
-# Freeman Design Lab — Exploration 001
-**Branch:** \`study/design-lab-001\` (isolated from production)
-**Purpose:** After-hours creative review for Gabe and Cole.
+# Freeman Design Lab — 002: the working register
 
-## What ships
-- A standalone editorial index at \`design-lab/index.html\` with the Freeman drawing-sheet design language.
-- Two *actual*, self-contained study folders under \`design-lab/studies/\`: the preserved FreemanAI Exploration 002 and The Record Exploration 001.
-- Shared static assets from the approved Freeman website that those studies require.
-- No user account database, no simulated comments, no operational data. Copy-link works for sharing.
-- The approved source studies are copied by Git tree SHA, without modifying their files. Contextual exit links redirect to the Lab and public-project links redirect to the existing public website.
+**Branch:** `study/design-lab-001` (not production)  
+**Deployment (existing protected preview):** `https://study-design-lab-001.freeman-d6f.pages.dev/lab/`
 
-## Publish as a separate Cloudflare Pages site
-1. In Cloudflare Pages create a **new** project connected to \`colemanvii/freeman\`; choose production branch \`study/design-lab-001\`.
-2. Build command **none**; build output directory **\`design-lab\`** (not \`v5\`).
-3. Configure Cloudflare Access on **all paths of the new Pages deployment**, including the Pages \`*.pages.dev\` hostname and any custom domain \`lab.freemangc.com\`, permitting only Gabe and Cole (email one-time PIN or existing identity provider). Use a long session duration appropriate to staff, e.g. 30 days, subject to Freeman policy.
-4. Test signed out in a private browser on both hostnames: no index, JS, images, or studies should be accessible. Do not invite anyone until this holds.
-5. Test signed in as each authorized person: index, both studies, their scripts, images, and links.
-6. Point \`lab.freemangc.com\` to the new Pages project only after access protection passes.
-7. Share the single index URL by iMessage. Remove unauthorized branch previews from auto-deploy if they bypass Access.
+## The editorial decision
 
-**Important:** Cloudflare Access is configured outside the repository. The repository cannot provide authentication by itself. No Cloudflare project or login policy is created by committing this branch. \`robots.txt\` and noindex headers are *not* access controls.
+**Index first, experience second.** The front door is a deliberately plain, useful catalogue. Don't make the Lab homepage compete with the actual explorations. Clicking a working prototype goes straight into the full interactive experience; clicking an idea opens an editorial concept sheet.
 
-## Content/limitations
-FreemanAI 002 has fictional scripted sample data, simulated roles, no connected model or live security enforcement. The Record uses public project information and partial site coordinates; no completion years are verified yet. Neither is production software. Only externally approved media belongs in this public repository.
+### Contents
 
-## Source snapshots
-- FreemanAI 002 source tree: \`archive/freemanai-002-approved\` — \`v5/studies/freemanai-002\`.
-- The Record 001 source tree: \`study/the-record-001\` at \`593c823\` — \`v5/studies/the-record-001\`.
-- Shared assets: \`release/approved-v5-2026-10-18\` / stable October 22 study assets.
+- `01` FreemanAI — approved 002 interactive design reference
+- `02` The Record — 001 interactive geographic record
+- `03` Carry the Idea Through — recorded concept
+- `04` Project Monographs — editorial concept
+- `05` Field Evidence — documentation practice
+- `06` Built for Generations — audio/conversation concept
+- `07` Freeman ACCESS — proposal
+- `08` The Drawing & The Stamp — identity and motion study
 
-## Review direction
-One address, one sign-in, no meeting required. Future phase: a permissioned server-side feedback store with identity and timestamps; never pretend a client-side note is shared feedback.
+Only two entries are interactive prototypes; the others are explicitly marked as ideas, concepts, or proposals. These eight are the opening register, **not** an assertion that every Freeman idea has been catalogued.
+
+## Where it lives
+
+**Standalone deploy package:** `design-lab/` (output directory for a future dedicated Pages project):
+- `index.html` — calm responsive index, with filtering and search
+- `idea/index.html` — linked concept pages via `?id=...`
+- `ideas.js` — editorial idea register; public-safe content only
+- `lab.js` / `lab.css` — UI and behavior
+- `studies/freemanai-002/` and `studies/the-record-001/` — preserved working studies
+
+**Preview mirror:** `v5/lab/`, `v5/lab/idea/`, `v5/ideas.js`, `v5/lab.js`, `v5/lab.css` on the existing Cloudflare preview, with studies under `v5/studies/`. Update both copies of the register/UI while the preview mirror exists. Neither output modifies the production release.
+
+## Adding an idea
+
+1. Add a new object in `design-lab/ideas.js` with a unique `id`, number, title, subtitle, type, explicit status, date, statement, premise, opportunity, first test and review question.
+2. Mark `kind: "idea"` unless there is a real, verified live interaction to open. For prototypes, include `href` and `action`.
+3. Use grounded, cleared, public-safe language. **No private company facts, credentials, private project addresses, client data or financial information in this public repo.**
+4. Mirror the idea to `v5/ideas.js` until the standalone project is the only preview. Check desktop and mobile, every link, and search.
+5. Ask Gabe for perspective with the permanent Lab link or the direct concept URL; do not claim a shared feedback record exists until one is built.
+
+## Access still requires account configuration
+
+The repo alone does **not** secure a site. The current Cloudflare preview is expected to be Access-gated, but protection has not been independently tested for every hostname.
+
+For a permanent `lab.freemangc.com`, create a **separate** Pages project with build output `design-lab`; configure Cloudflare Access for both the custom domain and the Pages hostname, allowing only Gabe and Cole. Test a signed-out private browser on both URLs and all assets before sharing. Allow long-lived trusted staff sessions appropriate to company policy. Remember that other Vercel/GitHub branch auto-previews may be exposed.
+
+Do not merge into production just to make a preview link easier to access. No operational intelligence, shared comments, database or custom login is implemented in this version.
