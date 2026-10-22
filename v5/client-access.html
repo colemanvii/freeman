@@ -44,7 +44,7 @@ button:hover,a:hover{color:var(--ink)}
  .choice .name{font-size:14px}
  .footer{font-size:9px}
 }
-</style><link rel="stylesheet" href="/portal-identity.css"></head><body data-view="home"><main class="frame"><header class="top"><span>FREEMAN GC</span><span class="muted">ACCESS / <a class="close" id="close" href="/" aria-label="Close Access and return to the previous page">× CLOSE</a></span></header><section class="stage"><div class="left"><div class="eyebrow" id="kicker">FREEMAN / ACCESS</div><h1 id="heading" tabindex="-1">Welcome.</h1><p id="intro">One place to begin working together.</p></div><div class="right"><h2 class="eyebrow" id="section">YOUR RELATIONSHIP</h2><div id="body"></div><div class="actions"><button type="button" id="back" class="hidden">← BACK</button><button type="button" id="next" class="hidden">NEXT STEP ↗</button></div><p class="note" id="note">SELECT A RELATIONSHIP TO CONTINUE.</p></div></section><footer class="footer"><span>BUILT FOR GENERATIONS</span><span>FREEMAN GENERAL CONTRACTING / PRIVATE</span></footer></main><p id="announce" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+</style><link rel="stylesheet" href="/portal-identity.css"></head><body data-view="home"><main class="frame"><header class="top"><span>FREEMAN GC</span><span class="muted">ACCESS / <a class="close" id="close" href="/" aria-label="Close Access and return to the previous page">× CLOSE</a></span></header><section class="stage"><div class="left"><div class="eyebrow" id="kicker">FREEMAN / ACCESS</div><h1 id="heading" tabindex="-1">Welcome.</h1><p id="intro">One place to begin working together.</p></div><div class="right"><h2 class="eyebrow" id="section">YOUR RELATIONSHIP</h2><div id="body"></div><div class="actions"><button type="button" id="back" class="hidden">← BACK</button><button type="button" id="next" class="hidden">NEXT STEP ↗</button></div><p class="note" id="note">SELECT A RELATIONSHIP TO CONTINUE.</p></div></section><footer class="footer"><span>BUILT FOR GENERATIONS</span><a href="team-os.html?entry=1" aria-label="Access FreemanAI">Access FreemanAI</a></footer></main><p id="announce" class="sr-only" aria-live="polite" aria-atomic="true"></p>
 <script>
 (() => {
   'use strict';
@@ -203,7 +203,7 @@ button:hover,a:hover{color:var(--ink)}
       $('heading').textContent = 'Welcome.';
       $('intro').textContent = 'One place to begin working together.';
       $('section').textContent = 'YOUR RELATIONSHIP';
-      $('body').innerHTML = `<ol class="list">${Object.entries(PATHWAYS).map(([id, pw], i) => choice(`data-role="${id}"`, pad(i + 1), pw.name, pw.summary)).join('') + choice('data-team="true"', '04', 'TEAM ACCESS', 'Freeman OS / Mission Control.')}</ol>`;
+      $('body').innerHTML = `<ol class="list">${Object.entries(PATHWAYS).map(([id, pw], i) => choice(`data-role="${id}"`, pad(i + 1), pw.name, pw.summary)).join('')}</ol>`;
       $('note').textContent = 'SELECT A RELATIONSHIP OR ENTER A STUDY CODE.';
     } else if (!s) {
       $('kicker').textContent = p.name + ' / ONBOARDING';
@@ -237,7 +237,6 @@ button:hover,a:hover{color:var(--ink)}
   $('body').addEventListener('click', (e) => {
     const r = e.target.closest('[data-role]');
     const st = e.target.closest('[data-step]');
-    if (e.target.closest('[data-team]')) { location.assign('team-os.html?entry=1'); return; }
     if (r) go({ role: r.dataset.role, step: -1 });
     else if (st) go({ role: view.role, step: Number(st.dataset.step) });
   });
