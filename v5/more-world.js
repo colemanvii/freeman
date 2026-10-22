@@ -35,7 +35,10 @@
               '<div class="more-credo-overline">001 / THE FREEMAN POINT OF VIEW</div>' +
               '<h2 id="more-credo-title">BUILT FOR<br>GENERATIONS<span>.</span></h2>' +
               '<div class="more-credo-copy">' + paragraphs(note) + '</div>' +
-              '<div class="more-credo-signoff"><strong>GABE FREEMAN</strong><span>FOUNDER / FREEMAN GENERAL CONTRACTING</span></div>' +
+              '<footer class="more-credo-footer">' +
+                '<div class="more-credo-signoff"><strong>GABE FREEMAN</strong><span>FOUNDER / FREEMAN GENERAL CONTRACTING</span></div>' +
+                '<img class="more-credo-eagle" src="/eagle/stamp-red.svg" width="192" height="60" alt="" aria-hidden="true" decoding="sync">' +
+              '</footer>' +
             '</article>' +
             objects.map(itemMarkup).join("") +
           '</div>' +
