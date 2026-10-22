@@ -28,7 +28,7 @@
   const DESTINATIONS = [
     ["COMPANY", "company.html", ""],
     ["PROJECTS", "projects.html", ""],
-    ["NOTES", "etcetera.html", ""],
+    ["MORE", "etcetera.html", ""],
     // RECORD is being developed privately; restore navigation only after approval.
     ["CONTACT", "contact.html", ""],
   ];
@@ -38,7 +38,7 @@
     projects: "Work",
     fieldwork: "Fieldwork",
     contact: "Contact",
-    etcetera: "Notes",
+    etcetera: "More",
     notfound: "Record not found",
   };
   const PHONE = "(max-width:760px)";
@@ -636,7 +636,7 @@
     },
   };
   function etcetera() {
-    chrome({ title: "Notes / Freeman General Contracting", section: "etcetera" });
+    chrome({ title: "More / Freeman General Contracting", section: "etcetera" });
     pageCount = 1;
     renderPage = () => {};
     count();
