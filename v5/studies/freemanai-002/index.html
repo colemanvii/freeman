@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#fff9f1"><title>FreemanAI</title>
+<script src="/palette.js"></script>
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="fai.css?v=002">
+</head><body data-mode="entry">
+<div class="border" aria-hidden="true"><div class="ref ref-top" id="ref-top"></div><div class="ref ref-left" id="ref-left"></div></div>
+<div class="app">
+ <header class="bar">
+  <button type="button" class="brand" id="home">FREEMAN <b>/</b> AI</button>
+  <span class="crumb" id="crumb"></span>
+  <span class="bar-right">
+   <button type="button" id="role" class="role" aria-haspopup="listbox" aria-expanded="false"><span class="muted">VIEW AS</span> <span id="role-label"></span> ▾</button>
+   <a class="close" href="/client-access.html">× CLOSE</a>
+  </span>
+ </header>
+ <ol class="roles" id="roles" role="listbox" aria-label="View as" hidden></ol>
+
+ <main class="field" id="field">
+  <section class="entry" id="entry">
+   <p class="kicker">FREEMAN GENERAL CONTRACTING / THURSDAY 22 OCTOBER 2026 / 07:42</p>
+   <h1 class="headline">What’s happening<br>at Freeman?</h1>
+  </section>
+  <form class="ask" id="ask" autocomplete="off">
+   <label class="sr-only" for="q">Ask Freeman</label>
+   <input id="q" type="text" enterkeyhint="go" placeholder="Ask about a job, a person, a problem">
+   <button type="button" class="mic" id="mic" aria-pressed="false" aria-label="Speak your question" hidden><span></span></button>
+   <button type="submit" class="go" aria-label="Ask">↵</button>
+  </form>
+  <section class="entry-foot" id="entry-foot"></section>
+  <section class="sheet" id="sheet" aria-live="polite"></section>
+ </main>
+
+ <aside class="tblock" id="tblock" aria-label="Title block"></aside>
+ <button type="button" class="capture-btn" id="capture-btn" aria-label="Capture from the field"><span class="dot"></span><span class="lbl">CAPTURE</span></button>
+</div>
+
+<aside class="evidence" id="evidence" hidden role="dialog" aria-modal="false" aria-labelledby="ev-title"></aside>
+<section class="capture" id="capture" hidden role="dialog" aria-modal="true" aria-labelledby="cap-title"></section>
+<p id="announce" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+<script src="/eagle/eagle-motion.js"></script>
+<script src="fixtures.js?v=002"></script>
+<script src="fai.js?v=002"></script>
+</body></html>
