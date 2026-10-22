@@ -713,7 +713,7 @@
       detail.innerHTML = ruskin
         ? '<img class="etc-detail-photo" src="/etcetera/ruskin.webp" alt="Photographed John Ruskin passage about building for future generations">'
         : `<div class="etc-number">NOTES / AN EDITORIAL NOTE</div>
-          <h2>On building a place people want to return to.</h2>
+          <h2>Bringing The Optimist to life</h2>
           <p>A restaurant is experienced as a whole. The light on a table, the curve of a booth, the sounds of service, the ease with which people move through a room. But behind that apparent ease is a concentration of decisions made by many people.</p>
           <p>Hospitality buildouts ask construction to reconcile different kinds of pressure at once: the designer's intent, the operator's day-to-day requirements, durability, craft, budgets, and the calendar. A beautiful detail also has to survive a busy Saturday night.</p>
           <p>The Optimist's oyster-bar refresh gives us a useful place to examine that tension. Its finished rooms offer a starting point; what we'd like to document next is the less visible work—coordination, sequencing, material choices, and judgment that makes a space feel effortless.</p>
