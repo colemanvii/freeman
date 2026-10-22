@@ -858,7 +858,7 @@
     return { replay: () => still.paint(), paint: () => still.paint(), destroy: () => still.destroy() };
   }
   // Same URLs as the entrance's script tags, so a later visit reuses the cached files.
-  const SIGNATURE_SCRIPTS = ["/pixel-mark.js?v=20261018-v5-restore", "/signature-motion.js?v=20261022-hand-002"];
+  const SIGNATURE_SCRIPTS = ["/pixel-mark.js?v=20261018-v5-restore", "/signature-motion.js?v=20261022-hand-first-stroke-001"];
   let signatureLoad = null;
   function loadSignature() {
     const add = (src) => new Promise((done) => {

@@ -250,10 +250,10 @@
   const SIGNATURE_CAP_FROM_LEFT = HAND;
   // Three timing passes of the same hand; values are tuned by eye at normal speed.
   const PASSES = {
-    // lead: the pen touched just before first paint, so the first frame already carries ink.
+    // lead: positive pre-inks pixels before first paint; negative begins on clean paper.\n    // Deliberate uses -8ms: its heavy F cap must be written, never preprinted.
     fluent: { total: 1000, lead: 25, iso: 0.5, flow: 0.45, pressure: 0.6, retrace: 2.5, lift: 35, liftPerPx: 0.5, throw: 1.4, gather: 0.9, spread: 3.5 },
     quick: { total: 700, lead: 25, iso: 0.4, flow: 0.6, pressure: 0.3, retrace: 3, lift: 25, liftPerPx: 0.35, throw: 1.6, gather: 0.6, spread: 3 },
-    deliberate: { total: 1400, lead: 25, iso: 0.6, flow: 0.25, pressure: 0.9, retrace: 2, lift: 45, liftPerPx: 0.55, throw: 1.7, gather: 0.9, spread: 4 },
+    deliberate: { total: 1400, lead: -8, iso: 0.6, flow: 0.25, pressure: 0.9, retrace: 2, lift: 45, liftPerPx: 0.55, throw: 1.7, gather: 0.9, spread: 4 },
   };
 
   /* ---------- Arrival times per variant (ms at the measured tempo) ---------- */
