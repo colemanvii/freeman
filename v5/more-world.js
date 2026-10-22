@@ -2,13 +2,11 @@
 (() => {
   "use strict";
 
-  const credo = [
-    "Buildings outlive the people who build them. Built for Generations is the long-term way we think about everything that follows.",
-    "Every project reaches beyond the people standing on its job site today. It touches the owner who trusts us with an idea, the architect who gives it form, the trades whose skill makes it real, and the people who will use the place long after we leave.",
-    "So we build for more than the handover. We build relationships that last through difficult conversations. We bring people together who take pride in what they do. We make the hard decision now when it is the right decision for what comes next.",
-    "We believe the construction process itself should be worth being part of: collaborative, considered, and alive with the energy of people doing good work together.",
-    "The standard cannot depend on the size or type of project. It has to be how we operate, with every client and every partner.",
-    "That is what we mean by Built for Generations."
+  // Proposed first-person note for Gabe's approval (77 words).
+  const note = [
+      "When I say Built for Generations, I mean more than the buildings we leave behind. I mean the people who build them, the partners who trust us, and the relationships we choose to protect.",
+      "We should make the hard decision when it’s right, even when the easier one is tempting. Every project deserves that standard.",
+      "I want construction to be something people enjoy being part of, and something we’re proud to stand behind long after opening day."
   ];
 
   const objects = [
@@ -36,18 +34,13 @@
             '<article class="more-credo" aria-labelledby="more-credo-title">' +
               '<div class="more-credo-overline">001 / THE FREEMAN POINT OF VIEW</div>' +
               '<h2 id="more-credo-title">BUILT FOR<br>GENERATIONS<span>.</span></h2>' +
-              '<div class="more-credo-copy">' +
-                '<p>Buildings outlive the people who build them.</p>' +
-                '<p>We build relationships that last through difficult conversations, bring together people who care deeply about their work, and think beyond the handover.</p>' +
-                '<p>We believe the process of building should be something worth being part of.</p>' +
-              '</div>' +
-              '<button class="more-read" type="button" data-more-open="credo">READ THE STATEMENT ↗</button>' +
-              '<div class="more-credo-signoff">FREEMAN GENERAL CONTRACTING</div>' +
+              '<div class="more-credo-copy">' + paragraphs(note) + '</div>' +
+              '<div class="more-credo-signoff"><strong>GABE FREEMAN</strong><span>FOUNDER / FREEMAN GENERAL CONTRACTING</span></div>' +
             '</article>' +
             objects.map(itemMarkup).join("") +
           '</div>' +
         '</div>' +
-        '<div class="more-guidance" aria-hidden="true"><span>THE WORK / THE PEOPLE / THE PROCESS</span><span>DRAG TO EXPLORE</span></div>' +
+        '<div class="more-guidance" aria-hidden="true"><span>DRAG TO EXPLORE</span></div>' +
         '<div class="more-tools" aria-label="Explore controls">' +
           '<button type="button" data-more-control="zoom-in" aria-label="Zoom in">+</button>' +
           '<button type="button" data-more-control="zoom-out" aria-label="Zoom out">−</button>' +
@@ -145,13 +138,11 @@
     stage.addEventListener("lostpointercapture", release);
 
     function openEntry(id) {
-      dialog.classList.toggle("more-dialog-image", id !== "credo" && id !== "optimist");
+      dialog.classList.toggle("more-dialog-image", id !== "optimist");
       const item = objects.find(o => o.id === id);
-      modalTitle.textContent = id === "credo" ? "001 / BUILT FOR GENERATIONS" : item.n + " / " + item.type;
-      if (id === "credo") {
-        modalBody.innerHTML = '<article class="more-reading"><h2>Built for Generations.</h2>' + paragraphs(credo) +
-          '<p class="more-signature">FREEMAN GENERAL CONTRACTING</p></article>';
-      } else if (id === "optimist") {
+      if (!item) return;
+      modalTitle.textContent = item.n + " / " + item.type;
+      if (id === "optimist") {
         modalBody.innerHTML = '<article class="more-reading"><h2>Bringing The Optimist to life</h2>' +
           paragraphs([
             "A restaurant is experienced as a whole. The light on a table, the curve of a booth, the sounds of service, the ease with which people move through a room. Behind that apparent ease are decisions made by many people.",
