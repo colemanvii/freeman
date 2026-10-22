@@ -3,7 +3,7 @@
   "use strict";
 
   const credo = [
-    "Built for Generations is a way of making decisions.",
+    "Buildings outlive the people who build them. Built for Generations is the long-term way we think about everything that follows.",
     "Every project reaches beyond the people standing on its job site today. It touches the owner who trusts us with an idea, the architect who gives it form, the trades whose skill makes it real, and the people who will use the place long after we leave.",
     "So we build for more than the handover. We build relationships that last through difficult conversations. We bring people together who take pride in what they do. We make the hard decision now when it is the right decision for what comes next.",
     "We believe the construction process itself should be worth being part of: collaborative, considered, and alive with the energy of people doing good work together.",
@@ -37,7 +37,7 @@
               '<div class="more-credo-overline">001 / THE FREEMAN POINT OF VIEW</div>' +
               '<h2 id="more-credo-title">BUILT FOR<br>GENERATIONS<span>.</span></h2>' +
               '<div class="more-credo-copy">' +
-                '<p>Built for Generations is a way of making decisions.</p>' +
+                '<p>Buildings outlive the people who build them.</p>' +
                 '<p>We build relationships that last through difficult conversations, bring together people who care deeply about their work, and think beyond the handover.</p>' +
                 '<p>We believe the process of building should be something worth being part of.</p>' +
               '</div>' +
