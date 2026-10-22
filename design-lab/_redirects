@@ -1,0 +1,4 @@
+/client-access.html / 302
+/etcetera / 302
+/etcetera.html / 302
+/project-* https://www.freemangc.com/project-:splat 302
