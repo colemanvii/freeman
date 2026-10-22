@@ -305,9 +305,11 @@
     const vp = root.querySelector(".viewport");
     const people = [
       {name:"Gabe Freeman",role:"Founder / President"},
+      {name:"Dillon Vanderpool",role:"Project Manager"},
       {name:"Cameron Dombi",role:"Superintendent"},
       {name:"Mac Thompson",role:"Superintendent"},
-      {name:"Jimmy Jennings",role:"Superintendent"}
+      {name:"Jimmy Jennings",role:"Superintendent"},
+      {name:"Macee Murray",role:"Controller"}
     ];
     const services = [
       {name:"General Contracting",detail:"Construction execution, coordination of trades, quality, and completion.",image:"assets/projects/barnsley-gardens-2.jpg",alt:"Architectural photograph of Barnsley Gardens",caption:"BARNSLEY GARDENS"},
