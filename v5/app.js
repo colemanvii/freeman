@@ -782,8 +782,9 @@
 
   /* ---------- Entrance (V4) ----------
      The original 160×61 Freeman script is the identity; navigation sits beneath it as one group.
-     The script assembles on arrival (load, reload, in-site link) and is drawn finished on
-     Back/Forward, like the retired eagle. Selecting the script replays it. A colorway recolours
+     The name is there on first paint and its underline is signed on arrival (load, reload); it is
+     drawn finished after an in-site link and on Back/Forward. Selecting the script replays the
+     flourish (signature-flourish.js; pixel-mark.js alone if it is missing). A colorway recolours
      the script in place; it never restarts the animation. The bitmap is shown at a whole number of
      device pixels per bitmap pixel, so every pixel of the script is the same size. */
   const COLORWAYS = [["chalk", "Light"], ["umber", "Dark"], ["sand", "Freeman"]];
@@ -823,7 +824,7 @@
       home.style.setProperty("--y", snap(innerHeight * (phone ? 0.48 : 0.5) - group.offsetHeight / 2) + "px");
     }
     fit();
-    const signature = window.FreemanPixelMark;
+    const signature = window.FreemanSignature || window.FreemanPixelMark;
     const mark = signature ? signature.mount(canvas, { play }) : null;
     const button = root.querySelector(".v4-home-mark");
     if (mark) button.addEventListener("click", () => mark.replay());

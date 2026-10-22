@@ -1,0 +1,873 @@
+{
+ "base": "http://127.0.0.1:8821",
+ "study": "http://127.0.0.1:8820",
+ "date": "2026-10-22T17:39:07.565Z",
+ "passed": 144,
+ "failed": 0,
+ "results": [
+  {
+   "engine": "chromium",
+   "name": "dpr1 first frame shows the name (≥ 1343 px, no partial alpha)",
+   "ok": true,
+   "detail": "1343"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr1 chalk: final canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr1 chalk: colour #332e20",
+   "ok": true,
+   "detail": "51,46,32"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr1 chalk: whole device pixels per bitmap pixel",
+   "ok": true,
+   "detail": "3"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr1 umber: final canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr1 umber: colour #fff9f1",
+   "ok": true,
+   "detail": "255,249,241"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr1 umber: whole device pixels per bitmap pixel",
+   "ok": true,
+   "detail": "3"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr1 sand: final canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr1 sand: colour #f93822",
+   "ok": true,
+   "detail": "249,56,34"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr1 sand: whole device pixels per bitmap pixel",
+   "ok": true,
+   "detail": "3"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr1: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr1: no failed requests",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr2 first frame shows the name (≥ 1343 px, no partial alpha)",
+   "ok": true,
+   "detail": "1343"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr2 chalk: final canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr2 chalk: colour #332e20",
+   "ok": true,
+   "detail": "51,46,32"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr2 chalk: whole device pixels per bitmap pixel",
+   "ok": true,
+   "detail": "6"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr2 umber: final canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr2 umber: colour #fff9f1",
+   "ok": true,
+   "detail": "255,249,241"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr2 umber: whole device pixels per bitmap pixel",
+   "ok": true,
+   "detail": "6"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr2 sand: final canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr2 sand: colour #f93822",
+   "ok": true,
+   "detail": "249,56,34"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr2 sand: whole device pixels per bitmap pixel",
+   "ok": true,
+   "detail": "6"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr2: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr2: no failed requests",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr3 first frame shows the name (≥ 1343 px, no partial alpha)",
+   "ok": true,
+   "detail": "1343"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr3 chalk: final canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr3 chalk: colour #332e20",
+   "ok": true,
+   "detail": "51,46,32"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr3 chalk: whole device pixels per bitmap pixel",
+   "ok": true,
+   "detail": "9"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr3 umber: final canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr3 umber: colour #fff9f1",
+   "ok": true,
+   "detail": "255,249,241"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr3 umber: whole device pixels per bitmap pixel",
+   "ok": true,
+   "detail": "9"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr3 sand: final canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr3 sand: colour #f93822",
+   "ok": true,
+   "detail": "249,56,34"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr3 sand: whole device pixels per bitmap pixel",
+   "ok": true,
+   "detail": "9"
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr3: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "dpr3: no failed requests",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "frames ⊆ final bitmap, monotone",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "no partial-alpha pixels in any frame",
+   "ok": true,
+   "detail": "0"
+  },
+  {
+   "engine": "chromium",
+   "name": "finished within 326–352 ms",
+   "ok": true,
+   "detail": "336"
+  },
+  {
+   "engine": "chromium",
+   "name": "finished: no pending animation frame",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "baked frames match the reviewed study (≤ 12 px per frame, 2 ms step)",
+   "ok": true,
+   "detail": "worst 12 px"
+  },
+  {
+   "engine": "chromium",
+   "name": "in-site link leaves the entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "Back: finished on its first frame",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "history: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "back_forward load: finished on its first frame",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "bfcache restore mid-play finishes",
+   "ok": true,
+   "detail": "1521"
+  },
+  {
+   "engine": "chromium",
+   "name": "Company → CLOSE → entrance: finished",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "…and selecting the script replays the flourish (name stays)",
+   "ok": true,
+   "detail": "1348"
+  },
+  {
+   "engine": "chromium",
+   "name": "Company route: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "palette mid-play keeps the frame",
+   "ok": true,
+   "detail": "1521 → 1521"
+  },
+  {
+   "engine": "chromium",
+   "name": "palette mid-play recolours",
+   "ok": true,
+   "detail": "255,249,241"
+  },
+  {
+   "engine": "chromium",
+   "name": "palette mid-play continues, no restart",
+   "ok": true,
+   "detail": "1521 → 1919"
+  },
+  {
+   "engine": "chromium",
+   "name": "reduced motion: finished at first paint",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "reduced motion: replay stays finished",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "reduced motion switched on mid-play finishes",
+   "ok": true,
+   "detail": "1398"
+  },
+  {
+   "engine": "chromium",
+   "name": "hidden tab mid-play finishes",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "no frames at all: watchdog shows finished",
+   "ok": true,
+   "detail": "1343"
+  },
+  {
+   "engine": "chromium",
+   "name": "click replays the flourish from the start",
+   "ok": true,
+   "detail": "1344"
+  },
+  {
+   "engine": "chromium",
+   "name": "route switch mid-play: no animation frame left",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "route switch: player listeners removed",
+   "ok": true,
+   "detail": "4 → 1"
+  },
+  {
+   "engine": "chromium",
+   "name": "replay/route: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "phone: first frame shows the name",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "phone: no horizontal overflow",
+   "ok": true,
+   "detail": "0"
+  },
+  {
+   "engine": "chromium",
+   "name": "phone: signature target ≥ 44 px",
+   "ok": true,
+   "detail": "101.65625"
+  },
+  {
+   "engine": "chromium",
+   "name": "phone: final ink",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "phone: no JS errors or failed requests",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "company.html: boots without JS errors or failed requests",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "projects.html: boots without JS errors or failed requests",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "contact.html: boots without JS errors or failed requests",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "etcetera.html: boots without JS errors or failed requests",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "project-beetlecat.html: boots without JS errors or failed requests",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "404.html: boots without JS errors or failed requests",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr1 first frame shows the name (≥ 1343 px, no partial alpha)",
+   "ok": true,
+   "detail": "1343"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr1 chalk: final canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr1 chalk: colour #332e20",
+   "ok": true,
+   "detail": "51,46,32"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr1 chalk: whole device pixels per bitmap pixel",
+   "ok": true,
+   "detail": "3"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr1 umber: final canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr1 umber: colour #fff9f1",
+   "ok": true,
+   "detail": "255,249,241"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr1 umber: whole device pixels per bitmap pixel",
+   "ok": true,
+   "detail": "3"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr1 sand: final canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr1 sand: colour #f93822",
+   "ok": true,
+   "detail": "249,56,34"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr1 sand: whole device pixels per bitmap pixel",
+   "ok": true,
+   "detail": "3"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr1: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr1: no failed requests",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr2 first frame shows the name (≥ 1343 px, no partial alpha)",
+   "ok": true,
+   "detail": "1343"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr2 chalk: final canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr2 chalk: colour #332e20",
+   "ok": true,
+   "detail": "51,46,32"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr2 chalk: whole device pixels per bitmap pixel",
+   "ok": true,
+   "detail": "6"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr2 umber: final canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr2 umber: colour #fff9f1",
+   "ok": true,
+   "detail": "255,249,241"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr2 umber: whole device pixels per bitmap pixel",
+   "ok": true,
+   "detail": "6"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr2 sand: final canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr2 sand: colour #f93822",
+   "ok": true,
+   "detail": "249,56,34"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr2 sand: whole device pixels per bitmap pixel",
+   "ok": true,
+   "detail": "6"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr2: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr2: no failed requests",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr3 first frame shows the name (≥ 1343 px, no partial alpha)",
+   "ok": true,
+   "detail": "1343"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr3 chalk: final canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr3 chalk: colour #332e20",
+   "ok": true,
+   "detail": "51,46,32"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr3 chalk: whole device pixels per bitmap pixel",
+   "ok": true,
+   "detail": "9"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr3 umber: final canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr3 umber: colour #fff9f1",
+   "ok": true,
+   "detail": "255,249,241"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr3 umber: whole device pixels per bitmap pixel",
+   "ok": true,
+   "detail": "9"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr3 sand: final canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr3 sand: colour #f93822",
+   "ok": true,
+   "detail": "249,56,34"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr3 sand: whole device pixels per bitmap pixel",
+   "ok": true,
+   "detail": "9"
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr3: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "dpr3: no failed requests",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "frames ⊆ final bitmap, monotone",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "no partial-alpha pixels in any frame",
+   "ok": true,
+   "detail": "0"
+  },
+  {
+   "engine": "webkit",
+   "name": "finished within 326–352 ms",
+   "ok": true,
+   "detail": "336"
+  },
+  {
+   "engine": "webkit",
+   "name": "finished: no pending animation frame",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "baked frames match the reviewed study (≤ 12 px per frame, 2 ms step)",
+   "ok": true,
+   "detail": "worst 0 px"
+  },
+  {
+   "engine": "webkit",
+   "name": "in-site link leaves the entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "Back: finished on its first frame",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "history: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "back_forward load: finished on its first frame",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "bfcache restore mid-play finishes",
+   "ok": true,
+   "detail": "1509"
+  },
+  {
+   "engine": "webkit",
+   "name": "Company → CLOSE → entrance: finished",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "…and selecting the script replays the flourish (name stays)",
+   "ok": true,
+   "detail": "1347"
+  },
+  {
+   "engine": "webkit",
+   "name": "Company route: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "palette mid-play keeps the frame",
+   "ok": true,
+   "detail": "1521 → 1521"
+  },
+  {
+   "engine": "webkit",
+   "name": "palette mid-play recolours",
+   "ok": true,
+   "detail": "255,249,241"
+  },
+  {
+   "engine": "webkit",
+   "name": "palette mid-play continues, no restart",
+   "ok": true,
+   "detail": "1521 → 1919"
+  },
+  {
+   "engine": "webkit",
+   "name": "reduced motion: finished at first paint",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "reduced motion: replay stays finished",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "reduced motion switched on mid-play finishes",
+   "ok": true,
+   "detail": "1398"
+  },
+  {
+   "engine": "webkit",
+   "name": "hidden tab mid-play finishes",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "no frames at all: watchdog shows finished",
+   "ok": true,
+   "detail": "1343"
+  },
+  {
+   "engine": "webkit",
+   "name": "click replays the flourish from the start",
+   "ok": true,
+   "detail": "1344"
+  },
+  {
+   "engine": "webkit",
+   "name": "route switch mid-play: no animation frame left",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "route switch: player listeners removed",
+   "ok": true,
+   "detail": "4 → 1"
+  },
+  {
+   "engine": "webkit",
+   "name": "replay/route: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "phone: first frame shows the name",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "phone: no horizontal overflow",
+   "ok": true,
+   "detail": "0"
+  },
+  {
+   "engine": "webkit",
+   "name": "phone: signature target ≥ 44 px",
+   "ok": true,
+   "detail": "101.65625"
+  },
+  {
+   "engine": "webkit",
+   "name": "phone: final ink",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "phone: no JS errors or failed requests",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "company.html: boots without JS errors or failed requests",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "projects.html: boots without JS errors or failed requests",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "contact.html: boots without JS errors or failed requests",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "etcetera.html: boots without JS errors or failed requests",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "project-beetlecat.html: boots without JS errors or failed requests",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "404.html: boots without JS errors or failed requests",
+   "ok": true,
+   "detail": ""
+  }
+ ]
+}
