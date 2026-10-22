@@ -782,8 +782,9 @@
 
   /* ---------- Entrance (V4) ----------
      The original 160×61 Freeman script is the identity; navigation sits beneath it as one group.
-     The script assembles on arrival (load, reload, in-site link) and is drawn finished on
-     Back/Forward, like the retired eagle. Selecting the script replays it. A colorway recolours
+     The signature is written by hand on arrival (load, reload; signature-motion.js) and drawn
+     finished after an in-site link and on Back/Forward. Selecting the script writes it again.
+     Without the hand the script is shown finished and still. A colorway recolours
      the script in place; it never restarts the animation. The bitmap is shown at a whole number of
      device pixels per bitmap pixel, so every pixel of the script is the same size. */
   const COLORWAYS = [["chalk", "Light"], ["umber", "Dark"], ["sand", "Freeman"]];
@@ -823,11 +824,18 @@
       home.style.setProperty("--y", snap(innerHeight * (phone ? 0.48 : 0.5) - group.offsetHeight / 2) + "px");
     }
     fit();
-    const signature = window.FreemanPixelMark;
-    const mark = signature ? signature.mount(canvas, { play }) : null;
+    // Pages that don't carry the signature scripts (project pages) load them on the way here.
+    let mark = null, live = true;
     const button = root.querySelector(".v4-home-mark");
-    if (mark) button.addEventListener("click", () => mark.replay());
-    else button.disabled = true;
+    const attach = () => {
+      if (!live || mark) return;
+      mark = mountSignature(canvas, play);
+      button.disabled = !mark;
+    };
+    button.disabled = true;
+    button.addEventListener("click", () => mark && mark.replay());
+    if (window.FreemanSignature || window.FreemanPixelMark) attach();
+    else loadSignature().then(attach);
     root.querySelectorAll("[data-v4-color]").forEach((btn) => btn.addEventListener("click", () => {
       if (btn.dataset.v4Color !== palette) choosePalette(btn.dataset.v4Color);
       root.querySelectorAll("[data-v4-color]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.v4Color === palette)));
@@ -835,7 +843,28 @@
     }));
     words(root.querySelector(".legal"));
     words(root.querySelector(".mark"));
-    return { resize: fit, destroy: () => mark && mark.destroy() };
+    return { resize: fit, destroy: () => { live = false; if (mark) mark.destroy(); } };
+  }
+  // The handwritten signature when signature-motion.js is present; otherwise the original bitmap,
+  // finished and still. The retired scattered-pixel assembly is never played.
+  function mountSignature(canvas, play) {
+    if (window.FreemanSignature) return window.FreemanSignature.mount(canvas, { play });
+    if (!window.FreemanPixelMark) return null;
+    const still = window.FreemanPixelMark.mount(canvas, { play: false });
+    return { replay: () => still.paint(), paint: () => still.paint(), destroy: () => still.destroy() };
+  }
+  // Same URLs as the entrance's script tags, so a later visit reuses the cached files.
+  const SIGNATURE_SCRIPTS = ["/pixel-mark.js?v=20261018-v5-restore", "/signature-motion.js?v=20261022-hand-002"];
+  let signatureLoad = null;
+  function loadSignature() {
+    const add = (src) => new Promise((done) => {
+      const s = document.createElement("script");
+      s.src = src; s.onload = s.onerror = done;
+      document.head.append(s);
+    });
+    // In order: the hand reads its artwork from pixel-mark.js.
+    return signatureLoad || (signatureLoad = (window.FreemanPixelMark ? Promise.resolve() : add(SIGNATURE_SCRIPTS[0]))
+      .then(() => (window.FreemanSignature ? null : add(SIGNATURE_SCRIPTS[1]))));
   }
   // Back/Forward (and a document restored from history) shows the finished script.
   function arrivedByHistory() {

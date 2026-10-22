@@ -1,14 +1,14 @@
 /* Signature motion study — selector over the real entrance.
-   Loaded after pixel-mark.js and signature-motion.js, before app.js. app.js is unmodified: it
-   still calls FreemanPixelMark.mount(canvas, { play }), which this file routes to the study
-   engine with the chosen variant. History, palette, replay-on-click and routing are production's.
+   Loaded after pixel-mark.js and signature-motion.js, before app.js. app.js mounts
+   window.FreemanSignature (the engine); this file sets the variant it plays. History, palette,
+   replay-on-click and routing are the site's own.
 
    ?v=still|stroke|impression|flourish  &tempo=measured|brisk  &rate=1|0.25  &bare (no panel)
    Keys: 0–3 choose, R replay, S quarter speed, T tempo. */
 (() => {
   "use strict";
-  const engine = window.FreemanSignatureMotion, original = window.FreemanPixelMark;
-  if (!engine || !original) return;
+  const engine = window.FreemanSignatureMotion;
+  if (!engine || !window.FreemanSignature) return;
   const VARIANTS = [["still", "00", "Already there"], ["stroke", "01", "An author's stroke"], ["impression", "02", "An impression"], ["flourish", "03", "The flourish"]];
   const TEMPI = { measured: 1, brisk: 0.66 };
   const q = new URLSearchParams(location.search);
@@ -18,8 +18,11 @@
     rate: q.get("rate") === "0.25" ? 0.25 : 1,
   };
   const settings = () => ({ variant: state.variant, tempo: TEMPI[state.tempo], rate: state.rate });
+  // app.js mounts window.FreemanSignature (the engine); the selected variant is read on every replay.
+  engine.settings = settings;
   let handle = null;
-  window.FreemanPixelMark = { ...original, mount(canvas, opts) { return (handle = engine.mount(canvas, { ...opts, settings })); } };
+  const signature = window.FreemanSignature;
+  window.FreemanSignature = { mount(canvas, opts) { return (handle = signature.mount(canvas, opts)); } };
 
   function remember() {
     const u = new URL(location.href);

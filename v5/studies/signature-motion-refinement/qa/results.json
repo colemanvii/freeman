@@ -1,6 +1,6 @@
 {
  "base": "http://127.0.0.1:8820",
- "date": "2026-10-22T16:33:28.400Z",
+ "date": "2026-10-22T18:05:33.262Z",
  "passed": 396,
  "failed": 0,
  "results": [
@@ -980,7 +980,7 @@
    "engine": "chromium",
    "name": "flourish: palette switch mid-play keeps the frame",
    "ok": true,
-   "detail": "1524 vs 1524"
+   "detail": "1521 vs 1521"
   },
   {
    "engine": "chromium",
@@ -992,7 +992,7 @@
    "engine": "chromium",
    "name": "flourish: palette switch does not restart",
    "ok": true,
-   "detail": "1524 → 1926"
+   "detail": "1521 → 1919"
   },
   {
    "engine": "chromium",
@@ -1010,7 +1010,7 @@
    "engine": "chromium",
    "name": "impression: palette switch does not restart",
    "ok": true,
-   "detail": "2039 → 2224"
+   "detail": "2039 → 2220"
   },
   {
    "engine": "chromium",
@@ -1022,7 +1022,7 @@
    "engine": "chromium",
    "name": "reduced motion turned on mid-play finishes",
    "ok": true,
-   "detail": "257 → 2278"
+   "detail": "260 → 2278"
   },
   {
    "engine": "chromium",
@@ -2168,7 +2168,7 @@
    "engine": "webkit",
    "name": "flourish: palette switch mid-play keeps the frame",
    "ok": true,
-   "detail": "1538 vs 1538"
+   "detail": "1521 vs 1521"
   },
   {
    "engine": "webkit",
@@ -2180,7 +2180,7 @@
    "engine": "webkit",
    "name": "flourish: palette switch does not restart",
    "ok": true,
-   "detail": "1538 → 1949"
+   "detail": "1521 → 1919"
   },
   {
    "engine": "webkit",

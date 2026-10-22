@@ -18,7 +18,7 @@
 (() => {
   "use strict";
   const W = 160, H = 61, COUNT = 2278, SUM = 157483714;
-  const P = window.FreemanPixelMark; // the production renderer, captured before anyone wraps it
+  let P = window.FreemanPixelMark; // the production renderer, captured before anyone wraps it
 
   /* ---------- Artwork (read from the production renderer, verified) ---------- */
   function checksum(xy) { let h = 2166136261; for (const v of xy) h = Math.imul(h ^ v, 16777619) >>> 0; return h; }
@@ -159,7 +159,67 @@
     const depth = new Float64Array(n);
     for (let i = 0; i < n; i++) { let d = Infinity; for (const [x, y] of paper) d = Math.min(d, (x - xy[2 * i]) ** 2 + (y - xy[2 * i + 1]) ** 2); depth[i] = Math.sqrt(d); }
 
-    return { n, sk, skel, write, flood, depth, xy };
+    // The hand, round 2 (whole signature). Times are milliseconds.
+    // Each rise or fall between vertical turning points is one motion (handwriting is a chain of
+    // them, of similar duration whatever their length: duration ∝ length^iso). Inside a motion the
+    // pen is fastest mid-way and slows into the turns, never to a stop (floor = flow). Pressure is
+    // read from the artwork: where the finished stroke is broad the pen was pressing and moved
+    // slower; hairlines are quick. Retracing ink already down is quick. A flick accelerates and
+    // leaves the paper at speed. Pen lifts are air time. The whole is scaled to `total`.
+    function writeHand(strokes, prof) {
+      const first = new Float64Array(W * H).fill(Infinity), owner = new Int32Array(W * H).fill(-1), routes = [];
+      const units = [], lifts = []; let pen = null;
+      strokes.forEach((st, k) => {
+        const ids = st.p.map(snap); let route = [ids[0]];
+        for (let j = 1; j < ids.length; j++) route = route.concat(path(ids[j - 1], ids[j]).slice(1));
+        const P = route.map((u) => [u % W, (u / W) | 0]), m = P.length, s = [0];
+        for (let i = 1; i < m; i++) s.push(s[i - 1] + Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]));
+        // vertical turning points (smoothed, ignoring wobbles under 2 px)
+        const ys = P.map((_, i) => { let a = 0; for (let d = -2; d <= 2; d++) a += P[Math.min(m - 1, Math.max(0, i + d))][1]; return a / 5; });
+        const cuts = [0]; let dir = 0, ext = 0;
+        for (let i = 1; i < m; i++) {
+          const d = Math.sign(ys[i] - ys[i - 1]); if (!d) continue;
+          if (dir && d !== dir && Math.abs(ys[ext] - ys[cuts[cuts.length - 1]]) >= 2) cuts.push(ext);
+          if (d !== dir || Math.abs(ys[i] - ys[ext]) > 0) ext = i; dir = d;
+        }
+        if (cuts[cuts.length - 1] !== m - 1) cuts.push(m - 1);
+        const t = new Float64Array(m), seen = new Set();
+        const width = (u) => (ink[u] >= 0 ? depth[ink[u]] : 1);
+        for (let c = 1; c < cuts.length; c++) {
+          const a = cuts[c - 1], b = cuts[c], L = Math.max(1, s[b] - s[a]);
+          const D = st.flick ? Math.pow(s[m - 1], prof.iso) * prof.throw : Math.pow(L, prof.iso);
+          const mean = st.flick ? 0.65 + prof.gather / 2 : prof.flow + (1 - prof.flow) * (2 / Math.PI);
+          for (let i = a + 1; i <= b; i++) {
+            const u = st.flick ? s[i] / s[m - 1] : (s[i] - s[a]) / L;
+            // a throw leaves the n already moving (no hold before it) and gathers speed
+            const shape = st.flick ? 0.65 + prof.gather * u : prof.flow + (1 - prof.flow) * Math.sin(Math.PI * u);
+            const press = Math.min(1.6, Math.max(0.55, Math.pow(width(route[i]) / 1.5, -prof.pressure)));
+            const again = first[route[i]] < Infinity || seen.has(route[i]) ? prof.retrace : 1;
+            const v = ((st.flick ? s[m - 1] : L) / D) * (shape / mean) * press * again * (st.tempo || 1);
+            t[i] = t[i - 1] + (s[i] - s[i - 1]) / v;
+            seen.add(route[i]);
+          }
+        }
+        // A stroke that starts where the last one ended is the same gesture: no lift, no air time.
+        const gap = pen ? Math.hypot(pen[0] - P[0][0], pen[1] - P[0][1]) : 0;
+        const air = pen && gap > 1.5 ? prof.lift + prof.liftPerPx * gap : 0;
+        units.push({ route, t, st }); lifts.push(air);
+        route.forEach((u) => { if (first[u] === Infinity) first[u] = 0; }); // mark ink for retrace detection
+        pen = P[m - 1];
+      });
+      // Scale the written motion so that ink + air = total.
+      const written = units.reduce((a, x) => a + x.t[x.t.length - 1], 0), air = lifts.reduce((a, b) => a + b, 0);
+      const k = Math.max(0.05, (prof.total - air) / written);
+      first.fill(Infinity); let clock = 0;
+      units.forEach(({ route, t, st }, j) => {
+        clock += lifts[j];
+        route.forEach((u, i) => { const at = clock + t[i] * k; if (at < first[u]) { first[u] = at; owner[u] = j; } });
+        routes.push({ name: st.name, start: clock, end: clock + t[t.length - 1] * k });
+        clock += t[t.length - 1] * k;
+      });
+      return { first, owner, routes, total: clock };
+    }
+    return { n, sk, skel, write, writeHand, flood, depth, xy };
   }
 
   /* ---------- The hand: strokes inferred from the bitmap ----------
@@ -180,6 +240,22 @@
   ];
 
 
+  /* ---------- Round 2: the whole signature, one practiced hand ----------
+     Same letters and route as HAND, with the F cap written as the artwork's pressure describes
+     it: the pen lands on the heavy teardrop at the right, sweeps left along the top, and closes
+     into the curl, whose inner ball is where it stops. */
+  const CAP_FROM_RIGHT = { name: "F cap", p: [[62, 4], [52, 5], [43, 7], [33, 6], [28, 8], [25, 13], [29, 17], [35, 15]] };
+  // A practiced signer throws the capital quickly; the name carries the time.
+  const SIGNATURE = [{ ...CAP_FROM_RIGHT, tempo: 1.15 }, { ...HAND[1], tempo: 1.25 }, { ...HAND[2], tempo: 1.2 }, ...HAND.slice(3)];
+  const SIGNATURE_CAP_FROM_LEFT = HAND;
+  // Three timing passes of the same hand; values are tuned by eye at normal speed.
+  const PASSES = {
+    // lead: the pen touched just before first paint, so the first frame already carries ink.
+    fluent: { total: 1000, lead: 25, iso: 0.5, flow: 0.45, pressure: 0.6, retrace: 2.5, lift: 35, liftPerPx: 0.5, throw: 1.4, gather: 0.9, spread: 3.5 },
+    quick: { total: 700, lead: 25, iso: 0.4, flow: 0.6, pressure: 0.3, retrace: 3, lift: 25, liftPerPx: 0.35, throw: 1.6, gather: 0.6, spread: 3 },
+    deliberate: { total: 1400, lead: 25, iso: 0.6, flow: 0.25, pressure: 0.9, retrace: 2, lift: 45, liftPerPx: 0.55, throw: 1.7, gather: 0.9, spread: 4 },
+  };
+
   /* ---------- Arrival times per variant (ms at the measured tempo) ---------- */
   const DURATION = { still: 0, stroke: 1050, impression: 360, flourish: 320 };
   let model = null;
@@ -187,7 +263,11 @@
   function schedule(variant, xy) {
     if (cache[variant]) return cache[variant];
     const M = model || (model = analyse(xy)), n = M.n, a = new Float64Array(n), dur = DURATION[variant] || 0;
-    if (variant === "stroke") {
+    const [pass, capLeft] = variant.split(":");
+    if (PASSES[pass]) {
+      const prof = PASSES[pass], w = M.writeHand(capLeft ? SIGNATURE_CAP_FROM_LEFT : SIGNATURE, prof), f = M.flood(w, prof.spread);
+      for (let i = 0; i < n; i++) a[i] = Math.max(0, f.T[i] - prof.lead);
+    } else if (variant === "stroke") {
       const w = M.write(HAND), f = M.flood(w, 0.4);
       for (let i = 0; i < n; i++) a[i] = (f.T[i] / w.total) * dur;
     } else if (variant === "flourish") {
@@ -210,9 +290,13 @@
   /* ---------- Player ---------- */
   const NOOP = { replay() {}, paint() {}, destroy() {} };
   function mount(canvas, opts = {}) {
+    P = P || window.FreemanPixelMark;
     if (!P) return NOOP;
     const xy = finishedPixels();
-    if (!xy) return P.mount(canvas, { ...opts, play: false }); // unknown artwork: the production still
+    if (!xy) { // unknown artwork: the production bitmap, finished and still — never the retired scatter
+      const still = P.mount(canvas, { play: false });
+      return { replay: () => still.paint(), paint: () => still.paint(), finish: () => still.paint(), destroy: () => still.destroy() };
+    }
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return NOOP;
     const settings = typeof opts.settings === "function" ? opts.settings : () => ({});
@@ -268,5 +352,10 @@
     };
   }
 
-  window.FreemanSignatureMotion = { mount, DURATION, HAND, _analyse: analyse, _schedule: schedule, _checksum: checksum, _pixels: finishedPixels };
+  // The entrance (app.js) mounts window.FreemanSignature. A study page may set
+  // FreemanSignatureMotion.settings to choose the variant; otherwise the recommended pass plays.
+  const RECOMMENDED = "fluent";
+  const api = { mount, DURATION, HAND, PASSES, RECOMMENDED, settings: null, _analyse: analyse, _schedule: schedule, _checksum: checksum, _pixels: finishedPixels };
+  window.FreemanSignatureMotion = api;
+  window.FreemanSignature = { mount: (canvas, opts = {}) => mount(canvas, { ...opts, settings: () => (api.settings ? api.settings() : { variant: RECOMMENDED }) }) };
 })();
