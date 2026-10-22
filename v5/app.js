@@ -660,7 +660,7 @@
       <div class="fw-register" aria-label="Selected fieldwork">
         <button class="fw-entry fw-entry-note" type="button" data-etc-open="optimist">
           <span class="fw-entry-visual"><img src="/assets/project-1.jpg" alt="Guests gathering on the outdoor patio at The Optimist" loading="eager"></span>
-          <span class="fw-entry-caption">002 / THE OPTIMIST — READ THE NOTE ↗</span>
+          <span class="fw-entry-caption">002 / Bringing The Optimist to life ↗</span>
         </button>
       </div>
     </div>
