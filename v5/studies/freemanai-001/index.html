@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#fff9f1"><title>FreemanAI</title>
+<script src="/palette.js"></script>
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="ai.css?v=001">
+</head><body data-verb="see">
+<main class="frame">
+ <header class="top">
+  <span class="brand">FREEMAN <b>/</b> AI</span>
+  <span class="top-right">
+   <button type="button" id="role" class="role" aria-haspopup="listbox" aria-expanded="false"><span class="muted">AS</span> <span id="role-label">OWNER</span> <span aria-hidden="true">▾</span></button>
+   <span class="muted date" id="date">THU 22 OCT</span>
+   <a class="close" href="/client-access.html">× CLOSE</a>
+  </span>
+ </header>
+ <ol class="roles" id="roles" role="listbox" aria-label="View as" hidden></ol>
+
+ <section class="stage">
+  <nav class="verbs" aria-label="FreemanAI">
+   <button type="button" data-verb="see"><span class="n">01</span>See.</button>
+   <button type="button" data-verb="ask"><span class="n">02</span>Ask.</button>
+   <button type="button" data-verb="act"><span class="n">03</span>Act.</button>
+  </nav>
+  <p class="lede" id="lede"></p>
+  <div class="work" id="work" tabindex="-1"></div>
+ </section>
+
+ <aside class="sheet" id="sheet" hidden aria-modal="true" role="dialog" aria-labelledby="sheet-title">
+  <header class="sheet-top"><span id="sheet-kicker"></span><button type="button" class="close" id="sheet-close">× CLOSE</button></header>
+  <div class="sheet-body" id="sheet-body"></div>
+ </aside>
+
+ <footer class="footer">
+  <span>BUILT FOR GENERATIONS</span>
+  <span><span class="sig">■</span> SAMPLE RECORD / FICTIONAL PROJECTS / <button type="button" id="reset">RESET</button></span>
+ </footer>
+</main>
+<p id="announce" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+<script src="data.js?v=001"></script>
+<script src="ai.js?v=001"></script>
+</body></html>
