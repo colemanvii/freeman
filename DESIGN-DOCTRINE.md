@@ -1,3 +1,5 @@
+> **Historical reference (4 October 2026).** This document records the original design foundation; it is intentionally preserved, including language and page rules later revised. For current approved copy, V5 decisions, and FreemanAI guidance, see [Current Direction](docs/CURRENT-DIRECTION.md). Do not use this document by itself as a release specification.
+
 # Freeman Design Doctrine
 
 ## Status
