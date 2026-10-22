@@ -6,7 +6,7 @@ from playwright.sync_api import sync_playwright
 
 base = (sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8788").rstrip("/")
 PIXELS = 2278            # points in the original 160x61 bitmap (v5/pixel-mark.js)
-DURATION = 1850          # original assembly duration, ms
+DURATION = 1450          # Deliberate whole-signature arrival, about 1.4s
 WAYS = [("chalk", "Light", "rgb(255, 249, 241)", "#332e20"),
         ("umber", "Dark", "rgb(51, 46, 32)", "#fff9f1"),
         ("sand", "Freeman", "rgb(249, 56, 34)", "#f93822")]
@@ -36,6 +36,21 @@ with sync_playwright() as p:
         check(0 < mid < PIXELS, f"script should be assembling on arrival, saw {mid} pixels")
         page.wait_for_timeout(DURATION + 300)
         check(page.evaluate(INK)["n"] == PIXELS, "finished script must show every original pixel")
+
+        # Regression: no preprinted top of F. The Deliberate cap must begin on clean paper.
+        opening = page.evaluate("""() => {
+          const m = window.FreemanSignatureMotion;
+          const px = m._pixels();
+          const times = m._schedule('deliberate', px).a;
+          return { selected: m.RECOMMENDED,
+                   initial: times.filter(t => t <= 0).length,
+                   early: times.filter(t => t <= 50).length,
+                   final: Math.max(...times) };
+        }""")
+        check(opening["selected"] == "deliberate", "Deliberate is the live profile")
+        check(opening["initial"] == 0, f"F cap must not be pre-inked at t=0: {opening}")
+        check(0 < opening["early"] < PIXELS, f"F cap should be drawn over time: {opening}")
+        check(1300 < opening["final"] < 1500, f"Deliberate rhythm preserved: {opening}")
 
         # Radically simple: one script, three destinations, ACCESS, three squares. Nothing else interactive.
         check(page.locator("#main a").count() == 4, "links: COMPANY, PROJECTS, CONTACT, ACCESS")
