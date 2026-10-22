@@ -1,0 +1,48 @@
+/* Film Study 001: a 16:9 frame of chalk paper on umber. The interface inside is the real one. */
+:root{--paper:#fff9f1;--ink:#332e20;--umber:#332e20;--muted:#706659;--sand:#c5b9a7;--red:#f93822;--mono:Monaco,"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--umber);color:var(--sand);font:11px/1.5 var(--mono);-webkit-font-smoothing:none;overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+.screen{height:100dvh;display:grid;grid-template-rows:minmax(0,1fr) auto;align-items:center;justify-items:center;padding:24px 24px 0}
+.stage{position:relative;width:var(--w,1600px);height:var(--h,900px);background:var(--paper);overflow:hidden}
+.world{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;transform:scale(var(--s,1))}
+.cam{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;will-change:transform}
+iframe{position:absolute;border:0;background:var(--paper);pointer-events:none}
+#desk,#desk2{left:0;top:0;width:1600px;height:900px}
+#desk2{visibility:hidden}
+.phone{position:absolute;left:593px;top:16px;width:414px;height:868px;visibility:hidden}
+.phone #hand{left:12px;top:12px;width:390px;height:844px;border-radius:44px;overflow:hidden}
+.phone-line{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.phone-line rect{fill:none;stroke:var(--ink);stroke-width:1.5;stroke-dasharray:1;stroke-dashoffset:1}
+.phone.drawn .phone-line rect{stroke-dashoffset:0;transition:stroke-dashoffset .7s cubic-bezier(.45,0,.2,1)}
+.cursor{position:absolute;left:0;top:0;width:21px;height:21px;margin:-10.5px 0 0 -10.5px;opacity:0;pointer-events:none;will-change:transform}
+.cursor svg{display:block;width:21px;height:21px;overflow:visible}
+.cursor path{stroke:var(--ink);stroke-width:1;fill:none}
+.cursor rect{fill:var(--red)}
+.cursor.down rect{transform:scale(1.6);transform-origin:10.5px 10.5px}
+.touch{position:absolute;left:0;top:0;width:34px;height:34px;margin:-17px 0 0 -17px;border:1.5px solid var(--red);border-radius:50%;opacity:0;pointer-events:none}
+.touch.tap{animation:tap .5s cubic-bezier(.2,0,.2,1) forwards}
+@keyframes tap{0%{opacity:.95;transform:scale(.55)}55%{opacity:.85;transform:scale(1)}100%{opacity:0;transform:scale(1.25)}}
+.caption{position:absolute;left:56px;bottom:40px;margin:0;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);opacity:0;transition:opacity .5s ease}
+.caption.on{opacity:1}
+.caption::before{content:"■ ";color:var(--red)}
+.paper{position:absolute;inset:0;background:var(--paper);opacity:1;pointer-events:none}
+.card{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:18px;opacity:0;pointer-events:none;color:var(--ink)}
+.card-name{margin:0;font-size:64px;letter-spacing:-.04em;line-height:1}
+.card-line{margin:0;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.poster{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:16px;background:var(--paper);color:var(--ink)}
+.poster-name{font-size:64px;letter-spacing:-.04em;line-height:1}
+.poster-line{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.poster-play{margin-top:26px;padding:14px 22px;border:1px solid var(--ink);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.poster:hover .poster-play{background:var(--red);border-color:var(--red);color:var(--paper)}
+.poster[hidden]{display:none}
+.controls{width:var(--w,1600px);display:grid;grid-template-columns:auto minmax(0,1fr) auto auto auto;gap:18px;align-items:center;padding:14px 0 18px;font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+.bar{height:1px;background:#6f6256;position:relative}
+.bar span{position:absolute;left:0;top:0;height:1px;width:0;background:var(--red)}
+.tc{font-variant-numeric:tabular-nums;color:var(--paper)}
+#play,#video{padding:6px 10px;border:1px solid #6f6256;color:var(--sand);text-decoration:none}
+#video:hover,#play:hover{background:var(--red);border-color:var(--red);color:var(--paper)}
+body.film .controls{opacity:.5}
+body.render .controls{display:none}
+body.render .screen{padding:0}
+@media (max-width:700px){.controls{grid-template-columns:minmax(0,1fr) auto auto auto}.controls>span:first-child{display:none}.screen{padding:12px 12px 0}}
