@@ -9,26 +9,24 @@
       "I want construction to be something people enjoy being part of, and something we’re proud to stand behind long after opening day."
   ];
 
+  // Seven-piece editorial edit, chosen for visual and material range.
+  // Non-project references are identified as archive material, not Freeman construction evidence.
   const objects = [
     {id:"optimist", n:"002", name:"Bringing The Optimist to life", src:"/assets/project-1.jpg", alt:"Patio at The Optimist", type:"EDITORIAL NOTE"},
-    {id:"barnsley", n:"003", name:"Barnsley Gardens", src:"/assets/projects/barnsley-gardens-2.jpg", alt:"Barnsley Gardens project photograph", type:"PROJECT PHOTOGRAPH"},
-    {id:"drawing", n:"004", name:"Architectural drawing", src:"/etcetera/architectural-industrial.webp", alt:"Architectural study drawing", type:"FROM THE WORKING ARCHIVE"},
-    {id:"residential", n:"005", name:"Residential perspective", src:"/etcetera/residential-landscape.webp", alt:"Residential perspective drawing", type:"FROM THE WORKING ARCHIVE"},
-    {id:"ruskin", n:"006", name:"What remains", src:"/etcetera/ruskin.webp", alt:"Photographed passage by John Ruskin about building for future generations", type:"A READING"},
-    {id:"beetlecat", n:"007", name:"Beetlecat", src:"/assets/projects/beetlecat-interior-2.jpg", alt:"Beetlecat interior photograph", type:"PROJECT PHOTOGRAPH"},
-    {id:"site", n:"008", name:"The jobsite", src:"/more-assets/site.webp", alt:"Unidentified site photograph from the Freeman archive", type:"ARCHIVE PHOTOGRAPH", context:"Existing Freeman site archive photograph. Project and date unverified."},
-    {id:"optimistdetail", n:"009", name:"The Optimist, closer", src:"/more-assets/optimist-detail.webp", alt:"Cropped architectural detail from an existing photograph of The Optimist", type:"A CLOSER LOOK", context:"A detail crop of existing portfolio photography. Not a before-and-after or construction-process photograph."},
-    {id:"timber", n:"010", name:"Timber", src:"/more-assets/timber.webp", alt:"Timber surface reference from the existing Field Notes archive", type:"MATERIAL REFERENCE", context:"Reference image from the Freeman Field Notes archive. Project and date unverified."},
-    {id:"angle", n:"011", name:"Angle divider", src:"/more-assets/angle-divider.webp", alt:"Printed angle-divider graphic from the Field Notes archive", type:"PRINTED ARTIFACT", context:"Archive illustration; not presented as a verified construction drawing."},
-    {id:"square", n:"012", name:"Layout square", src:"/more-assets/square.webp", alt:"Layout square reference from the Field Notes archive", type:"REFERENCE OBJECT", context:"Archive reference object; not presented as a project-specific construction artifact."}
-  ]
+    {id:"barnsley", n:"003", name:"Barnsley Gardens", src:"/assets/projects/barnsley-gardens-2.jpg", alt:"Barnsley Gardens project photograph", type:"PROJECT"},
+    {id:"drawing", n:"004", name:"Architectural study", src:"/etcetera/architectural-industrial.webp", alt:"Historical architectural study drawing", type:"ARCHIVE REFERENCE", context:"Architectural reference from the existing Freeman creative archive. No project attribution is implied."},
+    {id:"residential", n:"005", name:"A perspective", src:"/etcetera/residential-landscape.webp", alt:"Warm-toned residential perspective drawing", type:"ARCHIVE REFERENCE", context:"Architectural reference from the existing Freeman creative archive. No project attribution is implied."},
+    {id:"ruskin", n:"006", name:"When we build", src:"/etcetera/ruskin.webp", alt:"Photographed page bearing a passage by John Ruskin", type:"A READING"},
+    {id:"beetlecat", n:"007", name:"Beetlecat", src:"/assets/projects/beetlecat-interior-2.jpg", alt:"Colorful interior of Beetlecat", type:"PROJECT"},
+    {id:"timber", n:"008", name:"Timber", src:"/more-assets/timber.webp", alt:"Worn timber surface from the Field Notes archive", type:"MATERIAL REFERENCE", context:"Material reference from the Field Notes archive. Project and date unverified."}
+  ];
 
   const escapeHTML = (s) => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const paragraphs = (list) => list.map(p => "<p>" + escapeHTML(p) + "</p>").join("");
   const itemMarkup = (o) =>
     '<button class="more-piece more-piece-' + o.id + '" type="button" data-more-open="' + o.id + '" aria-label="Open ' + escapeHTML(o.name) + '">' +
       '<span class="more-piece-media"><img src="' + o.src + '" alt="' + escapeHTML(o.alt) + '" loading="lazy"></span>' +
-      '<span class="more-piece-label"><span>' + o.n + ' / ' + escapeHTML(o.type) + '</span><strong>' + escapeHTML(o.name) + ' ↗</strong></span>' +
+      '<span class="more-piece-label"><span>' + o.n + '</span><strong>' + escapeHTML(o.name) + ' ↗</strong></span>' +
     '</button>';
 
   function mount(viewport) {
