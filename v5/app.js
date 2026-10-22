@@ -339,8 +339,10 @@
       imageCaption.textContent=currentTab==="people" ? item.name.toUpperCase()+" / HEADSHOT TO COME" : currentTab==="services" ? item.name.toUpperCase()+" / IMAGE TO COME" : "PHILOSOPHY / IMAGE TO COME";
     }
     const philosophyParagraphs=[
-      "Great places begin with a point of view.",
-      "We work alongside the architects, designers, restaurateurs, and developers who bring those places into being. With an understanding of design, hospitality, and the demands of construction, we help ambitious ideas become places worth remembering."
+      "The way a place gets built matters.",
+      "We work alongside owners, architects, designers, and operators who care deeply about what they create. We come to the table early, bring the right people together, and carry ambitious ideas through construction.",
+      "Good construction is a relationship, not a transaction. It takes clear judgment, difficult conversations, respect for the people doing the work, and decisions made for the long term.",
+      "We believe the process of building should be something people look forward to, not simply something they have to get through."
     ];
     function renderCompanySheet() {
       if(currentTab!=="philosophy")return;
