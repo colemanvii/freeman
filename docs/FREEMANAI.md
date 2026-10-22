@@ -2,39 +2,36 @@
 
 **A living company, not another dashboard.**
 
-FreemanAI is the proposed interface for accessing what the organization knows: projects, people, field evidence, documents, precedents, decisions, and the work that needs attention.
+FreemanAI is the proposed experience for accessing what Freeman knows—its projects, people, field evidence, decisions, precedents, and the work that needs attention.
 
-**Cole explores the experience. Gabe develops the intelligence.** The aim is one coherent product, not two competing applications.
+**Cole leads the experience. Gabe develops the intelligence.** Separate explorations, one shared product.
 
-## What exists
+## Approved creative foundation
 
-**Exploration 001** — [branch](https://github.com/colemanvii/freeman/tree/study/freemanai-interface-001) · [study notes](https://github.com/colemanvii/freeman/blob/study/freemanai-interface-001/studio/freemanai-001/README.md) · [prototype code](https://github.com/colemanvii/freeman/tree/study/freemanai-interface-001/v5/studies/freemanai-001)
+**Exploration 002 — The Living Drawing Set** is the **approved creative reference**, not a production release.
 
-- An interactive static study organized around **See / Ask / Act** for owner, controller, PM, and superintendent.
-- Fictional projects, records, metrics, and people; scripted answers and browser-only state.
-- No language model, real-time data, shared backend, Procore/accounting connection, or secure server-side role enforcement.
-- Preview: https://study-freemanai-interface-00.freeman-d6f.pages.dev/studies/freemanai-001/ — Cloudflare Access may require sign-in; a push is not proof that preview passed review.
+- [Creative direction](FREEMANAI-DIRECTION.md) — what this experience must preserve.
+- [Preserved approval tag](https://github.com/colemanvii/freeman/tree/archive/freemanai-002-approved) — the exact approved version (`3452257`).
+- [Working study branch](https://github.com/colemanvii/freeman/tree/study/freemanai-002) · [rationale and technical notes](https://github.com/colemanvii/freeman/blob/study/freemanai-002/studio/freemanai-002/README.md).
+- [Cloudflare preview](https://study-freemanai-002.freeman-d6f.pages.dev/studies/freemanai-002/) — requires Cloudflare Access; build behind the gate has not been independently verified here.
+- [Original design brief #67](https://github.com/colemanvii/freeman/issues/67).
 
-**Exploration 002** — [creative assignment #67](https://github.com/colemanvii/freeman/issues/67)
+One question becomes a construction sheet: a company pulse, a project plan with a time scrub, an evidence-backed precedent, or a captured field issue progressing to a decision. Evidence appears as detail bubbles; conflicts as revision clouds; approvals as a Freeman eagle stamp.
 
-A new direction: one intelligent work surface that transforms around a question. Show the company pulse, a project deep dive, institutional memory, and a field issue moving to a decision. It must feel unmistakably Freeman: engaging, tactile, exact, and extraordinarily useful. **At this snapshot this is a brief, not a completed prototype.**
+**Exploration 001** — [earlier study branch](https://github.com/colemanvii/freeman/tree/study/freemanai-interface-001). Retained for comparison. Its See / Ask / Act structure is **not** the approved creative model.
 
 ## For Gabe and his Claude Code
 
-1. Get GitHub collaborator access to `colemanvii/freeman` (or read access to the public prototype).
-2. Read this guide and [issue #67](https://github.com/colemanvii/freeman/issues/67). Inspect the actual study branch before making assumptions.
-3. From a fresh clone, `git fetch origin`; start from the chosen pushed study branch and create **your own** branch, e.g. `gabe/freemanai-exploration-002` (only once 002 exists). Push your version and open a pull request for review.
-4. Keep Cole's branch and production untouched. Review experience and integration ideas together before selectively merging.
+1. Read the [creative direction](FREEMANAI-DIRECTION.md) and [002 study notes](https://github.com/colemanvii/freeman/blob/study/freemanai-002/studio/freemanai-002/README.md).
+2. Clone or fetch `colemanvii/freeman`. Start from the **approval tag** to preserve the exact baseline: `git switch -c gabe/freemanai-002 archive/freemanai-002-approved` (after `git fetch --tags origin`). Push that new branch, never the tag.
+3. Explore integrations and changes there. Share a preview and PR for joint review. Keep Cole's original study and the production site untouched.
 
-To run Exploration 001 locally, check out its branch, then from the repository root run `cd v5 && python3 -m http.server 8822`; visit `http://localhost:8822/studies/freemanai-001/`.
+To run 002 locally: check out its study branch or the approved tag, then from the repository root run `cd v5 && python3 -m http.server 8823`; open `http://localhost:8823/studies/freemanai-002/`.
 
-## Principles for the real system
+## Prototype versus product
 
-- Let people **ask naturally**, explore visual evidence, and act from the answer. Put field capture within easy reach on a phone.
-- Every consequential answer should disclose its source, date, access scope, and uncertainty.
-- Keep authoritative records in their source systems (such as Procore and BuildingConnected); FreemanAI can link and interpret, not silently overwrite them.
-- Design for offline/poor-signal field conditions, reliable handoffs, and an auditable decision trail.
-- Role switching is only a **demo feature**. Actual production permissions, financial access, authentication, and audit logging must be enforced server-side.
-- **This public repository is not the home for real FreemanAI data, proprietary integrations, API keys, or customer files.** Integration belongs in a separately permissioned and security-reviewed workspace.
+002 uses fictional people, projects, dates, and financial figures. Responses are prewritten; state is local to one browser. No model, live retrieval, shared database, finance system, or secure authentication is connected. The role switcher **simulates**, but does not enforce, permissions.
 
-**Measure success:** A superintendent can capture an issue almost effortlessly. Gabe can find a credible answer and the evidence behind it. The experience is memorable because it makes work clearer, not because it performs tricks.
+A real FreemanAI must cite its sources and their freshness, explicitly handle uncertainty, enforce server-side access, record decisions, and keep sensitive company data outside this **public repository**. Procore and BuildingConnected remain systems of record unless Freeman explicitly decides otherwise.
+
+**The objective:** intelligence that is pleasurable to use because it makes the work clearer.
