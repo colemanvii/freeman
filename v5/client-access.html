@@ -203,7 +203,7 @@ button:hover,a:hover{color:var(--ink)}
       $('heading').textContent = 'Welcome.';
       $('intro').textContent = 'One place to begin working together.';
       $('section').textContent = 'YOUR RELATIONSHIP';
-      $('body').innerHTML = `<ol class="list">${Object.entries(PATHWAYS).map(([id, pw], i) => choice(`data-role="${id}"`, pad(i + 1), pw.name, pw.summary)).join('') + choice('data-team="true"', '04', 'ACCESS FREEMANAI', 'Company dashboard / In development.')}</ol>`;
+      $('body').innerHTML = `<ol class="list">${Object.entries(PATHWAYS).map(([id, pw], i) => choice(`data-role="${id}"`, pad(i + 1), pw.name, pw.summary)).join('') + choice('data-team="true"', '04', 'FreemanAI', 'Company dashboard.')}</ol>`;
       $('note').textContent = 'SELECT A RELATIONSHIP OR ENTER A STUDY CODE.';
     } else if (!s) {
       $('kicker').textContent = p.name + ' / ONBOARDING';
