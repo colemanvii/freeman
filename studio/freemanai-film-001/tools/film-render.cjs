@@ -17,6 +17,7 @@ const dir = process.argv[2]; fs.mkdirSync(dir + '/raw', { recursive: true }); fs
   await p.waitForFunction(() => window.filmDone === true, null, { timeout: 90000 });
   await p.waitForTimeout(300);
   const epoch = await p.evaluate(() => window.filmEpoch) / 1000;
+  fs.writeFileSync(dir + '/cues.json', JSON.stringify(await p.evaluate(() => ({ cues: window.filmCues, marks: window.filmMarks }))));
   await cdp.send('Page.stopScreencast');
   await b.close();
   // Constant 30 fps: each output frame shows the latest captured frame at or before its time.

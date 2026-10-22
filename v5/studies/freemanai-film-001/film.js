@@ -37,6 +37,9 @@
   window.filmNow = () => (t0 ? now() : -1);
   const marks = (window.filmMarks = []);
   const mark = (name) => marks.push([name, +now().toFixed(2)]);
+  /* The cue sheet: every sound-bearing event, logged on the film clock, so the score and Foley land on the picture. */
+  const cues = (window.filmCues = []);
+  const cue = (name, data = null) => { if (t0) cues.push([+now().toFixed(4), name, data]); };
   const until = (s) => new Promise((res) => { const f = () => (now() >= s ? res() : requestAnimationFrame(f)); f(); });
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const tween = (dur, fn, e = E.inOut) => new Promise((res) => {
@@ -94,9 +97,10 @@
     const w = win(f);
     el.dispatchEvent(new w.PointerEvent(type, { bubbles: true, cancelable: true, pointerId: 1, pointerType: 'mouse', isPrimary: true, clientX: x, clientY: y, buttons: type === 'pointerup' ? 0 : 1 }));
   }
-  async function type(el, text, ms, jitter) {
+  async function type(el, text, ms, jitter, tag = 'key') {
     for (const ch of text) {
       el.value += ch;
+      cue(tag, ch);
       el.dispatchEvent(new (el.ownerDocument.defaultView.Event)('input', { bubbles: true }));
       await sleep(ms + (rand() - .5) * 2 * jitter + (ch === ' ' ? ms * .4 : 0));
     }
@@ -108,8 +112,9 @@
   const cursorAt = (x, y) => { cur.x = x; cur.y = y; placeCursor(); };
   const cursorTo = (x, y, dur, e = E.inOut) => { const a = { ...cur }; return tween(dur, (k) => { cur.x = lerp(a.x, x, k); cur.y = lerp(a.y, y, k); placeCursor(); }, e); };
   const cursorShow = (on, dur = .25) => { $('cursor').style.transition = `opacity ${dur}s ease`; $('cursor').style.opacity = on ? 1 : 0; };
-  const press = async () => { $('cursor').classList.add('down'); await sleep(110); $('cursor').classList.remove('down'); };
-  function touch(x, y) {
+  const press = async () => { cue('press'); $('cursor').classList.add('down'); await sleep(110); $('cursor').classList.remove('down'); };
+  function touch(x, y, label = 'touch') {
+    cue('touch', label);
     const t = $('touch');
     t.style.left = x + 'px'; t.style.top = y + 'px';
     t.classList.remove('tap'); void t.offsetWidth; t.classList.add('tap');
@@ -155,7 +160,7 @@
     t0 = performance.now();
     window.filmEpoch = performance.timeOrigin + t0;
     progress();
-    until(.15).then(() => fade($('paper'), 0, .9));
+    until(.15).then(() => { cue('paper-in'); fade($('paper'), 0, .9); });
     until(.9).then(() => caption('One question.'));
     camTo(frame(union(head, askR), { pad: 90, max: 1.6 }), 2.7, E.sine);
 
@@ -174,6 +179,8 @@
     await press();
     caption('');
     doc('desk').getElementById('ask').requestSubmit();
+    cue('submit');
+    (function watch() { if (doc('desk').querySelector('#sheet.plot')) cue('plot'); else requestAnimationFrame(watch); })();
 
     mark('3 plot');
     // 3. The sheet plots itself.
@@ -204,8 +211,12 @@
     await until(8.85);
     $('cursor').classList.add('down');
     pointer('desk', host, 'pointerdown', at(JOB.today), y);
+    cue('grab');
     let v = JOB.today;
-    const drag = (to, dur, e) => { const a = v; return tween(dur, (k) => { v = lerp(a, to, k); const x = at(v); pointer('desk', host, 'pointermove', x, y); cursorAt(x, y); }, e); };
+    const marksOn = [...doc('desk').querySelectorAll('.plan .room')].flatMap((r) => [['rough', +r.dataset.rough], ['done', +r.dataset.done]])
+      .concat([...doc('desk').querySelectorAll('.plan .pin')].map((g) => ['pin', +g.dataset.day]));
+    const crossings = (a, b) => { for (const [kind, d] of marksOn) { if (a < d && b >= d) cue('on', kind); else if (a >= d && b < d) cue('off', kind); } };
+    const drag = (to, dur, e) => { const a = v; return tween(dur, (k) => { const p = v; v = lerp(a, to, k); crossings(p, v); cue('v', +v.toFixed(2)); const x = at(v); pointer('desk', host, 'pointermove', x, y); cursorAt(x, y); }, e); };
     await drag(JOB.from, 1.15, E.inOut);
     await until(10.45);
     const c0 = { ...cam };
@@ -214,6 +225,7 @@
     await until(15.05);
     await drag(JOB.today, .85, E.inOut);
     pointer('desk', host, 'pointerup', at(JOB.today), y);
+    cue('release');
     $('cursor').classList.remove('down');
     await until(15.75);
     caption('');
@@ -227,6 +239,7 @@
     await until(16.85);
     await press();
     click('desk', pinEl, ...centre(pin));
+    cue('evidence-open');
     await until(17.2);
     cursorShow(false, .3);
     const cited = rect('desk', '#evidence mark');
@@ -239,12 +252,13 @@
     await fade($('paper'), 1, .3);
     F.desk.style.visibility = 'hidden';
     $('phone').style.visibility = 'visible';
+    cue('cut-phone');
     camSet({ x: 800, y: 450, z: 1 });
     $('phone').classList.add('drawn');
     fade($('paper'), 0, .4);
     await until(20.2);
     const capBtn = rect('hand', '#capture-btn');
-    touch(...centre(capBtn));
+    touch(...centre(capBtn), 'capture');
     click('hand', '#capture-btn');
     await until(20.55);
     const planEl = doc('hand').getElementById('cap-plan');
@@ -253,16 +267,17 @@
     await until(21.35);
     const lp = planEl.getBoundingClientRect();
     const px = lp.left + ((18 + 2) / 104) * lp.width, py = lp.top + ((48 + 2) / 64) * lp.height;
-    touch(px + PHONE.x, py + PHONE.y);
+    touch(px + PHONE.x, py + PHONE.y, 'plan');
     click('hand', planEl, px, py);
     await until(21.75);
     const note = doc('hand').getElementById('cap-note');
-    await type(note, 'Water staining under the roof drain at the mezzanine. Need the roofer before drywall closes Friday.', 12, 5);
+    await type(note, 'Water staining under the roof drain at the mezzanine. Need the roofer before drywall closes Friday.', 12, 5, 'phone-key');
     const send = rect('hand', '#cap-send');
     camTo(frame(union(rect('hand', '#cap-note'), send), { pad: 50, max: 1.6 }), .6, E.inOut);
     await until(23.45);
-    touch(...centre(send));
+    touch(...centre(send), 'send');
     click('hand', '#cap-send');
+    (function watch() { if (doc('hand').querySelector('.stamp.press')) cue('captured-stamp'); else requestAnimationFrame(watch); })();
     camTo({ x: 800, y: 450, z: 1 }, .7, E.inOut);
     await until(23.7);
     escalate('FR-0413');
@@ -275,6 +290,7 @@
     await fade($('paper'), 1, .3);
     $('phone').style.visibility = 'hidden';
     F.desk2.style.visibility = 'visible';
+    cue('cut-owner');
     const node = rect('desk2', '.route li:nth-child(3)');
     const approve = rect('desk2', '[data-step="approve"]');
     camSet(frame(union(node, approve), { pad: 46, max: 2.4 }));
@@ -287,9 +303,11 @@
     await until(25.85);
     await press();
     click('desk2', '[data-step="approve"]');
+    cue('approve');
     await sleep(140);
     cursorShow(false, .25);
     const stampEl = await (async () => { for (let i = 0; i < 20; i++) { const s = doc('desk2').querySelector('.stamp canvas'); if (s) return s.closest('.stamp'); await sleep(30); } return null; })();
+    if (stampEl) cue('stamp-appear');
     if (stampEl) {
       // The sheet re-lays out as the decision lands; measure the stamp once it has settled.
       await sleep(420);
@@ -302,9 +320,12 @@
     // 8. Paper, and the name.
     await until(28.15);
     caption('');
+    cue('paper-final');
     await fade($('paper'), 1, .35);
+    cue('card');
     await fade($('card'), 1, .45);
     await until(30);
+    cue('end');
     end();
   }
 

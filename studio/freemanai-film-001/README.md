@@ -47,8 +47,12 @@ The tools are in `tools/` and need Playwright with Chromium installed (`PLAYWRIG
 - `film-stills.cjs`: captures stills at chosen seconds.
 - `film-render.cjs`: records the screen stream at about 44 fps and resamples it to a constant 30 fps. Encode the frames with Playwright's bundled ffmpeg (it reads MJPEG piped as a file and writes VP8 WebM).
 
+## Sound
+
+The sound-designed cut is `freemanai-film-001-sound.mp4` (H.264 and AAC), linked from the page as "Sound cut". Sources, licensing, sync method and mix are documented in `sound/README.md`.
+
 ## Not in this study
 
-Sound, voice, live action and colour grading.
+Voice, live action and colour grading.
 
 The page plays at real speed in a browser. It saves and restores the visitor's own Exploration 002 sample state around each playback.
