@@ -3,13 +3,16 @@
 // No recordings, samples or third-party assets. The cue sheet (cues.json) is logged by the
 // film itself as it plays, so each sound lands on the event that makes it.
 //
-//   node score.mjs <cues.json> <out.wav> [report.json]
+//   node score.mjs <cues.json> <out.wav> [report.json] [recorded-dir]
+// With recorded-dir (48 kHz working copies of the CC0 recordings, see foley.mjs), recorded Foley
+// replaces the synthesized Foley, each element level-matched to the sound it replaces.
 //
 // Output: 48 kHz, 24-bit stereo WAV, 30.000 s, mastered to -16 LUFS integrated, <= -1 dBTP.
 import fs from 'node:fs';
+import { readWav, hits, cut, norm, levels } from './foley.mjs';
 
 const SR = 48000, DUR = 30, N = SR * DUR;
-const [cuePath, outPath, reportPath] = process.argv.slice(2);
+const [cuePath, outPath, reportPath, recDir] = process.argv.slice(2);
 const { cues } = JSON.parse(fs.readFileSync(cuePath, 'utf8'));
 // Picture reaches the screen a frame or so after the script acts; land sounds with it.
 const LAG = 0.025;
@@ -92,7 +95,7 @@ function graphite(len, shape, centre = 3200, grain = 45) {
   for (let i = 0; i < n; i++) { ph += grain / SR; if (ph > 1) { ph -= 1; g = rr(.45, 1); } b[i] *= shape(i / n) * g; }
   return b;
 }
-const stroke = (len, centre) => graphite(len, (x) => Math.sin(Math.PI * Math.min(1, x * 1.15)) ** 1.5, centre);
+let stroke = (len, centre) => graphite(len, (x) => Math.sin(Math.PI * Math.min(1, x * 1.15)) ** 1.5, centre);
 function hatch(count, gap, centre = 2900) {
   const n = Math.round((count * gap + .08) * SR), b = new Float32Array(n);
   for (let k = 0; k < count; k++) { const s = stroke(rr(.026, .04), centre * rr(.9, 1.1)); const o = Math.round((k * gap + rr(-.004, .004)) * SR); for (let i = 0; i < s.length && o + i < n; i++) if (o + i >= 0) b[o + i] += s[i] * rr(.7, 1); }
@@ -177,6 +180,51 @@ function reverb([L, R], room = .8, damp = .45, width = 1) {
   return [wl.map((v, i) => v * w1 + wr[i] * w2), wr.map((v, i) => v * w1 + wl[i] * w2)];
 }
 
+/* ---------- Recorded Foley (CC0, see sound/recorded/LICENSES.md) ---------- */
+const peakOf = (b) => { let p = 0; for (const v of b) p = Math.max(p, Math.abs(v)); return p; };
+const like = (rec, synth, trim = 0) => norm(rec, 20 * Math.log10(peakOf(synth) || 1e-6) + trim);
+const REC = recDir ? {} : null;
+const used = {};
+const take = (id, what, start, len) => { (used[id] ||= []).push(`${what} ${start.toFixed(3)}+${len.toFixed(2)}s`); };
+if (REC) {
+  const load = (id) => readWav(`${recDir}/${id}.wav`);
+  const [stampMain] = load('470710'), [stampLight] = load('362622'), [square] = load('553028'), [pencil] = load('371026');
+  const [circle] = load('683677'), [slide] = load('464302'), [sheets] = load('751868'), [mac] = load('563505');
+  const [taps] = load('704862'), [typing] = load('631822'), shipyard = load('396531'), village = load('450235');
+  // keystrokes: clean, short, mid-level hits from the Apple keyboard
+  REC.keys = hits(mac, { rise: 10, gap: .05 }).filter((k) => k.decay < .15 && k.low < .3 && k.peak < -10 && k.peak > -30 && k.peak - k.floor > 18).map((k) => ({ ...k, b: cut(mac, k.start - .002, .12, .001, .03) }));
+  REC.heavyKeys = REC.keys.filter((k) => k.low > .12).slice(0, 6);
+  take('563505', `${REC.keys.length} keystrokes`, REC.keys[0].start, .12);
+  REC.taps = hits(taps, { rise: 10, gap: .05 }).filter((k) => k.peak - k.floor > 25).map((k) => ({ ...k, b: cut(taps, k.start - .002, .09, .001, .025) }));
+  REC.typeTaps = hits(typing, { rise: 10, gap: .05 }).filter((k) => k.decay < .2 && k.peak - k.floor > 12).map((k) => ({ ...k, b: cut(typing, k.start - .002, .07, .001, .02) }));
+  take('704862', `${REC.taps.length} taps`, REC.taps[0].start, .09); take('631822', `${REC.typeTaps.length} typing taps`, REC.typeTaps[0].start, .07);
+  // the drawn square: four strokes, one per side
+  REC.sides = [[.105, .262], [.357, .311], [.668, .257], [.915, .38]].map(([a, l]) => { take('553028', 'side', a, l); return cut(square, a, l, .004, .04); });
+  // pencil: the opening touch, and short strokes for hatching from the loudest moments of the circling
+  REC.touch = cut(pencil, 2.15, .22, .002, .08); take('371026', 'touch', 2.15, .22);
+  { const lv = levels(circle, .08), idx = lv.map((v, i) => [v, i]).sort((a, b) => b[0] - a[0]).slice(0, 40).map(([, i]) => i); REC.strokes = idx.map((i) => cut(circle, i * .08, .07, .006, .03)); take('683677', 'strokes', 0, 40 * .07); }
+  REC.slide = cut(slide, .06, .5, .004, .18); take('464302', 'drawer', .06, .5);
+  REC.sheets = [[3.22, .45], [1.27, .5], [2.49, .42]].map(([a, l]) => { take('751868', 'move', a, l); return cut(sheets, a, l, .03, .15); });
+  REC.stampMain = cut(stampMain, .49, 1.0, .0005, .2); take('470710', 'Freeman stamp', .49, 1.0);
+  REC.stampLight = cut(stampLight, .05, .55, .0005, .12); take('362622', 'captured stamp', .05, .55);
+  REC.ship = [cut(shipyard[0], 1.2, 5.9, .4, .5), cut(shipyard[1], 1.2, 5.9, .4, .5)]; take('396531', 'jobsite', 1.2, 5.9);
+  REC.village = [cut(village[0], 10.2, 5.9, .5, .5), cut(village[1], 10.2, 5.9, .5, .5)]; take('450235', 'jobsite bed', 10.2, 5.9);
+  let ki = 0, ti = 0, yi = 0, si = 0, hi = 0;
+  const synthKey = key, synthStroke = stroke, synthHatch = hatch, synthSlide = paperSlide, synthWhoosh = whoosh, synthTap = glassTap, synthStamp = stamp;
+  key = (space = false) => { const pool = space && REC.heavyKeys.length ? REC.heavyKeys : REC.keys; const k = pool[(ki++ * 7) % pool.length]; return like(Float32Array.from(k.b), synthKey(space), 2); };
+  stroke = (len, centre) => { const s = REC.strokes[(si++ * 5) % REC.strokes.length]; const b = Float32Array.from(s.subarray(0, Math.min(s.length, Math.round(Math.max(len, .05) * SR)))); return like(b, synthStroke(len, centre), -2); };
+  hatch = (count, gap, centre = 2900) => { const n = Math.round((count * gap + .1) * SR), b = new Float32Array(n); for (let k = 0; k < count; k++) { const s = REC.strokes[(hi++ * 3) % REC.strokes.length], o = Math.round(k * gap * SR); for (let i = 0; i < s.length && o + i < n; i++) b[o + i] += s[i] * (k ? .8 : 1); } return like(b, synthHatch(count, gap, centre), -1); };
+  paperSlide = (len) => like(Float32Array.from(REC.slide), synthSlide(len), 0);
+  whoosh = (len, f) => { const s = REC.sheets[(yi++) % REC.sheets.length]; return like(Float32Array.from(s.subarray(0, Math.min(s.length, Math.round((len + .15) * SR)))), synthWhoosh(len, f), 1); };
+  glassTap = (g = 1) => { const pool = g < .8 && REC.typeTaps.length ? REC.typeTaps : REC.taps; const t = pool[(ti++ * 3) % pool.length]; return like(Float32Array.from(t.b), synthTap(g), 0); };
+  stamp = (scale = 1) => {
+    if (scale < .5) return like(Float32Array.from(REC.stampLight), synthStamp(scale), 0);
+    // The Freeman stamp: the recording, with a little of the synthesized desk thump under it for weight.
+    const syn = synthStamp(1), rec = like(Float32Array.from(REC.stampMain), syn, 0), lowk = filt(Float32Array.from(syn), biquad('lp', 160));
+    const b = new Float32Array(Math.max(rec.length, lowk.length)); for (let i = 0; i < b.length; i++) b[i] = (rec[i] || 0) + (lowk[i] || 0) * .35; return b;
+  };
+}
+
 /* ====================== THE CUE ====================== */
 const T = {
   paper: one('paper-in'), submitPress: at('press')[0], submit: one('submit'), plot: one('plot'),
@@ -195,7 +243,7 @@ const T = {
   }
 }
 put(bus.fol, tick(2900, .35), T.paper + .18, db(-24), -.1, bus.folSend, .3);
-put(bus.fol, stroke(.075, 3400), T.paper + .2, db(-24), -.1, bus.folSend, .3);
+put(bus.fol, REC ? like(Float32Array.from(REC.touch), stroke(.075, 3400), 3) : stroke(.075, 3400), T.paper + .2, db(-24), -.1, bus.folSend, .3);
 for (const [t, , ch] of cues.filter((c) => c[1] === 'key')) put(bus.fol, key(ch === ' '), t + LAG, db(rr(-24, -20)) * (ch === ' ' ? 1.1 : 1), rr(-.12, .12), bus.folSend, .22);
 put(bus.fol, key(true), T.submitPress, db(-20), 0, bus.folSend, .25);
 
@@ -205,8 +253,10 @@ put(bus.fol, key(true), T.submitPress, db(-20), 0, bus.folSend, .25);
   const ease = (x) => x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
   const speed = (x) => { const h = 1e-3; return (ease(Math.min(1, x + h)) - ease(Math.max(0, x - h))) / (2 * h); };
   put(bus.fol, whoosh(.32, 700), T.submit - .02, db(-30), 0, bus.folSend, .2);
-  put(bus.fol, filt(graphite(D, (x) => Math.min(1, speed(x) / 1.6) ** .8 * Math.min(1, x * 30), 3000, 55), biquad('lp', 6500), biquad('hp', 1600)), P, db(-25), -.15, bus.folSend, .35);
   const inv = (p) => { let lo = 0, hi = 1; for (let i = 0; i < 30; i++) { const m = (lo + hi) / 2; if (ease(m) < p) lo = m; else hi = m; } return lo; };
+  const outline = filt(graphite(D, (x) => Math.min(1, speed(x) / 1.6) ** .8 * Math.min(1, x * 30), 3000, 55), biquad('lp', 6500), biquad('hp', 1600));
+  if (REC) [0, .3125, .5, .8125].forEach((p, i) => put(bus.fol, like(Float32Array.from(REC.sides[i]), outline, -3), P + inv(p) * D, db(-25), -.15 + i * .1, bus.folSend, .35));
+  else put(bus.fol, outline, P, db(-25), -.15, bus.folSend, .35);
   [.3125, .5, .8125].forEach((p) => put(bus.fol, tick(2300, .7), P + inv(p) * D, db(-26), .1, bus.folSend, .3));
   for (let i = 0; i < 6; i++) { put(bus.fol, tick(rr(1500, 1900), .6), P + .6 + i * .04, db(-30), -.4 + i * .16, bus.folSend, .3); put(bus.fol, stroke(.05, 3600), P + .6 + i * .04 + .006, db(-33), -.4 + i * .16); }
   for (let j = 0; j < 4; j++) put(bus.fol, tick(rr(1300, 1600), .5), P + .7 + j * .04, db(-31), -.5, bus.folSend, .3);
@@ -280,14 +330,20 @@ put(bus.fol, key(true), T.submitPress, db(-20), 0, bus.folSend, .25);
 {
   const t0 = T.phone - .35, t1 = T.owner + .05, n = Math.round((t1 - t0) * SR);
   put(bus.fol, whoosh(.4, 600), 19.2, db(-30), 0, bus.folSend, .2);
+  if (REC) {
+    const shape = (b, g) => { for (let i = 0; i < b.length; i++) { const t = i / SR; b[i] *= g * Math.min(1, t / .6) * Math.min(1, (b.length - i) / (SR * .35)); } return filt(b, biquad('lp', 3800), biquad('hp', 60)); };
+    const len = Math.min(n, REC.ship[0].length);
+    putStereo(bus.amb, shape(Float32Array.from(REC.ship[0].subarray(0, len)), db(-26)), shape(Float32Array.from(REC.ship[1].subarray(0, len)), db(-26)), t0);
+    putStereo(bus.amb, shape(Float32Array.from(REC.village[0].subarray(0, len)), db(-30)), shape(Float32Array.from(REC.village[1].subarray(0, len)), db(-30)), t0);
+  }
   const rumble = filt(brown(n), biquad('lp', 220), biquad('hp', 35));
   const wind = filt(pink(n), biquad('bp', 450, .5));
   for (let i = 0; i < n; i++) { const t = i / SR; const e = Math.min(1, t / .6) * Math.min(1, (n - i) / (SR * .35)); rumble[i] *= e * .05; wind[i] *= e * .006 * (1 + .5 * Math.sin(2 * Math.PI * .31 * t)); }
-  put(bus.amb, rumble, t0, 1, -.1); put(bus.amb, wind, t0, 1, .25);
+  put(bus.amb, rumble, t0, REC ? .35 : 1, -.1); put(bus.amb, wind, t0, REC ? .3 : 1, .25);
   // distant hammering, irregular, through air and distance
-  let h = t0 + .4; while (h < t1 - .25) { const hb = filt(modal([[rr(780, 900), .5, .03], [rr(1350, 1500), .3, .02], [rr(2400, 2700), .15, .01]], .15), biquad('lp', 2600)); const p = rr(-.7, -.3); put(bus.amb, hb, h, db(-38), p, bus.folSend, 1.2); h += rr(.42, .7); if (rnd() < .25) h += .5; }
+  let h = t0 + .4; while (!REC && h < t1 - .25) { const hb = filt(modal([[rr(780, 900), .5, .03], [rr(1350, 1500), .3, .02], [rr(2400, 2700), .15, .01]], .15), biquad('lp', 2600)); const p = rr(-.7, -.3); put(bus.amb, hb, h, db(-38), p, bus.folSend, 1.2); h += rr(.42, .7); if (rnd() < .25) h += .5; }
   const saw = new Float32Array(Math.round(1.4 * SR)); let ph = 0; for (let i = 0; i < saw.length; i++) { ph += 2 * Math.PI * (2350 + 40 * Math.sin(i / SR * 3)) / SR; saw[i] = (Math.sin(ph) + .4 * Math.sin(2 * ph)) * Math.sin(Math.PI * i / saw.length) ** 2; }
-  put(bus.amb, filt(saw, biquad('lp', 2600)), 21.9, db(-56), .6, bus.folSend, 1.5);
+  if (!REC) put(bus.amb, filt(saw, biquad('lp', 2600)), 21.9, db(-56), .6, bus.folSend, 1.5);
 
   put(bus.fol, glassTap(1), T.capture, db(-19), .05, bus.folSend, .2);
   put(bus.fol, paperSlide(.2), T.capture + .05, db(-31), .1);
@@ -375,7 +431,7 @@ for (let pass = 0; pass < 4; pass++) {
   if (Math.abs(l - TARGET) < .15 && tp <= CEIL) { mix[0] = m2[0]; mix[1] = m2[1]; break; }
   gain += TARGET - l; if (pass === 3) { mix[0] = m2[0]; mix[1] = m2[1]; }
 }
-const out = { integratedLUFS: +lufs(mix).toFixed(2), truePeakDBTP: +truePeak(mix).toFixed(2), limitingSeconds: +lim.toFixed(3), gainDb: +gain.toFixed(2), stampAt: STAMP, capturedAt: CAPTURED, cueLag: LAG };
+const out = { foley: REC ? 'recorded (CC0) with synthesized room tone, ticks and eraser' : 'synthesized', recordedUse: REC ? used : undefined, integratedLUFS: +lufs(mix).toFixed(2), truePeakDBTP: +truePeak(mix).toFixed(2), limitingSeconds: +lim.toFixed(3), gainDb: +gain.toFixed(2), stampAt: STAMP, capturedAt: CAPTURED, cueLag: LAG };
 // Short-term loudness through the film, for the report.
 { const W = 3 * SR, rows = []; for (let s = 0; s + W <= N; s += SR) { let e = 0; for (let i = s; i < s + W; i += 4) e += mix[0][i] ** 2 + mix[1][i] ** 2; rows.push([s / SR, +(10 * Math.log10(e / (W / 4) + 1e-12)).toFixed(1)]); } out.rms3s = rows; }
 
