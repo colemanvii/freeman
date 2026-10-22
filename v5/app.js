@@ -645,7 +645,7 @@
       <article class="fw-lead" aria-labelledby="fw-essay-title">
         <span class="fw-eyebrow">001</span>
         <div class="fw-essay">
-          <h2 id="fw-essay-title">BUILT FOR GENERATIONS.</h2>
+          <h2 id="fw-essay-title">Built for Generations</h2>
           <p>Buildings outlive the people who build them.</p>
           <p>They become restaurants where families gather, places where friendships begin, and familiar corners of neighborhoods that change around them. The names of the people responsible may be forgotten. The work remains.</p>
           <p>There is a responsibility that comes with building something another person will inherit. It means thinking past opening day: how a place will be used, how it will age, how it will be maintained, and what it will give to the people who encounter it.</p>
