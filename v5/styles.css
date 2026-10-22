@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
 :root{
   --cursor-crosshair:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='21' height='21' viewBox='0 0 21 21'%3E%3Cpath d='M10.5 1v19M1 10.5h19' stroke='%2330312f' stroke-width='1'/%3E%3Crect x='9' y='9' width='3' height='3' fill='%23f05a28'/%3E%3C/svg%3E") 10 10,crosshair;
   --cursor-orange:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='21' height='21' viewBox='0 0 21 21'%3E%3Cpath d='M10.5 1v19M1 10.5h19' stroke='%23f05a28' stroke-width='1'/%3E%3Crect x='8.5' y='8.5' width='4' height='4' fill='%23f05a28'/%3E%3C/svg%3E") 10 10,crosshair;
@@ -545,11 +546,12 @@ body[data-route="etcetera"] .viewport{overflow:hidden;min-height:0}
 .fw-lead{cursor:default;gap:12px;overflow:hidden}
 .fw-lead:hover .fw-read{background:none;color:var(--orange)}
 .fw-essay{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;width:100%;padding:clamp(7px,1.4vh,18px) 4px 8px 0}
-.fw-essay h2{font:400 clamp(19px,2.25vw,33px)/1.14 var(--mono);letter-spacing:-.055em;margin:0 0 clamp(15px,2vh,25px)}
+/* Freeman script-inspired essay lettering: the logo is a bespoke bitmap, not a font. */
+.fw-essay h2{font:400 clamp(34px,3.7vw,60px)/1.08 'Satisfy','Brush Script MT',cursive;letter-spacing:-.018em;text-wrap:balance;margin:0 0 clamp(15px,2vh,25px);-webkit-font-smoothing:antialiased}
 .fw-essay p{font:400 clamp(11px,.9vw,13px)/1.57 var(--mono);margin:0 0 1.05em;max-width:65ch}
 .fw-essay p:last-child{margin-bottom:0}
 .fw-foot{flex-shrink:0}
-@media(max-width:760px){.fw-essay h2{font-size:clamp(15px,3.5vw,23px)}.fw-essay p{font-size:clamp(9px,2.4vw,11px);line-height:1.45}.fw-lead{gap:6px}}
+@media(max-width:760px){.fw-essay h2{font-size:clamp(18px,4.7vw,31px);line-height:1.08}.fw-essay p{font-size:clamp(9px,2.4vw,11px);line-height:1.45}.fw-lead{gap:6px}}
 
 /* NOTES: single right-hand editorial item after removing Ruskin. */
 .fw-register{grid-template-rows:minmax(0,1fr)}
