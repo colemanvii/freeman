@@ -1,31 +1,23 @@
 # Freeman Studio
 
-This folder is the working record behind the public Freeman site.
+The working record behind Freeman's public work: references, field observations, sketches, decisions, experiments, and the conversations that give the work shape.
 
-It exists to preserve the thinking that would otherwise disappear: references, sketches, redlines, material decisions, field observations, editorial ideas, and the conversations that shape the work.
+**The finished result is the expression. This is the evidence of how we think.**
 
-The public website is the finished expression.
-This folder is the evidence of how Freeman thinks.
+## Start here
 
-## Working loop
+- [Current creative direction](../docs/CURRENT-DIRECTION.md) — approved voice, visual guardrails, and the distinction between the website and FreemanAI.
+- [Working index](../docs/WORKING-INDEX.md) — the active work and where to find it.
+- [FreemanAI](../docs/FREEMANAI.md) — interactive intelligence studies and collaboration.
+- [Working principles](principles.md) — provisional observations, open to revision.
+- [Studies](studies/README.md) · [Journal](journal/) — research and dated process.
 
-Reference → Study → Conversation → Decision → Field → Finished
+## Method
 
-## Rules
+**Reference → Study → Conversation → Decision → Field → Finished.**
 
-- Freeman work comes first. Portfolio value is a byproduct of doing the work well.
-- Record real decisions, not branding theater.
-- Keep entries short enough to maintain continuously.
-- Preserve rejected ideas when they clarify judgment.
-- Favor specific observations over generic language about craft.
-- Let principles emerge from projects rather than inventing a house style.
+Notice what is specific. Preserve rejected directions when they clarify judgment. Document real decisions rather than manufacture a brand story. Let construction evidence make the case.
 
-## Current threads
+Historical notes remain here as history; their date does not imply they are still approved. For current wording and design choices, use the [current direction](../docs/CURRENT-DIRECTION.md).
 
-- Finished Result ↔ Field Evidence
-- Freeman Studies
-- Hospitality and place
-- Cabinetry / millwork
-- Builder judgment
-- Gabe + Cole collaboration
-- Golf / club / hospitality-residential opportunities
+The work comes first. Portfolio value follows.

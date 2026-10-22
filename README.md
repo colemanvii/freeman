@@ -1,70 +1,34 @@
-# Freeman General Contractors
+# Freeman General Contracting
 
-Current live website and working design system for Freeman General Contractors.
+**Built for Generations.**
 
-**Built For Generations™**
+The working record behind Freeman's website, creative practice, and emerging digital tools. Finished work belongs alongside the evidence of how it was made.
 
-## Repository model
+## Start here
 
-All current Freeman work is published together from `main`. Development branches retain their original checkpoints. Branch names identify studies; `main` is the source of truth for the published site.
+| | Purpose | Open |
+| --- | --- | --- |
+| **Website** | Approved public experience and its source | [V5 release](https://github.com/colemanvii/freeman/tree/release/approved-v5-2026-10-18/v5) · [Source and build notes](https://github.com/colemanvii/freeman/tree/release/approved-v5-2026-10-18/v5-source) |
+| **Studio** | References, studies, writing, and field evidence | [Studio](studio/README.md) |
+| **FreemanAI** | Exploration of the company's shared intelligence interface | [Start here](docs/FREEMANAI.md) |
 
-- `main` — approved, deployable Freeman site
-- `v4-project-record` — preserved V4 prototype checkpoint
-- `field-notes/first-visual-pass` — preserved Field Notes and original radius-window checkpoint
+[Current creative direction](docs/CURRENT-DIRECTION.md) · [Active work and branches](docs/WORKING-INDEX.md) · [Design doctrine (historical)](DESIGN-DOCTRINE.md)
 
-The live GitHub Pages site deploys from `main`.
+## Repository map
 
-## Working folders
+- `main` — default repository entry point and **legacy GitHub Pages deployment**; **not** the source to assume is current Cloudflare production.
+- `release/approved-v5-2026-10-18` — approved V5 baseline used for recent Cloudflare work. Verify the actual deployed commit in Cloudflare before making production changes.
+- `study/*`, `feature/*`, `fix/*` — isolated work, proposals, and experiments. A pushed study is not an approved release.
+- `ideas/` and `studio/` — the thinking behind the work. Older notes remain as historical evidence, not standing instructions.
 
-- `ideas/` — conceptual thinking, language, precedents, future directions
-- `studio/` — studies, working principles, journals, and evidence behind the public work
+See the [working index](docs/WORKING-INDEX.md) before selecting a branch. Historical branches are retained deliberately; do not treat the full branch list as an active backlog.
 
-Use the repo in this order:
+## Working method
 
-**Think → `ideas/`**  
-**Study / experiment → `studio/`**  
-**Build next version → a focused development branch**  
-**Approve → merge to `main`**
+**Observe → Study → Build → Review → Approve → Publish.**
 
-Git history preserves older versions. Long-lived experiment branches should not become the archive.
+Protect the existing site. Develop on a named branch, test desktop and mobile, document what is real versus illustrative, and merge only after review. Never infer a production deployment from a successful push.
 
-## Current site
+This repository is **public**. Do not add credentials, private contracts, internal financial data, client files, staff information, or real FreemanAI records. Production intelligence and access control require a separate security-reviewed, private environment.
 
-Desktop is intentionally static and viewport-composed. Mobile uses a scrollable adaptation of the same visual system.
-
-Primary sections:
-- Projects
-- Company
-- Archive
-- Contact
-
-The current site is the approved editorial shell. New project-record work should deepen the project experience without redesigning the homepage.
-
-## Project-record direction
-
-The project-record direction is a reusable Freeman Project Record:
-
-**Reference → Decision → Field → Resolution → Finished → Return**
-
-Barnsley Gardens is the pilot.
-
-The project record should feel like an architectural archive or builder's field book, while the existing homepage and overall Freeman visual language remain intact.
-
-## Implementation rules
-
-- No new repo.
-- No framework unless there is a compelling technical reason.
-- Preserve the existing Freeman visual language.
-- Do not redesign `main` while exploring V4.
-- Keep experimental work isolated until it is approved.
-- Promote only deliberate, reviewed changes into `main`.
-
-## Published pages
-
-- [Freeman home](index.html) — latest monograph layout and project navigation
-- [Field Notes](field-notes.html)
-- [Barnsley Gardens Project Record](record.html?project=barnsley-gardens)
-- [Radius-window study](radius-window.html) — original illustrative sequence
-- [Carry the Idea Through](ideas/carry-the-idea-through/index.html)
-
-The studies retain their illustrative-image disclosures. Project notes and studio material remain in `ideas/` and `studio/`.
+*Working index updated 22 October 2026.*
