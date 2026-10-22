@@ -1,0 +1,2384 @@
+{
+ "base": "http://127.0.0.1:8820",
+ "date": "2026-10-22T16:33:28.400Z",
+ "passed": 396,
+ "failed": 0,
+ "results": [
+  {
+   "engine": "chromium",
+   "name": "final still chalk dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final still chalk dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final still chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "chromium",
+   "name": "final still umber dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final still umber dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final still umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "chromium",
+   "name": "final still sand dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final still sand dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final still sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "chromium",
+   "name": "alignment still dpr1 == production",
+   "ok": true,
+   "detail": "{\"w\":3,\"x\":480,\"y\":332}"
+  },
+  {
+   "engine": "chromium",
+   "name": "whole device pixels per bitmap pixel still dpr1",
+   "ok": true,
+   "detail": 3
+  },
+  {
+   "engine": "chromium",
+   "name": "no JS errors still dpr1",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke chalk dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke chalk dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke umber dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke umber dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke sand dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke sand dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "chromium",
+   "name": "alignment stroke dpr1 == production",
+   "ok": true,
+   "detail": "{\"w\":3,\"x\":480,\"y\":332}"
+  },
+  {
+   "engine": "chromium",
+   "name": "whole device pixels per bitmap pixel stroke dpr1",
+   "ok": true,
+   "detail": 3
+  },
+  {
+   "engine": "chromium",
+   "name": "no JS errors stroke dpr1",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression chalk dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression chalk dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression umber dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression umber dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression sand dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression sand dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "chromium",
+   "name": "alignment impression dpr1 == production",
+   "ok": true,
+   "detail": "{\"w\":3,\"x\":480,\"y\":332}"
+  },
+  {
+   "engine": "chromium",
+   "name": "whole device pixels per bitmap pixel impression dpr1",
+   "ok": true,
+   "detail": 3
+  },
+  {
+   "engine": "chromium",
+   "name": "no JS errors impression dpr1",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish chalk dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish chalk dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish umber dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish umber dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish sand dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish sand dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "chromium",
+   "name": "alignment flourish dpr1 == production",
+   "ok": true,
+   "detail": "{\"w\":3,\"x\":480,\"y\":332}"
+  },
+  {
+   "engine": "chromium",
+   "name": "whole device pixels per bitmap pixel flourish dpr1",
+   "ok": true,
+   "detail": 3
+  },
+  {
+   "engine": "chromium",
+   "name": "no JS errors flourish dpr1",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final still chalk dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final still chalk dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final still chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "chromium",
+   "name": "final still umber dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final still umber dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final still umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "chromium",
+   "name": "final still sand dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final still sand dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final still sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "chromium",
+   "name": "alignment still dpr2 == production",
+   "ok": true,
+   "detail": "{\"w\":6,\"x\":960,\"y\":663}"
+  },
+  {
+   "engine": "chromium",
+   "name": "whole device pixels per bitmap pixel still dpr2",
+   "ok": true,
+   "detail": 6
+  },
+  {
+   "engine": "chromium",
+   "name": "no JS errors still dpr2",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke chalk dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke chalk dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke umber dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke umber dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke sand dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke sand dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "chromium",
+   "name": "alignment stroke dpr2 == production",
+   "ok": true,
+   "detail": "{\"w\":6,\"x\":960,\"y\":663}"
+  },
+  {
+   "engine": "chromium",
+   "name": "whole device pixels per bitmap pixel stroke dpr2",
+   "ok": true,
+   "detail": 6
+  },
+  {
+   "engine": "chromium",
+   "name": "no JS errors stroke dpr2",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression chalk dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression chalk dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression umber dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression umber dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression sand dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression sand dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "chromium",
+   "name": "alignment impression dpr2 == production",
+   "ok": true,
+   "detail": "{\"w\":6,\"x\":960,\"y\":663}"
+  },
+  {
+   "engine": "chromium",
+   "name": "whole device pixels per bitmap pixel impression dpr2",
+   "ok": true,
+   "detail": 6
+  },
+  {
+   "engine": "chromium",
+   "name": "no JS errors impression dpr2",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish chalk dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish chalk dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish umber dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish umber dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish sand dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish sand dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "chromium",
+   "name": "alignment flourish dpr2 == production",
+   "ok": true,
+   "detail": "{\"w\":6,\"x\":960,\"y\":663}"
+  },
+  {
+   "engine": "chromium",
+   "name": "whole device pixels per bitmap pixel flourish dpr2",
+   "ok": true,
+   "detail": 6
+  },
+  {
+   "engine": "chromium",
+   "name": "no JS errors flourish dpr2",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "note: production entrance y is 994.96875 device px at dpr3 (layout rounding, pre-existing)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final still chalk dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final still chalk dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final still chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "chromium",
+   "name": "final still umber dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final still umber dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final still umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "chromium",
+   "name": "final still sand dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final still sand dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final still sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "chromium",
+   "name": "alignment still dpr3 == production",
+   "ok": true,
+   "detail": "{\"w\":9,\"x\":1440,\"y\":994.96875}"
+  },
+  {
+   "engine": "chromium",
+   "name": "whole device pixels per bitmap pixel still dpr3",
+   "ok": true,
+   "detail": 9
+  },
+  {
+   "engine": "chromium",
+   "name": "no JS errors still dpr3",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke chalk dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke chalk dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke umber dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke umber dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke sand dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke sand dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final stroke sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "chromium",
+   "name": "alignment stroke dpr3 == production",
+   "ok": true,
+   "detail": "{\"w\":9,\"x\":1440,\"y\":994.96875}"
+  },
+  {
+   "engine": "chromium",
+   "name": "whole device pixels per bitmap pixel stroke dpr3",
+   "ok": true,
+   "detail": 9
+  },
+  {
+   "engine": "chromium",
+   "name": "no JS errors stroke dpr3",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression chalk dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression chalk dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression umber dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression umber dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression sand dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression sand dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final impression sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "chromium",
+   "name": "alignment impression dpr3 == production",
+   "ok": true,
+   "detail": "{\"w\":9,\"x\":1440,\"y\":994.96875}"
+  },
+  {
+   "engine": "chromium",
+   "name": "whole device pixels per bitmap pixel impression dpr3",
+   "ok": true,
+   "detail": 9
+  },
+  {
+   "engine": "chromium",
+   "name": "no JS errors impression dpr3",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish chalk dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish chalk dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish umber dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish umber dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish sand dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish sand dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "final flourish sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "chromium",
+   "name": "alignment flourish dpr3 == production",
+   "ok": true,
+   "detail": "{\"w\":9,\"x\":1440,\"y\":994.96875}"
+  },
+  {
+   "engine": "chromium",
+   "name": "whole device pixels per bitmap pixel flourish dpr3",
+   "ok": true,
+   "detail": 9
+  },
+  {
+   "engine": "chromium",
+   "name": "no JS errors flourish dpr3",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "stroke frames ⊆ final, monotone",
+   "ok": true,
+   "detail": "90 frames"
+  },
+  {
+   "engine": "chromium",
+   "name": "stroke no partial-alpha pixels",
+   "ok": true,
+   "detail": "partial 0"
+  },
+  {
+   "engine": "chromium",
+   "name": "stroke first frame not blank",
+   "ok": true,
+   "detail": "first frame ink 1"
+  },
+  {
+   "engine": "chromium",
+   "name": "impression frames ⊆ final, monotone",
+   "ok": true,
+   "detail": "90 frames"
+  },
+  {
+   "engine": "chromium",
+   "name": "impression no partial-alpha pixels",
+   "ok": true,
+   "detail": "partial 0"
+  },
+  {
+   "engine": "chromium",
+   "name": "impression first frame not blank",
+   "ok": true,
+   "detail": "first frame ink 1607"
+  },
+  {
+   "engine": "chromium",
+   "name": "flourish frames ⊆ final, monotone",
+   "ok": true,
+   "detail": "90 frames"
+  },
+  {
+   "engine": "chromium",
+   "name": "flourish no partial-alpha pixels",
+   "ok": true,
+   "detail": "partial 0"
+  },
+  {
+   "engine": "chromium",
+   "name": "flourish first frame not blank",
+   "ok": true,
+   "detail": "first frame ink 1343"
+  },
+  {
+   "engine": "chromium",
+   "name": "in-site link leaves entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "Back shows the finished mark on the first frame",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "history: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "back_forward load: finished at first frame",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "bfcache restore mid-play finishes",
+   "ok": true,
+   "detail": "321 → 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "stroke: palette switch mid-play keeps the frame",
+   "ok": true,
+   "detail": "257 vs 257"
+  },
+  {
+   "engine": "chromium",
+   "name": "stroke: palette switch mid-play recolours",
+   "ok": true,
+   "detail": "255,249,241"
+  },
+  {
+   "engine": "chromium",
+   "name": "stroke: palette switch does not restart",
+   "ok": true,
+   "detail": "257 → 351"
+  },
+  {
+   "engine": "chromium",
+   "name": "flourish: palette switch mid-play keeps the frame",
+   "ok": true,
+   "detail": "1524 vs 1524"
+  },
+  {
+   "engine": "chromium",
+   "name": "flourish: palette switch mid-play recolours",
+   "ok": true,
+   "detail": "255,249,241"
+  },
+  {
+   "engine": "chromium",
+   "name": "flourish: palette switch does not restart",
+   "ok": true,
+   "detail": "1524 → 1926"
+  },
+  {
+   "engine": "chromium",
+   "name": "impression: palette switch mid-play keeps the frame",
+   "ok": true,
+   "detail": "2039 vs 2039"
+  },
+  {
+   "engine": "chromium",
+   "name": "impression: palette switch mid-play recolours",
+   "ok": true,
+   "detail": "255,249,241"
+  },
+  {
+   "engine": "chromium",
+   "name": "impression: palette switch does not restart",
+   "ok": true,
+   "detail": "2039 → 2224"
+  },
+  {
+   "engine": "chromium",
+   "name": "reduced motion: finished on first frame",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "reduced motion turned on mid-play finishes",
+   "ok": true,
+   "detail": "257 → 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "replay under reduced motion stays finished",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "hidden tab mid-play finishes",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "no frames at all: watchdog shows finished",
+   "ok": true,
+   "detail": "1 → 2278"
+  },
+  {
+   "engine": "chromium",
+   "name": "finished: no pending animation frame",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "click replays from the start",
+   "ok": true,
+   "detail": "ink 26"
+  },
+  {
+   "engine": "chromium",
+   "name": "route switch mid-play: animation frames cancelled",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "route switch: engine listeners removed",
+   "ok": true,
+   "detail": "4 → 1"
+  },
+  {
+   "engine": "chromium",
+   "name": "replay/route: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "phone still: no horizontal overflow",
+   "ok": true,
+   "detail": 0
+  },
+  {
+   "engine": "chromium",
+   "name": "phone still: signature target ≥ 44px tall",
+   "ok": true,
+   "detail": "{\"w\":266.65625,\"h\":101.65625,\"after\":\"\"}"
+  },
+  {
+   "engine": "chromium",
+   "name": "phone still: colourway targets enlarged",
+   "ok": true,
+   "detail": "{\"w\":24,\"h\":24,\"after\":\"-11px\"}"
+  },
+  {
+   "engine": "chromium",
+   "name": "phone still: final ink",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "phone still: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "phone stroke: no horizontal overflow",
+   "ok": true,
+   "detail": 0
+  },
+  {
+   "engine": "chromium",
+   "name": "phone stroke: signature target ≥ 44px tall",
+   "ok": true,
+   "detail": "{\"w\":266.65625,\"h\":101.65625,\"after\":\"\"}"
+  },
+  {
+   "engine": "chromium",
+   "name": "phone stroke: colourway targets enlarged",
+   "ok": true,
+   "detail": "{\"w\":24,\"h\":24,\"after\":\"-11px\"}"
+  },
+  {
+   "engine": "chromium",
+   "name": "phone stroke: final ink",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "phone stroke: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "phone impression: no horizontal overflow",
+   "ok": true,
+   "detail": 0
+  },
+  {
+   "engine": "chromium",
+   "name": "phone impression: signature target ≥ 44px tall",
+   "ok": true,
+   "detail": "{\"w\":266.65625,\"h\":101.65625,\"after\":\"\"}"
+  },
+  {
+   "engine": "chromium",
+   "name": "phone impression: colourway targets enlarged",
+   "ok": true,
+   "detail": "{\"w\":24,\"h\":24,\"after\":\"-11px\"}"
+  },
+  {
+   "engine": "chromium",
+   "name": "phone impression: final ink",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "phone impression: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "phone flourish: no horizontal overflow",
+   "ok": true,
+   "detail": 0
+  },
+  {
+   "engine": "chromium",
+   "name": "phone flourish: signature target ≥ 44px tall",
+   "ok": true,
+   "detail": "{\"w\":266.65625,\"h\":101.65625,\"after\":\"\"}"
+  },
+  {
+   "engine": "chromium",
+   "name": "phone flourish: colourway targets enlarged",
+   "ok": true,
+   "detail": "{\"w\":24,\"h\":24,\"after\":\"-11px\"}"
+  },
+  {
+   "engine": "chromium",
+   "name": "phone flourish: final ink",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "chromium",
+   "name": "phone flourish: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final still chalk dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final still chalk dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final still chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "webkit",
+   "name": "final still umber dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final still umber dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final still umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "webkit",
+   "name": "final still sand dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final still sand dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final still sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "webkit",
+   "name": "alignment still dpr1 == production",
+   "ok": true,
+   "detail": "{\"w\":3,\"x\":480,\"y\":332}"
+  },
+  {
+   "engine": "webkit",
+   "name": "whole device pixels per bitmap pixel still dpr1",
+   "ok": true,
+   "detail": 3
+  },
+  {
+   "engine": "webkit",
+   "name": "no JS errors still dpr1",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke chalk dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke chalk dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke umber dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke umber dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke sand dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke sand dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "webkit",
+   "name": "alignment stroke dpr1 == production",
+   "ok": true,
+   "detail": "{\"w\":3,\"x\":480,\"y\":332}"
+  },
+  {
+   "engine": "webkit",
+   "name": "whole device pixels per bitmap pixel stroke dpr1",
+   "ok": true,
+   "detail": 3
+  },
+  {
+   "engine": "webkit",
+   "name": "no JS errors stroke dpr1",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression chalk dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression chalk dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression umber dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression umber dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression sand dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression sand dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "webkit",
+   "name": "alignment impression dpr1 == production",
+   "ok": true,
+   "detail": "{\"w\":3,\"x\":480,\"y\":332}"
+  },
+  {
+   "engine": "webkit",
+   "name": "whole device pixels per bitmap pixel impression dpr1",
+   "ok": true,
+   "detail": 3
+  },
+  {
+   "engine": "webkit",
+   "name": "no JS errors impression dpr1",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish chalk dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish chalk dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish umber dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish umber dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish sand dpr1 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish sand dpr1 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "webkit",
+   "name": "alignment flourish dpr1 == production",
+   "ok": true,
+   "detail": "{\"w\":3,\"x\":480,\"y\":332}"
+  },
+  {
+   "engine": "webkit",
+   "name": "whole device pixels per bitmap pixel flourish dpr1",
+   "ok": true,
+   "detail": 3
+  },
+  {
+   "engine": "webkit",
+   "name": "no JS errors flourish dpr1",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final still chalk dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final still chalk dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final still chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "webkit",
+   "name": "final still umber dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final still umber dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final still umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "webkit",
+   "name": "final still sand dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final still sand dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final still sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "webkit",
+   "name": "alignment still dpr2 == production",
+   "ok": true,
+   "detail": "{\"w\":6,\"x\":960,\"y\":663}"
+  },
+  {
+   "engine": "webkit",
+   "name": "whole device pixels per bitmap pixel still dpr2",
+   "ok": true,
+   "detail": 6
+  },
+  {
+   "engine": "webkit",
+   "name": "no JS errors still dpr2",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke chalk dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke chalk dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke umber dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke umber dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke sand dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke sand dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "webkit",
+   "name": "alignment stroke dpr2 == production",
+   "ok": true,
+   "detail": "{\"w\":6,\"x\":960,\"y\":663}"
+  },
+  {
+   "engine": "webkit",
+   "name": "whole device pixels per bitmap pixel stroke dpr2",
+   "ok": true,
+   "detail": 6
+  },
+  {
+   "engine": "webkit",
+   "name": "no JS errors stroke dpr2",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression chalk dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression chalk dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression umber dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression umber dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression sand dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression sand dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "webkit",
+   "name": "alignment impression dpr2 == production",
+   "ok": true,
+   "detail": "{\"w\":6,\"x\":960,\"y\":663}"
+  },
+  {
+   "engine": "webkit",
+   "name": "whole device pixels per bitmap pixel impression dpr2",
+   "ok": true,
+   "detail": 6
+  },
+  {
+   "engine": "webkit",
+   "name": "no JS errors impression dpr2",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish chalk dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish chalk dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish umber dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish umber dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish sand dpr2 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish sand dpr2 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "webkit",
+   "name": "alignment flourish dpr2 == production",
+   "ok": true,
+   "detail": "{\"w\":6,\"x\":960,\"y\":663}"
+  },
+  {
+   "engine": "webkit",
+   "name": "whole device pixels per bitmap pixel flourish dpr2",
+   "ok": true,
+   "detail": 6
+  },
+  {
+   "engine": "webkit",
+   "name": "no JS errors flourish dpr2",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "note: production entrance y is 994.96875 device px at dpr3 (layout rounding, pre-existing)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final still chalk dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final still chalk dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final still chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "webkit",
+   "name": "final still umber dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final still umber dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final still umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "webkit",
+   "name": "final still sand dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final still sand dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final still sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "webkit",
+   "name": "alignment still dpr3 == production",
+   "ok": true,
+   "detail": "{\"w\":9,\"x\":1440,\"y\":994.96875}"
+  },
+  {
+   "engine": "webkit",
+   "name": "whole device pixels per bitmap pixel still dpr3",
+   "ok": true,
+   "detail": 9
+  },
+  {
+   "engine": "webkit",
+   "name": "no JS errors still dpr3",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke chalk dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke chalk dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke umber dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke umber dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke sand dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke sand dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final stroke sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "webkit",
+   "name": "alignment stroke dpr3 == production",
+   "ok": true,
+   "detail": "{\"w\":9,\"x\":1440,\"y\":994.96875}"
+  },
+  {
+   "engine": "webkit",
+   "name": "whole device pixels per bitmap pixel stroke dpr3",
+   "ok": true,
+   "detail": 9
+  },
+  {
+   "engine": "webkit",
+   "name": "no JS errors stroke dpr3",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression chalk dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression chalk dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression umber dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression umber dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression sand dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression sand dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final impression sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "webkit",
+   "name": "alignment impression dpr3 == production",
+   "ok": true,
+   "detail": "{\"w\":9,\"x\":1440,\"y\":994.96875}"
+  },
+  {
+   "engine": "webkit",
+   "name": "whole device pixels per bitmap pixel impression dpr3",
+   "ok": true,
+   "detail": 9
+  },
+  {
+   "engine": "webkit",
+   "name": "no JS errors impression dpr3",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish chalk dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish chalk dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish chalk colour #332e20",
+   "ok": true,
+   "detail": "#332e20"
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish umber dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish umber dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish umber colour #fff9f1",
+   "ok": true,
+   "detail": "#fff9f1"
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish sand dpr3 canvas == FreemanPixelMark play:false",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish sand dpr3 on-screen == production entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "final flourish sand colour #f93822",
+   "ok": true,
+   "detail": "#f93822"
+  },
+  {
+   "engine": "webkit",
+   "name": "alignment flourish dpr3 == production",
+   "ok": true,
+   "detail": "{\"w\":9,\"x\":1440,\"y\":994.96875}"
+  },
+  {
+   "engine": "webkit",
+   "name": "whole device pixels per bitmap pixel flourish dpr3",
+   "ok": true,
+   "detail": 9
+  },
+  {
+   "engine": "webkit",
+   "name": "no JS errors flourish dpr3",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "stroke frames ⊆ final, monotone",
+   "ok": true,
+   "detail": "90 frames"
+  },
+  {
+   "engine": "webkit",
+   "name": "stroke no partial-alpha pixels",
+   "ok": true,
+   "detail": "partial 0"
+  },
+  {
+   "engine": "webkit",
+   "name": "stroke first frame not blank",
+   "ok": true,
+   "detail": "first frame ink 1"
+  },
+  {
+   "engine": "webkit",
+   "name": "impression frames ⊆ final, monotone",
+   "ok": true,
+   "detail": "90 frames"
+  },
+  {
+   "engine": "webkit",
+   "name": "impression no partial-alpha pixels",
+   "ok": true,
+   "detail": "partial 0"
+  },
+  {
+   "engine": "webkit",
+   "name": "impression first frame not blank",
+   "ok": true,
+   "detail": "first frame ink 1607"
+  },
+  {
+   "engine": "webkit",
+   "name": "flourish frames ⊆ final, monotone",
+   "ok": true,
+   "detail": "90 frames"
+  },
+  {
+   "engine": "webkit",
+   "name": "flourish no partial-alpha pixels",
+   "ok": true,
+   "detail": "partial 0"
+  },
+  {
+   "engine": "webkit",
+   "name": "flourish first frame not blank",
+   "ok": true,
+   "detail": "first frame ink 1343"
+  },
+  {
+   "engine": "webkit",
+   "name": "in-site link leaves entrance",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "Back shows the finished mark on the first frame",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "history: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "back_forward load: finished at first frame",
+   "ok": true,
+   "detail": "ink 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "bfcache restore mid-play finishes",
+   "ok": true,
+   "detail": "321 → 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "stroke: palette switch mid-play keeps the frame",
+   "ok": true,
+   "detail": "257 vs 257"
+  },
+  {
+   "engine": "webkit",
+   "name": "stroke: palette switch mid-play recolours",
+   "ok": true,
+   "detail": "255,249,241"
+  },
+  {
+   "engine": "webkit",
+   "name": "stroke: palette switch does not restart",
+   "ok": true,
+   "detail": "257 → 351"
+  },
+  {
+   "engine": "webkit",
+   "name": "flourish: palette switch mid-play keeps the frame",
+   "ok": true,
+   "detail": "1538 vs 1538"
+  },
+  {
+   "engine": "webkit",
+   "name": "flourish: palette switch mid-play recolours",
+   "ok": true,
+   "detail": "255,249,241"
+  },
+  {
+   "engine": "webkit",
+   "name": "flourish: palette switch does not restart",
+   "ok": true,
+   "detail": "1538 → 1949"
+  },
+  {
+   "engine": "webkit",
+   "name": "impression: palette switch mid-play keeps the frame",
+   "ok": true,
+   "detail": "2039 vs 2039"
+  },
+  {
+   "engine": "webkit",
+   "name": "impression: palette switch mid-play recolours",
+   "ok": true,
+   "detail": "255,249,241"
+  },
+  {
+   "engine": "webkit",
+   "name": "impression: palette switch does not restart",
+   "ok": true,
+   "detail": "2039 → 2220"
+  },
+  {
+   "engine": "webkit",
+   "name": "reduced motion: finished on first frame",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "reduced motion turned on mid-play finishes",
+   "ok": true,
+   "detail": "257 → 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "replay under reduced motion stays finished",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "hidden tab mid-play finishes",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "no frames at all: watchdog shows finished",
+   "ok": true,
+   "detail": "1 → 2278"
+  },
+  {
+   "engine": "webkit",
+   "name": "finished: no pending animation frame",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "click replays from the start",
+   "ok": true,
+   "detail": "ink 26"
+  },
+  {
+   "engine": "webkit",
+   "name": "route switch mid-play: animation frames cancelled",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "route switch: engine listeners removed",
+   "ok": true,
+   "detail": "4 → 1"
+  },
+  {
+   "engine": "webkit",
+   "name": "replay/route: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "phone still: no horizontal overflow",
+   "ok": true,
+   "detail": 0
+  },
+  {
+   "engine": "webkit",
+   "name": "phone still: signature target ≥ 44px tall",
+   "ok": true,
+   "detail": "{\"w\":266.65625,\"h\":101.65625,\"after\":\"\"}"
+  },
+  {
+   "engine": "webkit",
+   "name": "phone still: colourway targets enlarged",
+   "ok": true,
+   "detail": "{\"w\":24,\"h\":24,\"after\":\"-11px\"}"
+  },
+  {
+   "engine": "webkit",
+   "name": "phone still: final ink",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "phone still: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "phone stroke: no horizontal overflow",
+   "ok": true,
+   "detail": 0
+  },
+  {
+   "engine": "webkit",
+   "name": "phone stroke: signature target ≥ 44px tall",
+   "ok": true,
+   "detail": "{\"w\":266.65625,\"h\":101.65625,\"after\":\"\"}"
+  },
+  {
+   "engine": "webkit",
+   "name": "phone stroke: colourway targets enlarged",
+   "ok": true,
+   "detail": "{\"w\":24,\"h\":24,\"after\":\"-11px\"}"
+  },
+  {
+   "engine": "webkit",
+   "name": "phone stroke: final ink",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "phone stroke: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "phone impression: no horizontal overflow",
+   "ok": true,
+   "detail": 0
+  },
+  {
+   "engine": "webkit",
+   "name": "phone impression: signature target ≥ 44px tall",
+   "ok": true,
+   "detail": "{\"w\":266.65625,\"h\":101.65625,\"after\":\"\"}"
+  },
+  {
+   "engine": "webkit",
+   "name": "phone impression: colourway targets enlarged",
+   "ok": true,
+   "detail": "{\"w\":24,\"h\":24,\"after\":\"-11px\"}"
+  },
+  {
+   "engine": "webkit",
+   "name": "phone impression: final ink",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "phone impression: no JS errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "phone flourish: no horizontal overflow",
+   "ok": true,
+   "detail": 0
+  },
+  {
+   "engine": "webkit",
+   "name": "phone flourish: signature target ≥ 44px tall",
+   "ok": true,
+   "detail": "{\"w\":266.65625,\"h\":101.65625,\"after\":\"\"}"
+  },
+  {
+   "engine": "webkit",
+   "name": "phone flourish: colourway targets enlarged",
+   "ok": true,
+   "detail": "{\"w\":24,\"h\":24,\"after\":\"-11px\"}"
+  },
+  {
+   "engine": "webkit",
+   "name": "phone flourish: final ink",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "engine": "webkit",
+   "name": "phone flourish: no JS errors",
+   "ok": true,
+   "detail": ""
+  }
+ ]
+}
