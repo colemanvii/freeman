@@ -15,8 +15,13 @@
     {id:"drawing", n:"004", name:"Architectural drawing", src:"/etcetera/architectural-industrial.webp", alt:"Architectural study drawing", type:"FROM THE WORKING ARCHIVE"},
     {id:"residential", n:"005", name:"Residential perspective", src:"/etcetera/residential-landscape.webp", alt:"Residential perspective drawing", type:"FROM THE WORKING ARCHIVE"},
     {id:"ruskin", n:"006", name:"What remains", src:"/etcetera/ruskin.webp", alt:"Photographed passage by John Ruskin about building for future generations", type:"A READING"},
-    {id:"beetlecat", n:"007", name:"Beetlecat", src:"/assets/projects/beetlecat-interior-2.jpg", alt:"Beetlecat interior photograph", type:"PROJECT PHOTOGRAPH"}
-  ];
+    {id:"beetlecat", n:"007", name:"Beetlecat", src:"/assets/projects/beetlecat-interior-2.jpg", alt:"Beetlecat interior photograph", type:"PROJECT PHOTOGRAPH"},
+    {id:"site", n:"008", name:"The jobsite", src:"/more-assets/site.webp", alt:"Unidentified site photograph from the Freeman archive", type:"ARCHIVE PHOTOGRAPH", context:"Existing Freeman site archive photograph. Project and date unverified."},
+    {id:"optimistdetail", n:"009", name:"The Optimist, closer", src:"/more-assets/optimist-detail.webp", alt:"Cropped architectural detail from an existing photograph of The Optimist", type:"A CLOSER LOOK", context:"A detail crop of existing portfolio photography. Not a before-and-after or construction-process photograph."},
+    {id:"timber", n:"010", name:"Timber", src:"/more-assets/timber.webp", alt:"Timber surface reference from the existing Field Notes archive", type:"MATERIAL REFERENCE", context:"Reference image from the Freeman Field Notes archive. Project and date unverified."},
+    {id:"angle", n:"011", name:"Angle divider", src:"/more-assets/angle-divider.webp", alt:"Printed angle-divider graphic from the Field Notes archive", type:"PRINTED ARTIFACT", context:"Archive illustration; not presented as a verified construction drawing."},
+    {id:"square", n:"012", name:"Layout square", src:"/more-assets/square.webp", alt:"Layout square reference from the Field Notes archive", type:"REFERENCE OBJECT", context:"Archive reference object; not presented as a project-specific construction artifact."}
+  ]
 
   const escapeHTML = (s) => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const paragraphs = (list) => list.map(p => "<p>" + escapeHTML(p) + "</p>").join("");
@@ -155,7 +160,9 @@
           ]) + '<small>EDITORIAL STUDY / PROJECT-SPECIFIC PROCESS DETAILS TO BE DOCUMENTED</small></article>';
       } else {
         modalBody.innerHTML = '<figure class="more-artwork"><img src="' + item.src + '" alt="' + escapeHTML(item.alt) + '">' +
-          '<figcaption>' + escapeHTML(item.name) + ' / ' + escapeHTML(item.type) + '</figcaption></figure>';
+          '<figcaption>' + escapeHTML(item.name) + ' / ' + escapeHTML(item.type) +
+          (item.context ? '<span class="more-artwork-context">' + escapeHTML(item.context) + '</span>' : '') +
+          '</figcaption></figure>';
       }
       dialog.showModal();
     }
