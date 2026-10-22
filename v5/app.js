@@ -337,8 +337,10 @@
       imageCaption.textContent=currentTab==="people" ? item.name.toUpperCase()+" / HEADSHOT TO COME" : currentTab==="services" ? item.name.toUpperCase()+" / IMAGE TO COME" : "PHILOSOPHY / IMAGE TO COME";
     }
     const philosophyParagraphs=[
-      "Great places begin with a point of view.",
-      "We work alongside the architects, designers, restaurateurs, and developers who bring those places into being. With an understanding of design, hospitality, and the demands of construction, we help ambitious ideas become places worth remembering."
+      "The way a place gets built matters.",
+      "We work alongside owners, architects, designers, and operators who care deeply about what they create. We come to the table early, bring the right people together, and carry ambitious ideas through construction.",
+      "Good construction is a relationship, not a transaction. It takes clear judgment, difficult conversations, respect for the people doing the work, and decisions made for the long term.",
+      "We believe the process of building should be something people look forward to, not simply something they have to get through."
     ];
     function renderCompanySheet() {
       if(currentTab!=="philosophy")return;
@@ -641,86 +643,31 @@
     renderPage = () => {};
     count();
     const vp = root.querySelector(".viewport");
-    vp.innerHTML = `<div class="fw-editorial" aria-label="Fieldwork editorial index">
-      <article class="fw-lead" aria-labelledby="fw-essay-title">
-        <span class="fw-eyebrow">001</span>
-        <div class="fw-essay">
-          <h2 id="fw-essay-title">BUILT FOR GENERATIONS.</h2>
-          <p>Buildings outlive the people who build them.</p>
-          <p>They become restaurants where families gather, places where friendships begin, and familiar corners of neighborhoods that change around them. The names of the people responsible may be forgotten. The work remains.</p>
-          <p>There is a responsibility that comes with building something another person will inherit. It means thinking past opening day: how a place will be used, how it will age, how it will be maintained, and what it will give to the people who encounter it.</p>
-          <p>Good construction is often invisible in the finished result. Behind every well-considered space are thousands of decisions, most of which no one will ever notice.</p>
-          <p>Those decisions matter.</p>
-          <p>We work alongside architects, designers, craftspeople, and owners who believe the things worth making are worth making well.</p>
-          <p>We believe the process deserves as much attention as the result, and that the quality of our work should be evident long after we've left the jobsite.</p>
-          <p>Built for Generations is a statement about what makes something worth keeping.</p>
-        </div>
-        <span class="fw-foot">FREEMAN GENERAL CONTRACTING</span>
-      </article>
-      <div class="fw-register" aria-label="Selected fieldwork">
-        <button class="fw-entry fw-entry-note" type="button" data-etc-open="optimist">
-          <span class="fw-entry-visual"><img src="/assets/project-1.jpg" alt="Guests gathering on the outdoor patio at The Optimist" loading="eager"></span>
-          <span class="fw-entry-caption">002 / Bringing The Optimist to life ↗</span>
-        </button>
-      </div>
-    </div>
-    <dialog class="etc-dialog" aria-labelledby="etc-detail-title">
-      <div class="etc-dialog-bar"><span id="etc-detail-title" data-etc-title></span><button class="phrase" data-etc-close type="button">× CLOSE</button></div>
-      <article class="etc-dialog-body" data-etc-body></article>
-    </dialog>`;
-    const dialog = vp.querySelector(".etc-dialog");
-    const detail = vp.querySelector("[data-etc-body]");
-    const title = vp.querySelector("[data-etc-title]");
-    vp.querySelector("[data-etc-close]").addEventListener("click", () => dialog.close());
-    dialog.addEventListener("click", (e) => { if (e.target === dialog) dialog.close(); });
-    vp.querySelectorAll("[data-etc-open]").forEach((btn) => btn.addEventListener("click", () => {
-      if (btn.dataset.etcOpen === "letter") {
-        dialog.classList.remove("etc-dialog-artwork");
-        title.textContent = "001 / BUILT FOR GENERATIONS";
-        detail.scrollTop = 0;
-        detail.innerHTML = `<div class="etc-number">NOTES / A POINT OF VIEW</div>
-          <h2>Built for Generations</h2>
-          <p>Buildings outlive the people who build them.</p>
-          <p>They become restaurants where families gather, places where friendships begin, and familiar corners of neighborhoods that change around them. The names of the people responsible may be forgotten. The work remains.</p>
-          <p>There is a responsibility that comes with building something another person will inherit. It means thinking past opening day: how a place will be used, how it will age, how it will be maintained, and what it will give to the people who encounter it.</p>
-          <p>Good construction is often invisible in the finished result. Behind every well-considered space are thousands of decisions, most of which no one will ever notice.</p>
-          <p>Those decisions matter.</p>
-          <p>We work alongside architects, designers, craftspeople, and owners who believe the things worth making are worth making well.</p>
-          <p>We believe the process deserves as much attention as the result, and that the quality of our work should be evident long after we've left the jobsite.</p>
-          <p>Built for Generations is a statement about what makes something worth keeping.</p>
-          `;
-        dialog.showModal();
-        return;
-      }
-      const artwork = {
-        industrial: ["003 / ARCHITECTURAL DRAWING", "/etcetera/architectural-industrial.webp"],
-        residential: ["004 / RESIDENTIAL PERSPECTIVE", "/etcetera/residential-landscape.webp"]
-      }[btn.dataset.etcOpen];
-      dialog.classList.toggle("etc-dialog-artwork", Boolean(artwork));
-      detail.scrollTop = 0;
-      if (artwork) {
-        title.textContent = artwork[0];
-        const image = document.createElement("img");
-        image.className = "etc-detail-photo";
-        image.src = artwork[1];
-        image.alt = btn.querySelector("img").alt;
-        detail.replaceChildren(image);
-        dialog.showModal();
-        return;
-      }
-      const ruskin = btn.dataset.etcOpen === "ruskin";
-      title.textContent = ruskin ? "001 / JOHN RUSKIN" : "002 / THE OPTIMIST";
-      detail.innerHTML = ruskin
-        ? '<img class="etc-detail-photo" src="/etcetera/ruskin.webp" alt="Photographed John Ruskin passage about building for future generations">'
-        : `<div class="etc-number">NOTES / AN EDITORIAL NOTE</div>
-          <h2>Bringing The Optimist to life</h2>
-          <p>A restaurant is experienced as a whole. The light on a table, the curve of a booth, the sounds of service, the ease with which people move through a room. But behind that apparent ease is a concentration of decisions made by many people.</p>
-          <p>Hospitality buildouts ask construction to reconcile different kinds of pressure at once: the designer's intent, the operator's day-to-day requirements, durability, craft, budgets, and the calendar. A beautiful detail also has to survive a busy Saturday night.</p>
-          <p>The Optimist's oyster-bar refresh gives us a useful place to examine that tension. Its finished rooms offer a starting point; what we'd like to document next is the less visible work—coordination, sequencing, material choices, and judgment that makes a space feel effortless.</p>
-          <p>Not just what a place looks like after the work is finished, but what it took to get there.</p>
-          <small>WORKING EDITORIAL REFLECTION / PROJECT-SPECIFIC CONSTRUCTION DETAILS NOT YET VERIFIED</small>`;
-      dialog.showModal();
-    }));
+    vp.innerHTML = '<div class="more-loading">OPENING THE ARCHIVE…</div>';
+    if (!document.querySelector("link[data-more-world-style]")) {
+      const css = document.createElement("link");
+      css.rel = "stylesheet";
+      css.href = "/more-world.css?v=20261022-spatial-001";
+      css.dataset.moreWorldStyle = "1";
+      document.head.appendChild(css);
+    }
+    const mount = () => {
+      if (document.body.dataset.route !== "etcetera" || !vp.isConnected) return;
+      if (window.FreemanMore) window.FreemanMore.mount(vp);
+      else vp.textContent = "The archive could not load. Please refresh.";
+    };
+    if (window.FreemanMore) { mount(); return; }
+    let script = document.querySelector("script[data-more-world-script]");
+    if (!script) {
+      script = document.createElement("script");
+      script.src = "/more-world.js?v=20261022-spatial-001";
+      script.dataset.moreWorldScript = "1";
+      document.head.appendChild(script);
+    }
+    script.addEventListener("load", mount, {once: true});
+    script.addEventListener("error", () => {
+      if (document.body.dataset.route === "etcetera" && vp.isConnected) vp.textContent = "The archive could not load. Please refresh.";
+    }, {once: true});
   }
 
   function contact() {
