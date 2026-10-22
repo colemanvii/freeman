@@ -5,7 +5,9 @@ body[data-route="etcetera"] .viewport{overflow:hidden}
 .more-stage.is-grabbing{cursor:grabbing}
 .more-stage:focus-visible{outline:1px solid var(--orange);outline-offset:-3px}
 .more-space{position:absolute;inset:auto;width:2380px;height:1740px;transform-origin:0 0;will-change:transform}
-.more-credo{position:absolute;left:925px;top:490px;width:530px;min-height:700px;background:color-mix(in srgb,var(--paper) 94%,var(--ink));color:var(--ink);border:1px solid color-mix(in srgb,var(--hair) 72%,var(--ink));padding:32px 30px 26px;display:flex;flex-direction:column;align-items:flex-start;gap:0;text-align:left;z-index:2}
+.more-credo{position:absolute;left:925px;top:490px;width:530px;min-height:700px;background:#ede3d4;color:var(--ink);border:1px solid #c4b8a8;padding:32px 30px 26px;display:flex;flex-direction:column;align-items:flex-start;gap:0;text-align:left;z-index:2}
+:root[data-palette="sand"] .more-credo{background:#eadcc5;border-color:#a89880}
+:root[data-palette="umber"] .more-credo{background:#67594b;border-color:#968675}
 .more-credo-overline{font-size:11px;line-height:1.5;letter-spacing:.06em;color:inherit;opacity:.64;margin:0 0 28px}
 .more-credo h2{font-family:var(--mono);font-size:48px;font-weight:400;line-height:1.025;letter-spacing:-.09em;white-space:nowrap;margin:0 0 36px}
 .more-credo h2 span{color:var(--orange)}
