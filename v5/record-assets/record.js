@@ -113,6 +113,11 @@
   let clusters = [], lastClusterS = -1, year = NOW, hotSlug = null, openSlug = null;
   const markLayer = document.createElement('div'); markLayer.className = 'marklayer'; markLayer.style.cssText = 'position:absolute;inset:0;pointer-events:none';
   marks.appendChild(markLayer);
+  const peek = document.createElement('aside');
+  peek.className = 'photo-peek';
+  peek.setAttribute('aria-hidden', 'true');
+  peek.hidden = true;
+  mapEl.appendChild(peek);
   const shown = (i) => i.placed && (i.year === null || i.year <= year);
 
   function cluster() {
@@ -173,6 +178,47 @@
     positionMarks();
   }
   const lastArrive = new Set();
+
+  /* ---------- Field preview: a glimpse, not another panel ---------- */
+  let peekSlug = null, peekOrigin = null;
+  function placePeek() {
+    if (peek.hidden || !peekSlug) return;
+    const it = bySlug[peekSlug]; if (!it) return;
+    const w = peek.offsetWidth, h = peek.offsetHeight;
+    if (!w || !h) return;
+    let x, y;
+    if (peekOrigin === 'mark' && it.placed) {
+      const pos = toScreen(it.x, it.y), mx = pos[0], my = pos[1];
+      x = mx + 30 + w < W - 12 ? mx + 30 : mx - w - 30;
+      x = Math.max(12, Math.min(W - w - 12, x));
+      y = Math.max(14, Math.min(H - h - 20, my - h * .38));
+    } else {
+      x = Math.max(12, W - w - 19);
+      y = 20;
+    }
+    peek.style.transform = 'translate(' + Math.round(x) + 'px, ' + Math.round(y) + 'px)';
+  }
+  function showPeek(slug, origin) {
+    const it = bySlug[slug];
+    if (!it || !it.photos.length || body.dataset.mode !== 'map' || matchMedia('(max-width:760px)').matches) {
+      if (peekOrigin === origin) hidePeek();
+      return;
+    }
+    if (peekSlug !== slug || peekOrigin !== origin) {
+      peek.innerHTML = '<img src="' + esc(it.photos[0].src) + '" alt="" decoding="async" loading="eager">' +
+        '<div class="photo-peek-copy"><span class="photo-peek-index">PROJECT / ' + esc(it.id) + ' · ' + esc(it.type) + '</span>' +
+        '<strong>' + esc(it.name) + '</strong><span class="photo-peek-place">' + esc(it.site.area || it.location) + '</span>' +
+        '<span class="photo-peek-action">OPEN RECORD ↗</span></div>';
+    }
+    peekSlug = slug; peekOrigin = origin;
+    peek.hidden = false;
+    placePeek();
+  }
+  function hidePeek(slug = null, origin = null) {
+    if (slug && (peekSlug !== slug || peekOrigin !== origin)) return;
+    peek.hidden = true; peekSlug = null; peekOrigin = null;
+  }
+
 
   function positionMarks() {
     const placedTags = [];
@@ -235,6 +281,7 @@
     positionNames(clusters.filter((c) => !c.tagEl.classList.contains('off')).map((c) => c.box));
     if (hotSlug) setHot(hotSlug, true);
     scaleBar();
+    placePeek();
   }
 
   function scaleBar() {
@@ -252,6 +299,8 @@
     c.tagEl.classList.toggle('hot', on);
     c.el.classList.toggle('hot', on);
     document.querySelectorAll('.tb-set button').forEach((b) => b.classList.toggle('hot', on && c.items.some((i) => i.slug === b.dataset.slug)));
+    if (slug) { if (on) showPeek(slug, 'mark'); else hidePeek(slug, 'mark'); }
+    else if (on && peekOrigin === 'mark') hidePeek();
     if (on) announce(slug ? `${bySlug[slug].name}, ${bySlug[slug].site.area}` : `${c.items.length} projects: ${c.items.map((i) => i.name).join(', ')}`);
   }
   function setHot(slug, on) {
@@ -336,7 +385,7 @@
       draw(); placeCallout();
     }
   });
-  mapEl.addEventListener('pointerleave', () => { $('coord').textContent = ''; });
+  mapEl.addEventListener('pointerleave', () => { $('coord').textContent = ''; if (peekOrigin === 'mark') hidePeek(); });
   const endPointer = (e) => {
     pointers.delete(e.pointerId);
     mapEl.classList.remove('grab');
@@ -378,17 +427,17 @@
   function renderRegister() {
     const nPlaced = placed.length;
     tb.innerHTML = `<div class="tb-row tb-seal"><canvas width="192" height="60" id="seal" aria-hidden="true"></canvas><div class="tb-firm">Freeman General Contracting</div></div>
-      <div class="tb-row tb-meta"><span class="tb-k">Sheet</span><div class="tb-no">R-001</div><div class="tb-title" style="margin-top:8px">The Record</div></div>
-      <div class="tb-grid tb-meta"><div><span class="tb-k">Records</span>${items.length}</div><div><span class="tb-k">Placed</span>${nPlaced}</div><div><span class="tb-k">Years on file</span>${dated.length}</div><div><span class="tb-k">Checked</span>${fmtDate(SITES.checked)}</div></div>
+      <div class="tb-row tb-meta"><span class="tb-k">R-001 / THE RECORD</span><div class="tb-title">Project register</div></div>
+      <div class="tb-grid tb-meta"><div><span class="tb-k">Projects</span>${items.length}</div><div><span class="tb-k">On the map</span>${nPlaced}</div></div>
       <button type="button" class="register-toggle" id="reg-toggle" aria-expanded="false" aria-controls="tb-set"><span>Register <b>${items.length}</b></span><span aria-hidden="true">▴</span></button>
       <nav class="tb-set" id="tb-set" aria-label="Register of projects"><ol>${items.map((i) => `<li><button type="button" data-slug="${i.slug}"${i.placed ? '' : ' data-unplaced'}><span class="n">${esc(i.id)}</span><span class="t">${esc(i.name)}</span><span class="w">${i.placed ? esc(shortCity(i)) : 'Not placed'}</span></button></li>`).join('')}</ol></nav>
       <div class="tb-foot tb-meta"><span class="key"><i></i>At the site</span><span class="key"><i class="a"></i>Approximate area</span></div>`;
     tb.querySelectorAll('.tb-set button').forEach((b) => {
       b.addEventListener('click', () => open(b.dataset.slug));
-      b.addEventListener('pointerenter', () => setHot(b.dataset.slug, true));
-      b.addEventListener('pointerleave', () => setHot(b.dataset.slug, false));
-      b.addEventListener('focus', () => setHot(b.dataset.slug, true));
-      b.addEventListener('blur', () => setHot(b.dataset.slug, false));
+      b.addEventListener('pointerenter', () => { setHot(b.dataset.slug, true); showPeek(b.dataset.slug, 'register'); });
+      b.addEventListener('pointerleave', () => { setHot(b.dataset.slug, false); hidePeek(b.dataset.slug, 'register'); });
+      b.addEventListener('focus', () => { setHot(b.dataset.slug, true); showPeek(b.dataset.slug, 'register'); });
+      b.addEventListener('blur', () => { setHot(b.dataset.slug, false); hidePeek(b.dataset.slug, 'register'); });
     });
     $('reg-toggle').addEventListener('click', () => { const o = tb.classList.toggle('open'); $('reg-toggle').setAttribute('aria-expanded', o); });
     const cv = $('seal');
@@ -466,7 +515,7 @@
   const recEl = $('record');
   function open(slug, { push = true } = {}) {
     const it = bySlug[slug]; if (!it) return;
-    closeCallout(); stop();
+    closeCallout(); stop(); hidePeek();
     if (body.dataset.mode !== 'record') { savedView = { ...view }; returnFocus = document.activeElement; }
     openSlug = slug;
     if (it.slug === 'beetlecat') body.dataset.feature = 'beetlecat';
