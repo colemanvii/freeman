@@ -51,8 +51,8 @@ h1,h2,h3,p{margin:0;font-weight:400}
 .found [aria-selected="true"] .n,.found [aria-selected="true"] .w{color:var(--paper)}
 .found .none{display:block;color:var(--muted);cursor:auto}
 
-/* Field: the map and its time rule */
-.field{grid-column:1;grid-row:2;min-height:0;display:grid;grid-template-rows:minmax(0,1fr) auto;position:relative}
+/* Field: full-height geographic record. Chronology is retained in source but withdrawn until dates are verified. */
+.field{grid-column:1;grid-row:2;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);position:relative}
 .map{position:relative;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;cursor:var(--cursor);border-bottom:1px solid var(--ink)}
 .map:focus-visible{outline:1px solid var(--red);outline-offset:-1px}
 .map.grab{cursor:grabbing}
@@ -145,7 +145,7 @@ h1,h2,h3,p{margin:0;font-weight:400}
 .north svg{display:block;width:20px;height:34px}
 .north path{fill:none;stroke:var(--ink);stroke-width:1}
 .north path+path,.north svg path:last-child{fill:var(--ink)}
-.scale{position:absolute;left:0;bottom:14px;font-size:8px;letter-spacing:.07em;color:var(--muted);text-transform:uppercase}
+.scale{position:absolute;left:0;bottom:36px;font-size:8px;letter-spacing:.07em;color:var(--muted);text-transform:uppercase}
 .scale i{display:block;height:5px;border:1px solid var(--ink);border-top:0;margin-bottom:5px;background:linear-gradient(90deg,var(--ink) 50%,transparent 50%) 0 100%/100% 2px no-repeat}
 .coord{position:absolute;right:0;bottom:14px;font-size:8px;letter-spacing:.07em;color:var(--muted);white-space:nowrap}
 .zoom{position:absolute;right:0;bottom:30px;display:flex;flex-direction:column;pointer-events:auto;border:1px solid var(--ink);background:var(--paper)}
@@ -155,7 +155,7 @@ h1,h2,h3,p{margin:0;font-weight:400}
 .north{bottom:150px}
 
 /* The time rule */
-.rule{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:end;gap:18px;padding:12px 0 2px;min-height:70px}
+.rule{position:relative;display:none!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:end;gap:18px;padding:12px 0 2px;min-height:70px}
 .rule .play{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 12px;border:1px solid var(--ink);font-size:9px;letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;margin-bottom:6px}
 .rule .play:hover:not(:disabled){background:var(--red);border-color:var(--red);color:var(--paper)}
 .rule .play:disabled{border-color:var(--hair);color:var(--muted);cursor:var(--cursor)}
@@ -286,12 +286,12 @@ body[data-mode="record"] .find{display:none}
   .map{border-bottom:1px solid var(--ink)}
   .lede{left:12px;top:12px;padding:0 14px 10px 0}
   .lede h1{font-size:30px}
-  .rule{padding:8px 12px 2px;gap:10px;min-height:62px;grid-template-columns:auto minmax(0,1fr) auto}
+  .rule{display:none!important;padding:8px 12px 2px;gap:10px;min-height:62px;grid-template-columns:auto minmax(0,1fr) auto}
   .rule .play span{display:none}
   .rule-note .long{display:none}
   .rule-note .short{display:inline}
   .undated b{font-size:20px}
-  .scale{left:12px}
+  .scale{left:12px;bottom:38px}
   .coord{display:none}
   .zoom{right:12px;bottom:14px}
   .zoom button{width:40px;height:40px}
