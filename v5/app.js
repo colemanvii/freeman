@@ -29,7 +29,7 @@
     ["COMPANY", "company.html", ""],
     ["PROJECTS", "projects.html", ""],
     // NOTES stays withdrawn. The Record was approved for public release on 22 Oct 2026.
-    ["MAP", "record.html", ""],
+    ["MAP", "map.html", ""],
     ["CONTACT", "contact.html", ""],
   ];
   const TITLES = {

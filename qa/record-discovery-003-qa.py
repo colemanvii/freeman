@@ -19,8 +19,10 @@ with sync_playwright() as p:
     desktop = browser.new_page(viewport={"width": 1440, "height": 900})
     errors = []
     desktop.on("pageerror", lambda err: errors.append(str(err)))
-    desktop.goto(BASE + "/record", wait_until="domcontentloaded")
+    desktop.goto(BASE + "/map", wait_until="domcontentloaded")
     desktop.wait_for_function("window.__record && document.querySelectorAll('.tb-set button').length === 15")
+    check(desktop.url.split("?")[0].endswith("/map"), "canonical MAP route opens")
+    check(desktop.locator('link[rel="canonical"]').get_attribute("href") == "https://www.freemangc.com/map", "canonical meta tag is /map")
     check(desktop.locator(".tb-set button").count() == 15, "15 project records retained")
     check("Years on file" not in desktop.locator("#tblock").inner_text(), "empty year statistic removed")
     check(desktop.locator("#rule").is_hidden(), "empty chronology remains hidden")
@@ -63,7 +65,7 @@ with sync_playwright() as p:
                              device_scale_factor=2, is_mobile=True, has_touch=True)
     mobile_errors = []
     phone.on("pageerror", lambda err: mobile_errors.append(str(err)))
-    phone.goto(BASE + "/record", wait_until="domcontentloaded")
+    phone.goto(BASE + "/map", wait_until="domcontentloaded")
     phone.wait_for_function("window.__record && document.querySelectorAll('.tb-set button').length === 15")
     check(phone.locator("#map").is_visible(), "map is visible on phone")
     check(phone.locator(".photo-peek").is_hidden(), "no hover card obstructs touch map")
@@ -85,8 +87,8 @@ with sync_playwright() as p:
         errors_at_width = []
         test.on("pageerror", lambda err: errors_at_width.append(str(err)))
         test.goto(BASE + "/company", wait_until="domcontentloaded")
-        test.wait_for_selector('.site-nav a[href*="record"]', state="visible")
-        item = test.locator('.site-nav a[href*="record"]')
+        test.wait_for_selector('.site-nav a[href*="map"]', state="visible")
+        item = test.locator('.site-nav a[href*="map"]')
         check(item.inner_text().strip() == "MAP", f"{width}px: navigation reads MAP")
         check(test.locator('.site-nav a').count() == 4, f"{width}px: all four sections present")
         navbox = test.locator('.site-nav').bounding_box()
@@ -97,7 +99,7 @@ with sync_playwright() as p:
         check(test.evaluate("document.documentElement.scrollWidth <= innerWidth + 2"),
               f"{width}px: no site-navigation horizontal overflow")
         item.click()
-        test.wait_for_url("**/record")
+        test.wait_for_url("**/map")
         test.wait_for_function("window.__record && document.querySelectorAll('.tb-set button').length === 15")
         check(test.locator('#map').is_visible(), f"{width}px: MAP opens geographic experience")
         check(test.locator(".photo-peek").is_hidden(), f"{width}px: no hover overlay")
@@ -118,6 +120,40 @@ with sync_playwright() as p:
             test.screenshot(path=str(OUT / f"phone-{width}-map.png"))
         test.close()
 
+    # Old public URLs, including deep project links, continue to work.
+    old = browser.new_page(viewport={"width": 390, "height": 844})
+    old.goto(BASE + "/record?p=beetlecat", wait_until="domcontentloaded")
+    old.wait_for_function("window.__record && document.body.dataset.feature === 'beetlecat'")
+    check(old.url.endswith("/map?p=beetlecat"), "legacy /record?p=beetlecat preserves the linked project")
+    check(old.locator(".bc-thumb").count() == 4, "legacy Beetlecat link opens the same record")
+    old.goto(BASE + "/record.html?p=beetlecat", wait_until="domcontentloaded")
+    old.wait_for_function("window.__record && document.body.dataset.feature === 'beetlecat'")
+    check(old.url.endswith("/map?p=beetlecat"), "legacy /record.html also resolves to canonical /map")
+    old.close()
     browser.close()
+
+    # Browser-engine-specific mobile Safari approximation (NOT a native iOS Simulator).
+    safari = p.webkit.launch(headless=True)
+    iphone = safari.new_page(viewport={"width": 390, "height": 844},
+                             device_scale_factor=3, is_mobile=True, has_touch=True)
+    safari_errors = []
+    iphone.on("pageerror", lambda err: safari_errors.append(str(err)))
+    iphone.goto(BASE + "/map", wait_until="domcontentloaded")
+    iphone.wait_for_function("window.__record && document.querySelectorAll('.tb-set button').length === 15")
+    check(iphone.locator("#map").is_visible(), "WebKit: map loads on a phone viewport")
+    check(iphone.evaluate("document.documentElement.scrollWidth <= innerWidth + 2"), "WebKit: no horizontal scrolling")
+    iphone.screenshot(path=str(OUT / "webkit-mobile-map.png"))
+    iphone.locator("#reg-toggle").click()
+    iphone.locator('.tb-set button[data-slug="beetlecat"]').click()
+    iphone.wait_for_selector('body[data-mode="record"][data-feature="beetlecat"]')
+    check(iphone.locator("#r-img").is_visible(), "WebKit: image in mobile project record")
+    iphone.screenshot(path=str(OUT / "webkit-mobile-beetlecat.png"))
+    iphone.locator("#bc-enlarge").click()
+    check(iphone.locator("#bc-lightbox").evaluate("(e) => e.open"), "WebKit: full-screen gallery opens")
+    iphone.locator("#bc-lightbox-close").click()
+    iphone.locator("#r-back").click()
+    iphone.wait_for_selector('body[data-mode="map"]')
+    check(not safari_errors, "WebKit: no JS errors: " + "; ".join(safari_errors[:3]))
+    safari.close()
 
 print("The Record 003 browser QA passed.", flush=True)

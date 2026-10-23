@@ -5,6 +5,7 @@ on:
     branches:
       - study/the-record-discovery-003
       - study/map-nav-mobile-001
+      - release/map-canonical-mobile-audit-20261023
       - release/approved-v5-2026-10-18
   workflow_dispatch:
 
@@ -28,12 +29,12 @@ jobs:
       - name: Install browser and Pages emulator
         run: |
           python -m pip install playwright==1.60.0
-          python -m playwright install --with-deps chromium
+          python -m playwright install --with-deps chromium webkit
           npm install --no-save wrangler@4
       - name: Start local Pages
         run: |
           npx wrangler pages dev v5 --port 8788 --ip 127.0.0.1 > wrangler-record.log 2>&1 &
-          for i in $(seq 1 60); do curl -sf http://127.0.0.1:8788/record > /dev/null && exit 0; sleep 1; done
+          for i in $(seq 1 60); do curl -sf http://127.0.0.1:8788/map > /dev/null && exit 0; sleep 1; done
           cat wrangler-record.log
           exit 1
       - name: The Record desktop and phone browser QA
