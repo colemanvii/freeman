@@ -1,3 +1,7 @@
+# The Record is now MAP. Keep deep links; only the HTML route moves, never /record-assets/.
+/record /map 301
+/record.html /map 301
+
 # Legacy Webflow URLs (www.freemangc.com, crawled 14 Oct 2026) → current routes, so existing
 # links and search results keep working after the domain moves to Cloudflare Pages.
 /about /company 301
