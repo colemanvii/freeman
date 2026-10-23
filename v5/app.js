@@ -28,8 +28,8 @@
   const DESTINATIONS = [
     ["COMPANY", "company.html", ""],
     ["PROJECTS", "projects.html", ""],
-    // NOTES temporarily hidden from public navigation; its editorial work remains archived at /etcetera.
-    // RECORD is being developed privately; restore navigation only after approval.
+    // NOTES stays withdrawn. The Record was approved for public release on 22 Oct 2026.
+    ["RECORD", "record.html", ""],
     ["CONTACT", "contact.html", ""],
   ];
   const TITLES = {
