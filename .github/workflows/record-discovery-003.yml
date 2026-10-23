@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - study/the-record-discovery-003
+      - study/map-nav-mobile-001
       - release/approved-v5-2026-10-18
   workflow_dispatch:
 
