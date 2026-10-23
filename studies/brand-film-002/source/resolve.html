@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Freeman — Resolve words</title>
+<link rel="stylesheet" href="/styles.css">
+<style>
+/* Transparent plate: the words sit on the line where the entrance navigation sits (?y= canvas px),
+   under the finished script taken from the opening shot. */
+html,body{width:1080px;height:1920px;overflow:hidden;background:transparent!important;cursor:none}
+p{position:absolute;left:0;right:0;margin:0;text-align:center;color:var(--ink);font-family:var(--mono);font-size:44px;line-height:1;letter-spacing:.01em;transform:translateY(-50%)}
+</style></head>
+<body><p id="w">Built for Generations</p>
+<script>document.getElementById('w').style.top = (new URLSearchParams(location.search).get('y') || 1000) + 'px';</script>
+</body></html>

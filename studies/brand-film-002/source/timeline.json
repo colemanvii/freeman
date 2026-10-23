@@ -1,0 +1,164 @@
+{
+ "fps": 30,
+ "duration": 12.0,
+ "dpr": 3,
+ "cursorScale": 1.6,
+ "signatureOffset": 0.05,
+ "shots": [
+  {
+   "id": "mark",
+   "start": 0.0,
+   "url": "",
+   "viewport": [
+    1440,
+    640
+   ],
+   "crop": {
+    "cx": 720,
+    "cy": 320,
+    "scale": 1.8
+   }
+  },
+  {
+   "id": "map",
+   "start": 4.46,
+   "url": "map.html",
+   "viewport": [
+    800,
+    1422
+   ],
+   "crop": {
+    "x": 0,
+    "y": 0,
+    "scale": 1.35
+   }
+  },
+  {
+   "id": "eagle",
+   "start": 8.0,
+   "plate": "eagle"
+  },
+  {
+   "id": "resolve",
+   "start": 10.0,
+   "plate": "resolve"
+  }
+ ],
+ "cursor": [
+  {
+   "t": 0.0,
+   "at": "rest"
+  },
+  {
+   "t": 1.65,
+   "at": "hold"
+  },
+  {
+   "t": 1.98,
+   "at": "swatch:umber",
+   "ease": true
+  },
+  {
+   "t": 2.03,
+   "down": true
+  },
+  {
+   "t": 2.08,
+   "up": true
+  },
+  {
+   "t": 2.3,
+   "at": "hold"
+  },
+  {
+   "t": 2.48,
+   "at": "swatch:sand",
+   "ease": true
+  },
+  {
+   "t": 2.53,
+   "down": true
+  },
+  {
+   "t": 2.58,
+   "up": true
+  },
+  {
+   "t": 2.76,
+   "at": "hold"
+  },
+  {
+   "t": 2.98,
+   "at": "swatch:chalk",
+   "ease": true
+  },
+  {
+   "t": 3.03,
+   "down": true
+  },
+  {
+   "t": 3.08,
+   "up": true
+  },
+  {
+   "t": 3.55,
+   "at": "hold"
+  },
+  {
+   "t": 4.2,
+   "at": "nav:MAP",
+   "ease": true
+  },
+  {
+   "t": 4.4,
+   "down": true
+  },
+  {
+   "t": 4.46,
+   "up": true,
+   "navigate": "map"
+  },
+  {
+   "t": 4.46,
+   "at": "carry"
+  },
+  {
+   "t": 4.6,
+   "at": "hold"
+  },
+  {
+   "t": 5.12,
+   "at": "row:beetlecat",
+   "ease": true,
+   "via": "approach:beetlecat"
+  },
+  {
+   "t": 5.3,
+   "down": true
+  },
+  {
+   "t": 5.36,
+   "up": true
+  },
+  {
+   "t": 5.8,
+   "at": "hold"
+  },
+  {
+   "t": 6.18,
+   "at": "record:viewframe",
+   "ease": true
+  },
+  {
+   "t": 6.3,
+   "down": true
+  },
+  {
+   "t": 6.36,
+   "up": true
+  }
+ ],
+ "eagle": {
+  "stampStart": 8.15
+ }
+}

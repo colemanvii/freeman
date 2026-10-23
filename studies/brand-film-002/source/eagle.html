@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en" data-palette="sand"><head><meta charset="utf-8">
+<title>Freeman — Eagle plate</title>
+<link rel="stylesheet" href="/styles.css">
+<style>
+/* Eagle plate, 1080 × 1920, in the site's "Freeman" colorway (sand): paper #ddcfb3, ink, Freeman red.
+   The approved 192 × 60 Stamp bitmap at a whole-number scale (×3), stamped with its production motion. */
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--paper);cursor:none}
+.plate{position:absolute;inset:0;color:var(--ink);font-family:var(--mono)}
+canvas{position:absolute;left:252px;top:742px;width:576px;height:180px;image-rendering:pixelated;image-rendering:crisp-edges}
+h1{position:absolute;left:0;right:0;top:1010px;margin:0;text-align:center;font-weight:400;font-size:64px;line-height:1.2;letter-spacing:-.01em}
+</style></head>
+<body><div class="plate">
+  <canvas id="stamp" width="192" height="60" aria-hidden="true"></canvas>
+  <h1>Built for Generations</h1>
+</div>
+<script src="/eagle/eagle-motion.js"></script>
+<script>
+window.stampReady = FreemanBitmapEagle.load('/eagle/stamp.pbm');
+// The film passes its own frame clock as `raf`, so the motion is seeked frame by frame.
+window.stamp = (raf) => FreemanBitmapEagle.play(document.getElementById('stamp').getContext('2d'), 'impression',
+  { color: getComputedStyle(document.documentElement).getPropertyValue('--orange').trim(), raf });
+</script>
+</body></html>
