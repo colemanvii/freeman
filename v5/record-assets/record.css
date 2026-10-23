@@ -32,7 +32,7 @@ h1,h2,h3,p{margin:0;font-weight:400}
 .bar{grid-column:1 / -1;display:flex;align-items:center;gap:24px;font-size:10px;letter-spacing:.04em;text-transform:uppercase;padding-bottom:12px;border-bottom:1px solid var(--hair);min-height:46px}
 .brand{white-space:nowrap}
 .brand b{font-weight:400;color:var(--red)}
-.brand:hover,.close:hover{background:var(--red);color:var(--paper)}
+.brand:hover,.bar > a.close:hover{background:var(--red);color:var(--paper)}
 .crumb{flex:1;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .close{white-space:nowrap}
 
