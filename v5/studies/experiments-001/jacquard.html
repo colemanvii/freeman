@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Jacquard — Freeman</title>
+<link rel="stylesheet" href="frame.css">
+</head>
+<body>
+<canvas id="c" aria-label="The Freeman signature woven as a jacquard cloth, hanging from a rod."></canvas>
+<header class="f-head"><span><span class="no">05</span> Jacquard</span><a href="./">× Index</a></header>
+<footer class="f-foot"><span>Pull the cloth. Turn it over to see the back.</span><span class="src">The production signature bitmap, 2,278 points, one point per float</span></footer>
+<script src="signature-data.js"></script>
+<script>
+(()=>{"use strict";
+/* The signature is not printed on the cloth; it is the weave. Where the bitmap is on, the dark warp
+   floats over the weft; elsewhere the pale weft floats over a quiet twill. The back of a jacquard
+   is its inverse, so the reverse face swaps the two threads. One orange weft runs near the hem. */
+const SIG=window.FREEMAN_SIGNATURE;
+const GX=200,GY=96,CELL=10,OX=22,OY=19,ORANGE_ROW=GY-7;
+const on=new Set(SIG.map(([x,y])=>(x+OX)+","+(y+OY)));
+// ---- weave texture
+const tex=document.createElement("canvas");tex.width=2048;tex.height=1024;
+const t=tex.getContext("2d");
+let s=7;const rnd=()=>((s=(s*16807)%2147483647)/2147483647);
+const warpTone=[...Array(GX)].map(()=>0.9+rnd()*0.2),weftTone=[...Array(GY)].map(()=>0.94+rnd()*0.12);
+function thread(x,y,vertical,base,tone){
+  const g=vertical?t.createLinearGradient(x,0,x+CELL,0):t.createLinearGradient(0,y,0,y+CELL);
+  const c=k=>`rgb(${base.map(v=>Math.min(255,Math.round(v*tone*k))).join(",")})`;
+  g.addColorStop(0,c(0.62));g.addColorStop(0.35,c(1.04));g.addColorStop(0.55,c(1.0));g.addColorStop(1,c(0.6));
+  t.fillStyle=g;
+  if(vertical)t.fillRect(x+0.6,y-0.6,CELL-1.2,CELL+1.2);else t.fillRect(x-0.6,y+0.6,CELL+1.2,CELL-1.2);
+}
+const INK=[47,48,45],PAPER=[236,234,226],ORANGE=[240,90,40];
+t.fillStyle="#a8a69e";t.fillRect(0,0,tex.width,tex.height); // the shadow between threads
+for(let y=0;y<GY;y++)for(let x=0;x<GX;x++){
+  const X=x*CELL,Y=y*CELL;
+  const sig=on.has(x+","+y);
+  const twill=((5*x+y)%16)===0;            // a weft-faced satin ground: scattered ties, no diagonal
+  const warpUp=sig?((3*x+y)%8!==4):twill;  // warp satin in the figure, tied down every eighth pick
+  const weftColor=y===ORANGE_ROW?ORANGE:PAPER;
+  if(warpUp)thread(X,Y,true,sig?INK:[150,148,141],warpTone[x]*(sig?1.25:1));else thread(X,Y,false,weftColor,weftTone[y]);
+}
+// ---- cloth
+const NX=50,NY=24,WID=1.7,HEI=WID*GY/GX;
+const P=[],C=[];
+for(let j=0;j<NY;j++)for(let i=0;i<NX;i++){const x=(i/(NX-1)-0.5)*WID,y=0.5*HEI-(j/(NY-1))*HEI;P.push({x,y,z:0,px:x,py:y,pz:0,pin:j===0})}
+const id=(i,j)=>j*NX+i;
+function link(a,b,k){C.push([a,b,Math.hypot(P[a].x-P[b].x,P[a].y-P[b].y),k])}
+for(let j=0;j<NY;j++)for(let i=0;i<NX;i++){
+  if(i<NX-1)link(id(i,j),id(i+1,j),1);if(j<NY-1)link(id(i,j),id(i,j+1),1);
+  if(i<NX-1&&j<NY-1){link(id(i,j),id(i+1,j+1),0.5);link(id(i+1,j),id(i,j+1),0.5)}
+  if(i<NX-2)link(id(i,j),id(i+2,j),0.15);if(j<NY-2)link(id(i,j),id(i,j+2),0.15);
+}
+// a little fullness on the rod so it hangs in soft folds
+for(const p of P){if(p.pin){p.x*=0.9;p.px=p.x}else{p.z=0.025*Math.sin(p.x*19);p.pz=p.z}}
+// ---- gl
+const cv=document.getElementById("c");
+const gl=cv.getContext("webgl",{antialias:true});
+const VS=`attribute vec3 pos;attribute vec3 nrm;attribute vec2 uv;uniform vec2 asp;uniform float scale;varying vec2 v;varying vec3 n;varying float d;
+void main(){vec3 p=pos;float w=1.+p.z*.35;gl_Position=vec4(p.x*scale*asp.x/w,(p.y*scale)/w*asp.y,p.z*.1,1.);v=uv;n=nrm;d=p.z;}`;
+const FS=`precision mediump float;uniform sampler2D tx;varying vec2 v;varying vec3 n;varying float d;
+void main(){vec3 c=texture2D(tx,v).rgb;vec3 N=normalize(n);
+ if(!gl_FrontFacing){N=-N;c=vec3(.925,.918,.886)+vec3(.184,.188,.176)-c;c=clamp(c,0.,1.);}
+ vec3 L=normalize(vec3(-.45,.6,.9));float df=max(dot(N,L),0.);
+ float sp=pow(max(dot(reflect(-L,N),vec3(0,0,1)),0.),18.)*.08;
+ gl_FragColor=vec4(c*(.52+.58*df)+sp,1.);}`;
+function sh(type,src){const o=gl.createShader(type);gl.shaderSource(o,src);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(o);return o}
+const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr);gl.useProgram(pr);
+const tx=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tx);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,tex);
+gl.generateMipmap(gl.TEXTURE_2D);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+const ani=gl.getExtension("EXT_texture_filter_anisotropic");if(ani)gl.texParameterf(gl.TEXTURE_2D,ani.TEXTURE_MAX_ANISOTROPY_EXT,8);
+const uvs=new Float32Array(NX*NY*2);for(let j=0;j<NY;j++)for(let i=0;i<NX;i++){uvs[id(i,j)*2]=i/(NX-1)*GX*CELL/2048;uvs[id(i,j)*2+1]=j/(NY-1)*GY*CELL/1024}
+const idx=[];for(let j=0;j<NY-1;j++)for(let i=0;i<NX-1;i++){const a=id(i,j),b=id(i+1,j),c=id(i,j+1),d=id(i+1,j+1);idx.push(a,c,b,b,c,d)}
+const ib=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ib);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(idx),gl.STATIC_DRAW);
+function attr(name,size,data,usage){const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,data,usage);const l=gl.getAttribLocation(pr,name);gl.enableVertexAttribArray(l);gl.vertexAttribPointer(l,size,gl.FLOAT,false,0,0);return b}
+const pos=new Float32Array(NX*NY*3),nrm=new Float32Array(NX*NY*3);
+const pb=attr("pos",3,pos,gl.DYNAMIC_DRAW),nb=attr("nrm",3,nrm,gl.DYNAMIC_DRAW);attr("uv",2,uvs,gl.STATIC_DRAW);
+const uAsp=gl.getUniformLocation(pr,"asp"),uScale=gl.getUniformLocation(pr,"scale");
+let W,H,DPR,SC;
+function resize(){DPR=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;gl.viewport(0,0,cv.width,cv.height);
+  SC=Math.min(2*Math.min(W-48,W*0.74)/(H*WID),2*(H-260)/(H*HEI))} // world → clip, fitted to width and height
+addEventListener("resize",resize);resize();
+// ---- physics
+const G=-1.6,DT=1/120,reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let grab=null,grabT=null,time=0,gust=[0,0];
+function step(){
+  time+=DT;
+  const breeze=reduce?0:0.035*(Math.sin(time*0.7)+0.6*Math.sin(time*1.9+1.3));
+  for(let k=0;k<P.length;k++){const p=P[k];if(p.pin||p===grab)continue;
+    const j=(k/NX)|0,i=k%NX;
+    const vx=(p.x-p.px)*0.992,vy=(p.y-p.py)*0.992,vz=(p.z-p.pz)*0.992;p.px=p.x;p.py=p.y;p.pz=p.z;
+    const f=breeze*(0.6+0.4*Math.sin(i*0.31+time*2.1+j*0.2))+gust[1];
+    p.x+=vx+gust[0]*DT*DT*(j/NY);p.y+=vy+G*DT*DT;p.z+=vz+f*DT*DT*(j/NY)*1.5;
+  }
+  gust[0]*=0.9;gust[1]*=0.9;
+  if(grab&&grabT){grab.x+=(grabT[0]-grab.x)*0.5;grab.y+=(grabT[1]-grab.y)*0.5;grab.z+=(-0.12-grab.z)*0.2}
+  for(let it=0;it<10;it++)for(const[a,b,L,k]of C){
+    const A=P[a],B=P[b];const fa=A.pin||A===grab?0:1,fb=B.pin||B===grab?0:1;if(!fa&&!fb)continue;
+    let dx=B.x-A.x,dy=B.y-A.y,dz=B.z-A.z;const l=Math.hypot(dx,dy,dz)||1e-6;const m=(l-L)/l*k/(fa+fb);
+    dx*=m;dy*=m;dz*=m;if(fa){A.x+=dx;A.y+=dy;A.z+=dz}if(fb){B.x-=dx;B.y-=dy;B.z-=dz}
+  }
+}
+function upload(){
+  for(let k=0;k<P.length;k++){pos[k*3]=P[k].x;pos[k*3+1]=P[k].y;pos[k*3+2]=P[k].z}
+  for(let j=0;j<NY;j++)for(let i=0;i<NX;i++){
+    const l=P[id(Math.max(0,i-1),j)],r=P[id(Math.min(NX-1,i+1),j)],u=P[id(i,Math.max(0,j-1))],d=P[id(i,Math.min(NY-1,j+1))];
+    const ax=r.x-l.x,ay=r.y-l.y,az=r.z-l.z,bx=u.x-d.x,by=u.y-d.y,bz=u.z-d.z;
+    let nx=ay*bz-az*by,ny=az*bx-ax*bz,nz=ax*by-ay*bx;const n=Math.hypot(nx,ny,nz)||1;const k=id(i,j)*3;nrm[k]=nx/n;nrm[k+1]=ny/n;nrm[k+2]=nz/n;
+  }
+  gl.bindBuffer(gl.ARRAY_BUFFER,pb);gl.bufferSubData(gl.ARRAY_BUFFER,0,pos);
+  gl.bindBuffer(gl.ARRAY_BUFFER,nb);gl.bufferSubData(gl.ARRAY_BUFFER,0,nrm);
+}
+// overlay: the rod, drawn in 2D over the GL canvas
+const ov=document.createElement("canvas");ov.style.pointerEvents="none";document.body.appendChild(ov);const o2=ov.getContext("2d");
+function toScreen(p){const w=1+p.z*0.35;return[(p.x*SC*(H/W)/w*0.5+0.5)*W,(0.5-p.y*SC/w*0.5)*H]}
+function rod(){ov.width=W*DPR;ov.height=H*DPR;o2.setTransform(DPR,0,0,DPR,0,0);
+  const a=toScreen(P[0]),b=toScreen(P[NX-1]);o2.strokeStyle="#30312f";o2.lineWidth=3;o2.beginPath();o2.moveTo(a[0]-22,a[1]-1);o2.lineTo(b[0]+22,b[1]-1);o2.stroke();
+  o2.fillStyle="#f05a28";o2.fillRect(Math.round(a[0]-24),Math.round(a[1]-3),4,4);o2.fillRect(Math.round(b[0]+20),Math.round(b[1]-3),4,4)}
+function fromScreen(x,y){return[((x/W-0.5)*2)/(SC*(H/W)),((0.5-y/H)*2)/SC]}
+cv.addEventListener("pointerdown",e=>{const[x,y]=fromScreen(e.clientX,e.clientY);let best=null,bd=0.12;
+  for(const p of P){if(p.pin)continue;const d=Math.hypot(p.x-x,p.y-y);if(d<bd){bd=d;best=p}}grab=best;grabT=[x,y];cv.setPointerCapture(e.pointerId)});
+let last=null;
+cv.addEventListener("pointermove",e=>{if(grab){grabT=fromScreen(e.clientX,e.clientY)}else if(last){gust[0]+=(e.clientX-last[0])*0.05;gust[1]+=Math.abs(e.clientX-last[0])*0.004}last=[e.clientX,e.clientY]});
+cv.addEventListener("pointerup",()=>{grab=null;grabT=null});
+gl.enable(gl.DEPTH_TEST);gl.clearColor(0.957,0.957,0.941,1);
+for(let i=0;i<400;i++)step();
+let acc=0,tp=performance.now();
+function frame(now){acc+=Math.min(0.05,(now-tp)/1000);tp=now;while(acc>DT){step();acc-=DT}
+  upload();gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.uniform2f(uAsp,H/W,1);gl.uniform1f(uScale,SC);
+  gl.drawElements(gl.TRIANGLES,idx.length,gl.UNSIGNED_SHORT,0);rod();requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

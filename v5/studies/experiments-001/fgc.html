@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>F·G·C — Freeman</title>
+<link rel="stylesheet" href="frame.css">
+<style>
+.views{display:flex;gap:18px}
+.views button[aria-pressed=true]{color:var(--orange)}
+</style>
+</head>
+<body>
+<canvas id="c" aria-label="A single solid of blocks that casts the letter F on one wall, G on another and C on the floor."></canvas>
+<header class="f-head"><span><span class="no">02</span> F·G·C</span><a href="./">× Index</a></header>
+<footer class="f-foot"><span>Drag to turn it.</span><span class="views" role="group" aria-label="Look along one axis"><button data-v="f" aria-pressed="false">F</button><button data-v="g" aria-pressed="false">G</button><button data-v="c" aria-pressed="false">C</button><button data-v="free" aria-pressed="true">○</button></span></footer>
+<script>
+(()=>{"use strict";
+/* One solid, three shadows. A block exists where all three letters agree:
+   F(x,y) ∧ G(z,y) ∧ C(x,z). Square letterforms make the trisection exact;
+   then blocks are removed one at a time while every shadow stays whole. */
+const N=11;
+const parse=s=>s.trim().split("\n").map(r=>[...r.trim()].map(c=>c==="#"));
+const f=parse(`
+###########
+###########
+##.........
+##.........
+########...
+########...
+##.........
+##.........
+##.........
+##.........
+##.........`),g=parse(`
+###########
+###########
+##.........
+##.........
+##.........
+##....#####
+##....#####
+##.......##
+##.......##
+###########
+###########`),c=parse(`
+###########
+###########
+##.........
+##.........
+##.........
+##.........
+##.........
+##.........
+##.........
+###########
+###########`);
+const Fm=(x,y)=>f[N-1-y][x],Gm=(z,y)=>g[N-1-y][N-1-z],Cm=(x,z)=>c[z][x];
+const key=(x,y,z)=>x+N*(y+N*z);
+let solid=new Set();
+for(let x=0;x<N;x++)for(let y=0;y<N;y++)for(let z=0;z<N;z++)if(Fm(x,y)&&Gm(z,y)&&Cm(x,z))solid.add(key(x,y,z));
+const xyz=k=>[k%N,((k/N)|0)%N,(k/(N*N))|0];
+// carve: seeded shuffle, drop any block whose three shadows are each cast by another block
+let seed=1994;const rnd=()=>((seed=(seed*16807)%2147483647)/2147483647);
+const order=[...solid].sort(()=>rnd()-0.5);
+const cnt=(m,a,b)=>m.get(a+","+b)||0;
+const pF=new Map(),pG=new Map(),pC=new Map();
+const inc=(m,k,d)=>m.set(k,(m.get(k)||0)+d);
+for(const k of solid){const[x,y,z]=xyz(k);inc(pF,x+","+y,1);inc(pG,z+","+y,1);inc(pC,x+","+z,1)}
+for(const k of order){const[x,y,z]=xyz(k);
+  if(cnt(pF,x,y)>1&&cnt(pG,z,y)>1&&cnt(pC,x,z)>1){solid.delete(k);inc(pF,x+","+y,-1);inc(pG,z+","+y,-1);inc(pC,x+","+z,-1)}}
+const V=[...solid].map(xyz);
+const H=N/2,GAP=3.2;
+
+const cv=document.getElementById("c"),ctx=cv.getContext("2d");
+let W,Hh,DPR,SC;
+function resize(){DPR=Math.min(2,devicePixelRatio||1);W=innerWidth;Hh=innerHeight;cv.width=W*DPR;cv.height=Hh*DPR;SC=Math.min(W,Hh-120)/(N+GAP*2+8)}
+addEventListener("resize",resize);resize();
+
+let yaw=-0.62,pitch=0.42,vy=0.0016,vp=0,target=null,hold=false;
+function rot(p){
+  const cy=Math.cos(yaw),sy=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch);
+  const x=p[0]*cy+p[2]*sy, z=-p[0]*sy+p[2]*cy;
+  return[x, p[1]*cp-z*sp, p[1]*sp+z*cp];
+}
+const scr=q=>[W/2+q[0]*SC,Hh/2+12-q[1]*SC];
+const FACES=[ // normal, 4 corners (unit cube), tone
+  [[1,0,0],[[1,0,0],[1,1,0],[1,1,1],[1,0,1]],"#dcdcd5"],[[-1,0,0],[[0,0,0],[0,0,1],[0,1,1],[0,1,0]],"#dcdcd5"],
+  [[0,1,0],[[0,1,0],[0,1,1],[1,1,1],[1,1,0]],"#fbfbf8"],[[0,-1,0],[[0,0,0],[1,0,0],[1,0,1],[0,0,1]],"#bfc1bb"],
+  [[0,0,1],[[0,0,1],[1,0,1],[1,1,1],[0,1,1]],"#ebebe5"],[[0,0,-1],[[0,0,0],[0,1,0],[1,1,0],[1,0,0]],"#ebebe5"]];
+const has=(x,y,z)=>x>=0&&y>=0&&z>=0&&x<N&&y<N&&z<N&&solid.has(key(x,y,z));
+function quad(pts,fill,stroke,lw){
+  ctx.beginPath();pts.forEach((p,i)=>{const s=scr(p);i?ctx.lineTo(s[0],s[1]):ctx.moveTo(s[0],s[1])});ctx.closePath();
+  if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke()}
+}
+// walls: the room corner behind the solid; each carries one letter's shadow
+const WALLS=[
+  {n:[0,0,1],pt:(a,b)=>[a-H,b-H,-H-GAP],cells:(()=>{const r=[];for(let x=0;x<N;x++)for(let y=0;y<N;y++)if(Fm(x,y))r.push([x,y]);return r})()},
+  {n:[1,0,0],pt:(a,b)=>[-H-GAP,b-H,a-H],cells:(()=>{const r=[];for(let z=0;z<N;z++)for(let y=0;y<N;y++)if(Gm(z,y))r.push([z,y]);return r})()},
+  {n:[0,1,0],pt:(a,b)=>[a-H,-H-GAP,b-H],cells:(()=>{const r=[];for(let x=0;x<N;x++)for(let z=0;z<N;z++)if(Cm(x,z))r.push([x,z]);return r})()}];
+function draw(){
+  ctx.setTransform(DPR,0,0,DPR,0,0);ctx.fillStyle="#f4f4f0";ctx.fillRect(0,0,W,Hh);
+  const M=1.6;
+  for(const w of WALLS){
+    const nz=rot(w.n)[2];if(nz<=0.02)continue;
+    const a=Math.min(1,nz*3);
+    ctx.globalAlpha=a;
+    quad([w.pt(-M,-M),w.pt(N+M,-M),w.pt(N+M,N+M),w.pt(-M,N+M)].map(rot),null,"#cfd1cb",1);
+    ctx.fillStyle="#30312f";
+    ctx.beginPath();
+    for(const[a2,b]of w.cells){const p=[w.pt(a2,b),w.pt(a2+1,b),w.pt(a2+1,b+1),w.pt(a2,b+1)].map(q=>scr(rot(q)));
+      ctx.moveTo(p[0][0],p[0][1]);for(let i=1;i<4;i++)ctx.lineTo(p[i][0],p[i][1]);ctx.closePath()}
+    ctx.fill();ctx.globalAlpha=1;
+  }
+  const quads=[];
+  for(const[x,y,z]of V)for(const[n,cs,tone]of FACES){
+    if(has(x+n[0],y+n[1],z+n[2]))continue;
+    const rn=rot(n);if(rn[2]<=1e-4)continue;
+    const pts=cs.map(o=>rot([x+o[0]-H,y+o[1]-H,z+o[2]-H]));
+    quads.push([pts.reduce((s,p)=>s+p[2],0)/4,pts,tone]);
+  }
+  quads.sort((a,b)=>a[0]-b[0]);
+  for(const[,pts,tone]of quads)quad(pts,tone,"#30312f",0.6);
+}
+// views
+const VIEWS={f:[0,0],g:[-Math.PI/2,0],c:[0,Math.PI/2],free:[-0.62,0.42]};
+const btns=[...document.querySelectorAll("[data-v]")];
+function go(v){target=VIEWS[v];vy=vp=0;hold=v!=="free";btns.forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.v===v)))}
+btns.forEach(b=>b.addEventListener("click",()=>go(b.dataset.v)));
+addEventListener("keydown",e=>{const m={"1":"f","2":"g","3":"c","0":"free"}[e.key];if(m)go(m)});
+let drag=null;
+cv.addEventListener("pointerdown",e=>{drag=[e.clientX,e.clientY];target=null;hold=false;vy=vp=0;cv.setPointerCapture(e.pointerId);btns.forEach(b=>b.setAttribute("aria-pressed","false"))});
+cv.addEventListener("pointermove",e=>{if(!drag)return;const dx=e.clientX-drag[0],dy=e.clientY-drag[1];drag=[e.clientX,e.clientY];
+  vy=dx*0.006;vp=dy*0.006;yaw+=vy;pitch=Math.max(-0.2,Math.min(Math.PI/2,pitch+vp))});
+cv.addEventListener("pointerup",()=>{drag=null});
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+if(reduce)vy=0;
+function wrap(a){return Math.atan2(Math.sin(a),Math.cos(a))}
+let tPrev=performance.now();
+function frame(t=performance.now()){
+  const k=1-Math.exp(-Math.min(0.1,(t-tPrev)/1000)*5.5);tPrev=t;
+  if(target){const dy=wrap(target[0]-yaw),dp=target[1]-pitch;yaw+=dy*(reduce?1:k);pitch+=dp*(reduce?1:k);if(Math.abs(dy)+Math.abs(dp)<1e-3){yaw=target[0];pitch=target[1];target=null}}
+  else if(!drag&&!hold){yaw+=vy;pitch=Math.max(-0.2,Math.min(Math.PI/2,pitch+vp));vy+=(0.0016*(reduce?0:1)-vy)*0.02;vp*=0.92}
+  draw();requestAnimationFrame(frame);
+}
+frame();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>706.263.3348 — Freeman</title>
+<link rel="stylesheet" href="frame.css">
+<style>
+#dial{font-size:10px;color:var(--orange)}
+#dial:hover{color:var(--paper)}
+.f-foot .mid{position:absolute;left:50%;transform:translateX(-50%);pointer-events:auto}
+#done{visibility:hidden}
+#done.on{visibility:visible}
+#done a{color:var(--ink)}
+@media (max-width:600px){.f-foot .hint{display:none}.f-foot .mid{left:16px;transform:none}}
+</style>
+</head>
+<body>
+<canvas id="c" aria-label="Freeman's telephone number, each digit drawn as the figure its touch-tone makes on an oscilloscope."></canvas>
+<header class="f-head"><span><span class="no">04</span> 706.263.3348</span><a href="./">× Index</a></header>
+<footer class="f-foot"><span class="hint">Type the number, or tap a digit.</span><span class="mid"><button id="dial">Dial</button></span><span id="done">Ringing. <a href="tel:+17062633348">Call for real ↗</a></span></footer>
+<script>
+(()=>{"use strict";
+/* Each digit of a touch-tone is two sine waves: one for its row on the keypad, one for its column.
+   Send the low tone to the left channel and the high tone to the right, plot left against right,
+   and every digit draws a different figure. The ink glyphs are the mathematics;
+   the orange line is the actual sound, read back from the speakers' signal while it plays. */
+const NUMBER="706.263.3348";
+const ROW={1:697,2:697,3:697,4:770,5:770,6:770,7:852,8:852,9:852,0:941,"*":941,"#":941};
+const COL={1:1209,2:1336,3:1477,4:1209,5:1336,6:1477,7:1209,8:1336,9:1477,0:1336,"*":1209,"#":1477};
+const cv=document.getElementById("c"),ctx=cv.getContext("2d");
+let W,H,DPR,cell,slots=[];
+const digits=[...NUMBER].map((ch,i)=>({ch,i,dot:ch==="."}));
+const live=new Map(); // slot index -> {pts, until, dialed}
+let progress=0;
+function layout(){
+  DPR=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;
+  const narrow=W<700;
+  const groups=NUMBER.split(".");
+  slots=[];
+  if(!narrow){
+    cell=Math.min(150,(W-80)/(10+2*0.5+1.2));
+    const gap=cell*0.12,dotw=cell*0.5;
+    let total=10*cell+9*gap+2*dotw;let x=(W-total)/2;const y=H/2-cell/2-10;
+    for(const d of digits){if(d.dot){slots.push({d,x,y,w:dotw});x+=dotw+gap}else{slots.push({d,x,y,w:cell});x+=cell+gap}}
+  }else{ // three lines on a phone: 706 / 263 / 3348
+    cell=Math.min(78,(W-32-3*10)/4);const gap=10;let y=H/2-(3*cell+2*28)/2;
+    let k=0;for(const g of groups){const tw=g.length*cell+(g.length-1)*gap;let x=(W-tw)/2;
+      for(const ch of g){slots.push({d:digits[k],x,y,w:cell});x+=cell+gap;k++}
+      if(k<digits.length){slots.push({d:digits[k],x:-99,y:-99,w:0});k++}y+=cell+28}
+  }
+}
+function figure(dg,n=900,T=0.0046){
+  const fl=ROW[dg],fh=COL[dg],pts=[];
+  for(let i=0;i<=n;i++){const t=i/n*T;pts.push([Math.sin(2*Math.PI*fl*t),Math.sin(2*Math.PI*fh*t)])}
+  return pts;
+}
+const FIG={};for(const k of"0123456789")FIG[k]=figure(k);
+function plot(pts,s,color,lw,alpha){
+  const r=s.w*0.44,cx=s.x+s.w/2,cy=s.y+s.w/2;
+  ctx.globalAlpha=alpha;ctx.strokeStyle=color;ctx.lineWidth=lw;ctx.beginPath();
+  pts.forEach(([a,b],i)=>{const X=cx+a*r,Y=cy-b*r;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)});ctx.stroke();ctx.globalAlpha=1;
+}
+function draw(now){
+  ctx.setTransform(DPR,0,0,DPR,0,0);ctx.fillStyle="#f4f4f0";ctx.fillRect(0,0,W,H);
+  ctx.font=`9px Monaco, "SFMono-Regular", Consolas, monospace`;ctx.textAlign="left";ctx.textBaseline="top";
+  slots.forEach((s,i)=>{
+    if(s.d.dot){if(s.w){ctx.fillStyle="#f05a28";const q=Math.max(4,Math.round(cell*0.05));ctx.fillRect(Math.round(s.x+s.w/2-q/2),Math.round(s.y+s.w*0.86),q,q)}return}
+    const L=live.get(i);
+    plot(FIG[s.d.ch],s,"#30312f",0.55,L&&L.dialed?0.28:0.85);
+    if(L&&L.pts){const a=Math.max(0,Math.min(1,(L.until-now)/1200));if(a>0)plot(L.pts,s,"#f05a28",0.9,Math.max(L.dialed?0.75:0,a))}
+    ctx.fillStyle=L&&L.dialed?"#f05a28":"#8e918c";
+    ctx.fillText(s.d.ch,s.x,s.y+s.w+8);
+    ctx.fillStyle="#8e918c";ctx.textAlign="right";
+    if(cell>90)ctx.fillText(`${ROW[s.d.ch]}+${COL[s.d.ch]} HZ`,s.x+s.w,s.y+s.w+8);
+    ctx.textAlign="left";
+  });
+}
+// audio
+let ac,an=[],tone=null;
+function audio(){
+  if(ac)return;ac=new (window.AudioContext||window.webkitAudioContext)();
+  const sp=ac.createChannelSplitter(2);
+  for(let c=0;c<2;c++){const a=ac.createAnalyser();a.fftSize=2048;sp.connect(a,c);an.push(a)}
+  audio.bus=ac.createGain();Object.assign(audio.bus,{channelCount:2,channelCountMode:"explicit",channelInterpretation:"discrete"});
+  audio.bus.connect(sp);
+  audio.out=ac.createGain();audio.out.gain.value=0.16;audio.bus.connect(audio.out);audio.out.connect(ac.destination);
+}
+function start(dg){
+  audio();stop();
+  const t=ac.currentTime,g=ac.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(1,t+0.006);
+  const m=ac.createChannelMerger(2);
+  const o=[ROW[dg],COL[dg]].map((f,c)=>{const osc=ac.createOscillator();osc.frequency.value=f;osc.connect(m,0,c);osc.start(t);return osc});
+  Object.assign(g,{channelCount:2,channelCountMode:"explicit",channelInterpretation:"discrete"});m.connect(g);g.connect(audio.bus);
+  tone={o,g,dg};
+}
+function stop(){if(!tone)return;const t=ac.currentTime;tone.g.gain.cancelScheduledValues(t);tone.g.gain.setValueAtTime(tone.g.gain.value,t);tone.g.gain.linearRampToValueAtTime(0,t+0.008);tone.o.forEach(o=>o.stop(t+0.02));tone=null}
+const bufL=new Float32Array(2048),bufR=new Float32Array(2048);
+function sample(){
+  an[0].getFloatTimeDomainData(bufL);an[1].getFloatTimeDomainData(bufR);
+  let m=1e-6;for(let i=0;i<2048;i++)m=Math.max(m,Math.abs(bufL[i]),Math.abs(bufR[i]));
+  if(m<0.05)return null;
+  const n=Math.round(0.0046*ac.sampleRate),pts=[];for(let i=0;i<n;i++)pts.push([bufL[i]/m,bufR[i]/m]);return pts;
+}
+let target=-1;
+function press(dg,slot){
+  start(dg);
+  if(slot==null){ // typed: advance through the number if it is the next digit
+    const want=slots.filter(s=>!s.d.dot)[progress];
+    if(want&&want.d.ch===dg){slot=slots.indexOf(want);progress++}else{progress=0;for(const v of live.values())v.dialed=false;document.getElementById("done").classList.remove("on");
+      const first=slots.find(s=>!s.d.dot);if(first.d.ch===dg){slot=slots.indexOf(first);progress=1}}
+    if(slot!=null)live.set(slot,{pts:null,until:0,dialed:true});
+    if(progress===10)document.getElementById("done").classList.add("on");
+  }
+  target=slot??-1;
+  if(slot!=null&&!live.has(slot))live.set(slot,{pts:null,until:0,dialed:false});
+  if(slot!=null){const L=live.get(slot);L.pts=FIG[dg];L.until=performance.now()+1200} // the live signal replaces this on the next frame
+}
+function release(){stop()}
+addEventListener("keydown",e=>{if(e.repeat)return;if(/^[0-9]$/.test(e.key))press(e.key)});
+addEventListener("keyup",e=>{if(/^[0-9]$/.test(e.key))release()});
+cv.addEventListener("pointerdown",e=>{
+  const i=slots.findIndex(s=>!s.d.dot&&e.clientX>=s.x&&e.clientX<=s.x+s.w&&e.clientY>=s.y&&e.clientY<=s.y+s.w+20);
+  if(i>=0){press(slots[i].d.ch,i);if(live.get(i))live.get(i).dialed=live.get(i).dialed||false}
+});
+addEventListener("pointerup",release);addEventListener("pointercancel",release);
+document.getElementById("dial").addEventListener("click",async()=>{
+  audio();await ac.resume();progress=0;for(const v of live.values())v.dialed=false;document.getElementById("done").classList.remove("on");
+  const seq=slots.map((s,i)=>[s,i]);
+  for(const[s,i]of seq){
+    if(s.d.dot){await wait(260);continue}
+    press(s.d.ch,i);live.get(i).dialed=true;progress++;await wait(150);release();await wait(85);
+  }
+  document.getElementById("done").classList.add("on");
+});
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+addEventListener("resize",layout);layout();
+function frame(now){
+  if(tone&&target>=0){const p=sample();const L=live.get(target);if(p&&L){L.pts=p;L.until=now+1200}}
+  draw(now);requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

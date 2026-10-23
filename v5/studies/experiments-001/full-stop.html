@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Full Stop — Freeman</title>
+<link rel="stylesheet" href="frame.css">
+<style>
+#text{position:fixed;left:50%;top:47%;transform:translate(-50%,-50%);width:min(760px,calc(100% - 32px));font-size:21px;line-height:1.62;letter-spacing:.005em;margin:0;z-index:1}
+#text p{margin:0 0 1.1em}
+#text p:last-child{margin:0}
+.m{cursor:var(--cursor);position:relative}
+.m.stop{color:transparent}
+.m.stop::after{content:"";position:absolute;left:.18em;bottom:.3em;width:.27em;height:.27em;background:var(--orange)}
+.m.out{display:inline-block;width:0;overflow:visible;color:transparent}
+.m.out::after{display:none}
+.m.open{outline:1px dotted #cfd1cb;outline-offset:1px}
+canvas{z-index:2;pointer-events:none}
+@media (max-width:600px){#text{font-size:15px;top:46%}}
+</style>
+</head>
+<body>
+<div id="text" aria-live="polite"></div>
+<canvas id="c" aria-hidden="true"></canvas>
+<header class="f-head"><span><span class="no">06</span> Full Stop</span><a href="./">× Index</a></header>
+<footer class="f-foot"><span>Knock out the punctuation. Put it back if you can.</span><span class="src">Company statement — freemangc.com</span></footer>
+<script>
+(()=>{"use strict";
+/* Freeman's orange is punctuation, so the punctuation is made of something.
+   Every full stop and comma in the company statement is a body. Knock one out and the
+   sentence runs on; drag it back near its place and the sentence closes again. */
+const TEXT=[
+ "We work alongside owners, architects, designers, and operators who care deeply about what they create. We come to the table early, bring the right people together, and carry ambitious ideas through construction.",
+ "Good construction is a relationship, not a transaction. It takes clear judgment, difficult conversations, respect for the people doing the work, and decisions made for the long term.",
+ "We believe the process of building should be something people look forward to, not simply something they have to get through."];
+const box=document.getElementById("text");
+let mid=0;const MARKS=[];
+box.innerHTML=TEXT.map(par=>"<p>"+par.replace(/([.,])(\s+)(\S)|([.,])$/g,(all,p,sp,next,end)=>{
+  const ch=p||end,i=mid++;MARKS.push({i,ch});
+  const cls=ch==="."?"m stop":"m comma";
+  return `<span class="${cls}" data-i="${i}">${ch}</span>`+(sp?sp+`<span class="cap" data-after="${i}">${next}</span>`:"");
+})+"</p>").join("");
+const spans=[...box.querySelectorAll(".m")];
+const caps=new Map([...box.querySelectorAll(".cap")].map(e=>[+e.dataset.after,e]));
+const cv=document.getElementById("c"),ctx=cv.getContext("2d");
+let W,H,DPR,FLOOR,FS;
+function resize(){DPR=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;FLOOR=H-62;FS=parseFloat(getComputedStyle(box).fontSize)}
+addEventListener("resize",resize);resize();
+const bodies=[];
+function knock(i,vx,vy){
+  const el=spans[i];if(el.classList.contains("out"))return;
+  const r=el.getBoundingClientRect();
+  const stop=MARKS[i].ch===".";
+  const s=stop?FS*0.27:FS*0.3;
+  const x=stop?r.left+FS*0.18+s/2:r.left+r.width/2,y=stop?r.bottom-FS*0.3*1-s/2-(r.height-FS)/2:r.top+r.height*0.55;
+  el.classList.add("out");el.classList.remove("stop");
+  const c=caps.get(i);if(stop&&c&&c.textContent!=="I")c.textContent=c.textContent.toLowerCase();
+  bodies.push({i,stop,x,y,w:s,h:stop?s:s*1.4,vx,vy,a:0,va:(Math.random()-0.5)*14});
+  box.setAttribute("aria-label",box.textContent);
+}
+function restore(b){
+  const el=spans[b.i];el.classList.remove("out","open");if(b.stop)el.classList.add("stop");
+  const c=caps.get(b.i);if(b.stop&&c)c.textContent=c.textContent.toUpperCase();
+  bodies.splice(bodies.indexOf(b),1);
+}
+box.addEventListener("pointerdown",e=>{
+  const el=e.target.closest(".m");if(!el||el.classList.contains("out"))return;
+  e.preventDefault();knock(+el.dataset.i,(Math.random()-0.5)*260,-380-Math.random()*240);
+});
+// shake: a fast sweep across the text loosens what it passes
+let lastP=null;
+addEventListener("pointermove",e=>{
+  if(drag){drag.x=e.clientX-drag.ox;drag.y=e.clientY-drag.oy;drag.vx=(e.clientX-(lastP?lastP[0]:e.clientX))*60;drag.vy=(e.clientY-(lastP?lastP[1]:e.clientY))*60;
+    const near=nearestSocket(drag);spans.forEach(s=>s.classList.toggle("open",near===s));}
+  else if(lastP&&e.pointerType==="mouse"){
+    const v=Math.hypot(e.clientX-lastP[0],e.clientY-lastP[1]);
+    if(v>70)for(const s of spans){if(s.classList.contains("out"))continue;const r=s.getBoundingClientRect();
+      if(Math.hypot(r.left-e.clientX,r.top+r.height/2-e.clientY)<60)knock(+s.dataset.i,(e.clientX-lastP[0])*9,(e.clientY-lastP[1])*9-200)}
+  }
+  lastP=[e.clientX,e.clientY];
+});
+// drag a fallen mark back
+let drag=null;
+addEventListener("pointerdown",e=>{
+  if(e.target.closest(".m")||e.target.closest("a,button"))return;
+  let best=null,bd=26;for(const b of bodies){const d=Math.hypot(b.x-e.clientX,b.y-e.clientY);if(d<bd){bd=d;best=b}}
+  if(best){drag=best;drag.ox=e.clientX-best.x;drag.oy=e.clientY-best.y}
+});
+function nearestSocket(b){
+  let best=null,bd=FS*1.4;
+  for(const s of spans){if(!s.classList.contains("out")||s.dataset.i!=String(b.i)&&MARKS[+s.dataset.i].ch!==MARKS[b.i].ch)continue;
+    const r=s.getBoundingClientRect();const d=Math.hypot(r.left-b.x,r.top+r.height*0.75-b.y);if(d<bd){bd=d;best=s}}
+  return best;
+}
+addEventListener("pointerup",()=>{
+  if(!drag)return;const s=nearestSocket(drag);spans.forEach(x=>x.classList.remove("open"));
+  if(s){const want=+s.dataset.i;drag.i=want;restore(drag)}
+  drag=null;
+});
+// physics
+const G=2200;
+function step(dt){
+  for(const b of bodies){
+    if(b===drag){b.a*=0.8;continue}
+    b.vy+=G*dt;b.x+=b.vx*dt;b.y+=b.vy*dt;b.a+=b.va*dt;
+    if(b.y+b.h/2>FLOOR){b.y=FLOOR-b.h/2;b.vy*=-0.28;b.vx*=0.82;b.va*=0.6;if(Math.abs(b.vy)<30)b.vy=0}
+    if(b.x-b.w/2<16){b.x=16+b.w/2;b.vx*=-0.4}if(b.x+b.w/2>W-16){b.x=W-16-b.w/2;b.vx*=-0.4}
+  }
+  // settle into a single course on the floor, then stack
+  for(let it=0;it<3;it++)for(let i=0;i<bodies.length;i++)for(let j=i+1;j<bodies.length;j++){
+    const a=bodies[i],b=bodies[j];if(a===drag||b===drag)continue;
+    const ox=(a.w+b.w)/2-Math.abs(a.x-b.x),oy=(a.h+b.h)/2-Math.abs(a.y-b.y);
+    if(ox>0&&oy>0){
+      if(ox<oy){const s=a.x<b.x?-1:1;a.x+=s*ox/2;b.x-=s*ox/2;const m=(a.vx+b.vx)/2;a.vx=b.vx=m}
+      else{const s=a.y<b.y?-1:1;a.y+=s*oy/2;b.y-=s*oy/2;const m=(a.vy+b.vy)/2;a.vy=b.vy=m;a.vx*=0.9;b.vx*=0.9}
+    }
+  }
+  for(const b of bodies){if(Math.abs(b.vy)<1&&b.y+b.h/2>=FLOOR-0.5)b.a+=(Math.round(b.a/(Math.PI/2))*(Math.PI/2)-b.a)*0.2}
+}
+function draw(){
+  ctx.setTransform(DPR,0,0,DPR,0,0);ctx.clearRect(0,0,W,H);
+  ctx.font=`${FS}px Monaco, "SFMono-Regular", Consolas, monospace`;ctx.textAlign="center";ctx.textBaseline="middle";
+  for(const b of bodies){
+    ctx.save();ctx.translate(b.x,b.y);ctx.rotate(b.stop?b.a*0.15:b.a);
+    if(b.stop){ctx.fillStyle="#f05a28";ctx.fillRect(-b.w/2,-b.h/2,b.w,b.h)}
+    else{ctx.fillStyle="#30312f";ctx.fillText(",",0,-FS*0.12)}
+    ctx.restore();
+  }
+}
+let tp=performance.now();
+function frame(now){const dt=Math.min(1/30,(now-tp)/1000);tp=now;for(let k=0;k<3;k++)step(dt/3);draw();requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

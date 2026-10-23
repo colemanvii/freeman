@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Tensions — Freeman</title>
+<link rel="stylesheet" href="frame.css">
+</head>
+<body>
+<canvas id="c" aria-label="A hanging mobile of the eight central tensions from the Freeman design doctrine. Each pair of words balances on its own arm."></canvas>
+<header class="f-head"><span><span class="no">01</span> Tensions</span><a href="./">× Index</a></header>
+<footer class="f-foot"><span>Stir with the cursor. Drag a word.</span><span class="src">Central tensions — Freeman Design Doctrine, 4 Oct 2026</span></footer>
+<script>
+(()=>{"use strict";
+/* A Calder mobile, solved with 3D Verlet particles.
+   Each tension is one arm. Its pivot is placed by the masses below it (word mass = letters),
+   so the drawing of the balance point is the arithmetic of the words. Never resolves. */
+const PAIRS=[["Old","New"],["Refined","Industrial"],["Southern","International"],["Digital","Printed"],["Minimal","Characterful"],["Serious","Playful"],["Historic","Contemporary"],["Luxury","Utility"]];
+const cv=document.getElementById("c"),cx=cv.getContext("2d");
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let W,H,DPR,S,FS;
+const P=[],C=[],ARMS=[],WORDS=[],STRINGS=[];
+function pt(x,y,z,m){const p={x,y,z,px:x,py:y,pz:z,w:m?1/m:0,m:m||0};P.push(p);return p}
+function link(a,b,len){const d=len??Math.hypot(a.x-b.x,a.y-b.y,a.z-b.z);C.push({a,b,d})}
+const CH=0.6; // Monaco advance / em
+function build(){
+  P.length=C.length=ARMS.length=WORDS.length=STRINGS.length=0;
+  const fs=FS;
+  // exact masses of what hangs below each string, so every arm is level at rest
+  const pairMass=PAIRS.map(([a,b])=>a.length+b.length+1.2+0.5+0.3);
+  const sub=new Array(PAIRS.length).fill(0);
+  sub[PAIRS.length-1]=pairMass[PAIRS.length-1];
+  for(let i=PAIRS.length-2;i>=0;i--)sub[i]=0.3+0.65+pairMass[i]+sub[i+1];
+  const anchor=pt(0,0,0,0);
+  const top=pt(0,70,0,0.3);link(anchor,top);STRINGS.push([anchor,top]);
+  const tall=H>W*1.3,VG=tall?1.6:1;
+  let hang=top, y=70, span=tall?250:430;
+  for(let i=0;i<PAIRS.length;i++){
+    const [la,lb]=PAIRS[i];
+    const last=i===PAIRS.length-1;
+    // pair arm: two words, pivot by their letter counts
+    const wa=la.length+0.6,wb=lb.length+0.6;
+    const armLen=Math.max(150,(la.length+lb.length)*fs*CH*0.62+70);
+    const side=i%2?1:-1;
+    if(last){addPair(hang,y,la,lb,wa,wb,armLen);break}
+    // connector arm: pair on one side, the rest of the mobile on the other
+    const mp=pairMass[i]+0.25,mr=sub[i+1]+0.25;
+    const a=span*mr/(mp+mr), b=span-a; // distance pivot→pair end, pivot→rest end
+    const pv=hang;
+    const pe=pt(pv.x+side*a,y,pv.z,0.25), re=pt(pv.x-side*b,y,pv.z,0.25);
+    const k=pt(pv.x,y+14,pv.z,0.15);
+    link(pv,pe);link(pv,re);link(pe,re);link(k,pe);link(k,re);link(k,pv);
+    ARMS.push({a:pe,b:re,p:pv});
+    const ph=pt(pe.x,y+44*VG,pe.z,0.3);link(pe,ph);STRINGS.push([pe,ph]);
+    addPair(ph,y+44*VG,la,lb,wa,wb,armLen);
+    const nh=pt(re.x,y+78*VG,re.z,0.3);link(re,nh);STRINGS.push([re,nh]);
+    hang=nh;y+=78*VG;span*=0.8;
+  }
+  function addPair(pv,y0,la,lb,wa,wb,len){
+    const a=len*wb/(wa+wb),b=len-a;
+    const ea=pt(pv.x-a,y0,pv.z,0.2),eb=pt(pv.x+b,y0,pv.z,0.2),k=pt(pv.x,y0+12,pv.z,0.1);
+    link(pv,ea);link(pv,eb);link(ea,eb);link(k,ea);link(k,eb);link(k,pv);
+    ARMS.push({a:ea,b:eb,p:pv,pair:true});
+    for(const [e,t,m] of [[ea,la,wa],[eb,lb,wb]]){
+      const w=pt(e.x,y0+30,e.z,m);link(e,w);STRINGS.push([e,w]);
+      WORDS.push({p:w,from:e,arm:{a:ea,b:eb},t:t.toUpperCase()});
+    }
+  }
+  // centre the mobile on its own bounding box, then give it a slow turn
+  let mn=1e9,mx=-1e9,my=0;for(const p of P){mn=Math.min(mn,p.x);mx=Math.max(mx,p.x);my=Math.max(my,p.y)}
+  const off=-(mn+mx)/2;for(const p of P){if(p!==anchor){p.x+=off;p.px=p.x}}
+  anchor.x+=off;anchor.px=anchor.x;
+  WORLD={w:mx-mn+160,h:my+100};
+  if(!reduce)for(const p of P)if(p.w){p.pz=p.z+p.x*0.0012*(1+p.y/my)}
+}
+let WORLD={w:1000,h:800};
+function resize(){
+  DPR=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;
+  cv.width=W*DPR;cv.height=H*DPR;
+  FS=15;
+  build();
+  S=Math.min((W-40)/WORLD.w,(H-150)/WORLD.h,1.5);
+}
+const G=900,DT=1/120;
+function step(){
+  for(const p of P){
+    if(!p.w||p===grab)continue;
+    const vx=(p.x-p.px)*0.9985,vy=(p.y-p.py)*0.9985,vz=(p.z-p.pz)*0.9985;
+    p.px=p.x;p.py=p.y;p.pz=p.z;
+    p.x+=vx;p.y+=vy+G*DT*DT;p.z+=vz;
+  }
+  // a faint room draught keeps each arm drifting around face-on instead of spinning away
+  for(const r of ARMS)for(const e of [r.a,r.b])if(e!==grab)e.z+=(r.p.z-e.z)*0.0012;
+  for(let it=0;it<48;it++)for(const c of C){
+    const a=c.a,b=c.b;let dx=b.x-a.x,dy=b.y-a.y,dz=b.z-a.z;const l=Math.hypot(dx,dy,dz)||1e-6;
+    const wa=a===grab?0:a.w,wb=b===grab?0:b.w,ws=wa+wb;if(!ws)continue;
+    const k=(l-c.d)/l/ws;dx*=k;dy*=k;dz*=k;
+    a.x+=dx*wa;a.y+=dy*wa;a.z+=dz*wa;b.x-=dx*wb;b.y-=dy*wb;b.z-=dz*wb;
+  }
+}
+const CAM=1600;
+function proj(p){const s=CAM/(CAM+p.z);return[W/2+p.x*s*S,92+p.y*s*S,s]}
+function draw(){
+  cx.setTransform(DPR,0,0,DPR,0,0);
+  cx.fillStyle="#f4f4f0";cx.fillRect(0,0,W,H);
+  cx.lineCap="square";
+  // ceiling mark
+  const a0=proj(P[0]);cx.fillStyle="#30312f";cx.fillRect(a0[0]-6,a0[1]-1,12,1);
+  cx.strokeStyle="#8e918c";cx.lineWidth=1;cx.beginPath();
+  for(const [a,b] of STRINGS){const A=proj(a),B=proj(b);cx.moveTo(A[0],A[1]);cx.lineTo(B[0],B[1])}
+  cx.stroke();
+  cx.strokeStyle="#30312f";cx.lineWidth=1.5;cx.beginPath();
+  for(const r of ARMS){const A=proj(r.a),B=proj(r.b);cx.moveTo(A[0],A[1]);cx.lineTo(B[0],B[1])}
+  cx.stroke();
+  cx.fillStyle="#f05a28";
+  for(const r of ARMS){const Q=proj(r.p);cx.fillRect(Math.round(Q[0])-2,Math.round(Q[1])-2,4,4)}
+  const ws=WORDS.slice().sort((u,v)=>v.p.z-u.p.z);
+  cx.textAlign="center";cx.textBaseline="top";
+  for(const w of ws){
+    const Q=proj(w.p),F=proj(w.from);
+    // facing: the word plate lies in the plane of its arm
+    const ax=w.arm.b.x-w.arm.a.x,az=w.arm.b.z-w.arm.a.z,al=Math.hypot(ax,az)||1;
+    let f=ax/al; if(Math.abs(f)<0.05)f=f<0?-0.05:0.05;
+    const tilt=Math.atan2(-(Q[0]-F[0]),Q[1]-F[1]);
+    const fade=Math.max(0,Math.min(1,0.5-w.p.z/500));
+    cx.save();cx.translate(Q[0],Q[1]);cx.rotate(tilt);cx.scale(f*Q[2],Q[2]);
+    cx.font=`${Math.max(9,Math.min(18,FS*S*1.05)).toFixed(1)}px Monaco, "SFMono-Regular", Consolas, monospace`;
+    cx.fillStyle=fade>0.75?"#30312f":`rgb(${48+(1-fade)*70|0},${49+(1-fade)*70|0},${47+(1-fade)*70|0})`;
+    cx.fillText(w.t,0,2);cx.restore();
+  }
+}
+let grab=null,last=null;
+function unproj(p,sx,sy){const s=CAM/(CAM+p.z);return[(sx-W/2)/(s*S),(sy-92)/(s*S)]}
+addEventListener("pointerdown",e=>{
+  let best=null,bd=60;
+  for(const w of WORDS){const Q=proj(w.p);const d=Math.hypot(Q[0]-e.clientX,Q[1]+FS*0.6-e.clientY);if(d<bd){bd=d;best=w.p}}
+  if(!best)for(const p of P){if(!p.w)continue;const Q=proj(p);const d=Math.hypot(Q[0]-e.clientX,Q[1]-e.clientY);if(d<24&&d<bd){bd=d;best=p}}
+  grab=best;if(grab)cv.setPointerCapture?.(e.pointerId);
+});
+addEventListener("pointermove",e=>{
+  const now=[e.clientX,e.clientY];
+  if(grab){const [x,y]=unproj(grab,...now);grab.px=grab.x;grab.py=grab.y;grab.x=x;grab.y=y}
+  else if(last){
+    const dx=now[0]-last[0],dy=now[1]-last[1];
+    for(const p of P){if(!p.w)continue;const Q=proj(p);const d=Math.hypot(Q[0]-now[0],Q[1]-now[1]);
+      if(d<140){const k=(1-d/140)*0.05/S;p.px-=dx*k;p.py-=dy*k*0.4;p.pz-=dx*k*0.6*(Q[1]>now[1]?1:-1)}}
+  }
+  last=now;
+});
+addEventListener("pointerup",()=>{grab=null});
+addEventListener("pointerleave",()=>{last=null});
+addEventListener("resize",resize);
+resize();
+for(let i=0;i<600;i++)step();
+let acc=0,t0=performance.now();
+function frame(t){acc+=Math.min(0.05,(t-t0)/1000);t0=t;while(acc>DT){step();acc-=DT}draw();requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

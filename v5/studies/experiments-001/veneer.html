@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Veneer — Freeman</title>
+<link rel="stylesheet" href="frame.css">
+<style>
+.pick{display:flex;gap:14px;align-items:baseline}
+.pick .n{color:var(--orange)}
+.pick .name{color:var(--ink)}
+</style>
+</head>
+<body>
+<canvas id="c" aria-label="A bookmatched pair of wood veneer leaves, grown procedurally for one Freeman project."></canvas>
+<header class="f-head"><span><span class="no">03</span> Veneer</span><a href="./">× Index</a></header>
+<footer class="f-foot">
+  <span class="pick"><button id="prev" aria-label="Previous project">←</button><span aria-live="polite"><span class="n" id="n">01</span> <span class="name" id="name">Beetlecat</span> &nbsp;<span id="client">Rocket Farm Restaurants</span></span><button id="next" aria-label="Next project">→</button></span>
+  <span class="src">Species by client. Figure by project. Move to turn the light; scroll to cut deeper.</span>
+</footer>
+<script>
+(()=>{"use strict";
+/* Every project grows its own log. The client chooses the species, a hash of the project name
+   chooses ring spacing, pith offset, taper, figure and knots. Two consecutive leaves are bookmatched,
+   so the mirrored leaf catches the light in reverse, as real veneer does. */
+const PROJECTS=[["01","Beetlecat","Rocket Farm Restaurants"],["02","The Optimist","Rocket Farm Restaurants"],["03","Barnsley Family Pool","South Street Partners"],["04","Bocado Pizza","Bocado Pizza"],["05","Savi Provisions","Savi Provisions"],["06","O-Ku Atlanta","Indigo Road Hospitality"],["07","La Cresta on Main","Blue Ridge, Georgia"],["09","Dalton Surgery Center","Interventional Pain Consultants"],["10","Muchacho Decatur","Electric Hospitality"],["11","Brewhouse Cafe","South Downtown"],["12","Mule Train","South Downtown"],["13","Broad Street BBQ","South Downtown"],["14","Azalea Marketplace","Savi Provisions"],["15","Woodlands at Barnsley Resort","South Street Partners"],["16","Dugan’s Pub","South Street Partners"]];
+const SPECIES={ // earlywood, latewood (sRGB)
+  "Rocket Farm Restaurants":["#94694a","#3d281b"],          // walnut
+  "South Street Partners":["#d3b78f","#8a6843"],            // white oak
+  "South Downtown":["#bf7a52","#6a3720"],                   // cherry
+  "Savi Provisions":["#ddc9a6","#a68761"],                  // ash
+  "Bocado Pizza":["#c99d6e","#74492b"],                     // pecan
+  "Indigo Road Hospitality":["#6f5d4b","#2c241c"],          // fumed oak
+  "Interventional Pain Consultants":["#eadbbf","#c8a97f"],  // maple
+  "Electric Hospitality":["#a9603d","#592a19"],             // sapele
+  "Blue Ridge, Georgia":["#dfcaa3","#a7845a"]};             // sycamore
+const hex=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255);
+function hash(s){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return()=>{h^=h<<13;h^=h>>>17;h^=h<<5;return((h>>>0)%100000)/100000}}
+
+const cv=document.getElementById("c");
+const gl=cv.getContext("webgl",{antialias:false,preserveDrawingBuffer:false});
+const vs=`attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}`;
+const fs=`precision highp float;
+uniform vec2 res;uniform vec4 panel;uniform float depth,light,freq,pith,taper,curl,wob,knotA,knotB,seed;
+uniform vec3 early,late,paper;
+float h(vec3 p){p=fract(p*.3183099+.1);p*=17.;return fract(p.x*p.y*p.z*(p.x+p.y+p.z));}
+float n(vec3 x){vec3 i=floor(x),f=fract(x);f=f*f*(3.-2.*f);
+ return mix(mix(mix(h(i),h(i+vec3(1,0,0)),f.x),mix(h(i+vec3(0,1,0)),h(i+vec3(1,1,0)),f.x),f.y),
+            mix(mix(h(i+vec3(0,0,1)),h(i+vec3(1,0,1)),f.x),mix(h(i+vec3(0,1,1)),h(i+vec3(1,1,1)),f.x),f.y),f.z);}
+float fbm(vec3 p){float a=.5,s=0.;for(int i=0;i<4;i++){s+=a*n(p);p*=2.03;a*=.5;}return s;}
+void main(){
+ vec2 fc=gl_FragCoord.xy;
+ if(fc.x<panel.x||fc.y<panel.y||fc.x>panel.x+panel.z||fc.y>panel.y+panel.w){gl_FragColor=vec4(paper,1.);return;}
+ float mid=panel.x+panel.z*.5;
+ float side=fc.x<mid?-1.:1.;
+ float u=abs(fc.x-mid)/(panel.z*.5);           // 0 at the seam, 1 at the edge
+ float v=(fc.y-panel.y)/panel.w;
+ vec3 q=vec3(u*.62+pith,v*2.4,depth+v*taper); // log space; the log axis runs up the leaf
+ q.x+=(fbm(vec3(q.x*1.3,q.y*.35,seed))-.5)*.22*wob;
+ // knots pull the rings into eyes
+ vec2 k1=vec2(.35+knotA*.4,.3+knotB*1.8),k2=vec2(.2+knotB*.5,2.-knotA*1.4);
+ float kd=exp(-length((q.xy-k1)*vec2(5.,1.6))*3.)+exp(-length((q.xy-k2)*vec2(6.,2.))*3.5)*.7;
+ float r=length(vec2(q.x,q.z))+kd*.18;
+ r+=(fbm(q*vec3(3.,.25,3.)+seed)-.5)*.03;
+ float t=r*freq+(fbm(vec3(r*2.2,seed,1.))-.5)*3.;   // irregular years
+ float ring=fract(t);
+ float lw=pow(ring,2.6)*(1.-smoothstep(.97,1.,ring));  // earlywood eases into latewood, then a hard edge
+ vec3 col=mix(early,late,clamp(lw*.95+kd*.25,0.,1.));
+ // fibre streaks and pores, long along the log axis
+ col*=.94+.1*n(vec3(u*170.,v*3.,seed+depth*3.));
+ float pore=n(vec3(u*520.+side*11.,v*9.,seed*3.+floor(t)));
+ col*=1.-.16*smoothstep(.72,.95,pore)*(.4+.6*(1.-lw));
+ // figure: fibres ripple across the leaf; the bookmatched leaf is flipped, so it reflects the light in reverse
+ float fig=sin(v*panel.w*.09*(.6+curl)+fbm(vec3(u*4.,v*6.,seed))*6.)*curl;
+ float ch=cos(fig*1.6+side*(light-.5)*3.1+side*.4);
+ col*=.93+.11*ch;
+ col*=.97+.06*(1.-u)*light;              // a broad sheen leaning toward the light
+ col=mix(col,col*.55,smoothstep(.0015,0.,abs(fc.x-mid)/panel.z)*.35); // the seam
+ gl_FragColor=vec4(col,1.);
+}`;
+function sh(t,s){const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(o);return o}
+const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,vs));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(pr);gl.useProgram(pr);
+const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+const loc=gl.getAttribLocation(pr,"p");gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+const U=new Proxy({}, {get:(o,k)=>o[k]||(o[k]=gl.getUniformLocation(pr,k))});
+
+let W,H,DPR,idx=0,depth=.42,depthTo=.42,light=.5,lightTo=.5,params;
+function choose(i){
+  idx=(i+PROJECTS.length)%PROJECTS.length;const[no,name,client]=PROJECTS[idx];
+  const r=hash(name);
+  params={freq:15+r()*20,pith:(r()-.5)*.5,taper:.05+r()*.12,curl:r()<.45?.3+r()*.9:r()*.25,wob:.6+r()*1.2,knotA:r(),knotB:r(),seed:r()*40,
+    early:hex(SPECIES[client][0]),late:hex(SPECIES[client][1])};
+  document.getElementById("n").textContent=no;document.getElementById("name").textContent=name;
+  document.getElementById("client").textContent=client;
+  try{history.replaceState(null,"","#"+no)}catch(e){}
+  dirty=true;
+}
+function resize(){
+  DPR=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;gl.viewport(0,0,cv.width,cv.height);dirty=true;
+}
+let dirty=true;
+function draw(){
+  const ph=Math.min(H-170,(W-32)/0.84),pw=ph*0.84;
+  const x=(W-pw)/2,y=(H-ph)/2+4;
+  gl.uniform2f(U.res,cv.width,cv.height);
+  gl.uniform4f(U.panel,Math.round(x*DPR),Math.round((H-y-ph)*DPR),Math.round(pw*DPR),Math.round(ph*DPR));
+  gl.uniform1f(U.depth,depth);gl.uniform1f(U.light,light);
+  for(const k of["freq","pith","taper","curl","wob","knotA","knotB","seed"])gl.uniform1f(U[k],params[k]);
+  gl.uniform3fv(U.early,params.early);gl.uniform3fv(U.late,params.late);gl.uniform3fv(U.paper,hex("#f4f4f0"));
+  gl.drawArrays(gl.TRIANGLES,0,3);
+}
+addEventListener("resize",resize);
+addEventListener("hashchange",()=>{const i=PROJECTS.findIndex(p=>"#"+p[0]===location.hash);if(i>=0&&i!==idx)choose(i)});
+addEventListener("pointermove",e=>{lightTo=e.clientX/W});
+addEventListener("wheel",e=>{depthTo=Math.max(.05,Math.min(1.4,depthTo+e.deltaY*.0006))},{passive:true});
+let touchY=null;
+addEventListener("pointerdown",e=>{if(e.target===cv)touchY=e.clientY});
+addEventListener("pointermove",e=>{if(touchY!==null&&e.pointerType!=="mouse"){depthTo=Math.max(.05,Math.min(1.4,depthTo+(touchY-e.clientY)*.002));touchY=e.clientY}});
+addEventListener("pointerup",()=>{touchY=null});
+addEventListener("keydown",e=>{if(e.key==="ArrowRight")choose(idx+1);if(e.key==="ArrowLeft")choose(idx-1);if(e.key==="ArrowDown")depthTo=Math.min(1.4,depthTo+.04);if(e.key==="ArrowUp")depthTo=Math.max(.05,depthTo-.04)});
+document.getElementById("next").onclick=()=>choose(idx+1);
+document.getElementById("prev").onclick=()=>choose(idx-1);
+resize();
+const start=PROJECTS.findIndex(p=>"#"+p[0]===location.hash);choose(start<0?0:start);
+function frame(){
+  const dl=lightTo-light,dd=depthTo-depth;
+  if(Math.abs(dl)>1e-4||Math.abs(dd)>1e-5||dirty){light+=dl*.08;depth+=dd*.12;draw();dirty=false}
+  requestAnimationFrame(frame);
+}
+frame();
+})();
+</script>
+</body>
+</html>
