@@ -77,6 +77,47 @@ with sync_playwright() as p:
     phone.locator("#r-back").click()
     phone.wait_for_selector('body[data-mode="map"]')
     check(not mobile_errors, "no mobile JavaScript page errors: " + "; ".join(mobile_errors[:3]))
+
+    # Dedicated touch and global-navigation matrix: narrow phone through large phone.
+    for width, height in [(320, 720), (375, 812), (390, 844), (430, 932)]:
+        test = browser.new_page(viewport={"width": width, "height": height},
+                                device_scale_factor=2, is_mobile=True, has_touch=True)
+        errors_at_width = []
+        test.on("pageerror", lambda err: errors_at_width.append(str(err)))
+        test.goto(BASE + "/company", wait_until="domcontentloaded")
+        test.wait_for_selector('.site-nav a[href*="record"]', state="visible")
+        item = test.locator('.site-nav a[href*="record"]')
+        check(item.inner_text().strip() == "MAP", f"{width}px: navigation reads MAP")
+        check(test.locator('.site-nav a').count() == 4, f"{width}px: all four sections present")
+        navbox = test.locator('.site-nav').bounding_box()
+        closebox = test.locator('.panel-head .close').bounding_box()
+        check(navbox is not None and closebox is not None and
+              navbox["x"] + navbox["width"] <= closebox["x"] + 1,
+              f"{width}px: menu does not overlap CLOSE")
+        check(test.evaluate("document.documentElement.scrollWidth <= innerWidth + 2"),
+              f"{width}px: no site-navigation horizontal overflow")
+        item.click()
+        test.wait_for_url("**/record")
+        test.wait_for_function("window.__record && document.querySelectorAll('.tb-set button').length === 15")
+        check(test.locator('#map').is_visible(), f"{width}px: MAP opens geographic experience")
+        check(test.locator(".photo-peek").is_hidden(), f"{width}px: no hover overlay")
+        check(test.evaluate("document.documentElement.scrollWidth <= innerWidth + 2"),
+              f"{width}px: no map horizontal overflow")
+        test.locator('#reg-toggle').click()
+        test.locator('.tb-set button[data-slug="beetlecat"]').click()
+        test.wait_for_selector('body[data-mode="record"][data-feature="beetlecat"]')
+        check(test.locator('#r-img').is_visible(), f"{width}px: Beetlecat photography visible")
+        test.locator('#bc-enlarge').click()
+        check(test.locator("#bc-lightbox").evaluate("(e) => e.open"), f"{width}px: photograph enlarges")
+        test.locator('#bc-lightbox-close').click()
+        check(not test.locator("#bc-lightbox").evaluate("(e) => e.open"), f"{width}px: viewer dismisses")
+        test.locator('#r-back').click()
+        test.wait_for_selector('body[data-mode="map"]')
+        check(not errors_at_width, f"{width}px: no JS errors: " + "; ".join(errors_at_width[:3]))
+        if width in (320, 390):
+            test.screenshot(path=str(OUT / f"phone-{width}-map.png"))
+        test.close()
+
     browser.close()
 
 print("The Record 003 browser QA passed.", flush=True)
