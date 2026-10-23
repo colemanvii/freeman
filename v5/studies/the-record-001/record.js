@@ -469,6 +469,8 @@
     closeCallout(); stop();
     if (body.dataset.mode !== 'record') { savedView = { ...view }; returnFocus = document.activeElement; }
     openSlug = slug;
+    if (it.slug === 'beetlecat') body.dataset.feature = 'beetlecat';
+    else delete body.dataset.feature;
     body.dataset.mode = 'record';
     recEl.hidden = false;
     recEl.innerHTML = recordHTML(it);
@@ -493,6 +495,7 @@
     body.dataset.mode = 'map';
     recEl.hidden = true; recEl.innerHTML = '';
     openSlug = null;
+    delete body.dataset.feature;
     $('crumb').textContent = '';
     document.title = 'The Record — Freeman';
     if (push) history.pushState({}, '', location.pathname);
@@ -506,6 +509,10 @@
   }
 
   function recordHTML(it) {
+    if (it.slug === 'beetlecat' && window.BEETLECAT_STORY) {
+      const feature = window.BEETLECAT_STORY.render(it);
+      if (feature) return feature;
+    }
     const s = it.site;
     const where = [];
     if (s.precision === 'venue') where.push(`<span>${esc(s.address)}</span>`, `<span>${esc(s.area)}</span>`, `<span>${s.lat.toFixed(4)}° N ${Math.abs(s.lon).toFixed(4)}° W</span>`);
@@ -545,6 +552,7 @@
   }
   function wireRecord(it) {
     $('r-back').addEventListener('click', () => close());
+    if (window.BEETLECAT_STORY?.wire(recEl, it)) return;
     recEl.querySelectorAll('[data-open]').forEach((b) => {
       b.addEventListener('click', () => open(b.dataset.open));
       b.addEventListener('pointerenter', () => setHot(b.dataset.open, true));
