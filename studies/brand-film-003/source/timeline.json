@@ -1,0 +1,182 @@
+{
+ "fps": 30,
+ "duration": 12.2,
+ "cursorScale": 3,
+ "signatureOffset": 0.05,
+ "shots": [
+  {
+   "id": "mark",
+   "doc": "home",
+   "url": "",
+   "start": 0.0,
+   "viewport": [
+    1000,
+    520
+   ],
+   "scale": 3,
+   "crop": {
+    "x": 320,
+    "y": 35
+   }
+  },
+  {
+   "id": "nav",
+   "doc": "home",
+   "url": "",
+   "start": 3.8667,
+   "viewport": [
+    1000,
+    520
+   ],
+   "scale": 4.5,
+   "crop": {
+    "x": 422.4444,
+    "y": 144.4444
+   }
+  },
+  {
+   "id": "map",
+   "doc": "map",
+   "url": "map.html",
+   "start": 4.2333,
+   "viewport": [
+    900,
+    1300
+   ],
+   "scale": 2.5,
+   "preroll": 0.75,
+   "prep": {
+    "zoom": 3.4,
+    "markFromFieldRight": 150,
+    "markY": 560
+   },
+   "anchor": {
+    "target": "mark:beetlecat",
+    "canvas": [
+     705,
+     887
+    ]
+   }
+  },
+  {
+   "id": "photo",
+   "start": 6.3,
+   "expand": {
+    "arrive": 0.6,
+    "settle": 0.6,
+    "overshoot": 0.0,
+    "focusX": 0.515
+   }
+  },
+  {
+   "id": "eagle",
+   "start": 10.0,
+   "plate": "eagle",
+   "stampAt": 9.92,
+   "speed": 1.25
+  },
+  {
+   "id": "lockup",
+   "start": 10.7,
+   "lockup": true
+  }
+ ],
+ "cursor": [
+  {
+   "t": 0.0,
+   "at": "rest"
+  },
+  {
+   "t": 1.72,
+   "at": "hold"
+  },
+  {
+   "t": 2.0,
+   "at": "swatch:umber",
+   "ease": true
+  },
+  {
+   "t": 2.04,
+   "down": true
+  },
+  {
+   "t": 2.1,
+   "up": true
+  },
+  {
+   "t": 2.33,
+   "at": "hold"
+  },
+  {
+   "t": 2.6,
+   "at": "swatch:sand",
+   "ease": true
+  },
+  {
+   "t": 2.64,
+   "down": true
+  },
+  {
+   "t": 2.7,
+   "up": true
+  },
+  {
+   "t": 2.93,
+   "at": "hold"
+  },
+  {
+   "t": 3.2,
+   "at": "swatch:chalk",
+   "ease": true
+  },
+  {
+   "t": 3.24,
+   "down": true
+  },
+  {
+   "t": 3.3,
+   "up": true
+  },
+  {
+   "t": 3.55,
+   "at": "hold"
+  },
+  {
+   "t": 4.05,
+   "at": "nav:MAP",
+   "ease": true
+  },
+  {
+   "t": 4.15,
+   "down": true
+  },
+  {
+   "t": 4.21,
+   "up": true,
+   "dispatch": false
+  },
+  {
+   "t": 4.2333,
+   "at": "carry"
+  },
+  {
+   "t": 5.35,
+   "at": "hold"
+  },
+  {
+   "t": 5.65,
+   "at": "mark:beetlecat",
+   "ease": true
+  },
+  {
+   "t": 6.23,
+   "down": true,
+   "dispatch": false
+  },
+  {
+   "t": 6.29,
+   "up": true,
+   "dispatch": false
+  }
+ ]
+}

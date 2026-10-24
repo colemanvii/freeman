@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en" data-palette="sand"><head><meta charset="utf-8">
+<title>Freeman — Eagle plate</title>
+<link rel="stylesheet" href="/styles.css">
+<style>
+/* Eagle plate, 1080 × 1920, in the site's "Freeman" colorway (sand) with the eagle in Freeman red.
+   The approved 192 × 60 Stamp bitmap at a whole-number scale (×4), centred on the line where the
+   script sits in the lockup that follows (?y= canvas px), stamped with its production motion. */
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--paper);cursor:none}
+canvas{position:absolute;left:156px;width:768px;height:240px;transform:translateY(-50%);image-rendering:pixelated;image-rendering:crisp-edges}
+</style></head>
+<body>
+<canvas id="stamp" width="192" height="60" aria-hidden="true"></canvas>
+<script src="/eagle/eagle-motion.js"></script>
+<script>
+document.getElementById('stamp').style.top = (new URLSearchParams(location.search).get('y') || 680) + 'px';
+window.stampReady = FreemanBitmapEagle.load('/eagle/stamp.pbm');
+// The film passes its own frame clock as `raf`, so the motion is seeked frame by frame.
+window.stamp = (raf, speed) => FreemanBitmapEagle.play(document.getElementById('stamp').getContext('2d'), 'impression',
+  { color: getComputedStyle(document.documentElement).getPropertyValue('--orange').trim(), raf, speed });
+</script>
+</body></html>
