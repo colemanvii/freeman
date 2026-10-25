@@ -4,6 +4,8 @@
   const S = window.FGCStudy, F = window.FGC;
   const { DIRS, APPS, FORMAT, formats, render, foundation } = S;
 
+  if (new URLSearchParams(location.search).has("export")) document.documentElement.classList.add("export");
+
   /* ---------- Marks as symbols. The signature is read from the production bitmap (pixel-mark.js). */
   function signaturePath() {
     const cv = document.createElement("canvas");
@@ -73,6 +75,18 @@
       plate(d.key, `${d.key} — ${d.name} · ${a.no} ${a.name}`, body);
     }
   }
+
+  const VERDICT = {
+    A: ["Continuity. Nothing to relearn; every value is already live.", "Closest to today, so the least new authority."],
+    B: ["The quietest and most literary. Reads well to restaurateurs.", "Nearest to a luxury-hospitality template; carries no builder evidence."],
+    C: ["The one only a builder could own: sheets, schedules, the Stamp as seal.", "Asks for dated field evidence Freeman does not yet hold."],
+  };
+  plate("Decision", "Recommendation", `<div class="dec">
+      <div class="dec-rows">${DIRS.map((d) => `<div class="dec-row${d.key === "C" ? " is-rec" : ""}">
+        ${frame(render(d.key, "project", "d"), { label: false, maxh: "var(--dech)" })}
+        <div class="dec-text"><b>${d.key} — ${d.name}</b><span>${VERDICT[d.key][0]}</span><span>${VERDICT[d.key][1]}</span></div></div>`).join("")}</div>
+      <div class="dec-call"><p>Develop C — Document, held to A’s restraint.</p>
+        <p>Keep Signal to seal and redline. Begin dated captures on Little Rey so the first field sheets carry real evidence.</p></div></div>`, "p-dec");
 
   const root = document.getElementById("plates");
   root.innerHTML = plates.map((p, i) => `<section class="plate ${p.cls}" id="p${i + 1}" data-sec="${p.sec}">
@@ -183,5 +197,6 @@
     e.preventDefault();
   });
   const h = location.hash.slice(1);
+  if (/^p\d+$/.test(h)) { const el = document.getElementById(h); if (el) { el.classList.add("is-export"); el.scrollIntoView(); } }
   if (/^[ABC]-\d\d-[DMFRS]$/.test(h)) document.fonts.ready.then(() => openFull(h));
 })();

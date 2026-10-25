@@ -14,7 +14,7 @@
   const eagle = (s, c = "") => `<svg class="mk eagle ${c}" width="${192 * s}" height="${60 * s}" viewBox="0 0 192 60" role="img" aria-label="Freeman eagle"><use href="#fgc-eagle"/></svg>`;
   const img = (src, alt, cls = "", style = "") => `<img class="${cls}" src="${esc(src)}" alt="${esc(alt)}" decoding="async" draggable="false"${style ? ` style="${style}"` : ""}>`;
   const g = P.gallery;
-  const NAV = ["Company", "Projects", "Field Notes", "Contact"];
+  const NAV = ["Company", "Projects", "Map", "Field Notes", "Contact"];
 
   /* ================================================================ A — Refined */
   const A = {};
@@ -155,7 +155,7 @@
 
   /* ================================================================ C — Document */
   const C = {};
-  const SHEETS = [["00", "Entry"], ["C-01", "Company"], ["P-01", "Projects"], ["FN-01", "Field Notes"], ["X-01", "Contact"]];
+  const SHEETS = [["00", "Entry"], ["C-01", "Company"], ["P-01", "Projects"], ["M-01", "Map"], ["FN-01", "Field Notes"], ["X-01", "Contact"]];
   const ticks = (cols, rows) => `<div class="c-ticks c-top">${Array.from({ length: cols }, (_, i) => `<span>${i + 1}</span>`).join("")}</div>
     <div class="c-ticks c-left">${Array.from({ length: rows }, (_, i) => `<span>${"ABCDEFGH"[i]}</span>`).join("")}</div>`;
   const tblock = ({ sheet, title, mark = true }) => `<aside class="c-tb">

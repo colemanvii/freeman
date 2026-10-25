@@ -116,3 +116,22 @@ button:focus-visible,a:focus-visible,.fr:focus-visible{outline:1px solid var(--t
   .full-stage{padding:16px}
   .full-bar{grid-template-columns:auto 1fr;height:auto;padding:8px 16px}.full-bar nav{grid-column:1/-1;flex-wrap:wrap;gap:12px}
 }
+
+/* Decision */
+:root{--dech:calc((100vh - 230px) / 3)}
+.dec{width:100%;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:64px;align-items:center}
+.dec-rows{display:flex;flex-direction:column;gap:18px}
+.dec-row{display:grid;grid-template-columns:calc(var(--dech) * 1.6) 1fr;gap:28px;align-items:center;opacity:.55}
+.dec-row.is-rec{opacity:1}
+.dec-text{display:flex;flex-direction:column;gap:4px;max-width:340px}
+.dec-text b{font-weight:500;margin-bottom:4px}.dec-text span:last-child{color:var(--label)}
+.dec-call{border-top:1px solid var(--text);padding-top:16px}
+.dec-call p{margin:0 0 14px;font-size:15px;line-height:1.45;max-width:420px}
+.dec-call p+p{font-size:12px;color:var(--label)}
+@media (max-width:900px){.dec,.dec-row{grid-template-columns:minmax(0,1fr)}:root{--dech:30vh}}
+
+/* Export (?export): plates captured one per 1440 x 900 frame for the PDF */
+html.export .bar{display:none}
+html.export{scroll-snap-type:none}
+html.export .plate{height:100vh;overflow:hidden;border:0;padding-top:44px}
+html.export .plate:not(.is-export){display:none}

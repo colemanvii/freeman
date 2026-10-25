@@ -15,4 +15,12 @@ Open `/studies/brand-system-001/`. Click any composition for the full-size viewe
 - Field images in `field/` are copies of `field-notes-assets/`. Left out on purpose: the AI-generated radius-window sequence and the historical steelwork photograph (neither is Freeman evidence), and `assets/project-7.jpg` (not assigned to a project).
 - Unrecorded projects and dates are stated as unrecorded. The jobsite sign uses Little Rey, an in-progress project from the production list; no architect or dates are claimed.
 
+## Recommendation
+
+The closing plate recommends developing C (Document), held to A's restraint, and beginning dated captures on Little Rey so the first field sheets carry real evidence.
+
+## PDF
+
+`?export#p<n>` shows plate n alone at 1440 × 900 for capture. The shareable PDF is one capture per plate at 2×, bound with PDFKit; it is kept out of git.
+
 Study branch only. Not linked from production.
