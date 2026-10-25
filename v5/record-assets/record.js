@@ -427,7 +427,7 @@
   function renderRegister() {
     const nPlaced = placed.length;
     tb.innerHTML = `<div class="tb-row tb-seal"><canvas width="192" height="60" id="seal" aria-hidden="true"></canvas><div class="tb-firm">Freeman General Contracting</div></div>
-      <div class="tb-row tb-meta"><span class="tb-k">R-001 / THE RECORD</span><div class="tb-title">Project register</div></div>
+      <div class="tb-row tb-meta"><span class="tb-k">P-001 / PROJECTS</span><div class="tb-title">Project register</div></div>
       <div class="tb-grid tb-meta"><div><span class="tb-k">Projects</span>${items.length}</div><div><span class="tb-k">On the map</span>${nPlaced}</div></div>
       <button type="button" class="register-toggle" id="reg-toggle" aria-expanded="false" aria-controls="tb-set"><span>Register <b>${items.length}</b></span><span aria-hidden="true">▴</span></button>
       <nav class="tb-set" id="tb-set" aria-label="Register of projects"><ol>${items.map((i) => `<li><button type="button" data-slug="${i.slug}"${i.placed ? '' : ' data-unplaced'}><span class="n">${esc(i.id)}</span><span class="t">${esc(i.name)}</span><span class="w">${i.placed ? esc(shortCity(i)) : 'Not placed'}</span></button></li>`).join('')}</ol></nav>
@@ -528,7 +528,7 @@
     wireRecord(it);
     $('crumb').textContent = `No. ${it.id} / ${it.name}`;
     if (push) history.pushState({ p: slug }, '', `?p=${encodeURIComponent(slug)}`);
-    document.title = `${it.name} — The Record`;
+    document.title = `${it.name} — Freeman General Contracting`;
     requestAnimationFrame(() => {
       size();
       if (it.placed) {
@@ -546,7 +546,7 @@
     openSlug = null;
     delete body.dataset.feature;
     $('crumb').textContent = '';
-    document.title = 'The Record — Freeman';
+    document.title = 'Places We’ve Built — Freeman General Contracting';
     if (push) history.pushState({}, '', location.pathname);
     requestAnimationFrame(() => {
       size();
@@ -595,7 +595,7 @@
           </div>
           ${it.summary ? `<p class="r-story">${esc(it.summary)}</p><p class="r-src">As published on the project page</p>` : ''}
           <p class="r-missing"><span>Not yet on file</span>${missing.map(esc).join(' · ')}</p>
-          ${near.length ? `<h3 class="r-h">Nearest in the record</h3><ul class="r-list">${near.map(({ j, d }) => `<li><button type="button" data-open="${j.slug}"><span><span class="n">${esc(j.id)}</span><span class="t">${esc(j.name)}</span></span><span class="m">${j.site.precision === 'area' || it.site.precision === 'area' ? '≈ ' : ''}${d < .1 ? 'Same site' : d < 10 ? d.toFixed(1) + ' mi' : Math.round(d) + ' mi'}</span></button></li>`).join('')}</ul>` : ''}
+          ${near.length ? `<h3 class="r-h">Nearby projects</h3><ul class="r-list">${near.map(({ j, d }) => `<li><button type="button" data-open="${j.slug}"><span><span class="n">${esc(j.id)}</span><span class="t">${esc(j.name)}</span></span><span class="m">${j.site.precision === 'area' || it.site.precision === 'area' ? '≈ ' : ''}${d < .1 ? 'Same site' : d < 10 ? d.toFixed(1) + ' mi' : Math.round(d) + ' mi'}</span></button></li>`).join('')}</ul>` : ''}
           <a class="r-out" href="/project-${esc(it.slug)}"><span>Full project</span><span aria-hidden="true">→</span></a>
         </div></div>`;
   }
@@ -642,7 +642,7 @@
     found.innerHTML = results.length ? results.map((r, k) => r.kind === 'p'
       ? `<li role="option" id="f${k}" aria-selected="${k === sel}" data-k="${k}"><span class="n">${esc(r.i.id)}</span><span>${esc(r.i.name)}</span><span class="w">${esc(r.i.placed ? r.i.site.area.split(',')[0] : 'Not placed')}</span></li>`
       : `<li role="option" id="f${k}" aria-selected="${k === sel}" data-k="${k}"><span class="n">◦</span><span>${esc(r.p[0])}</span><span class="w">Place</span></li>`).join('')
-      : `<li class="none">Nothing in the record by that name</li>`;
+      : `<li class="none">No matching projects or places</li>`;
     q.setAttribute('aria-activedescendant', sel >= 0 ? 'f' + sel : '');
     found.querySelectorAll('[data-k]').forEach((li) => li.addEventListener('click', () => choose(results[+li.dataset.k])));
   }
