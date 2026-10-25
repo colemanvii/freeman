@@ -72,9 +72,8 @@
       const top = rec.offsetTop - mapEl.getBoundingClientRect().top;
       return { x: 0, y: 0, w: W, h: Math.max(120, Math.min(H, top)) };
     }
-    const lede = $('lede').getBoundingClientRect();
-    const padTop = body.dataset.mode === 'map' ? Math.min(lede.height * .55, H * .2) : 0;
-    return { x: 0, y: padTop, w: W, h: H - padTop };
+    // The heading occupies its own layout row; it no longer covers the map.
+    return { x: 0, y: 0, w: W, h: H };
   }
   function fitView(b, { pad = 60, maxS = S_MAX } = {}) {
     const v = visible();
