@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Brand System 001 — Freeman GC study</title>
+<link rel="icon" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@75..112.5,100..800&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap">
+<link rel="stylesheet" href="study.css">
+<link rel="stylesheet" href="directions.css">
+</head>
+<body>
+<header class="bar">
+  <span class="bar-title">Freeman — Brand System 001</span>
+  <nav id="secnav" aria-label="Sections"></nav>
+  <span class="bar-count"><span id="count-cur">01</span> / <span id="count-total">00</span></span>
+</header>
+<main id="plates"></main>
+<section id="full" hidden aria-label="Full size">
+  <header class="full-bar">
+    <span class="full-id"></span><span class="full-name"></span><span class="full-size"></span>
+    <nav>
+      <button type="button" data-step="dir:-1" title="Previous direction (←)">← Direction</button>
+      <button type="button" data-step="dir:1" title="Next direction (→)">Direction →</button>
+      <button type="button" data-step="app:-1" title="Previous application (↑)">↑ Application</button>
+      <button type="button" data-step="app:1" title="Next application (↓)">Application ↓</button>
+      <button type="button" data-step="fmt:1" title="Next format (F)">Format</button>
+      <button type="button" data-zoom title="Fit or actual size (Z)">1:1</button>
+      <button type="button" data-close title="Close (Esc)">Close</button>
+    </nav>
+  </header>
+  <div class="full-stage"></div>
+</section>
+<script src="/records.js"></script>
+<script src="/pixel-mark.js"></script>
+<script src="/signature-motion.js"></script>
+<script src="/eagle/eagle-motion.js"></script>
+<script src="marks.js"></script>
+<script src="content.js"></script>
+<script src="compositions.js"></script>
+<script src="foundations.js"></script>
+<script src="study.js"></script>
+</body>
+</html>
