@@ -123,6 +123,56 @@ p,.co4-copy h2,.pg-name{text-wrap:pretty}
   .co4-copy p{margin-bottom:12px}
 }
 
+/* CONTACT — the address and the number are the page. */
+.contact-label,.contact-inquiry .contact-email-label{font:400 var(--t-label)/1.3 var(--sans);letter-spacing:var(--track-label);text-transform:uppercase;color:var(--muted)}
+.contact-sheet .subtle{font:400 var(--t-text)/1.45 var(--sans);color:var(--muted)}
+.contact-sheet>a{font:500 24px/1.15 var(--sans);letter-spacing:-.015em}
+.contact-inquiry textarea{font:400 var(--t-read)/1.5 var(--sans)}
+.contact-inquiry input[type="email"]{font:400 var(--t-read)/1.4 var(--sans)}
+.contact-inquiry button{font:500 var(--t-label)/1.3 var(--sans);letter-spacing:var(--track-label);text-transform:uppercase}
+.contact-disclaimer{font:400 var(--t-label)/1.4 var(--sans)!important;letter-spacing:.02em;text-transform:none!important;color:var(--muted)}
+
+/* RECORD NOT FOUND */
+.reading .text-link{font:500 var(--t-label)/1.3 var(--sans);letter-spacing:var(--track-label);text-transform:uppercase}
+
+/* ACCESS — the same shell: labels, one headline, one register. */
+.top,.top span,.eyebrow,.footer,.footer span{font-size:var(--t-label);line-height:1.3;letter-spacing:var(--track-label);text-transform:uppercase}
+.top>span:first-child{font-weight:500}
+.left h1{font-weight:500;font-size:var(--t-head);line-height:1.02;letter-spacing:-.03em}
+.left p{font:400 var(--t-read)/1.55 var(--sans)}
+.choice .number{font-size:var(--t-label);letter-spacing:.02em}
+.choice .name{font:500 var(--t-read)/1.3 var(--sans)}
+.choice .desc{font:400 var(--t-text)/1.4 var(--sans);margin-top:4px}
+.note{font:400 var(--t-label)/1.5 var(--sans);letter-spacing:.02em}
+
+/* MAP — the drawing keeps its small cartographic voice; the sheet around it takes the site's scale. */
+html .ref{font-size:10px}
+.bar{font-size:var(--t-label);letter-spacing:var(--track-label);min-height:48px}
+.bar .brand{font-weight:500}
+.find input{font:400 var(--t-text)/1.4 var(--sans);letter-spacing:0}
+.lede .kicker{font-size:var(--t-label);letter-spacing:var(--track-label);margin-bottom:16px}
+.lede h1{font-weight:500;font-size:var(--t-head);line-height:1.02;letter-spacing:-.03em}
+.nm{font-size:10px;letter-spacing:.07em}
+.nm.t1{font-size:var(--t-label);letter-spacing:.06em}
+.nm.t3{font-size:9px;letter-spacing:.1em}
+.nm.river{font-size:9px;letter-spacing:.2em}
+.nm.state{font-size:11px;letter-spacing:.45em}
+.tag{font-size:var(--t-label);letter-spacing:.05em}
+.tag small{font-size:10px}
+.mk .ct{font-size:10px;font-weight:500}
+.north{font-size:10px}
+.scale{font-size:10px;letter-spacing:.05em}
+html .record-attribution{font:400 10px/1.4 var(--sans);letter-spacing:.04em}
+.zoom button{font-size:var(--t-read)}
+.zoom button:last-child{font-size:10px;letter-spacing:.06em}
+.tb-k,.tb-firm,.tb-foot{font-size:10px;letter-spacing:.06em}
+.tb-title{font-weight:500;font-size:var(--t-text);letter-spacing:.04em}
+.tb-no{font-weight:500;letter-spacing:-.03em}
+.tb-grid{font-size:var(--t-text)}
+.tb-set button{font-size:var(--t-text);line-height:1.35;letter-spacing:0;padding:7px 0}
+.tb-set .n,.found .n,.callout .n,.r-list .n{font-size:10px;letter-spacing:.02em}
+.tb-set .w,.found .w{font-size:9px;letter-spacing:.05em}
+
 /* PHONE — the same five sizes, stepped down once. */
 @media(max-width:760px){
   :root{--t-title:28px;--t-head:34px}
@@ -154,6 +204,18 @@ p,.co4-copy h2,.pg-name{text-wrap:pretty}
   .pg-place{margin:8px 0 20px}
   .pg-credits{column-gap:32px}
   .pg-credits div{padding:0}
+
+  /* Contact, Access, Map */
+  .contact-sheet>a{font-size:20px}
+  .left h1{font-size:var(--t-head)}
+  .left p{font-size:var(--t-text)}
+  .choice .name{font-size:var(--t-read)}
+  .choice .desc{font-size:var(--t-label)}
+  .lede h1{font-size:30px}
+  .find input{font-size:16px}
+  .tb-set button{font-size:var(--t-read);padding:10px 0}
+  html .record-attribution{font-size:9px}
+  .footer{flex-direction:column;align-items:flex-start;gap:4px}
 
   /* Company */
   body[data-route="company"] .viewport{top:76px;bottom:56px}
