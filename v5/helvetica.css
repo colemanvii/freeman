@@ -1,0 +1,178 @@
+/* HELVETICA NEUE STUDY 001 — one family, two weights, five sizes.
+   Loaded after styles.css. Every rule set in the Monaco stack (var(--mono)) now inherits Helvetica Neue;
+   the rules below recalibrate size, weight, tracking and spacing for the four public pages.
+   Scale  11 label · 13 text · 16 reading · 34 title · 48 headline (desktop); phones step titles down once
+   Weight 400 for reading, 500 for what you act on and what a page is called. Nothing else. */
+:root{
+  --sans:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:var(--sans);
+  --t-label:11px;
+  --t-text:13px;
+  --t-read:16px;
+  --t-title:34px;
+  --t-head:48px;
+  --track-label:.06em;
+}
+html,body{font-family:var(--sans);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-kerning:normal;font-variant-numeric:tabular-nums}
+
+/* Labels: the one small uppercase voice. */
+.site-nav,.close,.client-access-entry,.v4-home-nav,.co4-nav button,
+.pi4-heading,.pi4-columns,.pi4-section,.pi4-preview-head,.pi4-preview-bottom,.pi4-image-caption,
+.pi-section-label,.pg-credits dt,.legal,.mark{
+  font-size:var(--t-label);line-height:1.3;letter-spacing:var(--track-label);text-transform:uppercase
+}
+.site-nav,.close,.client-access-entry,.v4-home-nav,.co4-nav button{font-weight:500}
+.site-nav .sep,.v4-home-nav .sep{color:color-mix(in srgb,var(--muted) 55%,transparent);font-weight:400}
+p,.co4-copy h2,.pg-name{text-wrap:pretty}
+.site-nav .sep{padding:0 9px}
+.panel-head{top:30px;left:32px;right:32px;font-size:var(--t-label);line-height:1.3}
+.viewport{inset:96px 32px 64px}
+
+/* ENTRANCE — the signature is the page; the navigation sits under it as one firm line. */
+.v4-home-nav{font-size:12px;letter-spacing:.08em}
+.v4-home-nav .sep{padding:0 13px}
+.legal,.mark{font-size:10px;letter-spacing:.05em;line-height:1.4;color:var(--muted);bottom:30px}
+.legal{left:32px}.mark{right:32px}
+.client-access-entry{top:30px;right:32px}
+
+/* PROJECT INDEX — a register on the left, the photograph and its name on the right. */
+.pi4{grid-template-columns:minmax(0,1.6fr) minmax(360px,1fr)}
+.pi4-register{padding-right:clamp(32px,4vw,64px)}
+.pi4-heading{height:48px;min-height:48px;color:var(--ink);font-weight:500}
+.pi4-heading span:last-child{font-size:var(--t-label);letter-spacing:var(--track-label);font-weight:400;color:var(--muted)}
+.pi4-columns{height:30px;padding-top:0;color:var(--muted)}
+.pi4-section{padding:22px 0 10px;color:var(--muted)}
+.pi4-completed{margin-top:8px}
+.pi4-columns,.pi4-work-row{grid-template-columns:36px minmax(0,1.4fr) minmax(0,1fr) minmax(0,1.15fr);gap:0 16px}
+.pi4-select{grid-template-columns:36px 12px minmax(0,1fr);gap:0 16px;padding:16px 0;align-items:baseline;min-height:52px;font-size:var(--t-read);line-height:1.3}
+.pi4-work-row{min-height:52px;align-items:baseline}
+.pi4-in-progress{min-height:48px;padding:15px 0}
+.pi4-no{font-size:var(--t-label);line-height:1.3;letter-spacing:.02em}
+.pi4-item-name{font-size:var(--t-read);line-height:1.3;font-weight:500;letter-spacing:-.005em}
+.pi4-in-progress .pi4-item-name{font-size:var(--t-read);font-weight:400}
+.pi4-indicator{font-size:var(--t-read);line-height:1;font-weight:400}
+.pi4-client,.pi4-designer{font-size:var(--t-text);line-height:1.35}
+.credit-external .credit-arrow{font-size:.9em}
+.pi4-stage{padding:0 0 0 clamp(32px,3vw,48px)}
+.pi4-preview-head{height:48px;color:var(--muted)}
+.pi4-preview-head button{font:inherit;letter-spacing:inherit}
+.pi4-preview-title{margin-bottom:24px;align-items:end}
+.pi4-preview-title h2{font:500 var(--t-title)/1 var(--sans);letter-spacing:-.025em;text-wrap:balance}
+.pi4-preview-title p{font:400 var(--t-text)/1.35 var(--sans);margin-top:10px}
+.pi4-preview-title a{font:500 var(--t-label)/1.3 var(--sans);letter-spacing:var(--track-label);text-transform:uppercase}
+.pi4-image-link img{max-height:56dvh}
+.pi4-image-caption{margin-top:12px;color:var(--muted)}
+.pi4-preview-bottom{margin-top:auto;padding-top:12px;color:var(--muted)}
+.pi4-arrows{font:400 var(--t-label)/1.3 var(--sans);letter-spacing:.02em}
+.pi4-arrows button{font:400 var(--t-read)/1 var(--sans)}
+@media(min-width:761px) and (max-width:1130px){
+  .pi4{grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr)}
+  .pi4-columns,.pi4-work-row{grid-template-columns:32px minmax(0,1.3fr) minmax(0,1fr) minmax(0,.85fr);gap:0 10px}
+  .pi4-select{grid-template-columns:32px 12px minmax(0,1fr);gap:0 10px}
+  .pi4-item-name,.pi4-select{font-size:var(--t-text)}
+  .pi4-client,.pi4-designer{font-size:var(--t-label);letter-spacing:.01em}
+  .pi4-preview-title h2{font-size:24px}
+}
+@media(min-width:761px) and (max-height:690px){
+  .pi4-work-row,.pi4-select{min-height:42px}
+  .pi4-select{padding:11px 0}
+  .pi4-in-progress{padding:10px 0}
+  .pi4-in-progress{min-height:40px}
+  .pi4-image-link img{max-height:40dvh}
+  .pi4-preview-title h2{font-size:24px}
+}
+
+/* PROJECT — the name set large beside the photograph; the photograph takes everything else. */
+.pg{grid-template-columns:260px minmax(0,1fr);column-gap:clamp(40px,4.5vw,72px)}
+.pg-info{gap:0}
+.pg-name{font:500 var(--t-title)/1 var(--sans);letter-spacing:-.025em;text-transform:none;text-wrap:balance;margin:-.06em 0 0}
+.pg-place{font:400 var(--t-text)/1.35 var(--sans);letter-spacing:0;text-transform:none;color:var(--muted);margin:12px 0 40px}
+.pg-credits{font-size:var(--t-text);line-height:1.35}
+.pg-credits div{padding:10px 0 14px}
+.pg-credits dt{color:var(--muted);margin-bottom:4px}
+.pg-credits dd{margin:0}
+.pg-related{font:500 var(--t-label)/1.3 var(--sans);letter-spacing:var(--track-label)}
+.pg-stage{gap:16px}
+.pg-controls{height:18px;gap:24px}
+.pg-arrow{font:400 var(--t-read)/1 var(--sans)}
+.pg-count{font:400 var(--t-label)/1.3 var(--sans);letter-spacing:.04em;color:var(--muted)}
+
+/* PROJECT RECORD (projects without photographs) — the same title and label voices. */
+.reading .micro{font:400 var(--t-label)/1.3 var(--sans);letter-spacing:var(--track-label);color:var(--muted)}
+.reading h1{font:500 var(--t-title)/1 var(--sans);letter-spacing:-.025em;text-wrap:balance}
+.reading h2{font:500 var(--t-read)/1.35 var(--sans)}
+.reading p{font:400 var(--t-read)/1.55 var(--sans)}
+.reading .data{font:400 var(--t-text)/1.4 var(--sans);padding:14px 0}
+
+/* COMPANY — one headline, one column of reading text, nothing between them. */
+.co4-nav{gap:28px;margin:0 0 48px;padding-bottom:14px}
+.co4-nav button{color:var(--muted)}
+.co4-copy h2{font:500 var(--t-head)/1.02 var(--sans);letter-spacing:-.03em;margin:0 0 32px;text-wrap:balance}
+.co4-copy p{font:400 var(--t-read)/1.55 var(--sans);margin:0 0 16px;letter-spacing:0}
+.co4-copy p:first-of-type{font-weight:500}
+.co4-choice{font:400 var(--t-read)/1.35 var(--sans);min-height:44px;padding:11px 0}
+.co4-choice strong{font-weight:500}
+.co4-choice>span:first-child{font-size:var(--t-label);letter-spacing:.02em}
+.co4-description>span{font:400 var(--t-label)/1.3 var(--sans);letter-spacing:var(--track-label);text-transform:uppercase}
+.co4-description p{font:400 var(--t-read)/1.55 var(--sans)}
+.co4-description small{font:400 var(--t-label)/1.4 var(--sans)}
+@media(min-width:761px){body[data-route="company"] .co4-stage{width:min(600px,calc(100% - 64px))}}
+@media(min-width:761px) and (max-height:760px){
+  .co4-nav{margin-bottom:32px}
+  .co4-copy h2{font-size:40px;margin-bottom:24px}
+  .co4-copy p{margin-bottom:12px}
+}
+
+/* PHONE — the same five sizes, stepped down once. */
+@media(max-width:760px){
+  :root{--t-title:28px;--t-head:34px}
+  .panel-head{top:22px;left:20px;right:20px}
+  .site-nav{font-size:var(--t-label);letter-spacing:.04em}
+  .site-nav .sep{padding:0 6px}
+  .close{font-size:var(--t-label)}
+  .viewport{inset:76px 20px 56px}
+  .v4-home-nav{font-size:var(--t-label);letter-spacing:.06em}
+  .v4-home-nav .sep{padding:0 8px}
+  .client-access-entry{right:max(20px,env(safe-area-inset-right))}
+
+  /* Project index: name, then client and design beneath it. */
+  .pi-scroller{border-top:0}
+  .pi-section-label{padding:4px 0 12px;color:var(--muted)}
+  .pi-completed-label{margin-top:40px;padding-top:0;border-top:0}
+  .pi-link{grid-template-columns:44px minmax(0,1fr);column-gap:0;row-gap:4px;padding:16px 0 18px;align-items:baseline}
+  .pi-no{font-size:var(--t-label);letter-spacing:.02em}
+  .pi-name{font:500 17px/1.25 var(--sans);letter-spacing:-.01em;text-transform:none}
+  .pi-client,.pi-arch{font:400 var(--t-text)/1.35 var(--sans);letter-spacing:0;text-transform:none;color:var(--muted)}
+  .pi-name+.pi-client{margin-top:4px}
+  .pi-date{font:400 var(--t-label)/1.3 var(--sans);letter-spacing:var(--track-label)}
+  .pi-progress .pi-name{font-weight:400}
+  .pi-progress .pi-date{display:none}
+
+  /* Project: name and credits on top; the photograph centred in the rest of the screen. */
+  .pg{grid-template-columns:1fr;row-gap:28px}
+  .pg-name{margin:0}
+  .pg-place{margin:8px 0 20px}
+  .pg-credits{column-gap:32px}
+  .pg-credits div{padding:0}
+
+  /* Company */
+  body[data-route="company"] .viewport{top:76px;bottom:56px}
+  .co4-nav{gap:22px;margin:0 0 32px;padding-bottom:12px}
+  .co4-copy h2{font-size:var(--t-head);line-height:1.02;margin-bottom:24px}
+  .co4-copy p{font-size:var(--t-read);line-height:1.5;margin-bottom:14px}
+  .co4-choice{font-size:var(--t-read);min-height:44px;padding:10px 0}
+}
+@media(max-width:760px) and (orientation:landscape){
+  .pg{grid-template-columns:200px minmax(0,1fr);grid-template-rows:none;column-gap:24px}
+  .pg-credits{display:block}
+  .pg-credits div{padding:0 0 10px}
+}
+@media(max-width:760px) and (max-height:730px){
+  .co4-copy h2{font-size:30px;margin-bottom:16px}
+  .co4-copy p{font-size:var(--t-text);margin-bottom:10px}
+  .co4-nav{margin-bottom:20px}
+}
+@media(max-width:360px){
+  .site-nav{font-size:10px;letter-spacing:.02em}
+  .site-nav .sep{padding:0 4px}
+}
