@@ -6,14 +6,14 @@
   --muted:#706659;
   --hair:#d5cec3;
   --orange:#f93822;
-  --mono:Monaco,"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  --mono:"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 /* Shared Freeman identity. Accessible secondary text on the same paper colors. */
 :root{--muted:#706659;--rule:var(--hair);--orange-text:#c52b15;--orange-ink:#c52b15;color-scheme:light}
 :root[data-palette="sand"]{--paper:#ddcfb3;--ink:#332e20;--muted:#6d6150;--hair:#b5a68c;--orange:#f93822;--orange-text:#b52d1a;--orange-ink:#b52d1a}
 :root[data-palette="umber"]{--paper:#332e20;--ink:#fff9f1;--muted:#c5b9a7;--hair:#71685c;--orange:#f93822;--orange-text:#ff725e;--orange-ink:#ff725e;color-scheme:dark}
-html,body{font-family:var(--mono);-webkit-font-smoothing:none;text-rendering:geometricPrecision;background:var(--paper);color:var(--ink)}
+html,body{font-family:var(--mono);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;background:var(--paper);color:var(--ink)}
 body{cursor:var(--cursor-crosshair)}
 button,a{font-family:var(--mono);cursor:var(--cursor-orange);transition:none}
 input{font-family:var(--mono);border-radius:0}
