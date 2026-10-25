@@ -640,3 +640,34 @@ body[data-route="company"] .sheet-controls{display:none}
   .site-nav{font-size:8px}
   .site-nav .sep{padding:0 3px}
 }
+
+/* Mobile work index — shared selection/preview, not the dormant legacy table. */
+@media(max-width:760px){
+  body[data-route="projects"] .pi4,
+  .pi4{display:flex!important;flex-direction:column;height:100%;min-height:0;overflow:hidden}
+  .pi4-original-mobile{display:none!important}
+  .pi4-register{flex:0 0 43%;min-height:0;padding:0 0 12px;border-bottom:1px solid var(--hair)}
+  .pi4-heading{height:auto;min-height:34px;gap:12px;font-size:11px}
+  .pi4-heading span:last-child{white-space:normal;text-align:right;font-size:9px}
+  .pi4-scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+  .pi4-columns,.pi4-work-row{grid-template-columns:30px minmax(0,1fr);gap:0 8px}
+  .pi4-columns span:nth-child(n+3),.pi4-client,.pi4-designer{display:none}
+  .pi4-work-row,.pi4-select{min-height:44px}
+  .pi4-in-progress{min-height:40px}
+  .pi4-item-name,.pi4-select{font-size:12px}
+  .pi4-select{grid-template-columns:30px 13px minmax(0,1fr);gap:0 8px;padding:9px 0}
+  .pi4-section{padding:10px 0 6px}
+  .pi4-completed{margin-top:5px}
+  .pi4-stage{flex:1;min-height:0;height:auto;overflow-y:auto;overscroll-behavior:contain;border-left:0;padding:12px 0 calc(20px + env(safe-area-inset-bottom))}
+  .pi4-preview-head{height:auto;min-height:30px}
+  .pi4-preview-head button{min-width:44px;min-height:32px;text-align:right}
+  .pi4-preview-title{margin-bottom:12px;align-items:flex-start}
+  .pi4-preview-title h2{font-size:20px}
+  .pi4-preview-title a{white-space:normal;text-align:right;min-width:72px}
+  .pi4-preview-image{flex:none;min-height:0}
+  .pi4-image-link{width:100%}
+  .pi4-image-link img{width:100%;height:auto;max-height:31dvh;object-fit:contain;object-position:center}
+  .pi4-image-caption{margin-top:7px}
+  .pi4-preview-bottom{margin-top:10px;padding-top:8px}
+  .pi4-arrows button{min-width:36px;min-height:36px}
+}

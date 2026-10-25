@@ -449,11 +449,11 @@
       </div></aside>
       <section class="pi4-stage" id="pi4-stage" aria-label="Selected project preview" aria-live="polite"></section>
     </div>
-    <div class="pi pi4-original-mobile"><div class="pi-head" aria-hidden="true"><span>No.</span><span>Project</span><span>Client</span><span>Design</span><span class="pi-head-date">Date</span></div><div class="pi-scroller"><div class="pi-section-label">IN PROGRESS / CURRENT WORK</div><ol class="pi-list" aria-label="In progress projects">${activeRows}</ol><div class="pi-section-label pi-completed-label">SELECTED WORK / COMPLETED</div><ol class="pi-list" aria-label="Completed projects">${rows}</ol></div></div>`;
+`;
     // The full-screen photography view already exists. The preview is its smaller sibling.
     const stage=vp.querySelector("#pi4-stage");
     let selected=null,photoIndex=0;
-    const photosFor=p=>(p.gallery&&p.gallery.length?p.gallery.map(g=>g.src):p.image?[p.image]:[]);
+    const photosFor=p=>(p.gallery&&p.gallery.length?p.gallery.map(g=>g.src):p.image?[p.image]:[]).map(src=>src.startsWith("/")?src:"/"+src);
     function select(slug,index=0){
       const p=projects.find(x=>x.slug===slug)||projects.find(x=>x.slug==="the-optimist")||projects.find(x=>photosFor(x).length)||projects[0];
       if(!p)return;
@@ -461,7 +461,7 @@
       const hasPhotos=photos.length>0,selectedIndex=projects.indexOf(p)+1;
       stage.innerHTML=`<div class="pi4-preview-head"><span>SELECTED WORK / ${pad(selectedIndex,2)} OF ${pad(projects.length,2)}</span><button type="button" data-pi4-close aria-label="Close selected project">CLOSE ×</button></div>
         <div class="pi4-preview-title"><div><h2>${esc(p.name)}</h2><p>${esc(p.location||"")}</p></div><a href="project-${esc(p.slug)}.html">VIEW PROJECT ↗</a></div>
-        <div class="pi4-preview-image">${hasPhotos?`<a href="project-${esc(p.slug)}.html" class="pi4-image-link" aria-label="Open ${esc(p.name)} full project gallery"><img id="pi4-image" src="${esc(photos[photoIndex])}" alt="${esc(p.name)} — photograph ${photoIndex+1}" draggable="false"></a>`:'<div class="pi4-no-image">PHOTOGRAPHY FORTHCOMING</div>'}</div>
+        <div class="pi4-preview-image">${hasPhotos?`<a href="project-${esc(p.slug)}.html" class="pi4-image-link" aria-label="Open ${esc(p.name)} full project gallery"><img id="pi4-image" src="${esc(photos[photoIndex])}" alt="${esc(p.name)} — photograph ${photoIndex+1}" loading="eager" decoding="async" draggable="false"></a>`:'<div class="pi4-no-image">PHOTOGRAPHY FORTHCOMING</div>'}</div>
         <div class="pi4-image-caption">${esc(p.name)} / ${esc(p.date||"SELECTED WORK")}</div>
         <div class="pi4-preview-bottom"><span>FREEMAN / SELECTED WORK</span>
           ${hasPhotos?`<div class="pi4-arrows"><button type="button" data-pi4-step="-1" aria-label="Previous project photograph" ${photoIndex===0?"disabled":""}>←</button><span>${pad(photoIndex+1)} / ${pad(photos.length)}</span><button type="button" data-pi4-step="1" aria-label="Next project photograph" ${photoIndex===photos.length-1?"disabled":""}>→</button></div>`:""}
@@ -490,15 +490,6 @@
       }
     });
     select(state.focus||"the-optimist");
-    const scroller=vp.querySelector(".pi4-original-mobile .pi-scroller");
-    scroller.addEventListener("click",e=>{
-      const row=e.target.closest(".pi-row");if(!row)return;
-      scroller.querySelectorAll(".pi-row.is-current").forEach(r=>r.classList.remove("is-current"));
-      row.classList.add("is-current");
-    });
-    if(typeof state.projScroll==="number")scroller.scrollTop=state.projScroll;
-    const current=scroller.querySelector(".pi-row.is-current");
-    if(current){const top=current.offsetTop,bottom=top+current.offsetHeight;if(top<scroller.scrollTop)scroller.scrollTop=top;else if(bottom>scroller.scrollTop+scroller.clientHeight)scroller.scrollTop=bottom-scroller.clientHeight;}
     count();
   }
   /* Photography-first project page: one photograph at a time, the name, place and verified credits
