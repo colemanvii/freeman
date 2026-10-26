@@ -32,3 +32,16 @@ body[data-team-gate] input:focus-visible{outline:none}
 @media(min-width:901px){.wrap{max-width:none;padding-left:40px;padding-right:40px}.top{min-height:20px}}
 @media(max-width:760px){body[data-team-gate] .frame{padding:20px 20px 18px}body[data-team-gate] main{max-width:430px}}
 @media(pointer:coarse){body{cursor:auto}button,a{touch-action:manipulation}}
+
+/* MONACO LINEAGE on phones (≤760px): the site's mobile face and minimum sizes; the ACCESS
+   composition is unchanged. Menlo on every iPhone, DejaVu Sans Mono (self-hosted) elsewhere. */
+@font-face{font-family:"Freeman Mono";font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/dejavu-sans-mono-latin.woff2) format("woff2")}
+@media(max-width:760px){
+  :root{--mono:Menlo,Monaco,"Freeman Mono",monospace}
+  .top,body[data-team-gate] header{font-size:11px;letter-spacing:.05em}
+  .eyebrow{font-size:10px;letter-spacing:.1em}
+  .left h1{letter-spacing:-.03em}
+  .choice .desc{font-size:11.5px}
+  .note{font-size:10.5px}
+  .foot,.footer,body[data-team-gate] footer{font-size:9.5px;letter-spacing:.05em}
+}

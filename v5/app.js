@@ -825,6 +825,9 @@
       if (phone && Number.isInteger(n)) {
         const k = Math.max(1, Math.round(n * 0.82));
         if (k >= n * 0.75) n = k;
+        // A further ~12% on 3× phones. A whole step there is a quarter of the size, so the script
+        // takes a fractional pixel; at 3× density the 3/4 device-pixel alternation is not visible.
+        if (dpr >= 3) n *= 0.88;
       }
       home.style.setProperty("--px", n / dpr + "px");
       // Place the group on whole device pixels: a half-pixel offset would blur the bitmap.
