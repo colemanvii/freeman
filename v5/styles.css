@@ -640,3 +640,11 @@ body[data-route="company"] .sheet-controls{display:none}
   .site-nav{font-size:8px}
   .site-nav .sep{padding:0 3px}
 }
+
+/* Mobile entrance: the four sections stack beneath the script, centred, in larger Monaco.
+   Desktop keeps the single slash-separated line. */
+@media(max-width:760px){
+  .v4-home-nav{flex-direction:column;align-items:center;gap:22px;font-family:var(--mono);font-size:20px;line-height:1.2;letter-spacing:.04em;color:var(--ink)}
+  .v4-home-nav .sep{display:none}
+  .v4-home-nav a::after{inset:-11px -16px}
+}
