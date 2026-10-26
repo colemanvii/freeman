@@ -1,0 +1,80 @@
+/* Mobile typography study 001 (study/mobile-type-001). Not for production.
+   Three directions for the phone typography, chosen with ?type=a|b|c (type-study.js sets
+   html[data-type]). Each direction is one set of tokens driving the same rules, so the three
+   differ only in typeface, weight, size, tracking, leading and case. Phones only (≤760px);
+   desktop, the signature, the colour system and all content are untouched.
+
+   A  Monaco lineage — Menlo, Apple's own system monospace, on every iPhone and Mac.
+   B  IBM Plex Mono — Medium for what you read first, Regular for what you read second.
+   C  Fragment Mono — a monospaced neo-grotesque; one weight, hierarchy by size and case. */
+
+@font-face{font-family:"Study Plex Mono";font-style:normal;font-weight:400;font-display:block;src:url(/assets/fonts/study/IBMPlexMono-Regular.woff2) format("woff2")}
+@font-face{font-family:"Study Plex Mono";font-style:normal;font-weight:500;font-display:block;src:url(/assets/fonts/study/IBMPlexMono-Medium.woff2) format("woff2")}
+@font-face{font-family:"Study Fragment Mono";font-style:normal;font-weight:400;font-display:block;src:url(/assets/fonts/study/FragmentMono-Regular.woff2) format("woff2")}
+
+@media(max-width:760px){
+  /* Secondary information: three quarters of the way from paper to ink, so it follows every colorway. */
+  html[data-type]{--ts-meta:color-mix(in srgb,var(--ink) 78%,var(--paper))}
+
+  html[data-type="a"]{
+    --ts-face:Menlo,Monaco,"DejaVu Sans Mono",monospace;
+    --ts-w-nav:400;--ts-w-bar:400;--ts-w-name:400;--ts-w-meta:400;--ts-w-label:400;
+    --ts-nav:17px;--ts-nav-ls:.07em;--ts-nav-gap:18px;
+    --ts-bar:11px;--ts-bar-ls:.05em;--ts-sep:6px;
+    --ts-label:10px;--ts-label-ls:.1em;
+    --ts-no:11px;
+    --ts-name:15px;--ts-name-ls:.03em;--ts-name-lh:1.4;--ts-name-case:uppercase;
+    --ts-meta-size:11px;--ts-meta-ls:.04em;--ts-meta-lh:1.55;
+    --ts-row:19px;--ts-row-gap:5px;
+  }
+  html[data-type="b"]{
+    --ts-face:"Study Plex Mono",Menlo,monospace;
+    --ts-w-nav:500;--ts-w-bar:500;--ts-w-name:500;--ts-w-meta:400;--ts-w-label:500;
+    --ts-nav:18px;--ts-nav-ls:.03em;--ts-nav-gap:18px;
+    --ts-bar:11.5px;--ts-bar-ls:.03em;--ts-sep:6px;
+    --ts-label:10px;--ts-label-ls:.11em;
+    --ts-no:11px;
+    --ts-name:16px;--ts-name-ls:0em;--ts-name-lh:1.35;--ts-name-case:uppercase;
+    --ts-meta-size:12px;--ts-meta-ls:.02em;--ts-meta-lh:1.5;
+    --ts-row:19px;--ts-row-gap:4px;
+  }
+  html[data-type="c"]{
+    --ts-face:"Study Fragment Mono",Menlo,monospace;
+    --ts-w-nav:400;--ts-w-bar:400;--ts-w-name:400;--ts-w-meta:400;--ts-w-label:400;
+    --ts-nav:18px;--ts-nav-ls:.05em;--ts-nav-gap:19px;
+    --ts-bar:11px;--ts-bar-ls:.05em;--ts-sep:6px;
+
+    --ts-no:11px;
+    /* The one display move: project names in their own title case, as a monograph sets them. */
+    --ts-name:16.5px;--ts-name-ls:-.015em;--ts-name-lh:1.25;--ts-name-case:none;
+    /* Secondary lines and labels in the face's true small caps rather than shrunken capitals. */
+    --ts-meta-size:14px;--ts-meta-ls:-.04em;--ts-meta-lh:1.4;--ts-meta-case:none;--ts-caps:all-small-caps;
+    --ts-label:13px;--ts-label-ls:0em;
+    --ts-row:20px;--ts-row-gap:5px;
+  }
+
+  /* One face for the whole phone site. */
+  html[data-type] body{font-family:var(--ts-face)}
+  /* Fragment Mono is drawn for code: no programming ligatures in running text. */
+  html[data-type="c"] body{font-variant-ligatures:none;font-feature-settings:"calt" 0}
+
+  /* Entrance */
+  html[data-type] .v4-home-nav{font-family:var(--ts-face);font-weight:var(--ts-w-nav);font-size:var(--ts-nav);letter-spacing:var(--ts-nav-ls);gap:var(--ts-nav-gap);line-height:1.2}
+
+  /* Interior section line and CLOSE */
+  html[data-type] .site-nav{font-size:var(--ts-bar);font-weight:var(--ts-w-bar);letter-spacing:var(--ts-bar-ls)}
+  html[data-type] .site-nav .sep{padding:0 var(--ts-sep)}
+  html[data-type] .panel-head .close{font-size:var(--ts-bar);font-weight:var(--ts-w-bar);letter-spacing:var(--ts-bar-ls)}
+
+  /* Projects index */
+  html[data-type] .pi-section-label{font-size:var(--ts-label);font-weight:var(--ts-w-label);letter-spacing:var(--ts-label-ls);font-variant-caps:var(--ts-caps,normal);color:var(--muted)}
+  /* A narrower number column gives the names the measure; the list never scrolls sideways
+     (tap areas extend past wrapped names). */
+  html[data-type] .pi-scroller{overflow-x:hidden}
+  html[data-type] .pi-link{grid-template-columns:34px minmax(0,1fr);column-gap:12px;row-gap:var(--ts-row-gap);padding:var(--ts-row) 0}
+  html[data-type] .pi-no{font-size:var(--ts-no);letter-spacing:.02em}
+  html[data-type] .pi-name,html[data-type] .pi-progress .pi-name{font-size:var(--ts-name);font-weight:var(--ts-w-name);letter-spacing:var(--ts-name-ls);line-height:var(--ts-name-lh);text-transform:var(--ts-name-case)}
+  html[data-type] .pi-client,html[data-type] .pi-arch,html[data-type] .pi-date,html[data-type] .pi-progress .pi-date{font-size:var(--ts-meta-size);font-weight:var(--ts-w-meta);letter-spacing:var(--ts-meta-ls);line-height:var(--ts-meta-lh);text-transform:var(--ts-meta-case,uppercase);font-variant-caps:var(--ts-caps,normal);color:var(--ts-meta)}
+  html[data-type] .pi-progress .pi-date{color:var(--muted)}
+  html[data-type] .pi-name + .pi-client{margin-top:3px}
+}
