@@ -885,7 +885,7 @@
 
   function announce(t) { $('announce').textContent = t; }
 
-  /* ---------- Begin: the drawing plots, then the work appears ---------- */
+  /* ---------- Begin: the map is drawn complete on arrival ---------- */
   renderRegister();
   size();
   sMin = Math.min(W / (G.box.x1 - G.box.x0), H / (G.box.y1 - G.box.y0)) * .9;
@@ -893,7 +893,6 @@
   Object.assign(view, h);
   renderRule();
   draw(true);
-  if (!reduced) { body.classList.add('plot'); setTimeout(() => body.classList.remove('plot'), 1600); }
   const p0 = new URLSearchParams(location.search).get('p');
   if (p0 && bySlug[p0]) { history.replaceState({ p: p0, d: history.state?.d || 0 }, '', location.search); savedView = { ...h }; open(p0, { push: false }); }
   else if (history.state?.p) history.replaceState({ d: 0 }, '', location.pathname);

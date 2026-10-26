@@ -912,6 +912,23 @@
     }, 120);
   });
 
+  /* ---------- Projects is its own document: get it ready before the visitor arrives ----------
+     Chromium prerenders the map once a PROJECTS link is hovered or touched, so it is already drawn on
+     the click. Elsewhere, the map's files are fetched while the page is idle, so only drawing remains. */
+  (function readyTheMap() {
+    if (HTMLScriptElement.supports && HTMLScriptElement.supports("speculationrules")) {
+      const rules = document.createElement("script");
+      rules.type = "speculationrules";
+      rules.textContent = JSON.stringify({ prerender: [{ where: { href_matches: "/map*" }, eagerness: "moderate" }] });
+      document.head.append(rules);
+      return;
+    }
+    const later = window.requestIdleCallback || ((f) => setTimeout(f, 1500));
+    later(() => ["/map", "/record-assets/record.css?v=20261026-map-instant", "/record-assets/geo.js?v=20261026-map-projects",
+      "/record-assets/record.js?v=20261026-map-instant", "/project-credits.js?v=20261026-map-projects", "/record-assets/sites.js?v=20261026-map-projects",
+      "/record-assets/photos.js?v=20261026-map-projects"].forEach((u) => fetch(u, { priority: "low" }).catch(() => {})));
+  })();
+
   /* ---------- Boot ---------- */
   const first = parse(location.href);
   applyPalette([ss.get("freeman-palette"), hist.state.palette].find((p) => PALETTES.includes(p)));

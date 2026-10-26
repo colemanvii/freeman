@@ -289,9 +289,6 @@ body[data-mode="record"] .field{grid-template-rows:minmax(0,1fr)}
 .v-arrows{display:flex;gap:4px}
 
 /* Plotting on arrival: the drawing comes first, then the work */
-.plot #world>*{opacity:0;animation:fade .32s steps(3,end) var(--d,0s) forwards}
-.plot .marks .nm{opacity:0;animation:fade .3s steps(3,end) .75s forwards}
-.plot .marks .mk,.plot .marks .tag,.plot .marks .area{opacity:0;animation:fade .3s steps(3,end) 1s forwards}
 
 @media (max-width:1100px){:root{--tb:210px}.find{width:min(240px,26vw)}}
 
@@ -367,7 +364,6 @@ body[data-mode="record"] .field{grid-template-rows:minmax(0,1fr)}
 @media (pointer:coarse){body{cursor:auto}button,a{touch-action:manipulation}}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
-  .plot #world>*,.plot .marks>*{opacity:1}
 }
 
 
