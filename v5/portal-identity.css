@@ -6,7 +6,7 @@
   --muted:#706659;
   --hair:#d5cec3;
   --orange:#f93822;
-  --mono:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:Monaco,"Courier New",monospace;
 }
 
 /* Shared Freeman identity. Accessible secondary text on the same paper colors. */
