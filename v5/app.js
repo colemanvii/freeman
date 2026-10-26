@@ -820,6 +820,12 @@
       // Low-density narrow screens (a 1× window under 400px) have no whole step near the target:
       // keep the composed size there rather than shrinking the script to a stamp.
       if ((160 * n) / dpr < target * 0.75) n = (target * dpr) / 160;
+      // Phones: the script steps down about a fifth so the stacked navigation can stand beside it.
+      // Whole steps only; a step that would lose more than a quarter of the size is not taken.
+      if (phone && Number.isInteger(n)) {
+        const k = Math.max(1, Math.round(n * 0.82));
+        if (k >= n * 0.75) n = k;
+      }
       home.style.setProperty("--px", n / dpr + "px");
       // Place the group on whole device pixels: a half-pixel offset would blur the bitmap.
       const snap = (v) => Math.round(v * dpr) / dpr;

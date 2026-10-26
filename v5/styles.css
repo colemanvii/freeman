@@ -641,10 +641,13 @@ body[data-route="company"] .sheet-controls{display:none}
   .site-nav .sep{padding:0 3px}
 }
 
-/* Mobile entrance: the four sections stack beneath the script, centred, in larger Monaco.
-   Desktop keeps the single slash-separated line. */
+/* Mobile entrance: the four sections stack beneath the script, centred, in self-hosted
+   IBM Plex Mono SemiBold (iOS has no Monaco; its Courier New fallback is too thin to stand beside the
+   script). Desktop keeps the single slash-separated Monaco line. */
+@font-face{font-family:"Freeman Plex Mono";font-style:normal;font-weight:600;font-display:block;src:url(/assets/fonts/ibm-plex-mono-latin-600-normal.woff2) format("woff2")}
 @media(max-width:760px){
-  .v4-home-nav{flex-direction:column;align-items:center;gap:22px;font-family:var(--mono);font-size:20px;line-height:1.2;letter-spacing:.04em;color:var(--ink)}
+  .v4-home-identity{gap:max(calc(var(--px) * 9),12px)}
+  .v4-home-nav{flex-direction:column;align-items:center;gap:20px;font-family:"Freeman Plex Mono",var(--mono);font-weight:600;font-size:20px;line-height:1.2;letter-spacing:.015em;color:var(--ink)}
   .v4-home-nav .sep{display:none}
-  .v4-home-nav a::after{inset:-11px -16px}
+  .v4-home-nav a::after{inset:-10px -16px}
 }
