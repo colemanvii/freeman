@@ -43,8 +43,26 @@
 <style>
 .record-attribution{position:fixed;left:calc(var(--edge) + 2px);bottom:calc(var(--edge) + 3px);z-index:8;background:var(--paper);padding:3px 5px;font:8px/1.4 Monaco,"Courier New",monospace;letter-spacing:.015em;color:var(--muted);text-decoration:none}
 .record-attribution:hover,.record-attribution:focus-visible{color:var(--red-text);outline:1px solid var(--red-text)}
-@media(max-width:760px){.record-attribution{left:12px;bottom:calc(57px + env(safe-area-inset-bottom));font-family:var(--mono);font-size:9px}}
+@media(max-width:760px){.record-attribution{left:12px;bottom:calc(57px + env(safe-area-inset-bottom));font-family:var(--mono);font-size:9px}
+ /* Phones: the attribution belongs to the map (moved into the field below), so it follows the map's lower edge
+    and the register and project sheet cover it rather than the other way round. */
+ .field>.record-attribution{position:absolute;left:12px;bottom:7px;z-index:2}
+ /* With a project sheet open only the map's top strip shows: keep the credit on that strip, just above the sheet. */
+ body[data-mode="record"] .field>.record-attribution{position:fixed;top:calc(30vh - 25px);bottom:auto}}
 </style>
+<script>
+(() => {
+  const a = document.querySelector('.record-attribution'), field = document.getElementById('field');
+  const home = a.nextElementSibling, phone = matchMedia('(max-width:760px)');
+  const place = () => {
+    if (phone.matches && a.parentElement !== field) field.append(a);
+    else if (!phone.matches && a.nextElementSibling !== home) home.before(a);
+  };
+  place();
+  phone.addEventListener('change', place);
+  addEventListener('resize', place);
+})();
+</script>
 <p id="announce" class="sr-only" aria-live="polite" aria-atomic="true"></p>
 <script src="/records.js"></script>
 <script src="/eagle/eagle-motion.js"></script>
