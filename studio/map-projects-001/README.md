@@ -36,7 +36,7 @@ originals are untouched and remain the largest `srcset` source. `split-geo.mjs` 
 shared panel with the same photographs, story and credits.
 
 ## Checks
-`check.mjs` (Playwright, Chromium + WebKit; 1440, 1280 desktop; iPhone 13, iPhone SE, Pixel 7): 353 checks —
+`check.mjs` (Playwright, Chromium + WebKit; 1440, 1280 desktop; iPhone 13, iPhone SE, Pixel 7): 359 checks —
 credit integrity against `content.json`, redirects, entrance → map, marker → panel, rapid switching (15 steps,
 no history growth, focus kept), keyboard, partner links (new tab, no opener, map keeps its place), photographs
 and viewer, INDEX, Back/Forward, deep link + refresh, full project → back to map, × CLOSE, sheet rests and
@@ -51,3 +51,6 @@ drag, 44 px targets, no horizontal scroll, no page zoom. `qa/public-navigation-q
   (South Downtown). Savi Provisions, Bocado Pizza and Interventional Pain Consultants stay "Client".
 - **Azalea Marketplace**: the store trades as "Azalea Fresh Market" (powered by Savi Provisions). Name unchanged.
 - **Muchacho Decatur**: BLUR Workshop's site shows only the Hemphill Muchacho; the credit stands as published.
+`qa/public-navigation-qa.py`: 225 of 231 pass; the 6 failures are its tap-area *estimate* for the section
+line on 320–375 px phones (it ignores the hit area's centring transform). Production fails the same check
+today on `/` and `/contact` (with one more overlap: MAP × CONTACT); measured hit areas do not touch.

@@ -743,7 +743,7 @@
   const safeBottom = (() => { const d = document.createElement('div'); d.style.cssText = 'position:fixed;height:env(safe-area-inset-bottom);visibility:hidden'; document.body.appendChild(d); return () => d.offsetHeight; })();
   function rests() {
     const h = recEl.offsetHeight, top = $('p-top');
-    return { full: 0, half: Math.round(h * .5), peek: Math.max(0, h - (top ? top.offsetHeight : 120) - safeBottom()) };
+    return { h, full: 0, half: Math.round(h * .5), peek: Math.max(0, h - (top ? top.offsetHeight : 120) - safeBottom()) };
   }
   function setSheet(state, { fly: refly = true } = {}) {
     if (!phone() || recEl.hidden) return;
@@ -779,7 +779,7 @@
       const was = sheet.state, tap = from.moved < 6;
       from = null;
       if (tap) return setSheet(was === 'peek' ? 'half' : was === 'half' ? 'full' : 'half');
-      if (sheet.y > r.peek + 48) return close(); // pulled past its name: put the project away
+      if (sheet.y > r.peek + Math.max(64, (r.h - r.peek) * .55)) return close(); // pulled most of its name away: put the project away
       const ranked = ['full', 'half', 'peek'];
       let next = ranked.reduce((a, b) => (Math.abs(r[b] - sheet.y) < Math.abs(r[a] - sheet.y) ? b : a));
       if (Math.abs(v) > .5) { const k = ranked.indexOf(was) + (v > 0 ? 1 : -1); next = ranked[Math.max(0, Math.min(2, k))]; }

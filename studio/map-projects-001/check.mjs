@@ -285,6 +285,12 @@ async function mobile(browserType, label, device) {
   await drag(p, t3.x, t3.y, t3.y + vh * .3);
   await wait(p, 350);
   ok((await p.evaluate(() => window.__record.sheet.state)) === 'peek', `${tag} dragging down leaves the name showing`);
+  const t4 = await p.$eval('#p-top', (e) => { const r = e.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + 9 }; });
+  await drag(p, t4.x, t4.y, Math.min(vh - 2, t4.y + 140)); await wait(p, 350);
+  ok((await state(p)).mode === 'map', `${tag} pulling the name away closes the project`);
+  await p.goForward(); await wait(p, 500); await settled(p);
+  ok((await p.evaluate(() => window.__record.sheet.state)) === 'half', `${tag} Forward reopens it as a half sheet`);
+  await p.evaluate(() => window.__record.setSheet('peek')); await wait(p, 350);
   await shot(p, `${label}-${vw}-peek`);
   // Tap a marker on the now-visible map: the sheet follows
   const other = await p.evaluate(() => { const m = [...document.querySelectorAll('.mk[data-slug]')].find((e) => { const r = e.getBoundingClientRect(); return !e.classList.contains('on') && r.top > 120 && r.bottom < innerHeight - 160 && r.left > 0 && r.right < innerWidth; }); return m && m.dataset.slug; });
