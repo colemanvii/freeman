@@ -335,7 +335,6 @@ body[data-mode="record"] .field{grid-template-rows:minmax(0,1fr)}
   .callout{max-width:calc(100vw - 40px)}
   body[data-mode="record"] .app{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr)}
   body[data-mode="record"] .bar .find{display:none}
-  body[data-mode="record"] .record-attribution{display:none}
   /* The sheet: fixed below the bar, moved by --y between its rests (peek, half, full) */
   .record{position:fixed;left:0;right:0;bottom:0;top:var(--sheet-top,64px);z-index:10;display:flex;flex-direction:column;border-left:0;border-top:1px solid var(--ink);background:var(--paper);padding:0;transform:translateY(var(--y,50%));transition:transform .22s cubic-bezier(.2,.7,.2,1)}
   .record.drag{transition:none}
@@ -383,3 +382,70 @@ body[data-mode="record"] .field{grid-template-rows:minmax(0,1fr)}
 @media(max-width:900px) and (min-width:761px){.photo-peek{width:216px}}
 @media(max-width:760px){.photo-peek{display:none!important}}
 
+
+/* MONACO LINEAGE — the phone typography (≤760px); the same system as /styles.css. Menlo on every
+   iPhone, DejaVu Sans Mono (self-hosted) on phones without it. Project names in capitals as titles,
+   secondary lines at 78% ink, labels in the palette's muted colour (a 76% mix on Sand), nothing
+   under 9px except the map's own cartographic labels. Desktop is untouched. */
+@font-face{font-family:"Freeman Mono";font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/dejavu-sans-mono-latin.woff2) format("woff2")}
+@media (max-width:760px){
+  :root{--mono:Menlo,Monaco,"Freeman Mono",monospace;--meta:color-mix(in srgb,var(--ink) 78%,var(--paper));--quiet:var(--muted)}
+  :root[data-palette="sand"]{--quiet:color-mix(in srgb,var(--ink) 76%,var(--paper))}
+
+  /* Header, lede and map furniture */
+  .bar{font-size:11px;letter-spacing:.05em}
+  .lede .kicker{font-size:10px;letter-spacing:.1em;color:var(--quiet)}
+  .lede h1{font-size:24px;line-height:1.15;letter-spacing:-.01em}
+  .nm{font-size:9.5px}
+  .nm.t3,.nm.river{font-size:9px}
+  .tag{font-size:10.5px;letter-spacing:.05em}
+  .tag small{font-size:9px}
+  .north{font-size:10px}
+  .scale,.zoom button:last-child{font-size:9px;letter-spacing:.06em}
+
+  /* Search results, cluster callouts, register: project names as titles */
+  .found li,.callout li button{font-size:12px;letter-spacing:.03em;text-transform:uppercase}
+  .found .n,.callout .n,.tb-set .n,.r-list .n{font-size:10px}
+  .found .w{font-size:10px;letter-spacing:.04em;color:var(--meta)}
+  .callout h3{font-size:10px;letter-spacing:.1em;color:var(--quiet)}
+  .register-toggle{font-size:11px;letter-spacing:.05em}
+  .tb-set button{font-size:13px;letter-spacing:.03em;text-transform:uppercase}
+  .tb-set .w{font-size:10px;letter-spacing:.04em;color:var(--meta);max-width:84px}
+  .tb-k,.tb-foot{font-size:10px;letter-spacing:.1em;color:var(--quiet)}
+
+  /* Project record sheet */
+  .r-k,.r-h{font-size:10px;letter-spacing:.1em}
+  .r-k{color:var(--quiet)}
+  .r-name{font-size:18px;line-height:1.3;letter-spacing:.03em;text-transform:uppercase;margin-bottom:8px}
+  .r-where{font-size:11px;letter-spacing:.04em;color:var(--meta)}
+  .r-back{font-size:10px;letter-spacing:.08em}
+  .r-cap,.r-src,.r-missing span{font-size:9.5px;letter-spacing:.06em}
+  .nof{font-size:10px}
+  .r-grid>div{font-size:11px;line-height:1.5;letter-spacing:.04em;text-transform:uppercase}
+  .r-grid .tb-k{text-transform:uppercase}
+  .r-story{font-size:12.5px;line-height:1.7;letter-spacing:0}
+  .r-missing{font-size:11px;color:var(--meta)}
+  .r-list li{font-size:12px}
+  .r-list button{letter-spacing:.03em;text-transform:uppercase}
+  .r-list li .m{font-size:10px;letter-spacing:.04em;color:var(--meta)}
+  .r-out{font-size:11px;letter-spacing:.05em}
+
+  /* The project sheet (Projects = the map, 26 Oct 2026): the same system on its classes */
+  .p-k,.p-h{font-size:10px;letter-spacing:.1em}
+  .p-k{color:var(--quiet)}
+  .p-name{font-size:18px;line-height:1.3;letter-spacing:.03em;text-transform:uppercase;margin-bottom:4px}
+  .p-where{font-size:11px;letter-spacing:.04em;color:var(--meta)}
+  .p-ctl button{font-size:10px;letter-spacing:.08em}
+  .p-cap{font-size:9.5px;letter-spacing:.06em}
+  .p-credits dt{font-size:10px;letter-spacing:.1em;color:var(--quiet)}
+  .p-credits dd{font-size:12px;line-height:1.5;letter-spacing:.04em;text-transform:uppercase}
+  .p-note{font-size:10px}
+  .p-story{font-size:12.5px;line-height:1.7;letter-spacing:0}
+  .p-near button,.p-index button{font-size:12px;letter-spacing:.03em;text-transform:uppercase}
+  .p-near .n,.p-index .n{font-size:10px}
+  .p-near .m,.p-index .w{font-size:10px;letter-spacing:.04em;color:var(--meta)}
+  .p-full{font-size:11px;letter-spacing:.05em}
+  .tb-sub,.tb-progress .w{font-size:10px;letter-spacing:.1em;color:var(--quiet)}
+  .tb-progress li{font-size:13px;letter-spacing:.03em;text-transform:uppercase}
+  .v-bar,.v-foot{font-size:10px}
+}

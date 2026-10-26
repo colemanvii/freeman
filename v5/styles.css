@@ -641,13 +641,89 @@ body[data-route="company"] .sheet-controls{display:none}
   .site-nav .sep{padding:0 3px}
 }
 
-/* Mobile entrance: the four sections stack beneath the script, centred, in self-hosted
-   IBM Plex Mono SemiBold (iOS has no Monaco; its Courier New fallback is too thin to stand beside the
-   script). Desktop keeps the single slash-separated Monaco line. */
-@font-face{font-family:"Freeman Plex Mono";font-style:normal;font-weight:600;font-display:block;src:url(/assets/fonts/ibm-plex-mono-latin-600-normal.woff2) format("woff2")}
+
+/* ==========================================================================================
+   MONACO LINEAGE — the phone typography (≤760px), approved in study/mobile-type-001.
+   One face, one weight. Menlo is Apple's own system monospace, Monaco's successor, on every
+   iPhone (Monaco is not installed on iOS and cannot be licensed for the web). Phones without Menlo
+   get DejaVu Sans Mono, Menlo's open-source parent, self-hosted; Apple devices never download it.
+   Scale: entrance 17 · project title 18 · index title 15 · body 12.5 · interface 11 ·
+   secondary 11 · label 10 · micro 9.5. Secondary text sits at 78% ink; labels use the palette's
+   muted colour (a 76% mix on Sand, where muted is too faint for small type). Desktop is untouched.
+   ========================================================================================== */
+@font-face{font-family:"Freeman Mono";font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/dejavu-sans-mono-latin.woff2) format("woff2")}
 @media(max-width:760px){
+  :root{--mono:Menlo,Monaco,"Freeman Mono",monospace;--meta:color-mix(in srgb,var(--ink) 78%,var(--paper));--quiet:var(--muted)}
+  :root[data-palette="sand"]{--quiet:color-mix(in srgb,var(--ink) 76%,var(--paper))}
+  .etc-caption,.etc-heading,.etc-open,.etc-number,.etc-dialog-bar,.etc-dialog-body h2,.etc-dialog-body p,.etc-dialog-body small{font-family:var(--mono)}
+
+  /* Entrance: the script, then the four sections stacked beneath it. */
   .v4-home-identity{gap:max(calc(var(--px) * 9),12px)}
-  .v4-home-nav{flex-direction:column;align-items:center;gap:20px;font-family:"Freeman Plex Mono",var(--mono);font-weight:600;font-size:20px;line-height:1.2;letter-spacing:.015em;color:var(--ink)}
+  .v4-home-nav{flex-direction:column;align-items:center;gap:18px;font-size:17px;line-height:1.2;letter-spacing:.07em;color:var(--ink)}
   .v4-home-nav .sep{display:none}
   .v4-home-nav a::after{inset:-10px -16px}
+  .client-access-entry{font-size:11px;letter-spacing:.05em}
+
+  /* Section line, CLOSE and sheet controls: the interface size. */
+  .site-nav{font-size:11px;letter-spacing:.05em}
+  .site-nav .sep{padding:0 6px}
+  .panel-head .close{font-size:11px;letter-spacing:.05em}
+  .sheet-controls{font-size:11px;letter-spacing:.05em}
+  .sheet-controls .count{font-size:10px;color:var(--quiet)}
+
+  /* Projects index: names as titles, credits as quiet secondary lines. */
+  .pi-section-label{font-size:10px;letter-spacing:.1em;color:var(--quiet)}
+  .pi-scroller{overflow-x:hidden}
+  .pi-link{grid-template-columns:34px minmax(0,1fr);column-gap:12px;row-gap:5px;padding:19px 0}
+  .pi-no{font-size:11px;letter-spacing:.02em}
+  .pi-name,.pi-progress .pi-name{font-size:15px;letter-spacing:.03em;line-height:1.4}
+  .pi-client,.pi-arch,.pi-date,.pi-progress .pi-date{font-size:11px;letter-spacing:.04em;line-height:1.55;color:var(--meta)}
+  .pi-progress .pi-date{color:var(--quiet)}
+  .pi-name + .pi-client{margin-top:3px}
+  .pi-client.credit-external:hover,.pi-arch.credit-external:hover,.pi-client.credit-external:active,.pi-arch.credit-external:active{color:var(--meta)}
+
+  /* Project page: the name is the page's title; credits in the index's capitals. */
+  .pg-info{gap:4px}
+  .pg-name{font-size:18px;line-height:1.3;letter-spacing:.03em}
+  .pg-place{font-size:11px;line-height:1.5;letter-spacing:.04em;color:var(--meta);margin:0 0 10px}
+  .pg-credits{column-gap:22px;row-gap:6px;font-size:11px;line-height:1.5}
+  .pg-credits dt{font-size:10px;letter-spacing:.1em;color:var(--quiet)}
+  .pg-credits dd{margin:3px 0 0;text-transform:uppercase;letter-spacing:.04em}
+  .pg-related{font-size:11px;letter-spacing:.05em}
+  .pg-count{font-size:11px;color:var(--quiet)}
+
+  /* Company */
+  .co4-nav{gap:20px}
+  .co4-nav button{font-size:11px;letter-spacing:.05em;color:var(--quiet)}
+  .co4-copy h2{font-size:24px;line-height:1.25;letter-spacing:-.01em}
+  .co4-copy p,.co4-description p{font-size:12.5px;line-height:1.7}
+  .co4-choice{font-size:12.5px}
+  .co4-choice>span:first-child{font-size:11px;color:var(--quiet)}
+  .co4-description>span{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--quiet)}
+  .co4-description small{font-size:11px;line-height:1.6;letter-spacing:0;color:var(--quiet)}
+  .co4-visual figcaption,.co4-portrait>small{font-size:9.5px;letter-spacing:.04em;color:var(--quiet)}
+
+  /* Contact */
+  .contact-label,.contact-inquiry .contact-email-label{font-size:10px;letter-spacing:.1em;color:var(--quiet)}
+  :root[data-palette] .contact-sheet .subtle{font-size:12.5px;line-height:1.6;color:var(--meta)}
+  :root[data-palette] .contact-sheet .subtle:last-child{font-size:11px;letter-spacing:.04em}
+  .contact-sheet>a,.contact-layout .contact-sheet>a{font-size:15px;letter-spacing:0}
+  .contact-inquiry button{font-size:12px;letter-spacing:.05em}
+  .contact-disclaimer{font-size:9.5px;letter-spacing:.04em;color:var(--quiet)}
+
+  /* Project pages without a gallery: the reading record, set like the gallery pages. */
+  body[data-route="project"] .reading h1{font-size:18px;line-height:1.3;letter-spacing:.03em;text-transform:uppercase}
+  body[data-route="project"] .reading h1 + .micro{font-size:11px;letter-spacing:.04em;color:var(--meta)}
+  body[data-route="project"] .reading p:not(.micro){font-size:12.5px;line-height:1.7}
+  body[data-route="project"] .reading h2{font-size:10px;line-height:1.5;letter-spacing:.1em;text-transform:uppercase;color:var(--quiet);margin-top:8px}
+  body[data-route="project"] .reading .data{grid-template-columns:118px minmax(0,1fr);gap:14px;font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+  :root[data-palette] body[data-route="project"] .reading .data > span:first-child{font-size:10px;letter-spacing:.1em;color:var(--quiet)}
+  :root[data-palette] body[data-route="project"] .reading .data > span + span,:root[data-palette] body[data-route="project"] .reading .data > span + span span:not(:hover){color:var(--ink)}
+  :root[data-palette] .project-plate-caption{color:var(--ink)}
+  .project-plate-name{font-size:18px;line-height:1.3;letter-spacing:.03em}
+  .project-plate-meta{font-size:10.5px;letter-spacing:.05em;color:var(--meta)}
+
+  /* Reading pages (Record not found, Notes) */
+  .reading .micro,.index-title{font-size:10px;letter-spacing:.1em;color:var(--quiet)}
+  .text-link{font-size:11px;letter-spacing:.05em}
 }

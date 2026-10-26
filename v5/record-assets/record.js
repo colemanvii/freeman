@@ -794,6 +794,7 @@
     const lift = phone() && body.dataset.mode === 'record' ? Math.max(0, H - visible().h) : 0;
     instruments.style.transform = lift ? `translateY(${-lift}px)` : '';
     instruments.classList.toggle('lifted', !!lift);
+    $('field').style.setProperty('--lift', lift + 'px');
   }
 
   /* ---------- Find ---------- */
