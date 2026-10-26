@@ -1,16 +1,27 @@
-/* The Record — Exploration 001.
-   The map is the index; the projects are the stories. Identity comes from /records.js, place and time from sites.js,
-   geography from geo.js. Nothing here estimates a coordinate or a year. */
+/* Projects — the map is the index; the projects are the stories.
+   Identity, photography and story come from /records.js, partner credits and links from /project-credits.js,
+   place from sites.js, photograph sizes from photos.js, geography from geo.js (street detail: geo-detail.js).
+   Nothing here estimates a coordinate, a year or a credit. */
 (() => {
   'use strict';
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const G = window.RECORD_GEO, SITES = window.RECORD_SITES, REG = window.RECORDS.projects;
+  const CREDITS = window.FREEMAN_CREDITS || { roles: [], partners: {}, projects: {} }, PHOTOS = window.RECORD_PHOTOS || {};
+  const phone = () => matchMedia('(max-width:760px)').matches;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const NOW = 2026;
   const KM_PER_UNIT = 0.11132; // one map unit is 1/1000 degree of latitude
   const project = (lon, lat) => [(lon - G.proj.lon0) * G.proj.cos * G.proj.k, (G.proj.lat0 - lat) * G.proj.k];
   const unproject = (x, y) => [x / (G.proj.cos * G.proj.k) + G.proj.lon0, G.proj.lat0 - y / G.proj.k];
+
+  /* ---------- Photographs: resized copies from photos.js; the published original is always the largest source ---------- */
+  function photo(src) {
+    const key = src.replace(/^\//, ''), m = PHOTOS[key];
+    return m ? { src: '/' + key, w: m.w, h: m.h, set: m.set } : { src: '/' + key, w: 0, h: 0, set: [[0, '/' + key]] };
+  }
+  const srcset = (p) => p.set.filter(([w]) => w).map(([w, u]) => `${u} ${w}w`).join(', ');
+  const sized = (p, px) => (p.set.find(([w]) => w >= px) || p.set[p.set.length - 1])[1];
 
   /* ---------- The record: register entries joined to their places ---------- */
   const items = REG.map((p) => {
@@ -22,10 +33,11 @@
     it.city = (loc.length > 1 ? loc[loc.length - 1] : loc[0]).trim();
     if (it.city === 'Georgia') it.city = loc[0].trim();
     it.client = (p.credits || []).find((c) => c[0] === 'Client')?.[1] || '';
-    it.photos = (p.gallery && p.gallery.length ? p.gallery : p.image ? [{ src: p.image }] : []).map((g) => ({ ...g, src: '/' + g.src.replace(/^\//, '') }));
+    it.photos = (p.gallery && p.gallery.length ? p.gallery : p.image ? [{ src: p.image }] : []).map((g) => photo(g.src));
     return it;
   }).sort((a, b) => a.id.localeCompare(b.id));
   const placed = items.filter((i) => i.placed);
+  const order = items; // the register order; ← → step through it
   const bySlug = Object.fromEntries(items.map((i) => [i.slug, i]));
   const dated = items.filter((i) => i.year !== null);
 
@@ -37,7 +49,16 @@
   const NS = 'http://www.w3.org/2000/svg';
   const svg = $('svg'), world = $('world'), mapEl = $('map'), marks = $('marks');
   [['states', 'l-states', 0], ['counties', 'l-counties', .08], ['lakes', 'l-lakes', .2], ['rivers', 'l-rivers', .28], ['limits', 'l-limits', .4], ['local', 'l-local', .42], ['primary', 'l-primary', .45], ['interstates', 'l-roads', .5]]
-    .forEach(([k, cls, d]) => { const p = document.createElementNS(NS, 'path'); p.setAttribute('d', G[k]); p.setAttribute('class', cls); p.style.setProperty('--d', d + 's'); world.appendChild(p); });
+    .forEach(([k, cls, d]) => { const p = document.createElementNS(NS, 'path'); if (G[k]) p.setAttribute('d', G[k]); p.setAttribute('class', cls); p.dataset.layer = k; p.style.setProperty('--d', d + 's'); world.appendChild(p); });
+  // Street-level layers only show when zoomed in, so they arrive after the first paint (or at once, if needed sooner).
+  let detail = null;
+  function loadDetail() {
+    if (detail || G.local) return;
+    detail = document.createElement('script');
+    detail.src = '/record-assets/geo-detail.js?v=20261026-map-projects';
+    detail.onload = () => { const D = window.RECORD_GEO_DETAIL || {}; for (const k in D) world.querySelector(`[data-layer="${k}"]`)?.setAttribute('d', D[k]); };
+    document.head.appendChild(detail);
+  }
 
   // Names: towns, neighbourhoods, rivers, states. Each knows the zoom at which it belongs.
   const names = [];
@@ -67,9 +88,9 @@
   // The part of the map not covered by the record (phones overlay the record on the map)
   function visible() {
     const rec = $('record');
-    if (body.dataset.mode === 'record' && matchMedia('(max-width:760px)').matches) {
-      // offsetTop ignores the sheet's entrance transform, so this is where the record will rest
-      const top = rec.offsetTop - mapEl.getBoundingClientRect().top;
+    if (body.dataset.mode === 'record' && phone()) {
+      // Where the sheet rests (offsetTop ignores its transforms), not where it is mid-gesture
+      const top = rec.offsetTop + sheet.y - mapEl.getBoundingClientRect().top;
       return { x: 0, y: 0, w: W, h: Math.max(120, Math.min(H, top)) };
     }
     // The heading occupies its own layout row; it no longer covers the map.
@@ -89,10 +110,11 @@
     view.ty = Math.min(H - m - b.y0 * view.s, Math.max(m - b.y1 * view.s, view.ty));
   }
 
-  let anim = 0;
+  let anim = 0, flying = false;
   function flyTo(target, ms = 650) {
     cancelAnimationFrame(anim);
-    if (reduced || ms === 0) { Object.assign(view, target); draw(true); return Promise.resolve(); }
+    if (reduced || ms === 0) { flying = false; Object.assign(view, target); draw(true); return Promise.resolve(); }
+    flying = true;
     const from = { ...view }, t0 = performance.now();
     // Interpolate scale geometrically and keep the path through the midpoint steady
     const fx = (W / 2 - from.tx) / from.s, fy = (H / 2 - from.ty) / from.s, gx = (W / 2 - target.tx) / target.s, gy = (H / 2 - target.ty) / target.s;
@@ -102,7 +124,7 @@
         const s = from.s * Math.pow(target.s / from.s, e), cx = fx + (gx - fx) * e, cy = fy + (gy - fy) * e;
         view.s = s; view.tx = W / 2 - cx * s; view.ty = H / 2 - cy * s;
         draw(k === 1 || Math.abs(Math.log(s / lastClusterS)) > .08);
-        if (k < 1) anim = requestAnimationFrame(step); else { Object.assign(view, target); draw(true); done(); }
+        if (k < 1) anim = requestAnimationFrame(step); else { flying = false; Object.assign(view, target); draw(true); done(); }
       };
       anim = requestAnimationFrame(step);
     });
@@ -141,9 +163,21 @@
       }
     }
     for (const c of out) { c.x = c.sx / view.s; c.y = c.sy / view.s; c.key = c.items.map((i) => i.slug).sort().join('|'); }
+    // Most scale changes (every frame of a pinch or a flight) leave the groups as they were: keep the
+    // elements and only move them. The marks are rebuilt only when a group forms or splits.
+    const sig = out.map((c) => c.key).sort().join(';');
+    if (sig === clusterSig && !lastArrive.size) {
+      const old = new Map(clusters.map((c) => [c.key, c]));
+      for (const c of out) { const o = old.get(c.key); c.el = o.el; c.tagEl = o.tagEl; c.areaEl = o.areaEl; c.tw = o.tw; }
+      clusters = out;
+      positionMarks();
+      return;
+    }
+    clusterSig = sig;
     clusters = out;
     renderMarks();
   }
+  let clusterSig = '';
   const cityName = (c) => { const areas = new Set(c.items.map((i) => i.site.area)); if (areas.size === 1) return c.items[0].site.area.split(',')[0]; const cities = [...new Set(c.items.map((i) => i.city))]; return cities.length > 2 ? cities.slice(0, 2).join(' · ') + ' +' : cities.join(' · '); };
 
   let markEls = new Map();
@@ -160,7 +194,7 @@
       b.className = 'mk' + (one ? (one.site.precision === 'area' ? ' approx' : '') : ' grp');
       if (one) { b.dataset.slug = one.slug; b.setAttribute('aria-label', `${one.name}, ${one.site.area}${one.site.precision === 'area' ? ', approximate area' : ''}`); }
       else { b.innerHTML = `<span class="ring2"></span><span class="ct">${c.items.length}</span>`; b.setAttribute('aria-label', `${c.items.length} projects near ${cityName(c)}`); }
-      if (one && one.slug === openSlug) b.classList.add('on');
+      if (c.items.some((i) => i.slug === openSlug)) b.classList.add('on');
       if (lastArrive.has(c.key)) b.classList.add('arrive');
       b.addEventListener('click', (e) => { e.stopPropagation(); pick(c); });
       b.addEventListener('pointerenter', () => hover(c, true));
@@ -174,6 +208,7 @@
     }
     markEls = keep;
     lastArrive.clear();
+    for (const c of clusters) c.tw = c.tagEl.offsetWidth || 120; // one layout read for all tags, not one per frame
     positionMarks();
   }
   const lastArrive = new Set();
@@ -204,10 +239,10 @@
       return;
     }
     if (peekSlug !== slug || peekOrigin !== origin) {
-      peek.innerHTML = '<img src="' + esc(it.photos[0].src) + '" alt="" decoding="async" loading="eager">' +
+      peek.innerHTML = '<img src="' + esc(sized(it.photos[0], 480)) + '" alt="" decoding="async" loading="eager">' +
         '<div class="photo-peek-copy"><span class="photo-peek-index">PROJECT / ' + esc(it.id) + ' · ' + esc(it.type) + '</span>' +
         '<strong>' + esc(it.name) + '</strong><span class="photo-peek-place">' + esc(it.site.area || it.location) + '</span>' +
-        '<span class="photo-peek-action">OPEN RECORD ↗</span></div>';
+        '<span class="photo-peek-action">OPEN PROJECT →</span></div>';
     }
     peekSlug = slug; peekOrigin = origin;
     peek.hidden = false;
@@ -230,7 +265,7 @@
         const r = Math.max(16, c.items[0].site.radiusKm / KM_PER_UNIT * view.s);
         c.areaEl.style.cssText = `width:${2 * r}px;height:${2 * r}px;transform:translate(${x - r}px,${y - r}px)`;
       }
-      const tw = c.tagEl.offsetWidth || 120, th = 18;
+      const tw = c.tw || 120, th = 18;
       const flip = x + 14 + tw > W - 6;
       const tx = flip ? x - 14 - tw : x + 14, ty = y - th / 2;
       c.tagEl.classList.toggle('flip', flip);
@@ -271,6 +306,7 @@
   function draw(recluster = false) {
     clampView();
     world.setAttribute('transform', `translate(${view.tx.toFixed(2)} ${view.ty.toFixed(2)}) scale(${view.s.toFixed(5)})`);
+    if (view.s > 1.8) loadDetail();
     mapEl.classList.toggle('near', view.s > 2.4);
     mapEl.classList.toggle('close', view.s > 4.5);
     // The title steps back once someone is exploring, and returns at the overview
@@ -428,8 +464,9 @@
     tb.innerHTML = `<div class="tb-row tb-seal"><canvas width="192" height="60" id="seal" aria-hidden="true"></canvas><div class="tb-firm">Freeman General Contracting</div></div>
       <div class="tb-row tb-meta"><span class="tb-k">P-001 / PROJECTS</span><div class="tb-title">Project register</div></div>
       <div class="tb-grid tb-meta"><div><span class="tb-k">Projects</span>${items.length}</div><div><span class="tb-k">On the map</span>${nPlaced}</div></div>
-      <button type="button" class="register-toggle" id="reg-toggle" aria-expanded="false" aria-controls="tb-set"><span>Register <b>${items.length}</b></span><span aria-hidden="true">▴</span></button>
-      <nav class="tb-set" id="tb-set" aria-label="Register of projects"><ol>${items.map((i) => `<li><button type="button" data-slug="${i.slug}"${i.placed ? '' : ' data-unplaced'}><span class="n">${esc(i.id)}</span><span class="t">${esc(i.name)}</span><span class="w">${i.placed ? esc(shortCity(i)) : 'Not placed'}</span></button></li>`).join('')}</ol></nav>
+      <button type="button" class="register-toggle" id="reg-toggle" aria-expanded="false" aria-controls="tb-set"><span>All projects <b>${items.length}</b></span><span aria-hidden="true">▴</span></button>
+      <nav class="tb-set" id="tb-set" aria-label="Register of projects"><ol>${items.map((i) => `<li><button type="button" data-slug="${i.slug}"${i.placed ? '' : ' data-unplaced'}><span class="n">${esc(i.id)}</span><span class="t">${esc(i.name)}</span><span class="w">${i.placed ? esc(shortCity(i)) : 'Not placed'}</span></button></li>`).join('')}</ol>
+        ${(SITES.inProgress || []).length ? `<p class="tb-sub">In progress</p><ol class="tb-progress">${SITES.inProgress.map((i) => `<li><span class="n">—</span><span class="t">${esc(i.name)}</span><span class="w">${esc(i.place.split(',')[0])}</span></li>`).join('')}</ol>` : ''}</nav>
       <div class="tb-foot tb-meta"><span class="key"><i></i>At the site</span><span class="key"><i class="a"></i>Approximate area</span></div>`;
     tb.querySelectorAll('.tb-set button').forEach((b) => {
       b.addEventListener('click', () => open(b.dataset.slug));
@@ -509,44 +546,72 @@
   }
   function stop() { clearTimeout(playing); playing = 0; $('play')?.setAttribute('aria-pressed', 'false'); }
 
-  /* ---------- The project record ---------- */
+  /* ---------- The project: an editorial panel beside the map; on phones, a sheet over it ----------
+     History: opening a project from the map is one step (Back returns to the map); moving between
+     projects replaces that step, so Back never replays every project visited. */
   let savedView = null, returnFocus = null;
   const recEl = $('record');
-  function open(slug, { push = true } = {}) {
+  const credits = (it) => (CREDITS.roles || []).map(([role, label, plural]) => {
+    const list = (CREDITS.projects[it.slug] || []).filter((c) => c.role === role && CREDITS.partners[c.partner]);
+    return list.length ? { role, label: list.length > 1 && plural ? plural : label, people: list.map((c) => ({ ...CREDITS.partners[c.partner], note: c.note || '' })) } : null;
+  }).filter(Boolean);
+  const partner = (p) => p.url
+    ? `<a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer" class="p-link"><span>${esc(p.name)}</span><span class="p-out" aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>`
+    : `<span class="p-name-only">${esc(p.name)}</span>`;
+
+  function open(slug, { push = true, focus = null } = {}) {
     const it = bySlug[slug]; if (!it) return;
-    closeCallout(); stop(); hidePeek();
-    if (body.dataset.mode !== 'record') { savedView = { ...view }; returnFocus = document.activeElement; }
+    closeCallout(); stop(); hidePeek(); closeIndex();
+    const switching = body.dataset.mode === 'record';
+    if (!switching) { savedView = { ...view }; returnFocus = document.activeElement; }
     openSlug = slug;
-    if (it.slug === 'beetlecat') body.dataset.feature = 'beetlecat';
-    else delete body.dataset.feature;
+    markOpen();
     body.dataset.mode = 'record';
+    tb.classList.remove('open'); $('reg-toggle')?.setAttribute('aria-expanded', 'false');
     recEl.hidden = false;
     recEl.innerHTML = recordHTML(it);
-    recEl.classList.remove('enter'); void recEl.offsetWidth; if (!reduced) recEl.classList.add('enter');
-    recEl.scrollTop = 0;
+    if (!switching && !reduced) { recEl.classList.remove('enter'); void recEl.offsetWidth; recEl.classList.add('enter'); }
     wireRecord(it);
     $('crumb').textContent = `No. ${it.id} / ${it.name}`;
-    if (push) history.pushState({ p: slug }, '', `?p=${encodeURIComponent(slug)}`);
+    if (push) {
+      const st = { p: slug, d: switching ? (history.state?.d || 0) : (history.state?.d || 0) + 1 };
+      if (switching) history.replaceState(st, '', `?p=${encodeURIComponent(slug)}`);
+      else history.pushState(st, '', `?p=${encodeURIComponent(slug)}`);
+    }
     document.title = `${it.name} — Freeman General Contracting`;
     requestAnimationFrame(() => {
       size();
-      if (it.placed) {
-        const target = it.site.precision === 'area' ? fitView(bounds([it]), { pad: 40, maxS: 6 }) : centreOn(it.x, it.y, Math.max(view.s, 5.5));
-        flyTo(target, 750);
-      } else draw(true);
-      recEl.focus({ preventScroll: true });
+      if (phone()) setSheet(switching ? sheet.state : 'half', { fly: false });
+      fly(it);
+      if (focus) recEl.querySelector(`[data-act="${focus}"]`)?.focus({ preventScroll: true });
+      else if (!switching) recEl.focus({ preventScroll: true });
     });
+    preloadNeighbours(it);
     announce(`${it.name}. ${it.site.area || it.location}.`);
+  }
+  function fly(it) {
+    if (!it.placed) return draw(true);
+    if (it.site.precision === 'area') return flyTo(fitView(bounds([it]), { pad: 40, maxS: 6 }), 650);
+    // Close enough that the project stands as its own mark, unless it shares a site with others
+    const R = (matchMedia('(pointer:coarse)').matches ? 30 : 24) + 8;
+    const gap = Math.min(...placed.filter((j) => j !== it).map((j) => Math.hypot(j.x - it.x, j.y - it.y)).filter((d) => d > .05));
+    const s = Math.min(S_MAX, Math.max(view.s, 5.5, Number.isFinite(gap) ? R / gap : 0));
+    flyTo(centreOn(it.x, it.y, s), 650);
   }
   function close({ push = true } = {}) {
     if (body.dataset.mode !== 'record') return;
+    // The project was opened from the map in this visit: step back to that entry, as browser Back would.
+    if (push && (history.state?.d || 0) > 0 && history.state?.p) { history.back(); return; }
+    viewer.open && viewer.close();
     body.dataset.mode = 'map';
     recEl.hidden = true; recEl.innerHTML = '';
+    recEl.style.removeProperty('--y');
     openSlug = null;
-    delete body.dataset.feature;
+    markOpen();
     $('crumb').textContent = '';
-    document.title = 'Places We’ve Built — Freeman General Contracting';
-    if (push) history.pushState({}, '', location.pathname);
+    placeInstruments();
+    document.title = 'Projects — Freeman General Contracting';
+    if (push) history.replaceState({ d: history.state?.d || 0 }, '', location.pathname);
     requestAnimationFrame(() => {
       size();
       flyTo(savedView || home(), 650).then(() => {
@@ -555,63 +620,180 @@
       });
     });
   }
+  function step(dir, focus) {
+    const k = order.findIndex((i) => i.slug === openSlug);
+    if (k < 0) return;
+    open(order[(k + dir + order.length) % order.length].slug, { focus });
+  }
+  function markOpen() {
+    for (const c of clusters) c.el.classList.toggle('on', c.items.some((i) => i.slug === openSlug));
+    tb.querySelectorAll('.tb-set button').forEach((b) => b.toggleAttribute('aria-current', b.dataset.slug === openSlug));
+  }
+  function preloadNeighbours(it) {
+    const k = order.indexOf(it);
+    const later = window.requestIdleCallback || ((f) => setTimeout(f, 400));
+    later(() => [order[(k + 1) % order.length], order[(k - 1 + order.length) % order.length]].forEach((j) => {
+      if (j.photos[0]) { const im = new Image(); im.decoding = 'async'; im.src = sized(j.photos[0], 960); }
+    }));
+  }
 
   function recordHTML(it) {
-    if (it.slug === 'beetlecat' && window.BEETLECAT_STORY) {
-      const feature = window.BEETLECAT_STORY.render(it);
-      if (feature) return feature;
-    }
     const s = it.site;
-    const where = [];
-    if (s.precision === 'venue') where.push(`<span>${esc(s.address)}</span>`, `<span>${esc(s.area)}</span>`, `<span>${s.lat.toFixed(4)}° N ${Math.abs(s.lon).toFixed(4)}° W</span>`);
-    else if (s.precision === 'area') where.push(`<span>${esc(s.area)}</span>`, `<span class="approx">Approximate area · ${esc(s.reason)}</span>`);
-    else where.push(`<span>${esc(it.location)}</span>`, `<span class="approx">${esc(s.reason)}</span>`);
-    const credits = (it.credits || []).filter((c) => c[0] !== 'Client');
-    const missing = [];
-    if (it.year === null) missing.push('Completion year');
-    if (!it.photos.length) missing.push('Photography');
-    if (!it.summary) missing.push('The story');
-    missing.push('Drawings and field record');
+    const where = s.precision === 'venue' ? [s.address, s.area] : s.precision === 'area' ? [s.area, 'Approximate area'] : [it.location];
+    const cr = credits(it);
+    const by = cr.find((c) => c.role === 'photography');
     const near = it.placed ? placed.filter((j) => j !== it).map((j) => ({ j, d: Math.hypot(j.x - it.x, j.y - it.y) * KM_PER_UNIT / 1.609344 })).sort((a, b) => a.d - b.d).slice(0, 3) : [];
-    const photo = it.photos[0];
-    const fig = it.photos.length
-      ? `<figure class="r-fig"><div class="r-photo"><img id="r-img" src="${esc(photo.src)}" alt="${esc(it.name)}, finished work"></div>
-        ${it.photos.length > 1 ? `<div class="r-thumbs" role="group" aria-label="Photographs">${it.photos.map((p, k) => `<button type="button" data-k="${k}" aria-pressed="${k === 0}" aria-label="Photograph ${k + 1} of ${it.photos.length}" style="--ar:${p.w && p.h ? (p.w / p.h).toFixed(3) : 1.4}"><img src="${esc(p.src)}" alt="" loading="lazy"></button>`).join('')}</div>` : ''}
-        <figcaption class="r-cap"><span>Finished work${credits.find((c) => c[0] === 'Photography') ? ` · Photograph <b>${esc(credits.find((c) => c[0] === 'Photography')[1])}</b>` : ''}</span><span id="r-count">${it.photos.length > 1 ? `1 / ${it.photos.length}` : ''}</span></figcaption></figure>`
-      : `<figure class="r-fig"><div class="nof"><svg preserveAspectRatio="none" viewBox="0 0 100 100" aria-hidden="true"><line x1="0" y1="0" x2="100" y2="100"/><line x1="100" y1="0" x2="0" y2="100"/></svg><span>Photography not on file</span></div></figure>`;
-    return `<header class="r-head"><div>
-        <p class="r-k"><b>No. ${esc(it.id)}</b> / ${esc(it.type)}</p>
-        <h2 class="r-name" id="rec-name">${esc(it.name)}</h2>
-        <p class="r-where">${where.join('')}</p></div>
-        <button type="button" class="r-back" id="r-back" aria-label="Back to the map">← Map</button></header>
-      <div class="r-body">${fig}
-        <div class="r-notes">
-          <div class="r-grid">
-            <div><span class="tb-k">Type</span>${esc(it.type)}</div>
-            <div><span class="tb-k">Completed</span><span class="muted">Not on file</span></div>
-            ${it.client ? `<div class="wide"><span class="tb-k">Client</span>${esc(it.client)}</div>` : ''}
-            ${credits.filter((c) => c[0] !== 'Photography').map((c) => `<div class="wide"><span class="tb-k">${esc(c[0])}</span>${esc(c[1])}</div>`).join('')}
-          </div>
-          ${it.summary ? `<p class="r-story">${esc(it.summary)}</p><p class="r-src">As published on the project page</p>` : ''}
-          <p class="r-missing"><span>Not yet on file</span>${missing.map(esc).join(' · ')}</p>
-          ${near.length ? `<h3 class="r-h">Nearby projects</h3><ul class="r-list">${near.map(({ j, d }) => `<li><button type="button" data-open="${j.slug}"><span><span class="n">${esc(j.id)}</span><span class="t">${esc(j.name)}</span></span><span class="m">${j.site.precision === 'area' || it.site.precision === 'area' ? '≈ ' : ''}${d < .1 ? 'Same site' : d < 10 ? d.toFixed(1) + ' mi' : Math.round(d) + ' mi'}</span></button></li>`).join('')}</ul>` : ''}
-          <a class="r-out" href="/project-${esc(it.slug)}"><span>Full project</span><span aria-hidden="true">→</span></a>
-        </div></div>`;
+    const ph = it.photos;
+    const fig = ph.length ? `<figure class="p-fig">
+        <div class="p-photos" id="p-photos" tabindex="0" role="group" aria-roledescription="carousel" aria-label="${esc(it.name)} photographs">${ph.map((p, j) => `<div class="p-slide" aria-label="${j + 1} of ${ph.length}"><button type="button" class="p-enlarge" data-k="${j}" aria-label="View photograph ${j + 1} of ${ph.length} full screen"><img src="${esc(sized(p, 960))}" srcset="${esc(srcset(p))}" sizes="(max-width:760px) calc(100vw - 32px), 520px"${p.w ? ` width="${p.w}" height="${p.h}"` : ''} alt="${esc(it.name)}, photograph ${j + 1} of ${ph.length}" decoding="async"${j ? ' loading="lazy"' : ' fetchpriority="high"'} draggable="false"></button></div>`).join('')}</div>
+        <figcaption class="p-cap"><span class="p-count" id="p-count">${ph.length > 1 ? `01 / ${String(ph.length).padStart(2, '0')}` : ''}</span><span class="p-by">${by ? `Photograph ${by.people.map((p) => esc(p.name)).join(', ')}` : ''}</span>${ph.length > 1 ? `<span class="p-arrows"><button type="button" data-ph="-1" aria-label="Previous photograph">←</button><button type="button" data-ph="1" aria-label="Next photograph">→</button></span>` : ''}</figcaption></figure>` : '';
+    return `<div class="p-top" id="p-top">
+        <div class="p-grip" aria-hidden="true"></div>
+        <div class="p-bar">
+          <span class="p-k"><b>No. ${esc(it.id)}</b><span class="p-type"> / ${esc(it.type)}</span></span>
+          <span class="p-ctl">
+            <button type="button" data-act="prev" aria-label="Previous project">←</button>
+            <button type="button" data-act="next" aria-label="Next project">→</button>
+            <button type="button" data-act="index" class="p-index-btn" aria-expanded="false" aria-controls="p-index">Index</button>
+            <button type="button" data-act="close" class="p-close" aria-label="Close project, return to the map">× <span>Map</span></button>
+          </span>
+        </div>
+        <h2 class="p-name" id="rec-name">${esc(it.name)}</h2>
+        <p class="p-where">${where.filter(Boolean).map((w) => `<span>${esc(w)}</span>`).join('')}</p>
+      </div>
+      <div class="p-scroll" id="p-scroll">
+        ${fig}
+        ${it.summary ? `<p class="p-story">${esc(it.summary)}</p>` : ''}
+        ${cr.length ? `<dl class="p-credits">${cr.map((c) => `<div><dt>${esc(c.label)}</dt><dd>${c.people.map((p) => partner(p) + (p.note ? ` <span class="p-note">${esc(p.note)}</span>` : '')).join('<br>')}</dd></div>`).join('')}</dl>` : ''}
+        <a class="p-full" href="/project-${esc(it.slug)}"><span>Full project</span><span aria-hidden="true">→</span></a>
+        ${near.length ? `<h3 class="p-h">Nearby</h3><ul class="p-near">${near.map(({ j, d }) => `<li><button type="button" data-open="${j.slug}"><span class="n">${esc(j.id)}</span><span class="t">${esc(j.name)}</span><span class="m">${j.site.precision === 'area' || it.site.precision === 'area' ? '≈ ' : ''}${d < .1 ? 'Same site' : d < 10 ? d.toFixed(1) + ' mi' : Math.round(d) + ' mi'}</span></button></li>`).join('')}</ul>` : ''}
+      </div>
+      <nav class="p-index" id="p-index" hidden aria-label="All projects"><ol>${order.map((j) => `<li><button type="button" data-open="${j.slug}"${j === it ? ' aria-current="true"' : ''}><span class="n">${esc(j.id)}</span><span class="t">${esc(j.name)}</span><span class="w">${j.placed ? esc(shortCity(j)) : 'Not placed'}</span></button></li>`).join('')}</ol></nav>`;
   }
+
   function wireRecord(it) {
-    $('r-back').addEventListener('click', () => close());
-    if (window.BEETLECAT_STORY?.wire(recEl, it)) return;
+    recEl.querySelector('[data-act="prev"]').addEventListener('click', () => step(-1, 'prev'));
+    recEl.querySelector('[data-act="next"]').addEventListener('click', () => step(1, 'next'));
+    recEl.querySelector('[data-act="close"]').addEventListener('click', () => close());
+    recEl.querySelector('[data-act="index"]').addEventListener('click', toggleIndex);
     recEl.querySelectorAll('[data-open]').forEach((b) => {
       b.addEventListener('click', () => open(b.dataset.open));
       b.addEventListener('pointerenter', () => setHot(b.dataset.open, true));
       b.addEventListener('pointerleave', () => setHot(b.dataset.open, false));
     });
-    recEl.querySelectorAll('.r-thumbs button').forEach((b) => b.addEventListener('click', () => {
-      const k = +b.dataset.k, img = $('r-img');
-      img.src = it.photos[k].src; img.classList.remove('in'); void img.offsetWidth; img.classList.add('in');
-      recEl.querySelectorAll('.r-thumbs button').forEach((o) => o.setAttribute('aria-pressed', o === b));
-      $('r-count').textContent = `${k + 1} / ${it.photos.length}`;
-    }));
+    const strip = $('p-photos');
+    if (strip) {
+      const count = $('p-count'), total = String(it.photos.length).padStart(2, '0');
+      const at = () => Math.round(strip.scrollLeft / Math.max(1, strip.clientWidth));
+      let raf = 0;
+      strip.addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { if (count) count.textContent = `${String(at() + 1).padStart(2, '0')} / ${total}`; }); }, { passive: true });
+      const go = (k) => strip.scrollTo({ left: Math.max(0, Math.min(it.photos.length - 1, k)) * strip.clientWidth, behavior: reduced ? 'auto' : 'smooth' });
+      recEl.querySelectorAll('[data-ph]').forEach((b) => b.addEventListener('click', () => go(at() + +b.dataset.ph)));
+      strip.addEventListener('keydown', (e) => { const d = { ArrowLeft: -1, ArrowRight: 1 }[e.key]; if (d) { e.preventDefault(); e.stopPropagation(); go(at() + d); } });
+      recEl.querySelectorAll('.p-enlarge').forEach((b) => b.addEventListener('click', () => showViewer(it, +b.dataset.k)));
+    }
+    if (phone()) wireSheet();
+  }
+
+  /* Index: every project, without leaving the one you are reading */
+  function toggleIndex() {
+    const ix = $('p-index'), btn = recEl.querySelector('[data-act="index"]');
+    if (!ix) return;
+    const show = ix.hidden;
+    ix.hidden = !show; btn.setAttribute('aria-expanded', show);
+    recEl.classList.toggle('indexing', show);
+    recEl.style.setProperty('--index-top', $('p-top').offsetHeight + 'px');
+    if (show) { if (phone() && sheet.state !== 'full') setSheet('full'); (ix.querySelector('[aria-current]') || ix.querySelector('button')).focus({ preventScroll: true }); ix.querySelector('[aria-current]')?.scrollIntoView({ block: 'center' }); }
+  }
+  function closeIndex() { const ix = $('p-index'); if (ix && !ix.hidden) toggleIndex(); }
+
+  /* Viewer: one photograph at its published size, nothing else on screen */
+  const viewer = $('viewer');
+  let viewing = null;
+  function showViewer(it, k) {
+    viewing = { it, k };
+    paintViewer();
+    if (!viewer.open) viewer.showModal();
+  }
+  function paintViewer() {
+    const { it, k } = viewing, p = it.photos[k], n = it.photos.length;
+    const by = credits(it).find((c) => c.role === 'photography');
+    viewer.innerHTML = `<div class="v-bar"><span>${esc(it.name)}${n > 1 ? ` · ${String(k + 1).padStart(2, '0')} / ${String(n).padStart(2, '0')}` : ''}</span><button type="button" data-v="close" aria-label="Close photograph">× Close</button></div>
+      <div class="v-img"><img src="${esc(p.src)}" srcset="${esc(srcset(p))}" sizes="100vw" alt="${esc(it.name)}, photograph ${k + 1} of ${n}"></div>
+      <div class="v-foot"><span>${by ? `Photograph ${by.people.map((x) => esc(x.name)).join(', ')}` : ''}</span>${n > 1 ? `<span class="v-arrows"><button type="button" data-v="-1" aria-label="Previous photograph">← Prev</button><button type="button" data-v="1" aria-label="Next photograph">Next →</button></span>` : ''}</div>`;
+    viewer.querySelector('[data-v="close"]').addEventListener('click', () => viewer.close());
+    viewer.querySelectorAll('[data-v="-1"],[data-v="1"]').forEach((b) => b.addEventListener('click', () => { viewing.k = (k + +b.dataset.v + n) % n; paintViewer(); viewer.querySelector(`[data-v="${b.dataset.v}"]`)?.focus(); }));
+  }
+  viewer.addEventListener('keydown', (e) => {
+    const d = { ArrowLeft: -1, ArrowRight: 1 }[e.key];
+    if (d && viewing) { e.preventDefault(); e.stopPropagation(); const n = viewing.it.photos.length; viewing.k = (viewing.k + d + n) % n; paintViewer(); }
+  });
+  viewer.addEventListener('click', (e) => { if (e.target === viewer || e.target.classList.contains('v-img')) viewer.close(); });
+  viewer.addEventListener('close', () => {
+    if (!viewing) return;
+    const strip = $('p-photos');
+    if (strip) strip.scrollLeft = viewing.k * strip.clientWidth;
+    recEl.querySelector(`.p-enlarge[data-k="${viewing.k}"]`)?.focus({ preventScroll: true });
+    viewing = null;
+  });
+
+  /* ---------- Phones: the project is a sheet with three rests — the name (peek), half, full ----------
+     The map stays above it and keeps taking touches. Drag the top of the sheet, or tap it to cycle. */
+  const sheet = { state: 'half', y: 0 };
+  const safeBottom = (() => { const d = document.createElement('div'); d.style.cssText = 'position:fixed;height:env(safe-area-inset-bottom);visibility:hidden'; document.body.appendChild(d); return () => d.offsetHeight; })();
+  function rests() {
+    const h = recEl.offsetHeight, top = $('p-top');
+    return { full: 0, half: Math.round(h * .5), peek: Math.max(0, h - (top ? top.offsetHeight : 120) - safeBottom()) };
+  }
+  function setSheet(state, { fly: refly = true } = {}) {
+    if (!phone() || recEl.hidden) return;
+    recEl.style.setProperty('--sheet-top', Math.round(document.querySelector('.bar').getBoundingClientRect().bottom) + 'px');
+    sheet.state = state;
+    sheet.y = rests()[state];
+    recEl.dataset.sheet = state;
+    recEl.style.setProperty('--y', sheet.y + 'px');
+    placeInstruments();
+    const it = bySlug[openSlug];
+    if (refly && it && state !== 'full') fly(it);
+  }
+  function wireSheet() {
+    const top = $('p-top');
+    let from = null;
+    top.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('button,a')) return;
+      from = { y: e.clientY, at: sheet.y, t: performance.now(), moved: 0 };
+      top.setPointerCapture(e.pointerId);
+      recEl.classList.add('drag');
+    });
+    top.addEventListener('pointermove', (e) => {
+      if (!from) return;
+      const dy = e.clientY - from.y;
+      from.moved = Math.max(from.moved, Math.abs(dy));
+      sheet.y = Math.max(0, Math.min(recEl.offsetHeight, from.at + dy));
+      recEl.style.setProperty('--y', sheet.y + 'px');
+    });
+    const end = (e) => {
+      if (!from) return;
+      recEl.classList.remove('drag');
+      const r = rests(), dy = e.clientY - from.y, v = dy / Math.max(1, performance.now() - from.t);
+      const was = sheet.state, tap = from.moved < 6;
+      from = null;
+      if (tap) return setSheet(was === 'peek' ? 'half' : was === 'half' ? 'full' : 'half');
+      if (sheet.y > r.peek + 48) return close(); // pulled past its name: put the project away
+      const ranked = ['full', 'half', 'peek'];
+      let next = ranked.reduce((a, b) => (Math.abs(r[b] - sheet.y) < Math.abs(r[a] - sheet.y) ? b : a));
+      if (Math.abs(v) > .5) { const k = ranked.indexOf(was) + (v > 0 ? 1 : -1); next = ranked[Math.max(0, Math.min(2, k))]; }
+      setSheet(next);
+    };
+    top.addEventListener('pointerup', end);
+    top.addEventListener('pointercancel', end);
+  }
+  // Zoom controls and scale sit just above the sheet, never beneath it
+  const instruments = mapEl.querySelector('.instruments');
+  function placeInstruments() {
+    const lift = phone() && body.dataset.mode === 'record' ? Math.max(0, H - visible().h) : 0;
+    instruments.style.transform = lift ? `translateY(${-lift}px)` : '';
+    instruments.classList.toggle('lifted', !!lift);
   }
 
   /* ---------- Find ---------- */
@@ -656,16 +838,34 @@
 
   /* ---------- Keys, history, resize ---------- */
   document.addEventListener('keydown', (e) => {
+    if (viewer.open) return; // the photograph viewer handles its own keys; Escape closes it
     if (e.key === 'Escape') {
       if (calloutEl) { closeCallout(); return; }
       if (!found.hidden) return;
+      const ix = $('p-index');
+      if (ix && !ix.hidden) { toggleIndex(); recEl.querySelector('[data-act="index"]')?.focus(); return; }
       if (body.dataset.mode === 'record') close();
+    }
+    // ← → move between projects, unless the map (which pans) or a text field has the keys
+    if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && body.dataset.mode === 'record' && !e.altKey && !e.metaKey && !e.ctrlKey
+      && e.target !== mapEl && !e.target.closest('input,textarea,.p-photos')) {
+      e.preventDefault();
+      step(e.key === 'ArrowLeft' ? -1 : 1, e.target.closest('[data-act]')?.dataset.act);
     }
     if (e.key === '/' && document.activeElement !== q && body.dataset.mode === 'map') { e.preventDefault(); q.focus(); }
   });
   addEventListener('popstate', () => {
     const p = new URLSearchParams(location.search).get('p');
     if (p && bySlug[p]) open(p, { push: false }); else close({ push: false });
+  });
+  // × CLOSE leaves Projects the way browser Back would: past any project opened here, to the page before.
+  // With no earlier page on this site (a direct arrival), it goes to the entrance.
+  $('leave').addEventListener('click', (e) => {
+    let same = false;
+    try { same = !!document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1; } catch (err) { same = false; }
+    if (!same) return;
+    e.preventDefault();
+    history.go(-1 - (history.state?.d || 0));
   });
   let homeS = 1;
   const home = () => fitView(placedBounds(), { pad: 90, maxS: 4 });
@@ -678,6 +878,8 @@
     sMin = Math.min(W / (G.box.x1 - G.box.x0), H / (G.box.y1 - G.box.y0)) * .9;
     names.forEach((n) => (n.w = 0));
     draw(true); placeCallout();
+    if (body.dataset.mode === 'record' && phone()) setSheet(sheet.state, { fly: false });
+    else { recEl.style.removeProperty('--y'); sheet.y = 0; placeInstruments(); }
   }).observe(mapEl);
 
   function announce(t) { $('announce').textContent = t; }
@@ -692,8 +894,10 @@
   draw(true);
   if (!reduced) { body.classList.add('plot'); setTimeout(() => body.classList.remove('plot'), 1600); }
   const p0 = new URLSearchParams(location.search).get('p');
-  if (p0 && bySlug[p0]) { history.replaceState({ p: p0 }, '', location.search); savedView = { ...h }; open(p0, { push: false }); }
+  if (p0 && bySlug[p0]) { history.replaceState({ p: p0, d: history.state?.d || 0 }, '', location.search); savedView = { ...h }; open(p0, { push: false }); }
+  else if (history.state?.p) history.replaceState({ d: 0 }, '', location.pathname);
+  (window.requestIdleCallback || ((f) => setTimeout(f, 1200)))(loadDetail, { timeout: 2500 });
 
   // For automated checks only
-  window.__record = { items, view, setYear, open, close, get clusters() { return clusters; } };
+  window.__record = { items, view, setYear, open, close, step, get clusters() { return clusters; }, get sheet() { return { ...sheet }; }, get flying() { return flying; }, setSheet };
 })();

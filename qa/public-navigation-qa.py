@@ -1,8 +1,8 @@
 import os
 """Freeman public site navigation QA (Chromium via Playwright), per the rules in v5/README.md.
 
-Replaces v5-source/tools/navigation-qa.py, which predates the approved Projects index (.pi-row) and
-current CLOSE semantics. Read-only: never submits the contact form.
+Replaces v5-source/tools/navigation-qa.py. PROJECTS is the map (/map) since 26 Oct 2026; the former
+index (/projects) redirects there. Map interactions are covered in depth by studio/map-projects-001/check.mjs. Read-only: never submits the contact form.
 Usage: python3 qa/public-navigation-qa.py <base_url> [result.json]
 """
 import json, pathlib, re, sys
@@ -11,9 +11,9 @@ from playwright.sync_api import sync_playwright
 BASE = (sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8788").rstrip("/")
 OUT = sys.argv[2] if len(sys.argv) > 2 else None
 RECORDS = json.loads((pathlib.Path(__file__).resolve().parent.parent / "v5-source" / "content.json").read_text())
-ROUTES = ["/", "/company", "/projects", "/contact"] + [f"/project-{p['slug']}" for p in RECORDS["projects"]]
+ROUTES = ["/", "/company", "/map", "/contact"] + [f"/project-{p['slug']}" for p in RECORDS["projects"]]
 # Fieldwork is withdrawn from the public site (v5-source/generate.py --fieldwork): every old URL is a
-# temporary redirect to Projects, and its reader, images and records are not served.
+# temporary redirect to Projects (the map), and its reader, images and records are not served.
 WITHDRAWN = ["/fieldwork", "/fieldwork.html"] + [f"/fieldwork-{a['slug']}{x}" for a in RECORDS["archive"] for x in ("", ".html")]
 # Sources and tooling must never be served (they live in v5-source/).
 INTERNAL = ["/README.md", "/content.json", "/generate.py", "/image-dimensions.json", "/validation.json", "/mobile-validation.json",
@@ -23,12 +23,12 @@ INTERNAL = ["/README.md", "/content.json", "/generate.py", "/image-dimensions.js
 # records.js ships to every visitor: only rendered fields, never source-only data.
 UNPUBLISHED = re.compile(r"Budget|Total sq\. ft|\"Complete\"|\"quote\"|website-files\.com|\$\d|AI-generated|visual archive")
 # Old Webflow URLs that must keep working after the domain cutover (v5/_redirects).
-LEGACY = {"/about": "/company", "/sawdust": "/projects", "/projects/barnsley-gardens": "/project-barnsley-gardens",
+LEGACY = {"/about": "/company", "/sawdust": "/map", "/projects": "/map", "/projects.html": "/map", "/projects/barnsley-gardens": "/project-barnsley-gardens",
           "/projects/beetlecat-atlanta": "/project-beetlecat", "/projects/bocado-pizza": "/project-bocado-pizza",
-          "/projects/cleveland-surgery-center": "/projects", "/projects/dalton-surgery-center": "/project-dalton-surgery-center",
+          "/projects/cleveland-surgery-center": "/map", "/projects/dalton-surgery-center": "/project-dalton-surgery-center",
           "/projects/la-cresta-on-main": "/project-la-cresta-on-main", "/projects/o-ku-atlanta": "/project-o-ku-atlanta",
           "/projects/savi-provisions-emory-village": "/project-savi-provisions", "/projects/the-optimist": "/project-the-optimist",
-          "/projects/unknown-old-slug": "/projects"}
+          "/projects/unknown-old-slug": "/map"}
 BAD_TEXT = re.compile(r"\bundefined\b|\bNaN\b|\[object ")
 results = []
 
@@ -42,7 +42,6 @@ with sync_playwright() as p:
     for (w, h) in [(1440, 900), (390, 844)]:
         tag = f"{w}x{h}"
         touch = w < 500
-        project_selector = ".pi-project-link" if touch else ".pi4-select"
         ctx = br.new_context(viewport={"width": w, "height": h}, is_mobile=touch, has_touch=touch)
         ctx.add_init_script("try{sessionStorage.setItem('fgc-intro-seen','1')}catch(e){}")
         pg = ctx.new_page()
@@ -52,7 +51,7 @@ with sync_playwright() as p:
 
         # Every public route loads directly, with no script errors or undefined text.
         for r in ROUTES:
-            resp = pg.goto(BASE + r); pg.wait_for_selector("#main > *", state="attached")
+            resp = pg.goto(BASE + r); pg.wait_for_selector("#main > *, #map", state="attached")
             body = pg.inner_text("body")
             check(f"{tag} direct {r} loads", resp.status == 200 and "Record not found" not in body, resp.status)
             check(f"{tag} direct {r} no undefined text", not BAD_TEXT.search(body), BAD_TEXT.search(body))
@@ -69,31 +68,29 @@ with sync_playwright() as p:
                 check(f"legacy {old} → {code} {new}", r.status == code and loc.split("?")[0].rstrip("/").endswith(new) and target.status == 200, (r.status, loc, target.status))
         check(f"{tag} entrance links to ACCESS", pg.goto(BASE + "/") and pg.get_attribute(".client-access-entry", "href") == "client-access.html")
 
-        # Entrance → Projects → project → CLOSE → Projects (selection restored) → Back/Forward.
+        # Entrance → PROJECTS (the map) → project → full project → refresh → CLOSE → the map, on that project → Back/Forward.
         pg.goto("about:blank"); pg.goto(BASE + "/"); pg.wait_for_selector(".client-access-entry")
-        tap(".v4-home-nav a[href='projects.html']")  # V4 entrance: one navigation under the script
-        pg.wait_for_selector(project_selector)
-        check(f"{tag} entrance → Projects in place", path(pg) == "/projects", pg.url)
+        tap(".v4-home-nav a[href='map.html']")  # V4 entrance: one navigation under the script
+        pg.wait_for_function("window.__record && document.querySelectorAll('.tb-set button').length > 0")
+        check(f"{tag} entrance → PROJECTS opens the map", path(pg) == "/map", pg.url)
         slug = RECORDS["projects"][1]["slug"]
-        tap((f".pi-project-link[data-slug='{slug}']" if touch else f".pi4-select[data-pi4-select='{slug}']"))
-        if not touch: tap(".pi4-preview-title a")
+        if touch: tap("#reg-toggle"); pg.wait_for_timeout(350)
+        tap(f".tb-set button[data-slug='{slug}']")
+        pg.wait_for_selector("#record:not([hidden]) .p-full")
+        check(f"{tag} register opens the project on the map", pg.evaluate("location.search") == f"?p={slug}", pg.url)
+        pg.evaluate("document.querySelector('.p-full').click()")
         pg.wait_for_function(f"location.pathname.includes('project-{slug}')")
         check(f"{tag} project opens", path(pg) == f"/project-{slug}", pg.url)
         pg.reload(); pg.wait_for_selector(".panel-head .close")
         check(f"{tag} refresh keeps the project", path(pg) == f"/project-{slug}", pg.url)
-        tap(".panel-head .close"); pg.wait_for_selector(".pi4-select, .pi-project-link, .client-access-entry", state="attached")
-        check(f"{tag} CLOSE after refresh returns to Projects (history state survives refresh)", path(pg) == "/projects", pg.url)
-        check(f"{tag} closed project is the current row", pg.locator(f".pi-row.is-current [data-slug='{slug}']" if touch else f".pi4-select[data-pi4-select='{slug}'][aria-pressed='true']").count() == 1)
-        if path(pg) != "/projects":
-            pg.goto(BASE + "/projects"); pg.wait_for_selector(project_selector)
-            tap((f".pi-project-link[data-slug='{slug}']" if touch else f".pi4-select[data-pi4-select='{slug}']"))
-            if not touch: tap(".pi4-preview-title a")
-            pg.wait_for_function(f"location.pathname.includes('project-{slug}')")
-            pg.go_back(); pg.wait_for_selector(project_selector)
+        tap(".panel-head .close"); pg.wait_for_function("window.__record && document.body.dataset.mode === 'record'")
+        check(f"{tag} CLOSE after refresh returns to the map, on that project", path(pg) == "/map" and pg.evaluate("location.search") == f"?p={slug}", pg.url)
         pg.go_forward(); pg.wait_for_function(f"location.pathname.includes('project-{slug}')")
         check(f"{tag} Forward reopens the project", path(pg) == f"/project-{slug}", pg.url)
-        pg.go_back(); pg.wait_for_selector(project_selector)
-        check(f"{tag} Back returns to Projects", path(pg) == "/projects", pg.url)
+        pg.go_back(); pg.wait_for_function("window.__record && document.body.dataset.mode === 'record'")
+        check(f"{tag} Back returns to the map", path(pg) == "/map", pg.url)
+        pg.go_back(); pg.wait_for_function("window.__record && document.body.dataset.mode === 'map'")
+        check(f"{tag} Back again closes the project, still on the map", path(pg) == "/map" and pg.evaluate("location.search") == "", pg.url)
 
         # Direct arrival on a project: CLOSE falls back to the entrance.
         pg.goto("about:blank"); pg.goto(BASE + f"/project-{slug}"); pg.wait_for_selector(".panel-head .close")
@@ -101,14 +98,14 @@ with sync_playwright() as p:
         check(f"{tag} CLOSE on direct arrival → entrance", path(pg) == "/", pg.url)
 
         # Fieldwork withdrawn: no link or label on any public page, old URLs land on Projects.
-        for r in ["/", "/company", "/projects", "/contact"] + [f"/project-{p['slug']}" for p in RECORDS["projects"]]:
-            pg.goto(BASE + r); pg.wait_for_selector("#main > *", state="attached")
+        for r in ["/", "/company", "/map", "/contact"] + [f"/project-{p['slug']}" for p in RECORDS["projects"]]:
+            pg.goto(BASE + r); pg.wait_for_selector("#main > *, #map", state="attached")
             n = pg.locator("a[href*='fieldwork' i]").count(); label = re.search(r"fieldwork", pg.inner_text("body"), re.I)
             check(f"{tag} {r} has no Fieldwork link or label", n == 0 and not label, (n, label))
         if w == 1440:
             for old in WITHDRAWN:
                 r = pg.request.get(BASE + old, max_redirects=0)
-                check(f"withdrawn {old} → 302 /projects", r.status == 302 and r.headers.get("location", "").split("?")[0].endswith("/projects"), (r.status, r.headers.get("location")))
+                check(f"withdrawn {old} → 302 /map", r.status == 302 and r.headers.get("location", "").split("?")[0].endswith("/map"), (r.status, r.headers.get("location")))
             js = pg.request.get(BASE + "/records.js").text()
             check("records.js carries no unpublished fields", not UNPUBLISHED.search(js), UNPUBLISHED.search(js))
             check("records.js carries no Fieldwork records", '"archive": []' in js or '"archive":[]' in js)
@@ -131,11 +128,12 @@ with sync_playwright() as p:
         b = pg.locator("#contact-inquiry button").bounding_box()
         hit = b and pg.evaluate("([x, y]) => !!document.elementFromPoint(x, y)?.closest('#contact-inquiry button')", [b["x"] + b["width"] / 2, b["y"] + b["height"] / 2])
         check(f"{tag} contact SEND reachable by scrolling", b and b["y"] + b["height"] <= h and hit, b)
-        pg.goto(BASE + "/projects"); pg.wait_for_selector(project_selector)
-        link = pg.locator(".pi-project-link").first
+        pg.goto(BASE + "/map"); pg.wait_for_function("window.__record")
+        pg.locator("#reg-toggle").tap(); pg.wait_for_timeout(350)
+        link = pg.locator(".tb-set button").first
         link.scroll_into_view_if_needed(); b = link.bounding_box()
-        pg.touchscreen.tap(b["x"] + b["width"] / 2, b["y"] - 10); pg.wait_for_timeout(300)
-        check(f"{tag} tap just above a project name opens it", path(pg).startswith("/project-"), path(pg))
+        pg.touchscreen.tap(b["x"] + b["width"] / 2, b["y"] + 4); pg.wait_for_timeout(300)
+        check(f"{tag} tapping a register row opens the project", pg.evaluate("document.body.dataset.mode") == "record", pg.url)
         gallery = next(p["slug"] for p in RECORDS["projects"] if p.get("gallery"))
         pg.goto(BASE + f"/project-{gallery}"); pg.wait_for_selector(".pg-credits .credit-external")
         ctx.route(lambda u: not u.startswith(BASE), lambda r: r.abort())  # credit links open external sites; keep them offline
@@ -144,7 +142,7 @@ with sync_playwright() as p:
         bg = credit.evaluate("e => getComputedStyle(e).backgroundColor")
         check(f"{tag} no sticky highlight after tapping a credit", bg in ("rgba(0, 0, 0, 0)", "transparent"), bg)
         # Enlarged hit areas (box widened by an absolute ::after) never overlap a neighbouring control.
-        for r in ["/", "/projects", f"/project-{gallery}", "/contact"]:
+        for r in ["/", f"/project-{gallery}", "/contact"]:  # the map's marks are free-placed; check.mjs covers its controls
             pg.goto(BASE + r); pg.wait_for_selector("#main > *", state="attached")
             clashes = pg.evaluate("""() => {
               const n = (v) => parseFloat(v) || 0;

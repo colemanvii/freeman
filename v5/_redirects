@@ -2,37 +2,42 @@
 /record /map 301
 /record.html /map 301
 
+# PROJECTS is the map (26 Oct 2026). The former Projects index redirects there; project pages keep their URLs.
+/projects /map 301
+/projects.html /map 301
+/projects/ /map 301
+
 # Legacy Webflow URLs (www.freemangc.com, crawled 14 Oct 2026) → current routes, so existing
 # links and search results keep working after the domain moves to Cloudflare Pages.
 /about /company 301
-/sawdust /projects 302
+/sawdust /map 302
 /projects/barnsley-gardens /project-barnsley-gardens 301
 /projects/beetlecat-atlanta /project-beetlecat 301
 /projects/bocado-pizza /project-bocado-pizza 301
-/projects/cleveland-surgery-center /projects 301
-/project-cleveland-surgery-center /projects 301
-/project-cleveland-surgery-center.html /projects 301
+/projects/cleveland-surgery-center /map 301
+/project-cleveland-surgery-center /map 301
+/project-cleveland-surgery-center.html /map 301
 /projects/dalton-surgery-center /project-dalton-surgery-center 301
 /projects/la-cresta-on-main /project-la-cresta-on-main 301
 /projects/o-ku-atlanta /project-o-ku-atlanta 301
 /projects/savi-provisions-emory-village /project-savi-provisions 301
 /projects/the-optimist /project-the-optimist 301
-/projects/* /projects 301
+/projects/* /map 301
 
 # Fieldwork is withdrawn from the public site while it is developed (v5-source/generate.py --fieldwork).
 # 302, not 301: browsers must not cache these, so the URLs can return. Exact paths, never a prefix
 # wildcard, which would also catch assets.
-/fieldwork /projects 302
-/fieldwork.html /projects 302
-/fieldwork-radius /projects 302
-/fieldwork-radius.html /projects 302
-/fieldwork-timber /projects 302
-/fieldwork-timber.html /projects 302
-/fieldwork-field /projects 302
-/fieldwork-field.html /projects 302
-/fieldwork-landscape /projects 302
-/fieldwork-landscape.html /projects 302
-/fieldwork-geometry /projects 302
-/fieldwork-geometry.html /projects 302
-/fieldwork-sequence /projects 302
-/fieldwork-sequence.html /projects 302
+/fieldwork /map 302
+/fieldwork.html /map 302
+/fieldwork-radius /map 302
+/fieldwork-radius.html /map 302
+/fieldwork-timber /map 302
+/fieldwork-timber.html /map 302
+/fieldwork-field /map 302
+/fieldwork-field.html /map 302
+/fieldwork-landscape /map 302
+/fieldwork-landscape.html /map 302
+/fieldwork-geometry /map 302
+/fieldwork-geometry.html /map 302
+/fieldwork-sequence /map 302
+/fieldwork-sequence.html /map 302

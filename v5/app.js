@@ -27,15 +27,14 @@
   const PAPER = { chalk: "#fff9f1", sand: "#ddcfb3", umber: "#332e20" };
   const DESTINATIONS = [
     ["COMPANY", "company.html", ""],
-    ["PROJECTS", "projects.html", ""],
-    // NOTES stays withdrawn. The Record was approved for public release on 22 Oct 2026.
-    ["MAP", "map.html", ""],
+    // PROJECTS is the map (26 Oct 2026); the former Projects index redirects there (_redirects).
+    // NOTES stays withdrawn.
+    ["PROJECTS", "map.html", ""],
     ["CONTACT", "contact.html", ""],
   ];
   const TITLES = {
     entrance: "Entry",
     company: "Company",
-    projects: "Work",
     fieldwork: "Fieldwork",
     contact: "Contact",
     etcetera: "Notes",
@@ -106,7 +105,7 @@
     file = file.replace(/\.html$/, "") || "index";
     const r = { file, url, params: url.searchParams, kind: "notfound" };
     if (file === "index") r.kind = "entrance";
-    else if (["company", "projects", "etcetera", "contact"].includes(file)) r.kind = file;
+    else if (["company", "etcetera", "contact"].includes(file)) r.kind = file;
     // Fieldwork exists only in local --fieldwork builds (see v5-source/generate.py); publicly it is not found.
     else if (file === "fieldwork" && window.FreemanFieldwork) r.kind = file;
     else if (file.startsWith("project-")) {
@@ -167,7 +166,7 @@
   }
 
   /* ---------- Section line (shared with fieldwork-reader.js) ---------- */
-  // `current` is the section file ("company", "projects", …); `parent` overrides that section's
+  // `current` is the section file ("company", "map", …); `parent` overrides that section's
   // link on a detail page so it returns with selection/filters intact.
   function siteNav(current, parent) {
     const items = DESTINATIONS.map(([t, u, c]) => {
@@ -391,116 +390,22 @@
     show("philosophy");
   }
 
-  /* ---------- Projects ---------- */
-  // Only verified values: Client and Design (Freeman's published "Interior Design" credit; its
-  // "Interior Designer" template placeholder is not a credit) from the project credits, and a date
-  // only from an explicit, verified `date` field. The scraped "Complete: 2024" credit is not used.
-  const credit = (p, key) => ((p.credits || []).find(([k]) => k === key) || [])[1] || "";
-  const designCredit = (p) => credit(p, "Architect") || (credit(p, "Interior Design") === "Interior Designer" ? "" : credit(p, "Interior Design"));
-  // Only publish a destination when the organization's or creator's page can be identified.
-  // Keep the credited name verbatim; this map affects links, not project attribution.
-  const creditSites = {
-    "Rocket Farm Restaurants": "https://www.rocketfarmrestaurants.com/",
-    "Indigo Road Hospitality": "https://www.theindigoroad.com/",
-    "Wright Gardner Architects": "https://www.wrightgardnerarchitect.com/",
-    "NO Architecture": "https://www.no-arch.com/",
-    "Azalea Marketplace": "https://azaleamarket.com/",
-    "South Street Partners": "https://southstreetpartners.com/",
-    "David Thompson Architecture": "https://dthompsonarchitect.com/",
-    "South Downtown": "https://www.southdowntownatl.com/",
-    "Gentle Works": "https://gentle.works/",
-    "Electric Hospitality": "https://www.electric-hospitality.com/",
-    "Blur Workshop": "https://www.blurworkshop.com/",
-    "David Thompson Studio": "https://dthompsonarchitect.com/",
-    "Chuck Marie Studio": "https://www.chuckmariestudio.com/",
-    "Barnsley Resorts": "https://www.barnsleyresort.com/",
-    "Bocado Pizza": "https://bocadopizza.com/",
-    "Savi Provisions": "https://www.saviprovisions.com/",
-    "O-Ku Atlanta": "https://www.o-kusushi.com/location/o-ku-atlanta/",
-    "Interventional Pain Consultants": "https://www.ipc-pain.com/",
-    "Jared Swafford": "https://www.flickr.com/photos/jaredswafford/"
-  };
-  const creditLink = (name, cls = "") => {
-    if (!name) return "";
-    const href = creditSites[name];
-    return href
-      ? `<a class="${cls} credit-external" href="${esc(href)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(name)} — visit website in new tab"><span class="tap-label">${esc(name)}<span aria-hidden="true" class="credit-arrow"> ↗</span></span></a>`
-      : `<span class="${cls}">${esc(name)}</span>`;
-  };
-
-  function projectsIndex(state) {
-    chrome({ title: "Projects / Selected work", section: "projects" });
-    const vp = root.querySelector(".viewport");
-    const cell=(cls,value,label)=>value?creditLink(value,cls):`<span class="${cls} pi-empty"><span class="sr-only">${label} not yet verified</span><span aria-hidden="true">—</span></span>`;
-    const rows=projects.map((p,i)=>`<li class="pi-row${p.slug===state.focus?" is-current":""}"><div class="pi-link"><span class="pi-no">${pad(i+1,3)}</span><a class="pi-name pi-project-link" href="project-${esc(p.slug)}.html" data-slug="${esc(p.slug)}"><span class="tap-label">${esc(p.name)}</span></a>${cell("pi-client",credit(p,"Client"),"Client")}${cell("pi-arch",designCredit(p),"Design")}${p.date?`<span class="pi-date">${esc(p.date)}</span>`:'<span class="pi-date pi-empty" aria-hidden="true">—</span>'}</div></li>`).join("");
-    const inProgress=[
-      ["Barnsley Branded Residential","Adairsville, Georgia","Residential"],
-      ["Magnolia Commons Retail Center","Cumming, GA","Retail"],
-      ["Little Rey","Dunwoody, Georgia","Hospitality"]
-    ];
-    const activeRows=inProgress.map(([name,place,type])=>`<li class="pi-row pi-progress"><div class="pi-link pi-progress-line"><span class="pi-no">—</span><span class="pi-name">${esc(name)}</span><span class="pi-client">${esc(place)}</span><span class="pi-arch">${esc(type)}</span><span class="pi-date">IN PROGRESS</span></div></li>`).join("");
-    const desktopItems=projects.map((p,i)=>`<li class="pi4-work-row"><button type="button" class="pi4-select" data-pi4-select="${esc(p.slug)}" aria-pressed="false"><span class="pi4-no">${pad(i+1,3)}</span><span class="pi4-indicator" aria-hidden="true">+</span><span class="pi4-item-name">${esc(p.name)}</span></button><span class="pi4-client">${cell("pi-client",credit(p,"Client"),"Client")}</span><span class="pi4-designer">${cell("pi-arch",designCredit(p),"Design")}</span></li>`).join("");
-    vp.innerHTML=`<div class="pi4" aria-label="Desktop project index"><aside class="pi4-register">
-      <div class="pi4-heading"><span>PROJECT INDEX</span><span>IN PROGRESS / ${pad(inProgress.length,2)} &nbsp;·&nbsp; SELECTED / ${pad(projects.length,2)}</span></div>
-      <div class="pi4-scroll"><div class="pi4-columns" aria-hidden="true"><span>NO.</span><span>PROJECT</span><span>CLIENT</span><span>DESIGN</span></div><div class="pi4-section">IN PROGRESS / CURRENT WORK</div>
-        <ol class="pi4-current">${inProgress.map(([name,place,type])=>`<li class="pi4-work-row pi4-in-progress"><span class="pi4-no">—</span><span class="pi4-item-name">${esc(name)}</span><span class="pi4-client">${esc(place)}</span><span class="pi4-designer">${esc(type)}</span></li>`).join("")}</ol>
-        <div class="pi4-section pi4-completed">SELECTED WORK / COMPLETED</div>
-        <ol class="pi4-items">${desktopItems}</ol>
-      </div></aside>
-      <section class="pi4-stage" id="pi4-stage" aria-label="Selected project preview" aria-live="polite"></section>
-    </div>
-    <div class="pi pi4-original-mobile"><div class="pi-head" aria-hidden="true"><span>No.</span><span>Project</span><span>Client</span><span>Design</span><span class="pi-head-date">Date</span></div><div class="pi-scroller"><div class="pi-section-label">IN PROGRESS / CURRENT WORK</div><ol class="pi-list" aria-label="In progress projects">${activeRows}</ol><div class="pi-section-label pi-completed-label">SELECTED WORK / COMPLETED</div><ol class="pi-list" aria-label="Completed projects">${rows}</ol></div></div>`;
-    // The full-screen photography view already exists. The preview is its smaller sibling.
-    const stage=vp.querySelector("#pi4-stage");
-    let selected=null,photoIndex=0;
-    const photosFor=p=>(p.gallery&&p.gallery.length?p.gallery.map(g=>g.src):p.image?[p.image]:[]);
-    function select(slug,index=0){
-      const p=projects.find(x=>x.slug===slug)||projects.find(x=>x.slug==="the-optimist")||projects.find(x=>photosFor(x).length)||projects[0];
-      if(!p)return;
-      selected=p;const photos=photosFor(p);photoIndex=Math.max(0,Math.min(index,photos.length-1));
-      const hasPhotos=photos.length>0,selectedIndex=projects.indexOf(p)+1;
-      stage.innerHTML=`<div class="pi4-preview-head"><span>SELECTED WORK / ${pad(selectedIndex,2)} OF ${pad(projects.length,2)}</span><button type="button" data-pi4-close aria-label="Close selected project">CLOSE ×</button></div>
-        <div class="pi4-preview-title"><div><h2>${esc(p.name)}</h2><p>${esc(p.location||"")}</p></div><a href="project-${esc(p.slug)}.html">VIEW PROJECT ↗</a></div>
-        <div class="pi4-preview-image">${hasPhotos?`<a href="project-${esc(p.slug)}.html" class="pi4-image-link" aria-label="Open ${esc(p.name)} full project gallery"><img id="pi4-image" src="${esc(photos[photoIndex])}" alt="${esc(p.name)} — photograph ${photoIndex+1}" draggable="false"></a>`:'<div class="pi4-no-image">PHOTOGRAPHY FORTHCOMING</div>'}</div>
-        <div class="pi4-image-caption">${esc(p.name)} / ${esc(p.date||"SELECTED WORK")}</div>
-        <div class="pi4-preview-bottom"><span>FREEMAN / SELECTED WORK</span>
-          ${hasPhotos?`<div class="pi4-arrows"><button type="button" data-pi4-step="-1" aria-label="Previous project photograph" ${photoIndex===0?"disabled":""}>←</button><span>${pad(photoIndex+1)} / ${pad(photos.length)}</span><button type="button" data-pi4-step="1" aria-label="Next project photograph" ${photoIndex===photos.length-1?"disabled":""}>→</button></div>`:""}
-        </div>`;
-      vp.querySelectorAll("[data-pi4-select]").forEach(el=>{
-        const active=el.dataset.pi4Select===p.slug;
-        el.setAttribute("aria-pressed",String(active));
-        const indicator=el.querySelector(".pi4-indicator");
-        if(indicator)indicator.textContent=active?"−":"+";
-      });
-      hist.write("replaceState",{...hist.state,focus:p.slug},location.href);
-    }
-    vp.querySelector(".pi4").addEventListener("click",e=>{
-      const chooser=e.target.closest("[data-pi4-select]"),step=e.target.closest("[data-pi4-step]"),close=e.target.closest("[data-pi4-close]");
-      if(chooser){select(chooser.dataset.pi4Select);return;}
-      if(step&&selected){select(selected.slug,photoIndex+Number(step.dataset.pi4Step));return;}
-      if(close){
-        selected=null;
-        stage.innerHTML='<div class="pi4-preview-head"><span>SELECTED WORK</span></div><div class="pi4-empty-selection">SELECT A PROJECT / LEFT INDEX ↗</div>';
-        vp.querySelectorAll("[data-pi4-select]").forEach(el=>{
-          el.setAttribute("aria-pressed","false");
-          const indicator=el.querySelector(".pi4-indicator");
-          if(indicator)indicator.textContent="+";
-        });
-        hist.write("replaceState",{...hist.state,focus:null},location.href);
-      }
-    });
-    select(state.focus||"the-optimist");
-    const scroller=vp.querySelector(".pi4-original-mobile .pi-scroller");
-    scroller.addEventListener("click",e=>{
-      const row=e.target.closest(".pi-row");if(!row)return;
-      scroller.querySelectorAll(".pi-row.is-current").forEach(r=>r.classList.remove("is-current"));
-      row.classList.add("is-current");
-    });
-    if(typeof state.projScroll==="number")scroller.scrollTop=state.projScroll;
-    const current=scroller.querySelector(".pi-row.is-current");
-    if(current){const top=current.offsetTop,bottom=top+current.offsetHeight;if(top<scroller.scrollTop)scroller.scrollTop=top;else if(bottom>scroller.scrollTop+scroller.clientHeight)scroller.scrollTop=bottom-scroller.clientHeight;}
-    count();
+  /* ---------- Project credits ----------
+     One source for every credit, role and partner link: /project-credits.js (shared with the Projects map).
+     Only credits Freeman published appear; a partner without a verified site is shown without a link. */
+  function projectCredits(p) {
+    const C = window.FREEMAN_CREDITS;
+    if (!C || !C.projects[p.slug]) return [];
+    return C.roles.map(([role, label, plural]) => {
+      const list = C.projects[p.slug].filter((c) => c.role === role && C.partners[c.partner]).map((c) => C.partners[c.partner]);
+      return list.length ? [list.length > 1 && plural ? plural : label, list] : null;
+    }).filter(Boolean);
   }
+  const creditLink = (partner, cls = "") => partner.url
+    ? `<a class="${cls} credit-external" href="${esc(partner.url)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(partner.name)} — visit website in new tab"><span class="tap-label">${esc(partner.name)}<span aria-hidden="true" class="credit-arrow"> ↗</span></span></a>`
+    : `<span class="${cls}">${esc(partner.name)}</span>`;
+  const creditLinks = (list) => list.map((x) => creditLink(x)).join(", ");
+
   /* Photography-first project page: one photograph at a time, the name, place and verified credits
      beside it. Desktop: click the right/left half of the photograph; phones: swipe; keys: ← →.
      Changing photographs never adds history, so CLOSE still returns to wherever the visitor came from. */
@@ -508,16 +413,15 @@
   function gallery(p) {
     chrome({
       title: "Projects / " + p.name,
-      section: "projects",
-      parent: { href: "projects.html", focus: p.slug },
+      section: "map",
+      parent: { href: "map.html?p=" + encodeURIComponent(p.slug), focus: p.slug },
     });
-    const credits = [["Client", credit(p, "Client")], ["Architect", credit(p, "Architect")], ["Interior design", credit(p, "Interior Design")], ["Photography", credit(p, "Photography")]]
-      .filter(([, v]) => v && v !== "Interior Designer");
+    const credits = projectCredits(p);
     const related = archive.filter((a) => a.link === p.slug);
     const photos = p.gallery;
     const vp = root.querySelector(".viewport");
     vp.innerHTML = `<div class="pg"><header class="pg-info"><h2 class="pg-name">${esc(p.name)}</h2><p class="pg-place">${esc(p.location)}</p><dl class="pg-credits">${credits
-      .map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${creditLink(v)}</dd></div>`)
+      .map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${creditLinks(v)}</dd></div>`)
       .join("")}</dl></header><section class="pg-stage" aria-roledescription="gallery" aria-label="${esc(p.name)} photographs"><div class="pg-frame" tabindex="0" aria-label="Photographs — use the left and right arrow keys"><div class="pg-track">${photos
       .map((g, i) => `<figure class="pg-slide" aria-hidden="true"><img data-src="${esc(g.src)}" width="${g.w}" height="${g.h}" alt="${esc(p.name)} — photograph ${i + 1} of ${photos.length}" draggable="false"></figure>`)
       .join("")}</div></div><div class="pg-controls"><button type="button" class="pg-arrow" data-step="-1" aria-label="Previous photograph">←</button><p class="pg-count" aria-live="polite"></p><button type="button" class="pg-arrow" data-step="1" aria-label="Next photograph">→</button></div></section></div>`;
@@ -610,15 +514,13 @@
       block("p", p.summary),
       ...(p.details ? [block("p", p.details)] : []),
       block("h2", "Project record"),
-      ...p.credits
-        .filter(([k, v]) => ["Client", "Photography", "Interior Design", "Architect"].includes(k) && v !== "Interior Designer")
-        .map(([k, v]) => `<div class="data"><span>${esc(k)}</span><span>${creditLink(v)}</span></div>`),
+      ...projectCredits(p).map(([k, v]) => `<div class="data"><span>${esc(k)}</span><span>${creditLinks(v)}</span></div>`),
       ...(p.image ? [data("Source", "Freeman published portfolio")] : []),
     ];
     chrome({
       title: "Projects / " + p.name,
-      section: "projects",
-      parent: { href: "projects.html", focus: p.slug },
+      section: "map",
+      parent: { href: "map.html?p=" + encodeURIComponent(p.slug), focus: p.slug },
     });
     const vp = root.querySelector(".viewport");
     const pages = reading(vp, b, p.image ? [
@@ -912,16 +814,11 @@
         kind: route.kind,
         detail: () => route.kind === "project",
         key: (e) => (galleryKey ? galleryKey(e) : false),
-        save: () => {
-          if (route.kind !== "projects") return {};
-          const scroller = root.querySelector(".pi-scroller");
-          return { focus: currentFocus(), projScroll: scroller ? scroller.scrollTop : 0 };
-        },
-        resize: ["company", "projects", "etcetera", "contact"].includes(route.kind) ? null : () => render(parse(location.href), { ...hist.state, focus: currentFocus() }),
+        save: () => ({}),
+        resize: ["company", "etcetera", "contact"].includes(route.kind) ? null : () => render(parse(location.href), { ...hist.state, focus: currentFocus() }),
       };
       if (route.kind === "entrance") Object.assign(view, entrance({ play: !pop && !nav }));
       else if (route.kind === "company") company();
-      else if (route.kind === "projects") projectsIndex(state);
       else if (route.kind === "project") project(route.item);
       else if (route.kind === "contact") contact();
       else if (route.kind === "etcetera") etcetera();
@@ -931,15 +828,12 @@
     if (nav) settleFocus(state);
   }
   function currentFocus() {
-    const chosen = root.querySelector(".pi4-select[aria-pressed=\"true\"]");
-    if(chosen && matchMedia("(min-width:761px)").matches) return chosen.dataset.pi4Select;
     const a = root.querySelector(".index-row.active[data-slug], .pi-row.is-current [data-slug]");
     return a ? a.dataset.slug : undefined;
   }
   /* After an in-place navigation, put keyboard focus where the visitor expects it. */
   function settleFocus(state) {
-    let el = state.focus && matchMedia("(min-width:761px)").matches ? root.querySelector(`[data-pi4-select="${CSS.escape(state.focus)}"]`) : null;
-    if(!el && state.focus) el = root.querySelector(`[data-slug="${CSS.escape(state.focus)}"]`);
+    let el = state.focus ? root.querySelector(`[data-slug="${CSS.escape(state.focus)}"]`) : null;
     if (!el) el = root.querySelector(".panel-head h1, .fw-top h1");
     if (!el) return;
     if (!el.matches("a,button,input,[tabindex]")) el.setAttribute("tabindex", "-1");
@@ -1019,6 +913,9 @@
   const first = parse(location.href);
   applyPalette([ss.get("freeman-palette"), hist.state.palette].find((p) => PALETTES.includes(p)));
   // A fresh arrival is depth 0 (CLOSE falls back to the entrance); a reload keeps its depth.
-  hist.write("replaceState", { ...hist.state, fgc: 1, palette, depth: hist.state.depth || 0 }, location.href);
+  // Projects (the map) is its own document: arriving from it is one step deep, so CLOSE returns to it.
+  let fromMap = false;
+  try { const r = new URL(document.referrer); fromMap = r.origin === location.origin && /^\/map(\.html)?$/.test(r.pathname) && history.length > 1; } catch (e) { fromMap = false; }
+  hist.write("replaceState", { ...hist.state, fgc: 1, palette, depth: hist.state.depth || (fromMap ? 1 : 0) }, location.href);
   render(first, hist.state, { pop: arrivedByHistory() });
 })();

@@ -29,5 +29,11 @@ window.RECORD_SITES = {
     // Bocado had several locations (West Midtown closed 2021; Sandy Springs 2024). Which one Freeman built is not known.
     'bocado-pizza': { precision: null, area: 'Atlanta, Georgia', reason: 'Location not on file' }
   },
-  years: {}
+  years: {},
+  // Current work, as published on the former Projects index. Listed in the register, never placed on the map: no site is on file.
+  inProgress: [
+    { name: 'Barnsley Branded Residential', place: 'Adairsville, Georgia', type: 'Residential' },
+    { name: 'Magnolia Commons Retail Center', place: 'Cumming, Georgia', type: 'Retail' },
+    { name: 'Little Rey', place: 'Dunwoody, Georgia', type: 'Hospitality' }
+  ]
 };

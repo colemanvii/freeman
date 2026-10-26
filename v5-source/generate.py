@@ -33,7 +33,8 @@ public = {'projects': [public_project(p) for p in records['projects']], 'archive
 
 # Every route is a real file with the same shell; app.js renders the route in place and
 # handles later navigation with the History API (see README "Navigation").
-pages = {'index.html': 'Entry', 'company.html': 'Company', 'projects.html': 'Work', 'contact.html': 'Contact', '404.html': 'Record not found'}
+# PROJECTS is the map (v5/map.html, hand-built); the former projects.html index redirects to /map (v5/_redirects).
+pages = {'index.html': 'Entry', 'company.html': 'Company', 'contact.html': 'Contact', '404.html': 'Record not found'}
 for p in records['projects']:
     pages['project-' + p['slug'] + '.html'] = p['name']
 if FIELDWORK:
@@ -70,7 +71,7 @@ for name, title in pages.items():
     )
 
 # Public routes only: private paths (/p/, proposals, ACCESS) are never listed.
-urls = ''.join(f'<url><loc>{SITE}{route(n)}</loc></url>' for n in pages if n != '404.html' and not n.startswith('fieldwork'))
+urls = ''.join(f'<url><loc>{SITE}{route(n)}</loc></url>' for n in ['index.html', 'company.html', 'map.html', 'contact.html'] + [n for n in pages if n.startswith('project-')])
 (root / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
     f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>\n')
 (root / 'robots.txt').write_text(f'User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n')

@@ -30,3 +30,8 @@
 /admin/*
   Cache-Control: private, no-store
   X-Robots-Tag: noindex, nofollow, noarchive
+
+# Projects map photographs: resized copies with a content hash in the name (studio/map-projects-001/build-photos.mjs).
+# A changed photograph gets a new name, so these never need revalidating.
+/assets/map/*
+  Cache-Control: public, max-age=31536000, immutable
