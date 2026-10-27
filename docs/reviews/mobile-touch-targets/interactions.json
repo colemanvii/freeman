@@ -1,0 +1,29 @@
+[
+  {
+    "width": 320,
+    "servicePass": "true",
+    "peoplePass": "true",
+    "contactPass": true,
+    "closePass": true,
+    "nextPass": true,
+    "prevPass": true
+  },
+  {
+    "width": 390,
+    "servicePass": "true",
+    "peoplePass": "true",
+    "contactPass": true,
+    "closePass": true,
+    "nextPass": true,
+    "prevPass": true
+  },
+  {
+    "width": 430,
+    "servicePass": "true",
+    "peoplePass": "true",
+    "contactPass": true,
+    "closePass": true,
+    "nextPass": true,
+    "prevPass": true
+  }
+]
