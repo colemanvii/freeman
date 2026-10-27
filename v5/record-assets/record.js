@@ -118,10 +118,14 @@
     const from = { ...view }, t0 = performance.now();
     // Interpolate scale geometrically and keep the path through the midpoint steady
     const fx = (W / 2 - from.tx) / from.s, fy = (H / 2 - from.ty) / from.s, gx = (W / 2 - target.tx) / target.s, gy = (H / 2 - target.ty) / target.s;
+    // A long flight eases out mid-route so the drawing stays on screen: at street scale the ground between
+    // two distant places is empty paper. Keep the travel in screen terms within about one map width.
+    const travel = Math.hypot(gx - fx, gy - fy), sMid = Math.sqrt(from.s * target.s);
+    const dip = Math.min(1, (Math.min(W, H) * .9) / Math.max(1e-6, travel * sMid));
     return new Promise((done) => {
       const step = (now) => {
         const k = Math.min(1, (now - t0) / ms), e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
-        const s = from.s * Math.pow(target.s / from.s, e), cx = fx + (gx - fx) * e, cy = fy + (gy - fy) * e;
+        const s = from.s * Math.pow(target.s / from.s, e) * Math.pow(dip, Math.sin(Math.PI * e)), cx = fx + (gx - fx) * e, cy = fy + (gy - fy) * e;
         view.s = s; view.tx = W / 2 - cx * s; view.ty = H / 2 - cy * s;
         draw(k === 1 || Math.abs(Math.log(s / lastClusterS)) > .08);
         if (k < 1) anim = requestAnimationFrame(step); else { flying = false; Object.assign(view, target); draw(true); done(); }
