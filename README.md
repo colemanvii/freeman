@@ -2,6 +2,8 @@
 
 **Built for Generations.**
 
+[freemangc.com](https://freemangc.com) — Public website.
+
 The working record behind Freeman's website, creative practice, and emerging digital tools. Finished work belongs alongside the evidence of how it was made.
 
 ## Start here
