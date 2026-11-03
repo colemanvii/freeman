@@ -1,0 +1,31 @@
+name: Build — v5 regenerates exactly
+
+# The route files, records.js, sitemap.xml and robots.txt in v5/ are written by v5-source/generate.py.
+# This check fails if the committed v5/ differs from a fresh build: a hand edit to a generated file, or a
+# source change committed without regenerating. Fix: run `python3 v5-source/generate.py` and commit v5/.
+on:
+  pull_request:
+    paths: ["v5/**", "v5-source/**", ".github/workflows/build-reproducible.yml"]
+  push:
+    paths: ["v5/**", "v5-source/**", ".github/workflows/build-reproducible.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Regenerate v5/
+        run: python3 v5-source/generate.py
+      - name: v5/ is unchanged by the build
+        run: |
+          git status --porcelain -- v5/
+          git diff --stat --exit-code -- v5/
+          test -z "$(git status --porcelain -- v5/)"

@@ -14,7 +14,9 @@ Open `index.html` or run `python3 -m http.server 8765` from this folder. No buil
 
 ## Edit
 
-Edit `content.json`, then run `python3 generate.py` to refresh route entry points and `records.js`. Every route (including Fieldwork) uses the same generated shell. App logic and navigation are in `app.js`, the Fieldwork living index in `fieldwork-reader.js`; visual rules in `styles.css` and `fieldwork-reader.css`.
+Edit `content.json`, then run `python3 generate.py` to refresh route entry points and `records.js`.
+
+**Generated files are never edited by hand.** `generate.py` writes `index.html`, `company.html`, `contact.html`, `etcetera.html`, `404.html`, `record.html`, every `project-*.html`, `records.js`, `sitemap.xml` and `robots.txt`, and it reproduces the approved production files byte for byte. To change a page head or a cache-busting version, edit the shell or the `V` table in `generate.py`, regenerate, and commit both. CI (`.github/workflows/build-reproducible.yml`) fails when a fresh build would change `v5/`. Hand-built, never generated: `map.html`, `client-access.html`, `team-os.html`, `working-with-freeman.html`, and all scripts and styles. Every route (including Fieldwork) uses the same generated shell. App logic and navigation are in `app.js`, the Fieldwork living index in `fieldwork-reader.js`; visual rules in `styles.css` and `fieldwork-reader.css`.
 
 ## Navigation
 

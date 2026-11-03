@@ -4,9 +4,9 @@ name: QA — ACCESS, Alder and public navigation
 # (same _redirects and extensionless-URL behaviour as production).
 on:
   pull_request:
-    branches: ["freeman-v5-consolidation"]
+    branches: ["freeman-v5-consolidation", "release/**"]
   push:
-    branches: ["freeman-v5-consolidation", "fix/**"]
+    branches: ["freeman-v5-consolidation", "fix/**", "release/**"]
   workflow_dispatch:
 
 permissions:

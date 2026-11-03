@@ -34,41 +34,85 @@ public = {'projects': [public_project(p) for p in records['projects']], 'archive
 # Every route is a real file with the same shell; app.js renders the route in place and
 # handles later navigation with the History API (see README "Navigation").
 # PROJECTS is the map (v5/map.html, hand-built); the former projects.html index redirects to /map (v5/_redirects).
-pages = {'index.html': 'Entry', 'company.html': 'Company', 'contact.html': 'Contact', '404.html': 'Record not found'}
+# Hand-built and never written here: map.html, client-access.html, team-os.html, working-with-freeman.html.
+#
+# The shells below reproduce the approved production files byte for byte (release/approved-v5-2026-10-18,
+# 807e49f). Change a shell only here, run this script, and commit the regenerated files with it:
+# CI checks that `python3 v5-source/generate.py` leaves v5/ unchanged.
+pages = {'index.html': ('entrance', 'Freeman General Contracting'),
+         'company.html': ('interior', 'Company'),
+         'contact.html': ('interior', 'Contact'),
+         # Notes stays out of the section line and the sitemap (withdrawn), but its route file is kept current.
+         'etcetera.html': ('interior', 'Notes'),
+         '404.html': ('notfound', 'Record not found')}
 for p in records['projects']:
-    pages['project-' + p['slug'] + '.html'] = p['name']
+    pages['project-' + p['slug'] + '.html'] = ('project', p['name'])
 if FIELDWORK:
-    pages['fieldwork.html'] = 'Fieldwork'
+    pages['fieldwork.html'] = ('fieldwork', 'Fieldwork')
     for a in records['archive']:
-        pages['fieldwork-' + a['slug'] + '.html'] = a['title']
-
-# Use the same pre-paint palette initialization as ACCESS and the server-rendered gate.
-palette = '<script src="/palette.js"></script>'
-
-fw_css = '<link rel="stylesheet" href="fieldwork-reader.css">' if FIELDWORK else ''
-fw_js = '<script defer src="fieldwork-reader.js"></script>' if FIELDWORK else ''
+        pages['fieldwork-' + a['slug'] + '.html'] = ('fieldwork', a['title'])
 
 SITE = 'https://www.freemangc.com'  # canonical host; the apex redirects here
 
 def route(name):
     return '/' if name == 'index.html' else '/' + name[:-len('.html')]
 
-# V4 entrance: the original Freeman pixel script (pixel-mark.js) loads on the entrance only.
-APP_JS = '<script defer src="app.js?v=20261016-cleanup"></script>'
-ENTRANCE_JS = '<script defer src="pixel-mark.js?v=20261016-v4-home"></script>' + APP_JS
+# Cache-busting versions of the shared files. Bump a version here when its file changes.
+V = {
+    'palette': '20261026-monaco-restored',
+    'styles': '20261026-monaco-lineage',
+    'records-entrance': '20261018-v5-restore',
+    'pixel-mark': '20261018-v5-restore',
+    'signature-motion': '20261022-hand-first-stroke-001',
+    'project-credits': '20261026-map-projects',
+    'app': '20261026-map-projects',
+}
 
-for name, title in pages.items():
+def script(src, defer=True):
+    return f'<script{" defer" if defer else ""} src="{src}"></script>'
+
+# Same pre-paint palette initialization as ACCESS and the server-rendered gate.
+PALETTE = script(f'/palette.js?v={V["palette"]}', defer=False)
+PIXEL_MARK = script(f'/pixel-mark.js?v={V["pixel-mark"]}')
+SIGNATURE = script(f'/signature-motion.js?v={V["signature-motion"]}')
+CREDITS = script(f'/project-credits.js?v={V["project-credits"]}')
+FW_CSS = '<link rel="stylesheet" href="fieldwork-reader.css">'
+FW_JS = script('fieldwork-reader.js')
+
+# The entrance carries the public description and share tags; it uses root-relative paths throughout.
+ENTRANCE_META = (
+    '<meta name="description" content="Freeman General Contracting. Built for Generations.">'
+    '<meta property="og:type" content="website">'
+    '<meta property="og:site_name" content="Freeman General Contracting">'
+    '<meta property="og:title" content="Freeman General Contracting">'
+    '<meta property="og:description" content="Built for Generations.">'
+    f'<meta property="og:url" content="{SITE}/">'
+    '<meta name="twitter:card" content="summary">'
+    '<meta name="twitter:title" content="Freeman General Contracting">'
+)
+
+def shell(name, kind, title):
     # 404.html is served at any unknown path, including nested ones, so it resolves assets from the root.
-    head = '<base href="/">' if name == '404.html' else f'<link rel="canonical" href="{SITE}{route(name)}">'
-    app_js = ENTRANCE_JS if name == 'index.html' else APP_JS
-    (root / name).write_text(
-        f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
-        f'<meta name="theme-color" content="#f4f4f0"><title>{title} — Freeman GC</title>{head}<link rel="icon" href="favicon.svg">{palette}'
-        f'<link rel="stylesheet" href="styles.css">{fw_css}'
-        f'<script defer src="records.js"></script>{fw_js}{app_js}</head>'
-        f'<body><div id="site"><main id="main"></main></div><noscript>This site needs JavaScript. '
-        f'Contact Freeman at gabe@freemangc.com or 706.263.3348.</noscript></body></html>'
-    )
+    if kind == 'entrance':
+        head = (f'<title>{title}</title>{ENTRANCE_META}<link rel="canonical" href="{SITE}/">'
+                f'<link rel="icon" href="favicon.svg">{PALETTE}'
+                f'<link rel="stylesheet" href="/styles.css?v={V["styles"]}">'
+                + script(f'/records.js?v={V["records-entrance"]}') + PIXEL_MARK + SIGNATURE + script(f'/app.js?v={V["app"]}'))
+    else:
+        link = '<base href="/">' if kind == 'notfound' else f'<link rel="canonical" href="{SITE}{route(name)}">'
+        extra = {'interior': PIXEL_MARK + SIGNATURE, 'project': CREDITS, 'notfound': '',
+                 'fieldwork': FW_JS + PIXEL_MARK + SIGNATURE}[kind]
+        head = (f'<title>{title} — Freeman GC</title>{link}<link rel="icon" href="favicon.svg">{PALETTE}'
+                f'<link rel="stylesheet" href="styles.css?v={V["styles"]}">' + (FW_CSS if kind == 'fieldwork' else '')
+                + script('records.js') + extra + script(f'app.js?v={V["app"]}'))
+    return ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
+            '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
+            '<meta name="theme-color" content="#f4f4f0">' + head + '</head>'
+            '<body><div id="site"><main id="main"></main></div><noscript>This site needs JavaScript. '
+            'Contact Freeman at gabe@freemangc.com or 706.263.3348.</noscript></body></html>')
+
+for name, (kind, title) in pages.items():
+    (root / name).write_text(shell(name, kind, title))
 
 # Public routes only: private paths (/p/, proposals, ACCESS) are never listed.
 urls = ''.join(f'<url><loc>{SITE}{route(n)}</loc></url>' for n in ['index.html', 'company.html', 'map.html', 'contact.html'] + [n for n in pages if n.startswith('project-')])
@@ -76,5 +120,13 @@ urls = ''.join(f'<url><loc>{SITE}{route(n)}</loc></url>' for n in ['index.html',
     f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>\n')
 (root / 'robots.txt').write_text(f'User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n')
 
-# RECORD is unpublished (#25): the old URL redirects to Company. The study stays in stories/record.html.
-(root / 'record.html').write_text('<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta http-equiv="refresh" content="0;url=company"><title>Freeman General Contracting</title><script>location.replace("company")</script></head><body><a href="company">Freeman General Contracting</a></body></html>')
+# The Record is now MAP (26 Oct 2026): the old route redirects to /map, keeping any query and hash.
+# _redirects already 301s /record and /record.html; this file covers direct file requests and caches.
+(root / 'record.html').write_text('''<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><meta http-equiv="refresh" content="0;url=/map">
+<link rel="canonical" href="https://www.freemangc.com/map">
+<title>Map — Freeman General Contracting</title>
+<script>location.replace("/map" + location.search + location.hash)</script>
+</head><body><p>The Record has moved to <a href="/map">Freeman's Map</a>.</p></body></html>
+''')
