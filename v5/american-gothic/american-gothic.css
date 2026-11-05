@@ -1,0 +1,96 @@
+/* FREEMAN — AMERICAN GOTHIC LIVE STUDY (Direction C, Typography Study 001)
+   One layer, linked after every production stylesheet. Everything is scoped to
+   html[data-type="gothic"]; with the toggle on Monaco the attribute is removed and the
+   production CSS applies exactly as it does on freemangc.com.
+   Face: Libre Franklin (Impallari Type, SIL Open Font Licence), served by Google Fonts.
+   Principle: strength from proportion and spacing, not from weight. Running text 400,
+   uppercase labels 500, names 600. Nothing heavier than 600 except the bold that production
+   already asks for. No sizes grow beyond what the face needs to match Monaco's colour. */
+
+:root[data-type="gothic"]{
+  --gothic:"Libre Franklin","Franklin Gothic Book","Franklin Gothic",Arial,sans-serif;
+  --mono:var(--gothic);           /* every stylesheet's --mono, desktop and the phone Lineage block */
+}
+/* Hard-coded Monaco declarations (etcetera, client access, map attribution) and anything else. */
+:root[data-type="gothic"] body,
+:root[data-type="gothic"] body *:not(.ag-toggle):not(.ag-toggle *){font-family:var(--gothic)!important}
+:root[data-type="gothic"] body{font-kerning:normal;font-feature-settings:"kern" 1;font-synthesis:none}
+
+/* Figures: Monaco's figures were tabular by nature. Keep counters and register numbers steady. */
+:root[data-type="gothic"] :is(.pg-count,.count,.number,.index-row .number,.n,.ct,.tb-no,.pi-no,.co4-choice>span:first-child,.undated b,.etc-number){font-variant-numeric:tabular-nums lining-nums}
+
+/* ---------- 1 · Small uppercase: navigation, labels, legal ----------
+   Monaco's caps are spaced by the grid; Franklin's need the space given back (+.06 to +.1em)
+   and one step of weight (500) to hold the same grey at 9–11 px. */
+:root[data-type="gothic"] :is(.site-nav,.panel-head,.close,.sheet-controls,.tabs,.client-access-entry,
+  .legal,.mark,.co4-nav button,.reading .micro,.index-title,.pg-place,.pg-credits dt,.pg-related,
+  .project-plate-meta,.contact-label,.contact-disclaimer,.co4-visual figcaption,.co4-description>span,
+  .photo-sheet figcaption,.preview figcaption,.pi4-image-caption,.pi4-preview-bottom,.text-link,
+  .contact-inquiry button,.etc-caption,.etc-open,.etc-dialog-bar,.fw-eyebrow,.fw-foot,.fw-read,
+  .bar,.found .w,.tag,.callout h3,.lede .kicker,.scale,.coord,.rule .play,.handle .lab,.rule-note,
+  .undated,.tb-k,.tb-firm,.tb-foot,.tb-sub,.tb-set .w,.tb-progress .w,.p-k,.p-ctl button,.p-where,
+  .p-cap,.p-credits dt,.p-full,.p-h,.p-near .m,.p-index .w,.v-bar,.v-foot,.nm,.north,.zoom button:last-child){
+  font-weight:500}
+:root[data-type="gothic"] :is(.site-nav,.panel-head .close,.sheet-controls,.client-access-entry,.co4-nav button,.tabs){letter-spacing:.075em}
+:root[data-type="gothic"] :is(.legal,.mark){letter-spacing:.075em;line-height:1.55}
+/* The FREEMAN name: the first line of the legal block carries the name a step firmer than the
+   town beneath it — the only place the words sit in the same frame as the signature. */
+:root[data-type="gothic"] .legal::first-line{font-weight:600;letter-spacing:.085em}
+:root[data-type="gothic"] :is(.reading .micro,.index-title,.pg-place,.pg-credits dt,.project-plate-meta,.contact-label,.contact-disclaimer,.co4-visual figcaption,.photo-sheet figcaption,.preview figcaption,.pi4-image-caption,.pi4-preview-bottom){letter-spacing:.09em}
+:root[data-type="gothic"] :is(.p-where,.p-k,.p-h,.p-cap,.p-credits dt,.tb-k,.tb-foot,.tb-sub,.tb-firm,.callout h3,.lede .kicker,.found .w,.p-near .m,.p-index .w,.undated,.rule-note,.v-bar,.v-foot){letter-spacing:.09em}
+:root[data-type="gothic"] .sep{font-weight:300}
+
+/* ---------- 2 · Entrance navigation beneath the signature ----------
+   The words keep Monaco's size so the group stays centred on the script exactly as composed;
+   the caps open up (.1em) so the line keeps roughly Monaco's width under the bitmap. */
+:root[data-type="gothic"] .v4-home-nav{font-weight:500;letter-spacing:.1em}
+:root[data-type="gothic"] .site-nav .brand,:root[data-type="gothic"] .center .brand{font-weight:700;letter-spacing:.06em}
+
+/* ---------- 3 · Statements ---------- */
+:root[data-type="gothic"] .co4-copy h2{font-weight:400;letter-spacing:-.018em;line-height:1.12}
+:root[data-type="gothic"] .lede h1{font-weight:400;letter-spacing:-.022em;line-height:1.02}
+:root[data-type="gothic"] :is(.fw-title,.fw-essay h2,.fw-entry-heading,.etc-heading,.etc-dialog-body h2){font-weight:400;letter-spacing:-.02em}
+:root[data-type="gothic"] :is(.tb-no,.undated b){font-weight:400;letter-spacing:-.02em}
+
+/* ---------- 4 · Project titles and captions ---------- */
+:root[data-type="gothic"] .pg-name{font-weight:600;letter-spacing:.055em;line-height:1.3}
+:root[data-type="gothic"] .project-plate-name{font-weight:600;letter-spacing:.005em;line-height:1.02}
+:root[data-type="gothic"] .p-name{font-weight:400;letter-spacing:-.022em;line-height:1}
+:root[data-type="gothic"] .tb-title{font-weight:600;letter-spacing:.05em}
+:root[data-type="gothic"] .reading h1{font-weight:500;letter-spacing:-.005em}
+:root[data-type="gothic"] .pg-credits dd{font-size:11px;letter-spacing:.005em}
+:root[data-type="gothic"] :is(.index-row,.found li,.callout li button,.tb-set button,.tb-progress li,.p-near button,.p-index button,.co4-choice){letter-spacing:.002em}
+:root[data-type="gothic"] .nm.t1{font-weight:600}
+
+/* ---------- 5 · Company body copy ----------
+   Monaco 13/1.75 sets about 65 characters in the 520 px measure. Franklin sets about 80 in the same box, so the paragraphs take a 34em measure (14.5/1.6, ~68 characters) and text-wrap:pretty against one-word last lines; the box itself does not move:
+   */
+:root[data-type="gothic"] .co4-copy p{font-size:14.5px;line-height:1.6;letter-spacing:0;max-width:34em;text-wrap:pretty}
+:root[data-type="gothic"] .co4-description p{font-size:13px;line-height:1.58}
+:root[data-type="gothic"] .co4-choice{font-size:13px}
+:root[data-type="gothic"] .reading p:not(.micro){font-size:13px;line-height:1.6}
+:root[data-type="gothic"] .p-story{letter-spacing:0;line-height:1.58}
+:root[data-type="gothic"] :is(.contact-inquiry textarea,.portal-sheet textarea){letter-spacing:0}
+
+/* ---------- 6 · Phones (≤760 px): the Monaco Lineage scale, re-spaced for Franklin ---------- */
+@media (max-width:760px){
+  :root[data-type="gothic"] .v4-home-nav{font-weight:500;letter-spacing:.1em}
+  :root[data-type="gothic"] :is(.site-nav,.panel-head .close,.sheet-controls,.client-access-entry,.co4-nav button){letter-spacing:.08em}
+  :root[data-type="gothic"] .pg-name{letter-spacing:.05em}
+  :root[data-type="gothic"] .pg-credits dd{font-size:11px;letter-spacing:.06em;font-weight:500}
+  :root[data-type="gothic"] .co4-copy h2{letter-spacing:-.015em;line-height:1.14}
+  :root[data-type="gothic"] :is(.co4-copy p,.co4-description p){font-size:14.5px;line-height:1.56}
+  :root[data-type="gothic"] body[data-route="project"] .reading p:not(.micro){font-size:14px;line-height:1.58}
+  :root[data-type="gothic"] .project-plate-name{letter-spacing:.04em;font-weight:600}
+  :root[data-type="gothic"] .contact-inquiry textarea{font-size:16px}
+}
+
+/* ---------- comparison toggle (not part of the design; hidden with ?clean) ---------- */
+.ag-toggle{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:2147483000;display:flex;flex-direction:column;
+  font:500 9px/1 -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;
+  background:rgba(34,32,28,.86);color:#d9d4ca;border-radius:3px 0 0 3px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.18);cursor:auto}
+.ag-toggle button{all:unset;cursor:pointer;writing-mode:vertical-rl;transform:rotate(180deg);padding:10px 6px;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit}
+.ag-toggle button[aria-pressed="true"]{background:#f93822;color:#fff}
+.ag-toggle button:focus-visible{outline:1px solid #fff;outline-offset:-3px}
+html.ag-clean .ag-toggle{display:none}
+@media print{.ag-toggle{display:none}}
