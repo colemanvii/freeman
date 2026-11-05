@@ -1,0 +1,273 @@
+/* FREEMAN — TYPOGRAPHY STUDY 001 / PLATES
+   Each plate redraws a production composition at its real size (desktop 1440×900, phone 390×844),
+   from the production geometry measured on release 80bd97d. Colour, imagery, rules and positions
+   are fixed; only the typographic tokens change per direction (.d-*). */
+
+@font-face{font-family:"Study Diatype Mono";src:local("ABCDiatypeMonoTrial-Regular"),local("ABC Diatype Mono Trial Regular");font-weight:400}
+@font-face{font-family:"Study Neue Haas Text";src:local("NHaasGroteskTXPro-55Rg"),local("Neue Haas Grotesk Text Pro 55 Roman");font-weight:400}
+@font-face{font-family:"Study Neue Haas Text";src:local("NHaasGroteskTXPro-65Md"),local("Neue Haas Grotesk Text Pro 65 Medium");font-weight:500}
+@font-face{font-family:"Study Neue Haas Text";src:local("NHaasGroteskTXPro-75Bd"),local("Neue Haas Grotesk Text Pro 75 Bold");font-weight:700}
+/* Production's own self-hosted fallback (Bitstream Vera / DejaVu Sans Mono, free licence). */
+@font-face{font-family:"Freeman Mono";src:url("/assets/fonts/dejavu-sans-mono-latin.woff2") format("woff2");font-weight:400;font-display:swap}
+
+.fr{
+  /* colour: production Paper */
+  --paper:#fff9f1;--ink:#332e20;--muted:#706659;--hair:#d5cec3;--orange:#f93822;--sep:#9a9c97;
+  --meta:color-mix(in srgb,var(--ink) 78%,var(--paper));
+  /* CONTROL tokens = production desktop values (styles.css, release 80bd97d) */
+  --f-ui:Monaco,"Courier New",monospace;
+  --f-text:var(--f-ui);--f-disp:var(--f-text);--f-name:var(--f-ui);--f-place:var(--f-ui);--f-num:var(--f-ui);
+  --ui:10px;--ui-tr:.035em;--ui-w:400;
+  --home:12px;--home-tr:.015em;--home-gap:32px;--brand-w:700;
+  --mi:9px;--mi-tr:.04em;--mi-lh:1.45;
+  --tx:13px;--tx-lh:1.75;--tx-tr:0;--measure:520px;--tx-w:400;--p-gap:17px;
+  --h:33px;--h-lh:1.28;--h-tr:0;--h-w:400;--h-style:normal;
+  --nm:13px;--nm-lh:1.45;--nm-tr:.04em;--nm-case:uppercase;--nm-w:400;--nm-style:normal;
+  --pl:10px;--pl-tr:.04em;--pl-case:uppercase;--pl-style:normal;
+  --dd:10px;--dd-case:none;--dd-tr:0;
+  --pt:33px;--pt-lh:1.1;--pt-tr:-.035em;--pt-case:uppercase;--pt-w:400;--pt-style:normal;
+  --rw:12px;--rw-tr:0;--rw-case:none;--rw-w:400;--num:9px;--num-tr:0;
+  --tab:10px;--tab-tr:.02em;
+  /* phone tokens = Monaco Lineage (826fe33) */
+  --mf-ui:Menlo,Monaco,"Freeman Mono",monospace;--mf-text:var(--mf-ui);--mf-disp:var(--mf-text);--mf-name:var(--mf-ui);--mf-place:var(--mf-ui);
+  --m-home:17px;--m-home-tr:.02em;--m-ui:11px;--m-mi:10px;--m-tx:12.5px;--m-tx-lh:1.7;--m-h:25px;--m-h-lh:1.28;
+  --m-nm:18px;--m-pl:11px;--m-rw:15px;--m-pt:24px;
+  position:relative;overflow:hidden;background:var(--paper);color:var(--ink);
+  font-family:var(--f-ui);font-size:var(--ui);letter-spacing:var(--ui-tr);
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-synthesis:none;
+  font-kerning:normal;font-optical-sizing:auto;
+}
+.fr *{box-sizing:border-box;margin:0;padding:0}
+.fr.dk{width:1440px;height:900px}
+.fr.ph{width:390px;height:844px;
+  --f-ui:var(--mf-ui);--f-text:var(--mf-text);--f-disp:var(--mf-disp);--f-name:var(--mf-name);--f-place:var(--mf-place);--f-num:var(--mf-ui)}
+.fr.lb{width:720px;height:450px}
+.fr .o{color:var(--orange)}
+.fr .mu{color:var(--muted)}
+.fr .up{text-transform:uppercase}
+.fr img{display:block}
+
+/* ---------- shared UI layer ---------- */
+.fr .ui{font-family:var(--f-ui);font-size:var(--ui);letter-spacing:var(--ui-tr);font-weight:var(--ui-w);text-transform:uppercase;line-height:1.5;white-space:nowrap}
+.fr .mi{font-family:var(--f-ui);font-size:var(--mi);letter-spacing:var(--mi-tr);line-height:var(--mi-lh);text-transform:uppercase;color:var(--muted)}
+.fr .sep{color:var(--sep);padding:0 10px}
+.fr .hd{position:absolute;left:30px;right:30px;top:28px;display:flex;justify-content:space-between;align-items:center}
+.fr .hd .brand{font-weight:var(--brand-w)}
+.fr.ph .hd{left:18px;right:18px;top:20px}
+.fr.ph .ui{font-size:var(--m-ui)}
+.fr.ph .sep{padding:0 7px}
+.fr.ph .mi{font-size:var(--m-mi)}
+
+/* ---------- HOME ---------- */
+.fr .home-access{position:absolute;right:30px;top:29px;color:var(--orange)}
+.fr .home-sig{position:absolute;left:480px;top:332px;width:480px;height:183px}
+.fr .home-nav{position:absolute;left:0;right:0;top:551px;display:flex;justify-content:center;align-items:baseline;gap:0;
+  font-family:var(--f-ui);font-size:var(--home);letter-spacing:var(--home-tr);text-transform:uppercase;font-weight:var(--ui-w);line-height:1.5}
+.fr .home-nav .sep{padding:0 calc(var(--home-gap)/2 - .4em)}
+.fr .home-legal{position:absolute;left:29px;bottom:26px}
+.fr .home-bfg{position:absolute;right:29px;bottom:26px;text-align:right}
+.fr .swatches{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);display:flex;gap:12px}
+.fr .swatches i{width:13px;height:13px;display:block;border:1px solid var(--hair)}
+.fr .swatches i:nth-child(1){background:#fff9f1}.fr .swatches i:nth-child(2){background:#332e20;border-color:#332e20}.fr .swatches i:nth-child(3){background:#f05a3a;border-color:#f05a3a}
+.fr.ph .home-access{right:18px;top:22px;font-size:var(--m-ui)}
+.fr.ph .home-sig{left:72px;top:282px;width:246px;height:94px}
+.fr.ph .home-nav{top:402px;flex-direction:column;align-items:center;font-size:var(--m-home);letter-spacing:var(--m-home-tr);line-height:2.3}
+.fr.ph .home-nav .sep{display:none}
+.fr.ph .home-legal,.fr.ph .home-bfg{display:none}
+.fr.ph .swatches{bottom:34px;gap:20px}.fr.ph .swatches i{width:24px;height:24px}
+
+/* ---------- COMPANY ---------- */
+.fr .co{position:absolute;left:425px;top:186px;width:585px}
+.fr .tabs{display:flex;gap:33px;padding-bottom:17px;border-bottom:1px solid var(--hair);margin-bottom:24px;
+  font-family:var(--f-ui);font-size:var(--tab);letter-spacing:var(--tab-tr);text-transform:uppercase;color:var(--muted)}
+.fr .tabs .o{color:var(--orange)}
+.fr .co h2{font-family:var(--f-disp);font-size:var(--h);line-height:var(--h-lh);letter-spacing:var(--h-tr);font-weight:var(--h-w);font-style:var(--h-style);margin-bottom:25px}
+.fr .co p{font-family:var(--f-text);font-size:var(--tx);line-height:var(--tx-lh);letter-spacing:var(--tx-tr);font-weight:var(--tx-w);max-width:var(--measure);margin-bottom:var(--p-gap);text-wrap:pretty;hanging-punctuation:first}
+.fr.ph .co{left:18px;right:18px;width:auto;top:192px}
+.fr.ph .tabs{gap:20px;padding-bottom:12px;margin-bottom:19px;font-size:var(--m-ui)}
+.fr.ph .co h2{font-size:var(--m-h);line-height:var(--m-h-lh);margin-bottom:15px}
+.fr.ph .co p{font-size:var(--m-tx);line-height:var(--m-tx-lh);margin-bottom:14px}
+
+/* ---------- PROJECT REGISTER (register column of PROJECTS; map base omitted) ---------- */
+.fr .rg{position:absolute;left:30px;right:30px;top:94px;bottom:88px;display:grid;grid-template-columns:420px minmax(0,1fr);gap:64px}
+.fr .rg-k{margin-bottom:10px}
+.fr .rg h2{font-family:var(--f-disp);font-size:var(--h);line-height:var(--h-lh);letter-spacing:var(--h-tr);font-weight:var(--h-w);font-style:var(--h-style);margin-bottom:26px}
+.fr .rg-cols{display:flex;justify-content:space-between;margin-bottom:8px}
+.fr .rg ol{list-style:none;border-bottom:1px solid var(--hair)}
+.fr .rg>div{min-height:0;overflow:hidden}
+.fr .rg li{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:baseline;border-top:1px solid var(--hair);padding:var(--rw-pad,9px 0 8px)}
+.fr .rg li .n{font-family:var(--f-num);font-size:var(--num);letter-spacing:var(--num-tr);color:var(--muted);font-variant-numeric:tabular-nums}
+.fr .rg li .t{font-family:var(--f-name);font-size:var(--rw);letter-spacing:var(--rw-tr);text-transform:var(--rw-case);font-weight:var(--rw-w);line-height:1.35}
+.fr .rg li .p{font-family:var(--f-ui);font-size:var(--mi);letter-spacing:var(--mi-tr);text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.fr .rg li.on .n{color:var(--orange)}
+.fr .rg li.on .t{background:var(--orange);color:var(--paper);justify-self:start;box-shadow:0 0 0 2px var(--orange)}
+.fr .rg figure{display:grid;grid-template-rows:minmax(0,1fr) auto;gap:16px;min-height:0}
+.fr .rg figure img{width:100%;height:100%;object-fit:cover;filter:saturate(.88) contrast(.96);min-height:0}
+.fr .rg figcaption{display:flex;justify-content:space-between}
+.fr.ph .rg{left:18px;right:18px;top:70px;bottom:40px;display:block}
+.fr.ph .rg figure{display:none}
+.fr.ph .rg h2{font-size:var(--m-h);margin-bottom:20px}
+.fr.ph .rg li{grid-template-columns:30px minmax(0,1fr) auto;padding:10px 0 9px}
+.fr.ph .rg li .t{font-size:var(--m-rw)}
+.fr.ph .rg li .p{font-size:var(--m-mi)}
+
+/* ---------- PROJECT DETAIL (Beetlecat) ---------- */
+.fr .pg-i{position:absolute;left:30px;top:94px;width:220px;display:flex;flex-direction:column;gap:4px}
+.fr .pg-n{font-family:var(--f-name);font-size:var(--nm);line-height:var(--nm-lh);letter-spacing:var(--nm-tr);text-transform:var(--nm-case);font-weight:var(--nm-w);font-style:var(--nm-style)}
+.fr .pg-p{font-family:var(--f-place);font-size:var(--pl);letter-spacing:var(--pl-tr);text-transform:var(--pl-case);font-style:var(--pl-style);color:var(--meta);margin-bottom:10px;line-height:1.5}
+.fr .pg-c{border-top:1px solid var(--hair);padding:8px 0}
+.fr .pg-c dt{display:block}
+.fr .pg-c dd{font-family:var(--f-text);font-size:var(--dd);letter-spacing:var(--dd-tr);text-transform:var(--dd-case);margin-top:2px;line-height:1.5}
+.fr .pg-img{position:absolute;left:308px;top:94px;width:966px;height:689px;object-fit:cover}
+.fr .pg-ctl{position:absolute;left:308px;width:1102px;top:795px;display:flex;justify-content:center;gap:22px;align-items:center}
+.fr .pg-ctl .ar{font-family:var(--f-ui);font-size:15px;letter-spacing:0;line-height:1}
+.fr .pg-ctl .ar.dim{opacity:.25}
+.fr .pg-ctl .ct{font-family:var(--f-num);font-size:11px;letter-spacing:.04em;color:var(--muted);font-variant-numeric:tabular-nums}
+.fr.ph .pg-i{left:18px;right:18px;top:70px;width:auto;display:grid;grid-template-columns:1fr 1fr;column-gap:22px;row-gap:0}
+.fr.ph .pg-n,.fr.ph .pg-p{grid-column:1/-1}
+.fr.ph .pg-n{font-size:var(--m-nm)}
+.fr.ph .pg-p{font-size:var(--m-pl);margin-bottom:12px}
+.fr.ph .pg-c{border-top:0;padding:2px 0}
+.fr.ph .pg-c dd{font-size:var(--m-ui)}
+.fr.ph .pg-img{left:18px;top:330px;width:354px;height:242px}
+.fr.ph .pg-ctl{left:0;width:100%;top:722px}
+
+/* ---------- PROJECT PLATE (photograph + display caption) ---------- */
+.fr .pt{position:absolute;left:30px;right:30px;top:94px;bottom:56px;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:17px}
+.fr .pt img{width:100%;height:100%;object-fit:cover;min-height:0}
+.fr .pt-cap{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:22px;align-items:end;border-top:1px solid var(--hair);padding-top:15px}
+.fr .pt-n{font-family:var(--f-disp);font-size:var(--pt);line-height:var(--pt-lh);letter-spacing:var(--pt-tr);text-transform:var(--pt-case);font-weight:var(--pt-w);font-style:var(--pt-style)}
+.fr .pt-m{display:flex;flex-direction:column;align-items:flex-end;gap:5px;white-space:nowrap}
+.fr.ph .pt{left:18px;right:18px;top:70px;bottom:74px;gap:12px}
+.fr.ph .pt-cap{grid-template-columns:1fr;gap:9px;padding-top:10px}
+.fr.ph .pt-n{font-size:var(--m-pt)}
+.fr.ph .pt-m{flex-direction:row;justify-content:space-between;align-items:start}
+
+/* ---------- LABELS & DETAILS (shown enlarged) ---------- */
+.fr.lb{padding:34px 36px;display:grid;grid-template-columns:1fr 1fr;column-gap:40px;align-content:start}
+.fr .lb-row{border-top:1px solid var(--hair);padding:9px 0 10px;display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:baseline;min-width:0}
+.fr .lb-row>span:first-child{font-family:var(--f-num);font-size:8px;letter-spacing:.06em;color:#aaa198;text-transform:uppercase}
+.fr .lb-row .v{min-width:0;overflow:hidden}
+.fr .lb-long{grid-column:1/-1;margin-top:14px;border-top:1px solid var(--ink);padding-top:12px;display:flex;flex-direction:column;gap:6px}
+.fr .lb-long .pt-n{font-size:30px;line-height:1.1;white-space:nowrap}
+.fr .lb-tx{font-family:var(--f-text);font-size:var(--tx);line-height:var(--tx-lh);letter-spacing:var(--tx-tr)}
+.fr .lb-nm{font-family:var(--f-name);font-size:var(--nm);letter-spacing:var(--nm-tr);text-transform:var(--nm-case);font-weight:var(--nm-w);font-style:var(--nm-style)}
+.fr .lb-pl{font-family:var(--f-place);font-size:var(--pl);letter-spacing:var(--pl-tr);text-transform:var(--pl-case);font-style:var(--pl-style);color:var(--meta)}
+.fr .lb-num{font-family:var(--f-num);font-variant-numeric:tabular-nums;font-size:var(--ui);letter-spacing:.02em}
+
+/* =====================================================================
+   DIRECTIONS — tokens only. Nothing below moves a picture or a rule.
+   ===================================================================== */
+
+/* CONTROL — Monaco, exactly as production. */
+.d-mon{}
+
+/* COURIER — what production actually renders where Monaco is absent (Windows, Linux). */
+.d-cou{--f-ui:"Courier New",monospace}
+
+/* A — THE INSTRUMENT: ABC Diatype Mono (trial, Regular only). Monaco's job, with a better-drawn tool. */
+.d-dia{
+  --f-ui:"Study Diatype Mono","Courier New",monospace;
+  --mf-ui:"Study Diatype Mono","Courier New",monospace;
+  --ui:10.5px;--ui-tr:.02em;--home:12.5px;--home-tr:.03em;--home-gap:36px;--brand-w:400;
+  --mi:9px;--mi-tr:.03em;--mi-lh:1.5;
+  --tx:13.5px;--tx-lh:1.68;--tx-tr:-.005em;--measure:540px;
+  --h:36px;--h-lh:1.16;--h-tr:-.035em;
+  --nm:15px;--nm-tr:.01em;--nm-lh:1.35;
+  --pl:10px;--pl-tr:.03em;--dd:11px;
+  --pt:40px;--pt-tr:-.055em;--pt-lh:1.02;
+  --rw:13px;--rw-tr:-.005em;--num:9.5px;
+  --tab:10.5px;--tab-tr:.02em;
+  --m-home:17px;--m-ui:11px;--m-tx:13px;--m-tx-lh:1.66;--m-h:27px;--m-nm:19px;--m-rw:15px;--m-pt:27px;
+}
+
+/* B — THE NEUTRAL: Neue Haas Grotesk Text (55/65/75 installed on this Mac). */
+.d-nhg{
+  --f-ui:"Study Neue Haas Text","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mf-ui:"Study Neue Haas Text","Helvetica Neue",Helvetica,Arial,sans-serif;--mf-text:var(--mf-ui);
+  --ui:10.5px;--ui-tr:.06em;--ui-w:500;--home:12px;--home-tr:.09em;--home-gap:34px;--brand-w:700;
+  --mi:9px;--mi-tr:.07em;--mi-lh:1.5;
+  --tx:15px;--tx-lh:1.5;--tx-tr:-.003em;--measure:500px;--p-gap:14px;
+  --h:44px;--h-lh:1.04;--h-tr:-.028em;--h-w:500;
+  --nm:19px;--nm-lh:1.15;--nm-tr:-.012em;--nm-case:none;--nm-w:500;
+  --pl:10px;--pl-tr:.07em;--dd:13px;
+  --pt:64px;--pt-lh:.96;--pt-tr:-.035em;--pt-case:none;--pt-w:500;
+  --rw:15px;--rw-tr:-.006em;--num:9px;--num-tr:.04em;
+  --tab:10.5px;--tab-tr:.07em;
+  --m-home:15px;--m-home-tr:.1em;--m-ui:10.5px;--m-mi:9.5px;--m-tx:15px;--m-tx-lh:1.48;--m-h:31px;--m-h-lh:1.06;--m-nm:24px;--m-pl:10.5px;--m-rw:16px;--m-pt:34px;
+}
+
+/* C — AMERICAN GOTHIC: Libre Franklin (OFL) from the Franklin Gothic lineage (Benton, ATF 1902). */
+.d-frk{
+  --f-ui:"Libre Franklin",Arial,sans-serif;
+  --mf-ui:"Libre Franklin",Arial,sans-serif;--mf-text:var(--mf-ui);
+  --ui:10px;--ui-tr:.085em;--ui-w:600;--home:11.5px;--home-tr:.12em;--home-gap:34px;--brand-w:800;
+  --mi:8.5px;--mi-tr:.1em;--mi-lh:1.55;
+  --tx:15px;--tx-lh:1.52;--tx-tr:-.006em;--measure:500px;--p-gap:14px;
+  --h:46px;--h-lh:1;--h-tr:-.03em;--h-w:700;
+  --nm:17px;--nm-lh:1.1;--nm-tr:.03em;--nm-case:uppercase;--nm-w:800;
+  --pl:9.5px;--pl-tr:.1em;--dd:13px;
+  --pt:74px;--pt-lh:.9;--pt-tr:-.02em;--pt-case:uppercase;--pt-w:800;
+  --rw:14px;--rw-tr:0;--rw-w:500;--num:9px;--num-tr:.06em;
+  --tab:10px;--tab-tr:.1em;
+  --m-home:15px;--m-home-tr:.14em;--m-ui:10.5px;--m-mi:9px;--m-tx:15px;--m-tx-lh:1.5;--m-h:33px;--m-h-lh:1.02;--m-nm:24px;--m-pl:10px;--m-rw:15.5px;--m-pt:38px;
+}
+
+/* D — THE INSCRIPTION: Optima (Zapf, 1958), Apple system copy. Humanist, stone-cut proportions. */
+.d-opt{
+  --f-ui:Optima,"Optima nova",Candara,sans-serif;
+  --mf-ui:Optima,"Optima nova",Candara,sans-serif;--mf-text:var(--mf-ui);
+  --ui:10.5px;--ui-tr:.15em;--home:12px;--home-tr:.2em;--home-gap:40px;--brand-w:700;
+  --mi:9px;--mi-tr:.16em;--mi-lh:1.6;
+  --tx:16px;--tx-lh:1.56;--tx-tr:0;--measure:500px;--p-gap:14px;
+  --h:46px;--h-lh:1.06;--h-tr:-.012em;
+  --nm:15px;--nm-lh:1.3;--nm-tr:.16em;--nm-case:uppercase;
+  --pl:9.5px;--pl-tr:.16em;--dd:14px;
+  --pt:56px;--pt-lh:1;--pt-tr:.1em;--pt-case:uppercase;
+  --rw:16px;--rw-tr:.01em;--num:9.5px;--num-tr:.08em;
+  --tab:10px;--tab-tr:.16em;
+  --m-home:15px;--m-home-tr:.24em;--m-ui:10.5px;--m-mi:9.5px;--m-tx:16px;--m-tx-lh:1.55;--m-h:32px;--m-h-lh:1.08;--m-nm:18px;--m-pl:10px;--m-rw:16px;--m-pt:27px;
+}
+
+/* E — THE PUBLISHER: Source Serif 4 (OFL), one family, optical sizes doing the work. */
+.d-ssf{
+  --f-ui:"Source Serif 4",Georgia,serif;
+  --mf-ui:"Source Serif 4",Georgia,serif;--mf-text:var(--mf-ui);
+  --ui:11px;--ui-tr:.09em;--home:12.5px;--home-tr:.13em;--home-gap:36px;--brand-w:600;
+  --mi:9.5px;--mi-tr:.1em;--mi-lh:1.5;
+  --tx:16.5px;--tx-lh:1.5;--tx-tr:0;--measure:520px;--p-gap:13px;
+  --h:50px;--h-lh:1.04;--h-tr:-.018em;
+  --nm:22px;--nm-lh:1.15;--nm-tr:-.005em;--nm-case:none;
+  --f-place:var(--f-ui);--pl:15px;--pl-tr:0;--pl-case:none;--pl-style:italic;--dd:15px;
+  --pt:72px;--pt-lh:.98;--pt-tr:-.025em;--pt-case:none;
+  --rw:17px;--rw-tr:0;--num:10px;--num-tr:.04em;--rw-pad:6px 0 6px;
+  --tab:11px;--tab-tr:.1em;
+  --m-home:15.5px;--m-home-tr:.14em;--m-ui:11px;--m-mi:10px;--m-tx:16.5px;--m-tx-lh:1.5;--m-h:35px;--m-h-lh:1.06;--m-nm:27px;--m-pl:16px;--m-rw:17px;--m-pt:38px;
+}
+
+/* F — TWO VOICES: Caslon speaks, the mono keeps the record.
+   Voice: Libre Caslon Display / Text (OFL). Record: the Monaco Lineage stack already in production. */
+.d-cas{
+  --f-ui:Menlo,Monaco,"Freeman Mono",monospace;
+  --f-text:"Libre Caslon Text",Georgia,serif;
+  --f-disp:"Libre Caslon Display","Libre Caslon Text",Georgia,serif;
+  --f-name:"Libre Caslon Display","Libre Caslon Text",Georgia,serif;
+  --f-place:"Libre Caslon Text",Georgia,serif;
+  --f-num:var(--f-ui);
+  --mf-ui:Menlo,Monaco,"Freeman Mono",monospace;--mf-text:"Libre Caslon Text",Georgia,serif;--mf-disp:"Libre Caslon Display","Libre Caslon Text",Georgia,serif;--mf-name:var(--mf-disp);--mf-place:var(--mf-text);
+  --ui:10px;--ui-tr:.035em;--home:12px;--home-tr:.03em;--home-gap:32px;--brand-w:400;
+  --mi:9px;--mi-tr:.04em;--mi-lh:1.5;
+  --tx:15px;--tx-lh:1.6;--tx-tr:0;--measure:500px;--p-gap:12px;
+  --h:58px;--h-lh:1;--h-tr:-.012em;
+  --nm:30px;--nm-lh:1.02;--nm-tr:-.006em;--nm-case:none;
+  --pl:13.5px;--pl-tr:0;--pl-case:none;--pl-style:italic;--dd:13px;
+  --pt:84px;--pt-lh:.94;--pt-tr:-.018em;--pt-case:none;
+  --rw:18px;--rw-tr:-.004em;--num:9px;--rw-pad:6px 0 5px;
+  --tab:10px;--tab-tr:.02em;
+  --m-home:16px;--m-home-tr:.03em;--m-ui:11px;--m-mi:10px;--m-tx:15.5px;--m-tx-lh:1.58;--m-h:40px;--m-h-lh:1.02;--m-nm:36px;--m-pl:15px;--m-rw:20px;--m-pt:44px;
+}
+.d-cas .pg-c dd{font-family:var(--f-ui);font-size:var(--ui);letter-spacing:.02em}
+.d-cas .fr .pg-c dd,.fr.d-cas .pg-c dd{font-family:var(--f-ui);font-size:10px;letter-spacing:.02em}
+.fr.d-cas .pg-n{margin-bottom:2px}
+.fr.d-cas.ph .pg-c dd{font-size:10.5px;letter-spacing:0}
+.fr.d-cas .home-bfg-v{font-family:var(--f-text);font-style:italic;font-size:13px;letter-spacing:0;text-transform:none;color:var(--ink)}

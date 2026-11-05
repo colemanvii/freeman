@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Typography Study 001 — Freeman</title>
+<link rel="icon" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Open-licence (OFL) faces only. Commercial faces are never embedded; see section 07. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Libre+Franklin:ital,wght@0,300..900;1,300..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,300..700;1,8..60,300..700&display=block">
+<link rel="stylesheet" href="plates.css">
+<link rel="stylesheet" href="study.css">
+</head>
+<body>
+
+<nav class="top" aria-label="Study sections">
+ <a href="#cover" class="top-id">Freeman <span>/ Typography Study 001</span></a>
+ <span class="top-links"><a href="#audit">01 What we have</a><a href="#field">02 Field</a><a href="#directions">03 Directions</a><a href="#compare">04 Side by side</a><a href="#finalists">05 Finalists</a><a href="#recommendation">06 Recommendation</a><a href="#notes">07 Notes</a></span>
+</nav>
+
+<!-- ============ COVER ============ -->
+<header id="cover" class="cover">
+ <div class="cv-meta"><span>Freeman General Contracting</span><span>Typography Study 001</span><span>5 November 2026</span><span>Private · not for distribution</span></div>
+ <h1>An investigation into the typographic identity of Freeman General&nbsp;Contracting.</h1>
+ <p class="lede">For two years Monaco has given Freeman a voice that sounds like a record: exact, quiet, unsentimental. The question isn’t which typeface is more beautiful. It’s what Freeman needs to say that a record can’t, and whether the record should go on doing the talking.</p>
+ <div class="lineup" data-sentence aria-label="The Company statement set in each of the seven typographic directions"></div>
+ <div class="cv-foot"><span>One sentence from the Company page, in the control and the six directions.</span><span>Production untouched · release 80bd97d · branch study/typography-001</span></div>
+</header>
+
+<!-- ============ 01 AUDIT ============ -->
+<section id="audit" class="sec">
+ <div class="sec-h"><span class="no">01</span><h2>What we have</h2></div>
+ <div class="cols">
+  <div class="prose">
+   <p class="big">The site is a set of quiet, fixed compositions on Paper. One face does every job: the navigation, the labels, a 33-pixel statement, four paragraphs of philosophy, and the name of every project. Hierarchy comes only from size, capitals and the orange. There are no weights, no italics and no second voice.</p>
+   <p>I read the production source (styles.css, app.js, records.js on <code>release/approved-v5-2026-10-18</code>, which freemangc.com serves byte-for-byte today) and measured every composition at 1440 × 900 and 390 × 844. The plates in this study are rebuilt from those measurements. Every direction keeps the same copy, photographs, colour, rules and positions, so the only thing that changes is the type.</p>
+  </div>
+  <table class="scale">
+   <caption>Production type scale</caption>
+   <thead><tr><th>Role</th><th>Desktop · Monaco</th><th>Phone · Menlo</th></tr></thead>
+   <tbody>
+    <tr><td>Home navigation</td><td>12 / +.015em / caps</td><td>17 / caps</td></tr>
+    <tr><td>Interior navigation</td><td>10 / +.035em / caps</td><td>11</td></tr>
+    <tr><td>Labels, legal, captions</td><td>9 / +.04em / caps</td><td>10 · 9.5</td></tr>
+    <tr><td>Company statement</td><td>33 / 1.28</td><td>25</td></tr>
+    <tr><td>Running text</td><td>13 / 1.75</td><td>12.5</td></tr>
+    <tr><td>Project name, detail</td><td>13 / +.04em / caps</td><td>18</td></tr>
+    <tr><td>Register rows</td><td>12</td><td>15</td></tr>
+    <tr><td>Plate name</td><td>33 / −.035em / caps</td><td>24</td></tr>
+    <tr><td>Weights · italics</td><td>one · none</td><td>one · none</td></tr>
+   </tbody>
+  </table>
+ </div>
+
+ <div class="two">
+  <div><h3>What Monaco gives Freeman</h3>
+   <ol class="pts">
+    <li><b>Precision without coldness.</b> Susan Kare and Kris Holmes drew Monaco for the 1984 Macintosh. It has a humanist hand, with open counters and a round <i>a</i>, so it reads as exact without ever reading as industrial.</li>
+    <li><b>The record.</b> Small uppercase labels on hairlines make every page read like a drawing set or a specification. This is the site’s most original idea, and it is a typographic one.</li>
+    <li><b>A rhyme with the signature.</b> The script is a 160 × 61 bitmap, and Monaco began as a bitmap too. The hand and the machine come from the same moment on the same screen.</li>
+    <li><b>Humility.</b> A builder speaking in a plain, workmanlike face leaves the talking to the photographs.</li>
+   </ol></div>
+  <div><h3>Where it limits us</h3>
+   <ol class="pts">
+    <li><b>Most of the people we want to impress never see it.</b> Monaco is an Apple system font and can’t be licensed for the web. On Windows the desktop stack falls to Courier New, and Windows is where architects work, because Revit runs only there. Android phones get DejaVu.</li>
+    <li><b>One voice for every job.</b> “× CLOSE” and “Buildings outlive the people who build them” come out in the same voice, at nearly the same weight.</li>
+    <li><b>Essays in a terminal.</b> At essay length a monospace sets English wide and evenly grey, with every <i>i</i> as wide as an <i>m</i>. The Company page reads like a readme.</li>
+    <li><b>No bold and no italic.</b> The bold FREEMAN GC is synthesised by the browser, because Monaco has no bold. There is no italic for place names or the titles of works.</li>
+    <li><b>The signal has moved.</b> In 2020, uppercase mono labels read as a specification sheet. By 2026 they are the house style of software, AI and crypto launches, and the same marks now read as “tech.”</li>
+   </ol></div>
+ </div>
+
+ <div class="evidence">
+  <div class="ev-h"><h3>What a Windows visitor sees today</h3><p>The same Company page with production’s own font stack. On the left is a Mac with Monaco installed. On the right is what the stack falls back to when Monaco is missing. The second plate isn’t hypothetical: it’s the <code>"Courier New"</code> fallback in styles.css line 9.</p></div>
+  <div class="ev-g">
+   <figure class="pl"><div data-plate="company" data-dir="mon" data-size="dk"></div><figcaption><span>Mac · Monaco</span><span>1440 × 900</span></figcaption></figure>
+   <figure class="pl"><div data-plate="company" data-dir="cou" data-size="dk"></div><figcaption><span>Windows · Courier New</span><span>1440 × 900</span></figcaption></figure>
+  </div>
+ </div>
+
+ <div class="keep"><h3>Fixed in every direction</h3><p>Paper and the three palettes · the orange · hairline rules · the pixel signature and the eagle · the four-corner composition · small uppercase navigation in the same positions · photography and crops · all copy. The study only redraws type. It isn’t a redesign.</p></div>
+</section>
+
+<!-- ============ 02 FIELD ============ -->
+<section id="field" class="sec">
+ <div class="sec-h"><span class="no">02</span><h2>The field</h2></div>
+ <p class="intro">Thirteen faces from independent and established foundries, chosen for character, cultural intelligence, precision and how long they will last. The question is never whether a face is good, because all of these are. The question is what it would say about Freeman.</p>
+ <div class="field">
+  <article><header><h3>ABC Diatype · Semi-Mono · Mono</h3><span>Dinamo, Berlin / Basel</span></header>
+   <p>A grotesk drawn in proportional, semi-monospaced and monospaced widths. It is the only family here that can move away from Monaco gradually.</p>
+   <dl><dt>Licence</dt><dd>Dinamo desktop / web licences, priced by use. Trial fonts are for evaluation only.</dd><dt>Here because</dt><dd>It is the natural heir to Monaco.</dd></dl><b class="tag r">Rendered · A (trial Mono Regular, this Mac)</b></article>
+  <article><header><h3>Söhne · Söhne Mono</h3><span>Klim Type Foundry · Kris Sowersby, 2019</span></header>
+   <p>Akzidenz-Grotesk as remembered through the New York subway. It is superbly made, with Mono, Breit and Schmal widths.</p>
+   <dl><dt>Licence</dt><dd>Klim desktop / web licences. Trials on request.</dd><dt>Verdict</dt><dd>Not taken forward. It is now the typeface of ChatGPT, so in 2026 it reads as “AI product” to everyone Freeman wants to reach.</dd></dl><b class="tag">Documented only</b></article>
+  <article><header><h3>Founders Grotesk · Mono</h3><span>Klim · Kris Sowersby, 2010</span></header>
+   <p>Drawn from the Miller &amp; Richard grotesques of the early 1900s. It is warmer and stranger than the Swiss models, with Victorian bones.</p>
+   <dl><dt>Licence</dt><dd>Klim desktop / web. Trials on request.</dd><dt>Verdict</dt><dd>The most hospitable grotesk here, and the best candidate for a licensed record layer beside Founders Caslon (section 06).</dd></dl><b class="tag">Documented · upgrade path</b></article>
+  <article><header><h3>Suisse Int’l</h3><span>Swiss Typefaces · Ian Party</span></header>
+   <p>A clean, contemporary Swiss grotesk with a large system (Mono, Works, Condensed).</p>
+   <dl><dt>Licence</dt><dd>Swiss Typefaces EULA. Trials available.</dd><dt>Verdict</dt><dd>Not taken forward. This is the Swiss minimalism the brief warned against: the default of fashion and technology brands.</dd></dl><b class="tag">Documented only</b></article>
+  <article><header><h3>Untitled Sans · Untitled Serif</h3><span>Klim · Kris Sowersby</span></header>
+   <p>A deliberately plain, “unbranded” sans with a matching serif. It aims at the absence of style.</p>
+   <dl><dt>Licence</dt><dd>Klim desktop / web.</dd><dt>Verdict</dt><dd>Philosophically right (“the work speaks”) but anonymous in practice. Untitled Serif is noted as an alternative voice for F.</dd></dl><b class="tag">Documented only</b></article>
+  <article><header><h3>GT America · Mono</h3><span>Grilli Type · Noël Leu with Seb McLauchlan, 2016</span></header>
+   <p>A bridge between the American gothics (Franklin, News Gothic) and the European grotesks. It comes in a huge range of widths, plus a Mono.</p>
+   <dl><dt>Licence</dt><dd>Grilli desktop / web. Trials available.</dd><dt>Verdict</dt><dd>Represented in C by its American ancestor. It is the polished commercial route to that idea.</dd></dl><b class="tag">Documented · via C</b></article>
+  <article><header><h3>Neue Haas Grotesk</h3><span>Christian Schwartz, 2010 · after Max Miedinger, 1957</span></header>
+   <p>The Haas drawings before Helvetica’s mechanical compromises, with Display and Text optical sizes.</p>
+   <dl><dt>Licence</dt><dd>Monotype.</dd><dt>Here because</dt><dd>It is the honest version of the Helvetica question the site has already asked once.</dd></dl><b class="tag r">Rendered · B (Text cuts, this Mac)</b></article>
+  <article><header><h3>ABC Favorit · Mono</h3><span>Dinamo</span></header>
+   <p>A quirky grotesk with retro-computing details.</p>
+   <dl><dt>Licence</dt><dd>Dinamo.</dd><dt>Verdict</dt><dd>Not taken forward. It is studio fashion and would date to the year it shipped.</dd></dl><b class="tag">Documented only</b></article>
+  <article><header><h3>Pitch</h3><span>Klim · Kris Sowersby, 2012</span></header>
+   <p>A contemporary monospace with typewriter ancestry and small serifs: a mono with manners.</p>
+   <dl><dt>Licence</dt><dd>Klim desktop / web.</dd><dt>Verdict</dt><dd>The most compelling commercial mono for a record layer, but its typewriter lineage leans toward café menus. Worth a trial against the Monaco lineage.</dd></dl><b class="tag">Documented · test</b></article>
+  <article><header><h3>Franklin Gothic</h3><span>Morris Fuller Benton, ATF 1902 · ATF Franklin Gothic · Libre Franklin</span></header>
+   <p>The working grotesk of American newspapers, rail and signage. It is built on weight contrast.</p>
+   <dl><dt>Licence</dt><dd>Libre Franklin: OFL. ATF Franklin Gothic: ATF Collection licence.</dd><dt>Here because</dt><dd>It is an American lineage for a Georgia builder, and the unexpected grotesk.</dd></dl><b class="tag r">Rendered · C (Libre Franklin)</b></article>
+  <article><header><h3>Optima</h3><span>Hermann Zapf, Stempel 1958 · Optima nova, Linotype</span></header>
+   <p>A flared humanist sans drawn after Renaissance inscriptions in Florence. It is lettering that belongs to architecture.</p>
+   <dl><dt>Licence</dt><dd>Linotype / Monotype for the web. The Apple system copy is for local use.</dd><dt>Here because</dt><dd>It is the unexpected humanist.</dd></dl><b class="tag r">Rendered · D (Apple copy)</b></article>
+  <article><header><h3>Source Serif 4</h3><span>Frank Grießhammer, Adobe</span></header>
+   <p>A Fournier-model transitional serif with true optical sizes from caption to display.</p>
+   <dl><dt>Licence</dt><dd>SIL Open Font Licence.</dd><dt>Here because</dt><dd>It is the most rigorous test of a serif-only system.</dd></dl><b class="tag r">Rendered · E</b></article>
+  <article><header><h3>Caslon</h3><span>William Caslon, c. 1725 · Founders Caslon (Klim) · Adobe Caslon · Libre Caslon</span></header>
+   <p>The type of colonial American printing, in continuous use for three hundred years: plain, warm and sturdy.</p>
+   <dl><dt>Licence</dt><dd>Libre Caslon: OFL. Founders Caslon: Klim.</dd><dt>Here because</dt><dd>It is the unexpected serif, and the one that already means “for generations.”</dd></dl><b class="tag r">Rendered · F (Libre Caslon)</b></article>
+ </div>
+ <p class="also"><b>Also considered and set aside:</b> Basis Grotesque (Colophon), friendly but very 2015. Akkurat (Lineto), the default of architecture practices. Georgia (Matthew Carter, 1993), the obvious joke for a Georgia company and the screen-era cousin of Monaco, but too familiar to carry an identity. And Courier New, which isn’t a choice: it’s what the site falls back to today.</p>
+</section>
+
+<!-- ============ 03 DIRECTIONS ============ -->
+<section id="directions" class="sec">
+ <div class="sec-h"><span class="no">03</span><h2>Six directions and the control</h2><p class="hint">Use ← → to step through · click any plate for full size</p></div>
+ <div class="dir-tabs" role="tablist" aria-label="Directions"></div>
+ <div id="dir-body"></div>
+</section>
+
+<!-- ============ 04 COMPARE ============ -->
+<section id="compare" class="sec">
+ <div class="sec-h"><span class="no">04</span><h2>Side by side</h2><p class="hint">One composition, seven voices</p></div>
+ <div class="cmp-tabs" role="tablist" aria-label="Composition"></div>
+ <div id="cmp-body" class="cmp-grid"></div>
+</section>
+
+<!-- ============ 05 FINALISTS ============ -->
+<section id="finalists" class="sec">
+ <div class="sec-h"><span class="no">05</span><h2>Three finalists</h2></div>
+ <div class="fin">
+  <article class="win"><span class="fin-n">1</span><h3>F · Two Voices</h3><p class="fin-f">Caslon voice · monospaced record</p><p>It is the only direction that adds something Freeman lacks without taking away anything it already has. The site keeps its record exactly, and gains a voice that can say “built for generations” and be believed.</p></article>
+  <article><span class="fin-n">2</span><h3>A · The Instrument</h3><p class="fin-f">Diatype Mono + Semi-Mono</p><p>The best answer if Freeman decides it is a record and nothing more: a single voice, made properly, licensed, and the same on every device. It is safe and better than today. It also says less than F.</p></article>
+  <article><span class="fin-n">3</span><h3>C · American Gothic</h3><p class="fin-f">Franklin lineage, weight as voice</p><p>The boldest credible idea, and the only one that is unmistakably a builder. Made quieter (ATF Franklin Gothic in its lighter weights, heavy capitals used once per page) it could be extraordinary. As drawn here it shouts at the signature.</p></article>
+ </div>
+ <p class="rej"><b>Not taken forward:</b> B is too anonymous. D is beautiful but says spa. E is a magazine, and it gives up the record.</p>
+</section>
+
+<!-- ============ 06 RECOMMENDATION ============ -->
+<section id="recommendation" class="sec rec">
+ <div class="sec-h"><span class="no">06</span><h2>Recommendation</h2></div>
+ <div class="rec-hero">
+  <div data-plate="company" data-dir="cas" data-size="dk"></div>
+ </div>
+ <div class="rec-body">
+  <div class="essay">
+   <p class="big">Freeman does two things, and its typography should say so.</p>
+   <p>It keeps a record: places, clients, credits, photographs and the plain order of the work. And it makes a promise, that what it builds will outlast the people who built it. For two years Monaco has been asked to do both. It is superb at the first and unconvincing at the second.</p>
+   <p>The recommendation is to stop asking one face to do both jobs.</p>
+   <p><b>The record stays monospaced.</b> That means the same Monaco lineage the site already uses on phones: Menlo on Apple devices, and the self-hosted Freeman Mono everywhere else, so Windows stops seeing Courier New. Every label, number, credit and caption, the navigation and the four corners keep their size, capitals and spacing. Squint and it is the same site. The homepage doesn’t change at all, because there the signature is the voice.</p>
+   <p><b>The voice becomes Caslon.</b> That isn’t the fashionable serif; it’s nearly the opposite of one. Caslon is the type of American printing from the colonies to the founding, and it has been in continuous use for three hundred years. It is what “Built for Generations” looks like set in type. It is warm without decoration and literate without preciousness. It sits naturally beside a restaurant menu, an architect’s monograph and a hand-painted sign. It belongs with the eagle and the idea of inheritance, and it needs no ornament.</p>
+   <p><b>Why not a better grotesk?</b> A grotesk would make Freeman look like its architects. A serif-only system would make it look like its clients. Two voices let Freeman look like itself: the builder who keeps impeccable records and believes in what it builds.</p>
+   <p><b>In ten years:</b> Caslon hasn’t dated in three hundred, and the mono layer is already Freeman’s own. <b>To a restaurateur</b>, it says taste, literacy and restraint. <b>To an architect</b>, it says a firm that knows the difference between a label and a sentence.</p>
+  </div>
+  <aside class="rules">
+   <h3>Rules of the system</h3>
+   <ol>
+    <li><b>The record speaks mono.</b> Navigation, labels, numbers, credits, captions, controls and metadata, set in caps at 9–11 px with today’s tracking.</li>
+    <li><b>The voice speaks Caslon.</b> Statements, editorial text, project names. Always sentence case. Never capitals, never letterspaced.</li>
+    <li><b>Italic has one job:</b> places, and the titles of works.</li>
+    <li><b>Caslon never below 13 px.</b> Under that size the mono speaks.</li>
+    <li><b>Never mix voices inside a phrase.</b> They meet across a rule, never within a line of text.</li>
+    <li><b>No ornament.</b> No swashes, small-cap flourishes or long s. The signature and the eagle remain the only marks.</li>
+   </ol>
+   <table class="spec"><caption>F · desktop / phone</caption><tbody>
+    <tr><td>Statement</td><td>Caslon Display 58 / 1.0</td><td>40</td></tr>
+    <tr><td>Project name</td><td>Caslon Display 30 · plate 84</td><td>36 · 44</td></tr>
+    <tr><td>Register name</td><td>Caslon Display 19</td><td>20</td></tr>
+    <tr><td>Running text</td><td>Caslon Text 15 / 1.6</td><td>15.5</td></tr>
+    <tr><td>Place</td><td>Caslon Text italic 13.5</td><td>15</td></tr>
+    <tr><td>Record</td><td>Mono 9–12, caps, as today</td><td>as today</td></tr>
+   </tbody></table>
+  </aside>
+ </div>
+ <div class="path">
+  <div><h4>Now · no cost</h4><p>Libre Caslon Text + Display (OFL), self-hosted, with the record on the existing Menlo → Freeman Mono stack, exactly as rendered in this study. That fixes the Courier New problem on desktop the same day.</p></div>
+  <div><h4>Upgrade · before any launch moment</h4><p>Founders Caslon (Klim): a faithful Caslon cut in separate optical sizes from text to poster, and better drawn than Libre Caslon at display sizes. Request Klim trials and re-run this study with them before licensing. If the record should be licensed too, test Founders Grotesk Mono and Pitch against the Monaco lineage.</p></div>
+  <div><h4>Before shipping</h4><p>A Windows and Android pass. Caslon’s old-style figures in prose only, with tabular lining figures in the mono. A 9 px check on non-retina screens. A Contact and Map pass, which this study doesn’t cover. And a decision on Company’s Services and People tabs.</p></div>
+ </div>
+</section>
+
+<!-- ============ 07 NOTES ============ -->
+<section id="notes" class="sec notes">
+ <div class="sec-h"><span class="no">07</span><h2>Rendering, licences, limits</h2></div>
+ <ul>
+  <li><b>Every plate shows a real face, or says it doesn’t.</b> Each direction measures its own fonts in your browser and puts a warning in its header if a face is missing. No substitute is presented as the face it replaces.</li>
+  <li><b>A · ABC Diatype Mono</b> is Dinamo’s trial (Regular only), installed on this Mac and loaded with <code>local()</code>. It isn’t embedded or distributed, and it won’t render on another machine. The trial licence covers evaluation, not publication.</li>
+  <li><b>B · Neue Haas Grotesk Text</b> is installed on this Mac (55, 65, 75) and loaded with <code>local()</code>. The licence of that install isn’t verified. The Display cut is missing, so the large sizes are an approximation of the proper optical size.</li>
+  <li><b>C, E, F</b> use OFL fonts from Google Fonts: Libre Franklin, Source Serif 4, Libre Caslon. They render on any device. F’s record layer is production’s own stack, including the self-hosted DejaVu Sans Mono (free licence) already in <code>/assets/fonts</code>.</li>
+  <li><b>D · Optima</b> is the Apple system copy, so it renders only on Apple devices. Publishing requires a Linotype web licence.</li>
+  <li><b>Not rendered:</b> Söhne, Founders Grotesk, Founders Caslon, Suisse Int’l, Untitled, GT America, Favorit, Pitch. No trials were downloaded and no commercial fonts were acquired. Their assessments rest on the foundries’ published specimens and on long familiarity, not on these plates.</li>
+  <li><b>The register plate</b> redraws the register column of PROJECTS. The map base is replaced by the project photograph from the former index layout, so type rather than cartography is being judged. Contact, Map and Access are outside this study.</li>
+  <li><b>Production is untouched.</b> This study lives only in <code>v5/studies/typography-001/</code> on <code>study/typography-001</code>, which has no upstream and hasn’t been pushed. No generator was run.</li>
+ </ul>
+</section>
+
+<footer class="end"><span>Freeman · Typography Study 001</span><span>Prepared for Cole Calfee</span><span>5 November 2026</span></footer>
+
+<div id="viewer" class="viewer" hidden role="dialog" aria-modal="true" aria-label="Full-size plate">
+ <div class="vw-bar"><span class="vw-cap"></span><span class="vw-scale"></span><button type="button" class="vw-close">Close ×</button></div>
+ <div class="vw-stage"></div>
+</div>
+
+<script src="study.js"></script>
+</body>
+</html>
