@@ -1,3 +1,4 @@
+import { galleryPage, photographFile, driveConfigured } from "../lib/photographs-drive.js";
 // Server-side demo gate. Cloudflare Pages secrets required:
 // FREEMAN_OS_PASSWORD and FREEMAN_OS_SESSION_KEY (32+ random characters).
 const COOKIE="fos_session", AGE=8*60*60, ROOT="/team-os", enc=new TextEncoder();
@@ -63,12 +64,22 @@ async function photos(ctx,req,url,path){
  const page=path===PHOTOS||path===PHOTOS+".html"||path===PHOTOS+"/";
  if(!(await photosValid(req)))return page?respond(photosPage(false)):new Response("Not found",{status:404,headers:{"Cache-Control":"private, no-store",...SECURITY}});
  if(page&&url.pathname!==PHOTOS)return new Response(null,{status:308,headers:{"Location":PHOTOS,"Cache-Control":"private, no-store"}});
- const origin=await ctx.next(),headers=new Headers(origin.headers);
- headers.set("Cache-Control",page?"private, no-store":"private, max-age=86400");for(const [k,v] of Object.entries(SECURITY))headers.set(k,v);
- if(page){headers.delete("ETag");headers.delete("Last-Modified");
-  const t=(req.headers.get("Cookie")||"").split(";").map(s=>s.trim()).find(s=>s.startsWith(PHOTOS_COOKIE+"="));
-  headers.append("Set-Cookie",photosCookie(t.slice(PHOTOS_COOKIE.length+1)));}
- return new Response(origin.body,{status:origin.status,statusText:origin.statusText,headers});
+ // Photographs come from Google Drive (lib/photographs-drive.js); nothing under /photograph-files/ is static.
+ if(!page){
+  if(!driveConfigured(ctx.env))return new Response("Not found",{status:404,headers:{"Cache-Control":"private, no-store",...SECURITY}});
+  let file=null;try{file=await photographFile(url,ctx.env,p=>ctx.waitUntil(p));}catch(e){console.error(e);return new Response("Unavailable",{status:503,headers:{"Cache-Control":"no-store",...SECURITY}});}
+  if(!file)return new Response("Not found",{status:404,headers:{"Cache-Control":"private, no-store",...SECURITY}});
+  const headers=new Headers(file.headers);headers.set("Cache-Control","private, max-age=31536000, immutable");for(const [k,v] of Object.entries(SECURITY))headers.set(k,v);
+  return new Response(req.method==="HEAD"?null:file.body,{status:200,headers});
+ }
+ if(!driveConfigured(ctx.env))return respond("Photographs are unavailable.",503,{"Content-Type":"text/plain; charset=utf-8"});
+ let html;try{html=await galleryPage(await ctx.next(),ctx.env);}catch(e){console.error(e);return respond("Photographs are unavailable.",503,{"Content-Type":"text/plain; charset=utf-8"});}
+ const headers=new Headers({"Content-Type":"text/html; charset=utf-8"});
+ headers.set("Cache-Control","private, no-store");for(const [k,v] of Object.entries(SECURITY))headers.set(k,v);
+ // Re-issue the session cookie at Path=/ so sessions from before the image move reach /photograph-files/.
+ const t=(req.headers.get("Cookie")||"").split(";").map(s=>s.trim()).find(s=>s.startsWith(PHOTOS_COOKIE+"="));
+ headers.append("Set-Cookie",photosCookie(t.slice(PHOTOS_COOKIE.length+1)));
+ return new Response(req.method==="HEAD"?null:html,{status:200,headers});
 }
 export async function onRequest(ctx){
  const req=ctx.request,url=new URL(req.url),path=canonical(url.pathname);
