@@ -1,3 +1,4 @@
+import { galleryPage, photographFile, driveConfigured } from "../lib/photographs-drive.js";
 // Server-side demo gate. Cloudflare Pages secrets required:
 // FREEMAN_OS_PASSWORD and FREEMAN_OS_SESSION_KEY (32+ random characters).
 const COOKIE="fos_session", AGE=8*60*60, ROOT="/team-os", enc=new TextEncoder();
@@ -33,7 +34,9 @@ function respond(body,status,extra){return new Response(body,{status:status||200
 const PHOTOS="/photographs",PHOTOS_COOKIE="fph_session",PHOTOS_AGE=30*24*60*60;
 const PHOTOS_SALT="freeman-photographs-v1",PHOTOS_ITER=100000;
 const PHOTOS_CHECK="c6eb32e41d789bab727ca6afd8ead7b78bf1e733ebbc686d06650a229756bcec";
-const isPhotos=p=>p===PHOTOS||p.startsWith(PHOTOS+"/")||p.startsWith(PHOTOS+".");
+// Images live in /photograph-files/, not /photographs/, so the page URL is never also a directory.
+const PHOTO_FILES="/photograph-files";
+const isPhotos=p=>p===PHOTOS||p.startsWith(PHOTOS+"/")||p.startsWith(PHOTOS+".")||p===PHOTO_FILES||p.startsWith(PHOTO_FILES+"/");
 const hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");
 async function photosToken(pw){const k=await crypto.subtle.importKey("raw",enc.encode(pw),"PBKDF2",false,["deriveBits"]);return b64(new Uint8Array(await crypto.subtle.deriveBits({name:"PBKDF2",hash:"SHA-256",salt:enc.encode(PHOTOS_SALT),iterations:PHOTOS_ITER},k,256)));}
 async function photosValid(req){
@@ -46,6 +49,7 @@ function photosPage(error){
  ':root{--paper:#fff9f1;--ink:#332e20;--muted:#706659;--hair:#d5cec3;--orange:#f93822;--mono:Monaco,"Courier New",monospace;--edge:clamp(18px,2.4vw,30px)}:root[data-palette="sand"]{--paper:#ddcfb3;--ink:#332e20;--muted:#6d6150;--hair:#b5a68c}:root[data-palette="umber"]{--paper:#332e20;--ink:#fff9f1;--muted:#c5b9a7;--hair:#71685c}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--paper);color:var(--ink)}body{font:10px/1.5 var(--mono);letter-spacing:.035em;text-transform:uppercase;-webkit-font-smoothing:antialiased;min-height:100dvh;display:grid;grid-template-rows:94px 1fr 94px}header{padding:28px var(--edge) 0}a{color:inherit;text-decoration:none;font-weight:700}a:hover{background:var(--orange);color:var(--paper)}form{align-self:center;justify-self:center;width:min(300px,calc(100% - 2*var(--edge)));margin-top:-6vh}label{display:block;color:var(--muted);margin-bottom:6px}.line{display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--hair)}.line:focus-within{border-color:var(--ink)}input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--ink);font:16px var(--mono);letter-spacing:.08em;padding:10px 0}button{border:0;background:none;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;padding:0;cursor:pointer;min-height:44px}button:hover,button:focus-visible{color:var(--orange)}.error{color:var(--orange);min-height:15px;margin-top:10px}@media(max-width:700px){body{grid-template-rows:70px 1fr 70px}header{padding-top:20px}}'+
  '</style></head><body><header><a href="/">FREEMAN GC</a></header><form action="/photographs" method="POST"><label for="password">Password</label><div class="line"><input id="password" name="password" type="password" autocomplete="current-password" maxlength="128" required autofocus><button type="submit">Enter</button></div><div class="error" role="alert">'+(error?'Incorrect':'')+'</div></form></body></html>';
 }
+const photosCookie=t=>PHOTOS_COOKIE+"="+t+"; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age="+PHOTOS_AGE;
 async function photos(ctx,req,url,path){
  if(req.method==="POST"){
   if(path!==PHOTOS)return new Response("Method not allowed",{status:405,headers:{"Allow":"GET, HEAD"}});
@@ -53,17 +57,29 @@ async function photos(ctx,req,url,path){
   const token=typeof input==="string"&&input.length<=128?await photosToken(input):"";
   if(!token||!eq(hex(await crypto.subtle.digest("SHA-256",enc.encode(token))),PHOTOS_CHECK))return respond(photosPage(true),401);
   const response=new Response(null,{status:303,headers:{"Location":PHOTOS,"Cache-Control":"private, no-store"}});
-  response.headers.append("Set-Cookie",PHOTOS_COOKIE+"="+token+"; Path="+PHOTOS+"; HttpOnly; Secure; SameSite=Lax; Max-Age="+PHOTOS_AGE);
+  response.headers.append("Set-Cookie",photosCookie(token));
   return response;
  }
  if(req.method!=="GET"&&req.method!=="HEAD")return new Response("Method not allowed",{status:405,headers:{"Allow":"GET, HEAD, POST"}});
  const page=path===PHOTOS||path===PHOTOS+".html"||path===PHOTOS+"/";
  if(!(await photosValid(req)))return page?respond(photosPage(false)):new Response("Not found",{status:404,headers:{"Cache-Control":"private, no-store",...SECURITY}});
  if(page&&url.pathname!==PHOTOS)return new Response(null,{status:308,headers:{"Location":PHOTOS,"Cache-Control":"private, no-store"}});
- const origin=await ctx.next(),headers=new Headers(origin.headers);
- headers.set("Cache-Control",page?"private, no-store":"private, max-age=86400");for(const [k,v] of Object.entries(SECURITY))headers.set(k,v);
- if(page){headers.delete("ETag");headers.delete("Last-Modified");}
- return new Response(origin.body,{status:origin.status,statusText:origin.statusText,headers});
+ // Photographs come from Google Drive (lib/photographs-drive.js); nothing under /photograph-files/ is static.
+ if(!page){
+  if(!driveConfigured(ctx.env))return new Response("Not found",{status:404,headers:{"Cache-Control":"private, no-store",...SECURITY}});
+  let file=null;try{file=await photographFile(url,ctx.env,p=>ctx.waitUntil(p));}catch(e){console.error(e);return new Response("Unavailable",{status:503,headers:{"Cache-Control":"no-store",...SECURITY}});}
+  if(!file)return new Response("Not found",{status:404,headers:{"Cache-Control":"private, no-store",...SECURITY}});
+  const headers=new Headers(file.headers);headers.set("Cache-Control","private, max-age=31536000, immutable");for(const [k,v] of Object.entries(SECURITY))headers.set(k,v);
+  return new Response(req.method==="HEAD"?null:file.body,{status:200,headers});
+ }
+ if(!driveConfigured(ctx.env))return respond("Photographs are unavailable.",503,{"Content-Type":"text/plain; charset=utf-8"});
+ let html;try{html=await galleryPage(await ctx.next(),ctx.env);}catch(e){console.error(e);return respond("Photographs are unavailable.",503,{"Content-Type":"text/plain; charset=utf-8"});}
+ const headers=new Headers({"Content-Type":"text/html; charset=utf-8"});
+ headers.set("Cache-Control","private, no-store");for(const [k,v] of Object.entries(SECURITY))headers.set(k,v);
+ // Re-issue the session cookie at Path=/ so sessions from before the image move reach /photograph-files/.
+ const t=(req.headers.get("Cookie")||"").split(";").map(s=>s.trim()).find(s=>s.startsWith(PHOTOS_COOKIE+"="));
+ headers.append("Set-Cookie",photosCookie(t.slice(PHOTOS_COOKIE.length+1)));
+ return new Response(req.method==="HEAD"?null:html,{status:200,headers});
 }
 export async function onRequest(ctx){
  const req=ctx.request,url=new URL(req.url),path=canonical(url.pathname);
