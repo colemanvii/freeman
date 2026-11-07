@@ -32,7 +32,7 @@ function respond(body,status,extra){return new Response(body,{status:status||200
 // regenerate PHOTOS_CHECK with the same salt and iterations.
 const PHOTOS="/photographs",PHOTOS_COOKIE="fph_session",PHOTOS_AGE=30*24*60*60;
 const PHOTOS_SALT="freeman-photographs-v1",PHOTOS_ITER=100000;
-const PHOTOS_CHECK="afcc64e3d706e65020016839980cf38662ff377567f6b144f95cfc9cf92d0958";
+const PHOTOS_CHECK="c6eb32e41d789bab727ca6afd8ead7b78bf1e733ebbc686d06650a229756bcec";
 const isPhotos=p=>p===PHOTOS||p.startsWith(PHOTOS+"/")||p.startsWith(PHOTOS+".");
 const hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");
 async function photosToken(pw){const k=await crypto.subtle.importKey("raw",enc.encode(pw),"PBKDF2",false,["deriveBits"]);return b64(new Uint8Array(await crypto.subtle.deriveBits({name:"PBKDF2",hash:"SHA-256",salt:enc.encode(PHOTOS_SALT),iterations:PHOTOS_ITER},k,256)));}
