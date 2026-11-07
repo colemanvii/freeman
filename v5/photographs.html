@@ -13,13 +13,13 @@ main{padding:0 var(--edge) calc(var(--edge)*2);display:block}
 .gallery-views{display:none}
 @media(max-width:700px){
   .gallery-views{display:flex;justify-content:flex-end;align-items:center;height:38px;padding:0 var(--edge);gap:3px}
-  .gallery-views button{min-height:38px;padding:0 5px;border:0;background:transparent;color:var(--muted);font:10px/1 Monaco,"Courier New",monospace;letter-spacing:.04em;cursor:pointer}
+  .gallery-views button{min-height:38px;padding:0 5px;border:0;background:transparent;color:var(--muted);font:500 11px/1.4 var(--mono);letter-spacing:.075em;cursor:pointer}
   .gallery-views button[aria-pressed="true"]{color:var(--ink);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
   .gallery-views button:focus-visible{outline:1px solid var(--orange);outline-offset:-3px}
-  .gallery-views .divider{color:var(--hair);font:10px/1 Monaco,"Courier New",monospace;user-select:none}
-  body[data-gallery-mode="scroll"] main{padding-left:0;padding-right:0}
-  body[data-gallery-mode="scroll"] .photo-row{display:block;gap:0;margin:0}
-  body[data-gallery-mode="scroll"] .tile{display:block;width:100%;height:auto;aspect-ratio:auto;overflow:visible;margin:0}
+  .gallery-views .divider{color:var(--hair);font:400 11px/1.4 var(--mono);user-select:none}
+  body[data-gallery-mode="scroll"] main{padding-left:var(--edge);padding-right:var(--edge)}
+  body[data-gallery-mode="scroll"] .photo-row{display:contents}
+  body[data-gallery-mode="scroll"] .tile{display:block;width:100%;height:auto;aspect-ratio:auto;overflow:visible;margin:0 0 7px}
   body[data-gallery-mode="scroll"] .tile img{display:block;width:100%;height:auto;object-fit:contain}
 }
 @media(max-width:700px){header{height:64px;padding:0;display:flex;align-items:center;justify-content:center}.desktop-home{display:none}.mobile-eagle{display:inline-flex;align-items:center;justify-content:center;min-width:88px;min-height:44px}.mobile-eagle svg{display:block;width:76px;height:auto}.mobile-eagle:hover{background:transparent;color:var(--ink)}main{padding:0 var(--edge) 42px}.photo-row{display:flex;align-items:stretch;gap:7px;margin-bottom:7px}.tile{flex:var(--r) 1 0;min-width:0;aspect-ratio:var(--r);margin:0}.tile img{width:100%;height:100%;object-fit:cover}}
