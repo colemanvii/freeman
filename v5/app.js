@@ -366,13 +366,13 @@
       } else if(tab==="services"){
         pageCount=1;renderPage=()=>{};count();
         copy.innerHTML=`<h2>What we do<span class="co4-accent">.</span></h2>
-          <div class="co4-menu" role="group" aria-label="Services">${services.map((s,i)=>`<button type="button" class="co4-choice" data-co4-service="${i}" aria-pressed="${i===currentService}"><span>0${i+1}</span><strong>${esc(s.name)}</strong><span>↗</span></button>`).join("")}</div>
+          <div class="co4-menu" role="group" aria-label="Services">${services.map((s,i)=>`<button type="button" class="co4-choice" data-co4-service="${i}" aria-pressed="${i===currentService}"><span>0${i+1}</span><strong>${esc(s.name)}</strong></button>`).join("")}</div>
           <div class="co4-description"><span>OUR APPROACH</span><p id="co4-service-text">${esc(services[currentService].detail)}</p></div>`;
       } else {
         pageCount=1;renderPage=()=>{};count();
         const person=people[currentPerson];
         copy.innerHTML=`<h2>Our people<span class="co4-accent">.</span></h2>
-          <div class="co4-people" role="group" aria-label="Select a team member">${people.map((p,i)=>`<button type="button" class="co4-choice" data-co4-person="${i}" aria-pressed="${i===currentPerson}"><span>0${i+1}</span><strong>${esc(p.name)}</strong><span>↗</span></button>`).join("")}</div>
+          <div class="co4-people" role="group" aria-label="Select a team member">${people.map((p,i)=>`<button type="button" class="co4-choice" data-co4-person="${i}" aria-pressed="${i===currentPerson}"><span>0${i+1}</span><strong>${esc(p.name)}</strong></button>`).join("")}</div>
           <div class="co4-description"><span id="co4-person-role">${esc(person.role)}</span><p id="co4-person-name">${esc(person.name)}</p><small>Full biography and portrait forthcoming.</small></div>`;
       }
     }
@@ -402,7 +402,7 @@
     }).filter(Boolean);
   }
   const creditLink = (partner, cls = "") => partner.url
-    ? `<a class="${cls} credit-external" href="${esc(partner.url)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(partner.name)} — visit website in new tab"><span class="tap-label">${esc(partner.name)}<span aria-hidden="true" class="credit-arrow"> ↗</span></span></a>`
+    ? `<a class="${cls} credit-external" href="${esc(partner.url)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(partner.name)} — visit website in new tab"><span class="tap-label">${esc(partner.name)}</span></a>`
     : `<span class="${cls}">${esc(partner.name)}</span>`;
   const creditLinks = (list) => list.map((x) => creditLink(x)).join(", ");
 
@@ -566,7 +566,7 @@
       <div class="fw-register" aria-label="Selected fieldwork">
         <button class="fw-entry fw-entry-note" type="button" data-etc-open="optimist">
           <span class="fw-entry-visual"><img src="/assets/project-1.jpg" alt="Guests gathering on the outdoor patio at The Optimist" loading="eager"></span>
-          <span class="fw-entry-caption">002 / THE OPTIMIST — READ THE NOTE ↗</span>
+          <span class="fw-entry-caption">002 / THE OPTIMIST — READ THE NOTE</span>
         </button>
       </div>
     </div>
@@ -634,7 +634,7 @@
     pageCount = 1;
     renderPage = () => {};
     const vp = root.querySelector(".viewport");
-    vp.innerHTML = `<div class="contact-layout"><div class="contact-sheet"><h2 class="contact-label">CONTACT INFORMATION</h2><p class="subtle">For new work, partnerships or general inquiries.</p>${link("gabe@freemangc.com ↗", "mailto:gabe@freemangc.com", "phrase")}${link("706.263.3348 ↗", "tel:+17062633348", "phrase")}<p class="subtle">GABE FREEMAN<br>CARTERSVILLE, GEORGIA</p></div><form class="contact-inquiry" id="contact-inquiry" novalidate><label class="contact-label" for="contact-message">WRITE A MESSAGE</label><textarea id="contact-message" name="message" maxlength="4000" placeholder="Tell us about your project." required></textarea><label class="contact-email-label" for="contact-email">YOUR EMAIL</label><input id="contact-email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required><input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" class="contact-honeypot"><button type="submit">SEND MESSAGE ↗</button><p class="contact-disclaimer" id="contact-status" role="status" aria-live="polite">Sends directly to Freeman. We'll reply by email.</p></form></div>`;
+    vp.innerHTML = `<div class="contact-layout"><div class="contact-sheet"><h2 class="contact-label">CONTACT INFORMATION</h2><p class="subtle">For new work, partnerships or general inquiries.</p>${link("gabe@freemangc.com", "mailto:gabe@freemangc.com", "phrase")}${link("706.263.3348", "tel:+17062633348", "phrase")}<p class="subtle">GABE FREEMAN<br>CARTERSVILLE, GEORGIA</p></div><form class="contact-inquiry" id="contact-inquiry" novalidate><label class="contact-label" for="contact-message">WRITE A MESSAGE</label><textarea id="contact-message" name="message" maxlength="4000" placeholder="Tell us about your project." required></textarea><label class="contact-email-label" for="contact-email">YOUR EMAIL</label><input id="contact-email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required><input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" class="contact-honeypot"><button type="submit">SEND MESSAGE</button><p class="contact-disclaimer" id="contact-status" role="status" aria-live="polite">Sends directly to Freeman. We'll reply by email.</p></form></div>`;
     const form = vp.querySelector("#contact-inquiry");
     const field = form.elements.message;
     const emailField = form.elements.email;
@@ -668,7 +668,7 @@
         status.textContent = error.message || "Could not send. Please try again.";
       } finally {
         button.disabled = false;
-        button.textContent = "SEND MESSAGE ↗";
+        button.textContent = "SEND MESSAGE";
       }
     });
     count();
