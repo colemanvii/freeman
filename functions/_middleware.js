@@ -25,9 +25,50 @@ function page(error){
  '</style><link rel="stylesheet" href="/portal-identity.css"></head><body data-team-gate><div class="frame"><header><strong>FREEMAN GC</strong><span>TEAM ACCESS / <a href="/client-access">× CLOSE</a></span></header><main><div class="kicker"><span class="seal" aria-hidden="true"></span>FREEMAN / INTERNAL</div><h1>IDENTIFICATION REQUIRED</h1><form action="/team-os" method="POST"><label for="password">ACCESS PHRASE</label><div class="line"><span class="password-wrap"><input id="password" name="password" type="password" autocomplete="current-password" maxlength="128" required autofocus><span id="password-asterisks" class="password-asterisks" aria-hidden="true"></span></span><button type="submit">PROCEED ↗</button></div><div class="error" role="alert">'+(error?'INCORRECT PASSWORD. TRY AGAIN.':'')+'</div><div class="micro">RESTRICTED INTERFACE / FICTIONAL DEMONSTRATION<br>AUTHORIZED TEAM ACCESS ONLY</div></form></main><footer><span>BUILT FOR GENERATIONS</span><span>FREEMAN OS / DEMONSTRATION</span></footer></div><script>(function(){const p=document.getElementById("password"),a=document.getElementById("password-asterisks");function sync(){a.textContent="*".repeat(p.value.length)}p.addEventListener("input",sync);sync()})();</script></body></html>';
 }
 function respond(body,status,extra){return new Response(body,{status:status||200,headers:{"Content-Type":"text/html; charset=utf-8","Cache-Control":"private, no-store",...SECURITY,...extra}});}
+// /photographs: unlisted gallery behind a shared password, with no Cloudflare secrets.
+// The repository is public, so only a check value is stored here: the password is
+// stretched with PBKDF2 at login, the stretched token becomes the session cookie, and
+// each request compares SHA-256(cookie) with PHOTOS_CHECK. To change the password,
+// regenerate PHOTOS_CHECK with the same salt and iterations.
+const PHOTOS="/photographs",PHOTOS_COOKIE="fph_session",PHOTOS_AGE=30*24*60*60;
+const PHOTOS_SALT="freeman-photographs-v1",PHOTOS_ITER=100000;
+const PHOTOS_CHECK="afcc64e3d706e65020016839980cf38662ff377567f6b144f95cfc9cf92d0958";
+const isPhotos=p=>p===PHOTOS||p.startsWith(PHOTOS+"/")||p.startsWith(PHOTOS+".");
+const hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");
+async function photosToken(pw){const k=await crypto.subtle.importKey("raw",enc.encode(pw),"PBKDF2",false,["deriveBits"]);return b64(new Uint8Array(await crypto.subtle.deriveBits({name:"PBKDF2",hash:"SHA-256",salt:enc.encode(PHOTOS_SALT),iterations:PHOTOS_ITER},k,256)));}
+async function photosValid(req){
+ const v=(req.headers.get("Cookie")||"").split(";").map(s=>s.trim()).find(s=>s.startsWith(PHOTOS_COOKIE+"="));
+ if(!v)return false;const t=v.slice(PHOTOS_COOKIE.length+1);if(!/^[A-Za-z0-9_-]{43}$/.test(t))return false;
+ return eq(hex(await crypto.subtle.digest("SHA-256",enc.encode(t))),PHOTOS_CHECK);
+}
+function photosPage(error){
+ return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#fff9f1"><title>Photographs — Freeman GC</title><link rel="icon" href="/favicon.svg"><script src="/palette.js?v=20261026-monaco-restored"></script><style>'+
+ ':root{--paper:#fff9f1;--ink:#332e20;--muted:#706659;--hair:#d5cec3;--orange:#f93822;--mono:Monaco,"Courier New",monospace;--edge:clamp(18px,2.4vw,30px)}:root[data-palette="sand"]{--paper:#ddcfb3;--ink:#332e20;--muted:#6d6150;--hair:#b5a68c}:root[data-palette="umber"]{--paper:#332e20;--ink:#fff9f1;--muted:#c5b9a7;--hair:#71685c}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--paper);color:var(--ink)}body{font:10px/1.5 var(--mono);letter-spacing:.035em;text-transform:uppercase;-webkit-font-smoothing:antialiased;min-height:100dvh;display:grid;grid-template-rows:94px 1fr 94px}header{padding:28px var(--edge) 0}a{color:inherit;text-decoration:none;font-weight:700}a:hover{background:var(--orange);color:var(--paper)}form{align-self:center;justify-self:center;width:min(300px,calc(100% - 2*var(--edge)));margin-top:-6vh}label{display:block;color:var(--muted);margin-bottom:6px}.line{display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--hair)}.line:focus-within{border-color:var(--ink)}input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--ink);font:16px var(--mono);letter-spacing:.08em;padding:10px 0}button{border:0;background:none;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;padding:0;cursor:pointer;min-height:44px}button:hover,button:focus-visible{color:var(--orange)}.error{color:var(--orange);min-height:15px;margin-top:10px}@media(max-width:700px){body{grid-template-rows:70px 1fr 70px}header{padding-top:20px}}'+
+ '</style></head><body><header><a href="/">FREEMAN GC</a></header><form action="/photographs" method="POST"><label for="password">Password</label><div class="line"><input id="password" name="password" type="password" autocomplete="current-password" maxlength="128" required autofocus><button type="submit">Enter</button></div><div class="error" role="alert">'+(error?'Incorrect':'')+'</div></form></body></html>';
+}
+async function photos(ctx,req,url,path){
+ if(req.method==="POST"){
+  if(path!==PHOTOS)return new Response("Method not allowed",{status:405,headers:{"Allow":"GET, HEAD"}});
+  const form=await req.formData().catch(()=>null),input=form?.get("password");
+  const token=typeof input==="string"&&input.length<=128?await photosToken(input):"";
+  if(!token||!eq(hex(await crypto.subtle.digest("SHA-256",enc.encode(token))),PHOTOS_CHECK))return respond(photosPage(true),401);
+  const response=new Response(null,{status:303,headers:{"Location":PHOTOS,"Cache-Control":"private, no-store"}});
+  response.headers.append("Set-Cookie",PHOTOS_COOKIE+"="+token+"; Path="+PHOTOS+"; HttpOnly; Secure; SameSite=Lax; Max-Age="+PHOTOS_AGE);
+  return response;
+ }
+ if(req.method!=="GET"&&req.method!=="HEAD")return new Response("Method not allowed",{status:405,headers:{"Allow":"GET, HEAD, POST"}});
+ const page=path===PHOTOS||path===PHOTOS+".html"||path===PHOTOS+"/";
+ if(!(await photosValid(req)))return page?respond(photosPage(false)):new Response("Not found",{status:404,headers:{"Cache-Control":"private, no-store",...SECURITY}});
+ if(page&&url.pathname!==PHOTOS)return new Response(null,{status:308,headers:{"Location":PHOTOS,"Cache-Control":"private, no-store"}});
+ const origin=await ctx.next(),headers=new Headers(origin.headers);
+ headers.set("Cache-Control",page?"private, no-store":"private, max-age=86400");for(const [k,v] of Object.entries(SECURITY))headers.set(k,v);
+ if(page){headers.delete("ETag");headers.delete("Last-Modified");}
+ return new Response(origin.body,{status:origin.status,statusText:origin.statusText,headers});
+}
 export async function onRequest(ctx){
  const req=ctx.request,url=new URL(req.url),path=canonical(url.pathname);
  if(path===null)return new Response("Bad request",{status:400,headers:{"Cache-Control":"no-store"}});
+ if(isPhotos(path))return photos(ctx,req,url,path);
  if(!isProtected(path))return ctx.next();
  const password=ctx.env.FREEMAN_OS_PASSWORD,secret=ctx.env.FREEMAN_OS_SESSION_KEY;
  if(!password||password.length>128||!secret||secret.length<32)return respond("FreemanOS access is not configured.",503,{"Content-Type":"text/plain; charset=utf-8"});
