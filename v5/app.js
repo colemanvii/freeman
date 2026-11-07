@@ -704,7 +704,7 @@
         <button type="button" class="v4-home-mark" aria-label="Replay the Freeman script"><canvas id="v4-pixel-mark" width="160" height="61" aria-hidden="true"></canvas></button>
         <nav class="v4-home-nav" aria-label="Main">${nav}</nav>
       </div>
-      <a class="client-access-entry phrase" href="client-access.html" aria-label="Access">ACCESS ↗</a>
+      <a class="client-access-entry phrase" href="client-access.html" aria-label="Access">ACCESS</a>
       <div class="legal">FREEMAN GENERAL CONTRACTING<br>CARTERSVILLE, GEORGIA</div>
       <div class="v4-colorways" role="group" aria-label="Colorway">${ways}</div>
       <div class="mark">BUILT FOR GENERATIONS™</div>
