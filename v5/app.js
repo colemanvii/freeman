@@ -10,9 +10,9 @@
  *  - index.html is the entrance. It stays in history like any other page; the original
  *    Freeman script is written by hand on fresh arrival and shown finished on Back/Forward.
  *  - Every interior page carries the same section line at top-left:
- *      COMPANY / PROJECTS / FIELDWORK / CONTACT  (current section in orange).
+ *      COMPANY / PROJECTS / PHOTOGRAPHS / CONTACT  (current section in orange).
  *    "FREEMAN GC" is the brand, never a navigation link.
- *    The four sections link to each other directly; none routes through another.
+ *    The sections link directly; the photographs archive loads as its own document.
  *  - × CLOSE (upper right on every interior page; Escape on detail pages) is real history:
  *    it returns to wherever the visitor actually came from, exactly like browser Back or a
  *    swipe-back. Each entry stores its depth within this visit; with no earlier same-site
@@ -30,6 +30,7 @@
     // PROJECTS is the map (26 Oct 2026); the former Projects index redirects there (_redirects).
     // NOTES stays withdrawn.
     ["PROJECTS", "map.html", ""],
+    ["PHOTOGRAPHS", "photographs.html", ""],
     ["CONTACT", "contact.html", ""],
   ];
   const TITLES = {
