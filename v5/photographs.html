@@ -6,11 +6,12 @@
 *{box-sizing:border-box}html{background:var(--paper)}body{margin:0;background:var(--paper);color:var(--ink);font:10px/1.5 var(--mono);letter-spacing:.035em;text-transform:uppercase;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}a:focus-visible,button:focus-visible{outline:1px solid var(--orange);outline-offset:4px}
 header{padding:28px var(--edge) 0;height:94px}header a{font-weight:700}header a:hover{background:var(--orange);color:var(--paper)}
-main{padding:0 var(--edge) calc(var(--edge)*2);display:flex;flex-wrap:wrap;gap:var(--gap)}
-main::after{content:"";flex:999 1 0}
-.tile{flex:var(--r) 1 calc(var(--r)*var(--row));display:block;cursor:zoom-in}
-.tile{overflow:hidden}.tile img{display:block;width:100%;height:100%;object-fit:cover}
-@media(max-width:700px){header{height:70px;padding-top:20px}main{display:block}.tile{margin-bottom:var(--gap)}}
+main{padding:0 var(--edge) calc(var(--edge)*2);display:block}
+.photo-row{display:flex;align-items:stretch;gap:var(--gap);width:100%;margin-bottom:var(--gap)}
+.tile{flex:var(--r) 1 0;min-width:0;display:block;aspect-ratio:var(--r);overflow:hidden;cursor:zoom-in}
+.tile img{display:block;width:100%;height:100%;object-fit:cover}
+@media(max-width:700px){header{height:70px;padding-top:20px}.photo-row{display:block;margin:0}.tile{width:100%;height:auto;aspect-ratio:auto;margin-bottom:var(--gap)}.tile img{height:auto;object-fit:contain}}
+
 dialog{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:var(--paper);color:var(--ink)}
 dialog::backdrop{background:var(--paper)}
 dialog[open]{display:grid;grid-template-rows:94px minmax(0,1fr) 94px}
@@ -27,17 +28,6 @@ dialog[open]{display:grid;grid-template-rows:94px minmax(0,1fr) 94px}
 </main>
 <dialog aria-label="Photograph"><div class="bar"><button type="button" data-close>Close</button></div><div class="stage"><img alt=""><button class="zone prev" type="button" aria-label="Previous"></button><button class="zone next" type="button" aria-label="Next"></button></div></dialog>
 <script>
-(()=>{const main=document.querySelector('main'),tiles=[...main.querySelectorAll('.tile')],r=tiles.map(t=>t.dataset.w/t.dataset.h);
-function layout(){const cs=getComputedStyle(main),W=main.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight),gap=parseFloat(cs.columnGap)||0;
- if(innerWidth<=700){tiles.forEach(t=>t.style.cssText='--r:'+t.style.getPropertyValue('--r'));return;}
- const H=Math.min(420,Math.max(190,innerWidth*.3)),S=r.reduce((a,b)=>a+b,0),n=r.length,k=Math.max(1,Math.min(n,Math.round(S*H/W))),T=S/k;
- const pre=[0];r.forEach(x=>pre.push(pre[pre.length-1]+x));const cost=(a,b)=>(pre[b]-pre[a]-T)**2;
- const D=[...Array(k+1)].map(()=>Array(n+1).fill(Infinity)),B=[...Array(k+1)].map(()=>Array(n+1).fill(0));D[0][0]=0;
- for(let j=1;j<=k;j++)for(let b=j;b<=n;b++)for(let a=j-1;a<b;a++){const v=D[j-1][a]+cost(a,b);if(v<D[j][b]){D[j][b]=v;B[j][b]=a;}}
- const cuts=[];for(let j=k,b=n;j>0;j--){const a=B[j][b];cuts.unshift([a,b]);b=a;}
- for(const [a,b] of cuts){const sum=pre[b]-pre[a],h=(W-gap*(b-a-1))/sum;let used=0;
-  for(let i=a;i<b;i++){const w=i===b-1?W-gap*(b-a-1)-used:Math.floor(r[i]*h);used+=w;tiles[i].style.flex='0 0 '+w+'px';tiles[i].style.height=Math.round(h)+'px';}}}
-let raf;addEventListener('resize',()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(layout);});layout();})();
 (()=>{const tiles=[...document.querySelectorAll('.tile')],d=document.querySelector('dialog'),img=d.querySelector('.stage img');let i=0,x0=null,swiped=false;
 const show=n=>{i=(n+tiles.length)%tiles.length;img.src=tiles[i].href;[i+1,i-1].forEach(k=>{const t=tiles[(k+tiles.length)%tiles.length];new Image().src=t.href;});};
 tiles.forEach((t,n)=>t.addEventListener('click',e=>{if(e.metaKey||e.ctrlKey||e.shiftKey)return;e.preventDefault();show(n);d.showModal();}));
