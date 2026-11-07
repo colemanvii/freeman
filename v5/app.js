@@ -127,15 +127,11 @@
 
   /* ---------- Palette (fresh sessions start off-white; navigation keeps the selection) ---------- */
   let palette = "chalk";
-  function previewPalette(id) {
-    const displayed = PALETTES.includes(id) ? id : palette;
-    document.documentElement.dataset.palette = displayed;
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", PAPER[displayed]);
-  }
   function applyPalette(id) {
     palette = PALETTES.includes(id) ? id : "chalk";
-    previewPalette(palette);
+    document.documentElement.dataset.palette = palette;
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", PAPER[palette]);
   }
   function choosePalette(id) {
     applyPalette(id);
@@ -755,22 +751,11 @@
     button.addEventListener("click", () => mark && mark.replay());
     if (window.FreemanSignature || window.FreemanPixelMark) attach();
     else loadSignature().then(attach);
-    const colorwayButtons = [...root.querySelectorAll("[data-v4-color]")];
-    const showColorway = (id) => { previewPalette(id); if (mark) mark.paint(); };
-    colorwayButtons.forEach((btn) => {
-      // Hover and keyboard focus preview without saving; clicking commits the choice.
-      btn.addEventListener("mouseenter", () => {
-        if (matchMedia("(hover: hover)").matches) showColorway(btn.dataset.v4Color);
-      });
-      btn.addEventListener("mouseleave", () => showColorway(palette));
-      btn.addEventListener("focus", () => showColorway(btn.dataset.v4Color));
-      btn.addEventListener("blur", () => showColorway(palette));
-      btn.addEventListener("click", () => {
-        if (btn.dataset.v4Color !== palette) choosePalette(btn.dataset.v4Color);
-        colorwayButtons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.v4Color === palette)));
-        showColorway(palette);
-      });
-    });
+    root.querySelectorAll("[data-v4-color]").forEach((btn) => btn.addEventListener("click", () => {
+      if (btn.dataset.v4Color !== palette) choosePalette(btn.dataset.v4Color);
+      root.querySelectorAll("[data-v4-color]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.v4Color === palette)));
+      if (mark) mark.paint();
+    }));
     words(root.querySelector(".legal"));
     words(root.querySelector(".mark"));
     return { resize: fit, destroy: () => { live = false; if (mark) mark.destroy(); } };
