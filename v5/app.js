@@ -515,7 +515,7 @@
       ...(p.details ? [block("p", p.details)] : []),
       block("h2", "Project record"),
       ...projectCredits(p).map(([k, v]) => `<div class="data"><span>${esc(k)}</span><span>${creditLinks(v)}</span></div>`),
-      ...(p.image ? [data("Source", "Freeman published portfolio")] : []),
+      ...(p.image ? [data("Source", p.slug === "woodlands-at-barnsley-resort" ? "Freeman photographic archive" : "Freeman published portfolio")] : []),
     ];
     chrome({
       title: "Projects / " + p.name,
