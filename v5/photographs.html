@@ -10,11 +10,7 @@ main{padding:0 var(--edge) calc(var(--edge)*2);display:block}
 .photo-row{display:flex;align-items:stretch;gap:var(--gap);width:100%;margin-bottom:var(--gap)}
 .tile{flex:var(--r) 1 0;min-width:0;display:block;aspect-ratio:var(--r);overflow:hidden;cursor:zoom-in}
 .tile img{display:block;width:100%;height:100%;object-fit:cover}
-/* One human anchor early in the sequence: prominent without becoming a hero banner. */
-.photo-row--feature{justify-content:flex-end;margin-top:clamp(20px,4vw,62px);margin-bottom:clamp(20px,4vw,62px)}
-.photo-row--feature .tile{flex:0 0 min(67%,880px);aspect-ratio:var(--r)}
-
-@media(max-width:700px){header{height:70px;padding-top:20px}.photo-row{display:block;margin:0}.tile{width:100%;height:auto;aspect-ratio:auto;margin-bottom:var(--gap)}.tile img{height:auto;object-fit:contain}.photo-row--feature{margin:16px 0 22px}.photo-row--feature .tile{width:100%;aspect-ratio:auto;flex:none}}
+@media(max-width:700px){header{height:70px;padding-top:20px}.photo-row{display:block;margin:0}.tile{width:100%;height:auto;aspect-ratio:auto;margin-bottom:var(--gap)}.tile img{height:auto;object-fit:contain}}
 
 dialog{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:var(--paper);color:var(--ink)}
 dialog::backdrop{background:var(--paper)}
