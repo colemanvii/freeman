@@ -43,6 +43,6 @@
   X-Robots-Tag: noindex, nofollow, noarchive
   Referrer-Policy: same-origin
 
-/photographs/*
+/photograph-files/*
   Cache-Control: private, max-age=86400
   X-Robots-Tag: noindex, nofollow, noarchive
