@@ -731,3 +731,42 @@ body[data-route="company"] .sheet-controls{display:none}
   .reading .micro,.index-title{font-size:10px;letter-spacing:.1em;color:var(--quiet)}
   .text-link{font-size:11px;letter-spacing:.05em}
 }
+
+
+/* Architectural White 001 — approved 8 Nov 2026.
+   Homepage-only treatment. Interior pages, photos, map and navigation stay intact.
+   The existing original Freeman signature bitmap remains the identity. */
+:root[data-palette="chalk"] body[data-route="entrance"],
+:root[data-palette="chalk"] body[data-route="entrance"] #site,
+:root[data-palette="chalk"] body[data-route="entrance"] #main,
+:root[data-palette="chalk"] body[data-route="entrance"] .v4-home {
+  background:#fff;
+}
+body[data-route="entrance"] .v4-home-nav {
+  letter-spacing:.105em;
+}
+body[data-route="entrance"] .v4-home-nav .sep {
+  color:#d2d2cd;
+}
+body[data-route="entrance"] .legal,
+body[data-route="entrance"] .mark {
+  font-size:10px;
+  letter-spacing:.06em;
+  line-height:1.65;
+  color:#77736c;
+}
+body[data-route="entrance"] .client-access-entry {
+  font-size:11px;
+  letter-spacing:.06em;
+}
+:root[data-palette="chalk"] body[data-route="entrance"] .v4-way-chalk {
+  background:#fff;
+}
+@media(max-width:760px){
+  body[data-route="entrance"] .v4-home-nav{
+    letter-spacing:.07em;
+  }
+  body[data-route="entrance"] .client-access-entry{
+    font-size:11px;
+  }
+}
