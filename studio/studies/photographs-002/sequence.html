@@ -10,8 +10,8 @@
 /* Direction 02 — The Photographic Sequence.
    One photograph at a time, in a single column. Each frame has a declared scale and
    alignment; nothing is ever taller than the screen; the paper between frames is part of
-   the composition. The phone is the native format: the same sequence, re-scaled, with
-   the full frames running edge to edge. */
+   the composition. The phone is the native format: the same sequence, re-scaled,
+   always held inside ivory margins. */
 :root{--edge:clamp(24px,5vw,88px);--gap:clamp(8px,.8vw,12px);--air:clamp(88px,15vh,200px);--cap:calc(100svh - 150px)}
 header{height:120px;display:flex;justify-content:center;align-items:center}
 .eagle{display:inline-flex;min-width:88px;min-height:44px;align-items:center;justify-content:center;color:var(--ink)}
@@ -26,7 +26,7 @@ footer{display:flex;justify-content:center;padding:var(--air) 0 56px}
 footer .eagle svg{width:40px;color:var(--muted)}
 footer .eagle:hover svg{color:var(--ink)}
 @media(max-width:700px){
-  :root{--edge:18px;--gap:8px;--air:clamp(64px,12svh,104px);--cap:calc(100svh - 120px)}
+  :root{--edge:22px;--gap:8px;--air:clamp(60px,11svh,96px);--cap:calc(100svh - 132px)}
   header{height:92px}
   .eagle svg{width:76px}
   /* On the phone a pair becomes two frames close together, so neither is a thumbnail. */
@@ -34,51 +34,59 @@ footer .eagle:hover svg{color:var(--ink)}
   .frame.pair .tile{flex:none;width:100%}
   .frame.pair.keep{flex-direction:row}
   .frame.pair.keep .tile{flex:var(--r) 1 0;width:auto}
-  .frame.bleed{width:auto;margin-inline:calc(-1 * var(--edge))}
 }
 </style></head><body>
 <header><a class="eagle" href="/" aria-label="Freeman GC home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 60" aria-hidden="true" focusable="false" fill="currentColor"><path d="M92 0h8v1h-8zM90 1h11v1h-11zM88 2h14v1h-14zM87 3h15v1h-15zM85 4h5v1h-5zM91 4h3v1h-3zM96 4h7v1h-7zM84 5h6v1h-6zM91 5h3v1h-3zM96 5h7v1h-7zM62 6h12v1h-12zM84 6h6v1h-6zM91 6h12v1h-12zM121 6h12v1h-12zM59 7h17v1h-17zM84 7h6v1h-6zM91 7h13v1h-13zM120 7h17v1h-17zM56 8h21v1h-21zM84 8h20v1h-20zM118 8h23v1h-23zM53 9h25v1h-25zM84 9h20v1h-20zM117 9h27v1h-27zM50 10h10v1h-10zM70 10h9v1h-9zM85 10h19v1h-19zM116 10h8v1h-8zM131 10h16v1h-16zM47 11h10v1h-10zM60 11h10v1h-10zM74 11h6v1h-6zM91 11h13v1h-13zM115 11h16v1h-16zM136 11h15v1h-15zM0 12h6v1h-6zM43 12h31v1h-31zM76 12h5v1h-5zM91 12h13v1h-13zM114 12h22v1h-22zM139 12h15v1h-15zM0 13h11v1h-11zM39 13h37v1h-37zM77 13h5v1h-5zM91 13h6v1h-6zM98 13h7v1h-7zM114 13h25v1h-25zM142 13h15v1h-15zM0 14h16v1h-16zM29 14h27v1h-27zM64 14h13v1h-13zM78 14h4v1h-4zM91 14h3v1h-3zM95 14h2v1h-2zM98 14h7v1h-7zM113 14h29v1h-29zM146 14h15v1h-15zM1 15h63v1h-63zM65 15h13v1h-13zM79 15h4v1h-4zM91 15h3v1h-3zM95 15h2v1h-2zM98 15h2v1h-2zM101 15h4v1h-4zM112 15h34v1h-34zM149 15h18v1h-18zM179 15h12v1h-12zM2 16h77v1h-77zM80 16h4v1h-4zM90 16h4v1h-4zM95 16h2v1h-2zM98 16h2v1h-2zM101 16h4v1h-4zM111 16h38v1h-38zM152 16h40v1h-40zM3 17h3v1h-3zM11 17h29v1h-29zM44 17h36v1h-36zM81 17h4v1h-4zM90 17h4v1h-4zM95 17h2v1h-2zM98 17h2v1h-2zM101 17h5v1h-5zM110 17h42v1h-42zM155 17h37v1h-37zM3 18h8v1h-8zM16 18h20v1h-20zM40 18h40v1h-40zM81 18h5v1h-5zM89 18h5v1h-5zM95 18h2v1h-2zM98 18h2v1h-2zM101 18h5v1h-5zM109 18h46v1h-46zM158 18h33v1h-33zM4 19h12v1h-12zM21 19h11v1h-11zM36 19h45v1h-45zM82 19h12v1h-12zM95 19h2v1h-2zM98 19h2v1h-2zM101 19h57v1h-57zM161 19h28v1h-28zM4 20h17v1h-17zM32 20h27v1h-27zM70 20h11v1h-11zM82 20h12v1h-12zM95 20h2v1h-2zM98 20h2v1h-2zM101 20h43v1h-43zM152 20h9v1h-9zM165 20h23v1h-23zM6 21h64v1h-64zM71 21h11v1h-11zM83 21h14v1h-14zM98 21h54v1h-54zM153 21h12v1h-12zM179 21h9v1h-9zM8 22h74v1h-74zM83 22h57v1h-57zM142 22h45v1h-45zM11 23h17v1h-17zM43 23h99v1h-99zM148 23h37v1h-37zM14 24h6v1h-6zM28 24h128v1h-128zM172 24h11v1h-11zM17 25h121v1h-121zM143 25h33v1h-33zM18 26h26v1h-26zM48 26h95v1h-95zM144 26h4v1h-4zM152 26h24v1h-24zM18 27h20v1h-20zM44 27h8v1h-8zM55 27h89v1h-89zM146 27h6v1h-6zM156 27h19v1h-19zM22 28h12v1h-12zM38 28h11v1h-11zM52 28h85v1h-85zM138 28h8v1h-8zM147 28h9v1h-9zM158 28h15v1h-15zM27 29h19v1h-19zM49 29h9v1h-9zM61 29h6v1h-6zM69 29h48v1h-48zM118 29h14v1h-14zM133 29h5v1h-5zM140 29h7v1h-7zM148 29h21v1h-21zM32 30h10v1h-10zM46 30h9v1h-9zM58 30h7v1h-7zM67 30h25v1h-25zM103 30h15v1h-15zM119 30h8v1h-8zM128 30h5v1h-5zM135 30h5v1h-5zM141 30h19v1h-19zM33 31h19v1h-19zM55 31h8v1h-8zM65 31h32v1h-32zM98 31h21v1h-21zM120 31h3v1h-3zM124 31h4v1h-4zM129 31h6v1h-6zM136 31h19v1h-19zM36 32h61v1h-61zM98 32h22v1h-22zM121 32h3v1h-3zM125 32h4v1h-4zM130 32h18v1h-18zM41 33h35v1h-35zM78 33h16v1h-16zM102 33h18v1h-18zM121 33h4v1h-4zM126 33h16v1h-16zM45 34h3v1h-3zM51 34h9v1h-9zM61 34h13v1h-13zM76 34h21v1h-21zM98 34h23v1h-23zM122 34h4v1h-4zM127 34h10v1h-10zM53 35h3v1h-3zM63 35h9v1h-9zM74 35h22v1h-22zM97 35h35v1h-35zM65 36h27v1h-27zM93 36h2v1h-2zM96 36h34v1h-34zM67 37h26v1h-26zM95 37h29v1h-29zM70 38h52v1h-52zM71 39h48v1h-48zM74 40h39v1h-39zM77 41h12v1h-12zM90 41h13v1h-13zM104 41h8v1h-8zM79 42h10v1h-10zM90 42h13v1h-13zM104 42h9v1h-9zM79 43h10v1h-10zM90 43h13v1h-13zM104 43h11v1h-11zM78 44h10v1h-10zM89 44h2v1h-2zM92 44h6v1h-6zM99 44h4v1h-4zM104 44h3v1h-3zM108 44h9v1h-9zM76 45h12v1h-12zM89 45h2v1h-2zM92 45h2v1h-2zM95 45h3v1h-3zM99 45h4v1h-4zM104 45h3v1h-3zM108 45h4v1h-4zM113 45h5v1h-5zM75 46h13v1h-13zM89 46h2v1h-2zM92 46h2v1h-2zM95 46h3v1h-3zM99 46h5v1h-5zM105 46h2v1h-2zM108 46h4v1h-4zM113 46h5v1h-5zM75 47h13v1h-13zM89 47h2v1h-2zM92 47h2v1h-2zM95 47h3v1h-3zM99 47h5v1h-5zM105 47h2v1h-2zM108 47h5v1h-5zM114 47h4v1h-4zM76 48h12v1h-12zM89 48h2v1h-2zM92 48h2v1h-2zM95 48h3v1h-3zM99 48h1v1h-1zM101 48h3v1h-3zM105 48h3v1h-3zM109 48h8v1h-8zM77 49h10v1h-10zM88 49h3v1h-3zM92 49h2v1h-2zM95 49h3v1h-3zM99 49h1v1h-1zM101 49h3v1h-3zM105 49h3v1h-3zM109 49h8v1h-8zM77 50h10v1h-10zM88 50h3v1h-3zM92 50h2v1h-2zM95 50h3v1h-3zM99 50h1v1h-1zM101 50h3v1h-3zM105 50h3v1h-3zM109 50h8v1h-8zM77 51h10v1h-10zM88 51h3v1h-3zM92 51h2v1h-2zM95 51h3v1h-3zM99 51h2v1h-2zM102 51h2v1h-2zM105 51h3v1h-3zM109 51h7v1h-7zM77 52h9v1h-9zM87 52h4v1h-4zM92 52h2v1h-2zM95 52h3v1h-3zM99 52h2v1h-2zM102 52h3v1h-3zM106 52h2v1h-2zM109 52h6v1h-6zM78 53h8v1h-8zM87 53h4v1h-4zM92 53h2v1h-2zM95 53h3v1h-3zM99 53h2v1h-2zM102 53h3v1h-3zM106 53h7v1h-7zM81 54h9v1h-9zM91 54h3v1h-3zM95 54h3v1h-3zM99 54h6v1h-6zM106 54h7v1h-7zM81 55h9v1h-9zM91 55h3v1h-3zM95 55h3v1h-3zM99 55h13v1h-13zM82 56h12v1h-12zM95 56h15v1h-15zM82 57h25v1h-25zM84 58h22v1h-22zM90 59h8v1h-8zM101 59h2v1h-2z"/></svg></a></header>
 <main></main>
 <footer><a class="eagle" href="/" aria-label="Freeman GC home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 60" aria-hidden="true" focusable="false" fill="currentColor"><path d="M92 0h8v1h-8zM90 1h11v1h-11zM88 2h14v1h-14zM87 3h15v1h-15zM85 4h5v1h-5zM91 4h3v1h-3zM96 4h7v1h-7zM84 5h6v1h-6zM91 5h3v1h-3zM96 5h7v1h-7zM62 6h12v1h-12zM84 6h6v1h-6zM91 6h12v1h-12zM121 6h12v1h-12zM59 7h17v1h-17zM84 7h6v1h-6zM91 7h13v1h-13zM120 7h17v1h-17zM56 8h21v1h-21zM84 8h20v1h-20zM118 8h23v1h-23zM53 9h25v1h-25zM84 9h20v1h-20zM117 9h27v1h-27zM50 10h10v1h-10zM70 10h9v1h-9zM85 10h19v1h-19zM116 10h8v1h-8zM131 10h16v1h-16zM47 11h10v1h-10zM60 11h10v1h-10zM74 11h6v1h-6zM91 11h13v1h-13zM115 11h16v1h-16zM136 11h15v1h-15zM0 12h6v1h-6zM43 12h31v1h-31zM76 12h5v1h-5zM91 12h13v1h-13zM114 12h22v1h-22zM139 12h15v1h-15zM0 13h11v1h-11zM39 13h37v1h-37zM77 13h5v1h-5zM91 13h6v1h-6zM98 13h7v1h-7zM114 13h25v1h-25zM142 13h15v1h-15zM0 14h16v1h-16zM29 14h27v1h-27zM64 14h13v1h-13zM78 14h4v1h-4zM91 14h3v1h-3zM95 14h2v1h-2zM98 14h7v1h-7zM113 14h29v1h-29zM146 14h15v1h-15zM1 15h63v1h-63zM65 15h13v1h-13zM79 15h4v1h-4zM91 15h3v1h-3zM95 15h2v1h-2zM98 15h2v1h-2zM101 15h4v1h-4zM112 15h34v1h-34zM149 15h18v1h-18zM179 15h12v1h-12zM2 16h77v1h-77zM80 16h4v1h-4zM90 16h4v1h-4zM95 16h2v1h-2zM98 16h2v1h-2zM101 16h4v1h-4zM111 16h38v1h-38zM152 16h40v1h-40zM3 17h3v1h-3zM11 17h29v1h-29zM44 17h36v1h-36zM81 17h4v1h-4zM90 17h4v1h-4zM95 17h2v1h-2zM98 17h2v1h-2zM101 17h5v1h-5zM110 17h42v1h-42zM155 17h37v1h-37zM3 18h8v1h-8zM16 18h20v1h-20zM40 18h40v1h-40zM81 18h5v1h-5zM89 18h5v1h-5zM95 18h2v1h-2zM98 18h2v1h-2zM101 18h5v1h-5zM109 18h46v1h-46zM158 18h33v1h-33zM4 19h12v1h-12zM21 19h11v1h-11zM36 19h45v1h-45zM82 19h12v1h-12zM95 19h2v1h-2zM98 19h2v1h-2zM101 19h57v1h-57zM161 19h28v1h-28zM4 20h17v1h-17zM32 20h27v1h-27zM70 20h11v1h-11zM82 20h12v1h-12zM95 20h2v1h-2zM98 20h2v1h-2zM101 20h43v1h-43zM152 20h9v1h-9zM165 20h23v1h-23zM6 21h64v1h-64zM71 21h11v1h-11zM83 21h14v1h-14zM98 21h54v1h-54zM153 21h12v1h-12zM179 21h9v1h-9zM8 22h74v1h-74zM83 22h57v1h-57zM142 22h45v1h-45zM11 23h17v1h-17zM43 23h99v1h-99zM148 23h37v1h-37zM14 24h6v1h-6zM28 24h128v1h-128zM172 24h11v1h-11zM17 25h121v1h-121zM143 25h33v1h-33zM18 26h26v1h-26zM48 26h95v1h-95zM144 26h4v1h-4zM152 26h24v1h-24zM18 27h20v1h-20zM44 27h8v1h-8zM55 27h89v1h-89zM146 27h6v1h-6zM156 27h19v1h-19zM22 28h12v1h-12zM38 28h11v1h-11zM52 28h85v1h-85zM138 28h8v1h-8zM147 28h9v1h-9zM158 28h15v1h-15zM27 29h19v1h-19zM49 29h9v1h-9zM61 29h6v1h-6zM69 29h48v1h-48zM118 29h14v1h-14zM133 29h5v1h-5zM140 29h7v1h-7zM148 29h21v1h-21zM32 30h10v1h-10zM46 30h9v1h-9zM58 30h7v1h-7zM67 30h25v1h-25zM103 30h15v1h-15zM119 30h8v1h-8zM128 30h5v1h-5zM135 30h5v1h-5zM141 30h19v1h-19zM33 31h19v1h-19zM55 31h8v1h-8zM65 31h32v1h-32zM98 31h21v1h-21zM120 31h3v1h-3zM124 31h4v1h-4zM129 31h6v1h-6zM136 31h19v1h-19zM36 32h61v1h-61zM98 32h22v1h-22zM121 32h3v1h-3zM125 32h4v1h-4zM130 32h18v1h-18zM41 33h35v1h-35zM78 33h16v1h-16zM102 33h18v1h-18zM121 33h4v1h-4zM126 33h16v1h-16zM45 34h3v1h-3zM51 34h9v1h-9zM61 34h13v1h-13zM76 34h21v1h-21zM98 34h23v1h-23zM122 34h4v1h-4zM127 34h10v1h-10zM53 35h3v1h-3zM63 35h9v1h-9zM74 35h22v1h-22zM97 35h35v1h-35zM65 36h27v1h-27zM93 36h2v1h-2zM96 36h34v1h-34zM67 37h26v1h-26zM95 37h29v1h-29zM70 38h52v1h-52zM71 39h48v1h-48zM74 40h39v1h-39zM77 41h12v1h-12zM90 41h13v1h-13zM104 41h8v1h-8zM79 42h10v1h-10zM90 42h13v1h-13zM104 42h9v1h-9zM79 43h10v1h-10zM90 43h13v1h-13zM104 43h11v1h-11zM78 44h10v1h-10zM89 44h2v1h-2zM92 44h6v1h-6zM99 44h4v1h-4zM104 44h3v1h-3zM108 44h9v1h-9zM76 45h12v1h-12zM89 45h2v1h-2zM92 45h2v1h-2zM95 45h3v1h-3zM99 45h4v1h-4zM104 45h3v1h-3zM108 45h4v1h-4zM113 45h5v1h-5zM75 46h13v1h-13zM89 46h2v1h-2zM92 46h2v1h-2zM95 46h3v1h-3zM99 46h5v1h-5zM105 46h2v1h-2zM108 46h4v1h-4zM113 46h5v1h-5zM75 47h13v1h-13zM89 47h2v1h-2zM92 47h2v1h-2zM95 47h3v1h-3zM99 47h5v1h-5zM105 47h2v1h-2zM108 47h5v1h-5zM114 47h4v1h-4zM76 48h12v1h-12zM89 48h2v1h-2zM92 48h2v1h-2zM95 48h3v1h-3zM99 48h1v1h-1zM101 48h3v1h-3zM105 48h3v1h-3zM109 48h8v1h-8zM77 49h10v1h-10zM88 49h3v1h-3zM92 49h2v1h-2zM95 49h3v1h-3zM99 49h1v1h-1zM101 49h3v1h-3zM105 49h3v1h-3zM109 49h8v1h-8zM77 50h10v1h-10zM88 50h3v1h-3zM92 50h2v1h-2zM95 50h3v1h-3zM99 50h1v1h-1zM101 50h3v1h-3zM105 50h3v1h-3zM109 50h8v1h-8zM77 51h10v1h-10zM88 51h3v1h-3zM92 51h2v1h-2zM95 51h3v1h-3zM99 51h2v1h-2zM102 51h2v1h-2zM105 51h3v1h-3zM109 51h7v1h-7zM77 52h9v1h-9zM87 52h4v1h-4zM92 52h2v1h-2zM95 52h3v1h-3zM99 52h2v1h-2zM102 52h3v1h-3zM106 52h2v1h-2zM109 52h6v1h-6zM78 53h8v1h-8zM87 53h4v1h-4zM92 53h2v1h-2zM95 53h3v1h-3zM99 53h2v1h-2zM102 53h3v1h-3zM106 53h7v1h-7zM81 54h9v1h-9zM91 54h3v1h-3zM95 54h3v1h-3zM99 54h6v1h-6zM106 54h7v1h-7zM81 55h9v1h-9zM91 55h3v1h-3zM95 55h3v1h-3zM99 55h13v1h-13zM82 56h12v1h-12zM95 56h15v1h-15zM82 57h25v1h-25zM84 58h22v1h-22zM90 59h8v1h-8zM101 59h2v1h-2z"/></svg></a></footer>
 <dialog aria-label="Photograph"><div class="bar"><button type="button" data-close>Close</button></div><div class="stage"><img alt=""><button class="zone prev" type="button" aria-label="Previous"></button><button class="zone next" type="button" aria-label="Next"></button></div></dialog>
+<script src="data.js"></script>
 <script src="shared.js"></script>
 <script>
-/* The sequence, in curated order. Each entry: photographs, desktop [scale %, l|c|r],
-   phone [scale %, l|c|r | "bleed"], and "keep" where a pair stays side by side on the phone.
-   Scales are few on purpose: 100 / 76 / 56 / 38 on desktop, bleed / 100 / 80 / 62 on the phone. */
-const SEQUENCE = [
-  [["02"],       [100,"c"], ["bleed"]],   // the land: opens the record at full scale
-  [["15"],       [56,"r"],  [80,"r"]],    // the people, quieter, to one side
-  [["18","03"],  [100,"c"], [100,"c"]],   // the site and a man in it — read together
-  [["07"],       [76,"l"],  [100,"c"]],   // the first warm interior
-  [["08"],       [56,"r"],  [80,"r"]],
-  [["01"],       [100,"c"], [100,"c"]],   // the ruin: as tall as the screen allows — a portrait with presence
-  [["16"],       [56,"l"],  [80,"l"]],
-  [["14","06"],  [100,"c"], [100,"c"]],   // the opening and the house it happened in
-  [["05"],       [38,"r"],  [62,"r"]],    // W.C. — the smallest thing, given the most room
-  [["04"],       [100,"c"], ["bleed"]],   // the fire
-  [["17"],       [56,"l"],  [80,"l"]],
-  [["09"],       [38,"r"],  [62,"r"]],    // the sconce
-  [["13"],       [100,"c"], ["bleed"]],   // the dining room, the only wide frame
-  [["11","10"],  [76,"c"],  [100,"c","keep"]],
-  [["12"],       [76,"c"],  [100,"c"]]    // ends on one object
+/* The sequence, in production's curated order. Each entry: photographs, desktop [scale %, l|c|r],
+   phone [scale %, l|c|r], and "keep" where a pair stays side by side on the phone.
+   Four scales only: 100 / 76 / 56 / 38 on desktop, 100 / 84 / 68 on the phone.
+   Height is always capped at the screen, so portraits never tower. */
+const PLAN = [
+  [["02"],        [100,"c"], [100,"c"]],   // the land opens the record
+  [["03"],        [100,"c"], [100,"c"]],   // the builders: the cover, at the same full scale
+  [["G2"],        [56,"r"],  [84,"r"]],
+  [["19"],        [56,"l"],  [84,"l"]],
+  [["11"],        [76,"r"],  [100,"c"]],
+  [["09"],        [100,"c"], [100,"c"]],   // the bar pass-through, given the room it deserves
+  [["04"],        [56,"l"],  [84,"l"]],
+  [["06"],        [100,"c"], [100,"c"]],   // the fire
+  [["13"],        [38,"r"],  [68,"r"]],    // the house, small and set aside
+  [["15"],        [76,"c"],  [100,"c"]],   // the helmet
+  [["21"],        [56,"l"],  [84,"l"]],
+  [["24"],        [76,"r"],  [100,"c"]],
+  [["12"],        [38,"l"],  [68,"l"]],    // the sconce
+  [["16"],        [100,"c"], [100,"c"]],   // the dining room, the one wide frame
+  [["18"],        [56,"r"],  [84,"r"]],
+  [["Tree"],      [100,"c"], [100,"c"]],
+  [["17"],        [76,"l"],  [100,"c"]],
+  [["14"],        [38,"r"],  [68,"r"]],
+  [["Mac"],       [76,"c"],  [100,"c"]],
+  [["Barnsley"],  [100,"c"], [100,"c"]],
+  [["GFree"],     [56,"l"],  [84,"l"]],
+  [["07"],        [38,"c"],  [68,"c"]]     // W.C. — the smallest thing, last, with the most room
 ];
 function render(phone){
+  const plan=PLAN.slice();
+  guard(phone?"sequence/phone":"sequence/desktop", plan.map(p=>p[0])).forEach(k=>plan.push([[k],[56,"c"],[84,"c"]]));
   const main=document.querySelector("main"), frag=document.createDocumentFragment();
   let n=0;
-  for(const [ids,desk,mob] of SEQUENCE){
-    const f=document.createElement("div");
+  for(const [ids,desk,mob] of plan){
     const [s,a,keep]=phone?mob:desk;
-    const bleed=phone&&s==="bleed";
-    f.className="frame "+(bleed?"bleed":a)+(ids.length>1?" pair":"")+(keep?" keep":"");
-    f.style.setProperty("--s",bleed?100:s);
+    const f=document.createElement("div");
+    f.className="frame "+a+(ids.length>1?" pair":"")+(keep?" keep":"");
+    f.style.setProperty("--s",s);
     const stacked=phone&&ids.length>1&&!keep;
-    // Height cap: a row's width at screen height is sum(ratios) x cap; a stacked pair is capped by its widest frame.
-    const sr=stacked?Math.min(...ids.map(i=>PHOTOS[i])):ids.reduce((t,i)=>t+PHOTOS[i],0);
+    const sr=stacked?Math.min(...ids.map(k=>RATIO[k])):ids.reduce((t,k)=>t+RATIO[k],0);
     f.style.setProperty("--sr",sr);
     f.style.setProperty("--gaps",stacked?"0px":`calc(var(--gap) * ${ids.length-1})`);
-    const vw=bleed?100:Math.round((phone?s:s*0.9)/(stacked?1:ids.length));
-    for(const id of ids) f.appendChild(tile(id,`${vw}vw`,n++<2));
+    const vw=Math.round((phone?s:s*0.9)/(stacked?1:ids.length));
+    for(const k of ids) f.appendChild(tile(k,`${vw}vw`,n++<2));
     frag.appendChild(f);
   }
   main.replaceChildren(frag);
