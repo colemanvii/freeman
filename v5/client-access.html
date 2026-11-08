@@ -44,7 +44,7 @@ button:hover,a:hover{color:var(--ink)}
  .choice .name{font-size:14px}
  .footer{font-size:9px}
 }
-</style><link rel="stylesheet" href="/portal-identity.css?v=20261026-monaco-lineage"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,300..700;1,300..700&display=block"><link rel="stylesheet" href="/american-gothic/american-gothic.css?v=ag-001"><script src="/american-gothic/toggle.js?v=ag-001"></script></head><body data-view="home"><main class="frame"><header class="top"><span>FREEMAN GC</span><span class="muted">ACCESS / <a class="close" id="close" href="/" aria-label="Close Access and return to the previous page">× CLOSE</a></span></header><section class="stage"><div class="left"><div class="eyebrow" id="kicker">FREEMAN / ACCESS</div><h1 id="heading" tabindex="-1">Welcome.</h1><p id="intro">One place to begin working together.</p></div><div class="right"><h2 class="eyebrow" id="section">YOUR RELATIONSHIP</h2><div id="body"></div><div class="actions"><button type="button" id="back" class="hidden">← BACK</button><button type="button" id="next" class="hidden">NEXT STEP ↗</button></div><p class="note" id="note">SELECT A RELATIONSHIP TO CONTINUE.</p></div></section><footer class="footer"><span>BUILT FOR GENERATIONS</span><span>FREEMAN GENERAL CONTRACTING / PRIVATE</span></footer></main><p id="announce" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+</style><link rel="stylesheet" href="/portal-identity.css?v=20261026-monaco-lineage"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,300..700;1,300..700&display=block"><link rel="stylesheet" href="/american-gothic/american-gothic.css?v=ag-001"><script src="/american-gothic/toggle.js?v=ag-001"></script></head><body data-view="home"><main class="frame"><header class="top"><span>FREEMAN GC</span><span class="muted">ACCESS / <a class="close" id="close" href="/" aria-label="Close Access and return to the previous page">× CLOSE</a></span></header><section class="stage"><div class="left"><div class="eyebrow" id="kicker">FREEMAN / ACCESS</div><h1 id="heading" tabindex="-1">Welcome.</h1><p id="intro">One place to begin working together.</p></div><div class="right"><h2 class="eyebrow" id="section">YOUR RELATIONSHIP</h2><div id="body"></div><div class="actions"><button type="button" id="back" class="hidden">← BACK</button><button type="button" id="next" class="hidden">NEXT STEP ↗︎</button></div><p class="note" id="note">SELECT A RELATIONSHIP TO CONTINUE.</p></div></section><footer class="footer"><span>BUILT FOR GENERATIONS</span><span>FREEMAN GENERAL CONTRACTING / PRIVATE</span></footer></main><p id="announce" class="sr-only" aria-live="polite" aria-atomic="true"></p>
 <script>
 (() => {
   'use strict';
@@ -172,13 +172,13 @@ button:hover,a:hover{color:var(--ink)}
   /* ---------- Rendering ---------- */
 
   function choice(attr, number, name, desc) {
-    return `<li><button type="button" class="choice" ${attr}><span class="number">${number}</span><span><span class="name">${esc(name)}</span><span class="desc">${esc(desc)}</span></span><span aria-hidden="true">↗</span></button></li>`;
+    return `<li><button type="button" class="choice" ${attr}><span class="number">${number}</span><span><span class="name">${esc(name)}</span><span class="desc">${esc(desc)}</span></span><span aria-hidden="true">↗︎</span></button></li>`;
   }
   function stepBody(p, s) {
     const rows = [];
     if (s.platform) {
       const pl = PLATFORMS[s.platform];
-      rows.push(`<li class="step"><span class="number" aria-hidden="true">↗</span><div><strong>OPEN THE PLATFORM</strong><small><a href="${pl.href}" target="_blank" rel="noopener noreferrer">${pl.label} ↗<span class="sr-only"> (opens in a new tab)</span></a><br>YOUR FREEMAN INVITATION IS REQUIRED.</small></div></li>`);
+      rows.push(`<li class="step"><span class="number" aria-hidden="true">↗︎</span><div><strong>OPEN THE PLATFORM</strong><small><a href="${pl.href}" target="_blank" rel="noopener noreferrer">${pl.label} ↗︎<span class="sr-only"> (opens in a new tab)</span></a><br>YOUR FREEMAN INVITATION IS REQUIRED.</small></div></li>`);
     }
     rows.push(`<li class="step"><span class="number" aria-hidden="true">—</span><div><strong>FREEMAN WALKTHROUGH</strong><small>A short, project-approved instructional video will be placed here after recording and review.</small></div></li>`);
     return `<ul class="steps">${rows.join('')}</ul>`;
@@ -194,7 +194,7 @@ button:hover,a:hover{color:var(--ink)}
 
     $('back').classList.toggle('hidden', !p);
     $('next').classList.toggle('hidden', !p || v.step >= p.steps.length - 1);
-    $('next').textContent = s ? 'NEXT STEP ↗' : 'BEGIN ↗';
+    $('next').textContent = s ? 'NEXT STEP ↗︎' : 'BEGIN ↗︎';
     $('next').setAttribute('aria-label', p && v.step < p.steps.length - 1 ? `Next: ${p.steps[v.step + 1].title.toLowerCase()}` : 'Next step');
     $('back').setAttribute('aria-label', !p ? 'Back' : s ? (v.step > 0 ? `Back: ${p.steps[v.step - 1].title.toLowerCase()}` : `Back to ${p.name.toLowerCase()} overview`) : 'Back to all relationships');
 
