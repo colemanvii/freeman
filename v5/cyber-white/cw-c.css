@@ -1,0 +1,69 @@
+@import url("cw-base.css");
+/* C · FIELD REGISTER — one drawing set.
+   The Projects map already speaks as an architectural sheet: a 10 px frame, grid references
+   A–H / 1–6, a title block with the firm, the sheet and the register. Here every page is a
+   sheet of the same set. Hierarchy is expressive but entirely typographic: register numbers
+   set large in Franklin 300, names in 600 capitals, everything else in 500 small capitals.
+   Red marks only the current sheet and the active register entry. */
+html[data-cw="c"]{--frame:10px}
+
+/* ---------- The sheet: frame, references, title block (all pages except the map, which has its own) ---------- */
+html[data-cw="c"] .cwc-sheet{position:fixed;inset:var(--frame);border:1px solid var(--ink);pointer-events:none;z-index:40}
+html[data-cw="c"] .cwc-ref{position:absolute;display:flex;font:500 8px/10px var(--mono);letter-spacing:.06em;color:var(--muted)}
+html[data-cw="c"] .cwc-ref.top{left:0;right:0;top:calc(-1 * var(--frame));height:var(--frame);justify-content:space-around}
+html[data-cw="c"] .cwc-ref.left{top:0;bottom:0;left:calc(-1 * var(--frame));width:var(--frame);flex-direction:column;justify-content:space-around;align-items:center}
+html[data-cw="c"] .cwc-block{position:fixed;right:calc(var(--frame) + 1px);bottom:calc(var(--frame) + 1px);z-index:41;display:grid;grid-template-columns:auto auto auto;
+  border-top:1px solid var(--ink);border-left:1px solid var(--ink);background:var(--paper);font:500 9px/1.4 var(--mono);letter-spacing:.07em;text-transform:uppercase}
+html[data-cw="c"] .cwc-block > div{padding:8px 14px 9px;border-right:1px solid var(--hair);min-width:0}
+html[data-cw="c"] .cwc-block > div:last-child{border-right:0}
+html[data-cw="c"] .cwc-block span{display:block;font-size:8px;color:var(--muted);margin-bottom:2px}
+html[data-cw="c"] .cwc-block b{font-weight:500;color:var(--ink);white-space:nowrap}
+html[data-cw="c"] .cwc-block .is-red{color:var(--red-text,#c52b15)}
+html[data-cw="c"] body[data-route="entrance"] .cwc-block{display:none}
+@media(max-width:760px){
+  html[data-cw="c"]{--frame:6px}
+  html[data-cw="c"] .cwc-ref{display:none}
+  html[data-cw="c"] .cwc-block{display:none}
+}
+
+/* Entrance: the signature centred in the sheet; corner text pulled inside the frame. */
+html[data-cw="c"] .legal{left:30px!important;bottom:28px!important}
+html[data-cw="c"] .mark{right:30px!important;bottom:28px!important}
+html[data-cw="c"] :is(.legal,.mark,.site-nav,.close,.co4-nav button,.pg-place,.pg-credits dt,.contact-label,.contact-disclaimer,.client-access-entry){
+  font-weight:500!important;letter-spacing:.08em!important}
+
+/* Interior pages keep clear of the title block. */
+@media(min-width:761px){html[data-cw="c"] body:not([data-route="entrance"]) .viewport{bottom:96px!important}}
+
+/* ---------- Project sheet: register number as the headline ---------- */
+html[data-cw="c"] .cwc-no{display:block;font:300 clamp(72px,8vw,128px)/.82 var(--mono);letter-spacing:-.06em;color:var(--ink);margin:0 0 22px -4px;font-variant-numeric:lining-nums tabular-nums}
+html[data-cw="c"] .pg-name{font-weight:600!important;font-size:13px!important;letter-spacing:.07em!important}
+html[data-cw="c"] .pg-credits div{display:grid;grid-template-columns:1fr;border-top-color:var(--hair)!important}
+html[data-cw="c"] .pg-credits dd{font-size:12px!important}
+html[data-cw="c"] .pg-frame{outline:1px solid var(--hair);outline-offset:-1px}
+html[data-cw="c"] .pg-slide img{background:transparent!important}
+html[data-cw="c"] .pg-controls{justify-content:space-between!important;border-top:1px solid var(--ink);padding-top:10px;height:auto!important}
+html[data-cw="c"] .pg-count{font-weight:500;letter-spacing:.08em!important;font-size:10px!important;color:var(--ink)!important}
+@media(max-width:760px){html[data-cw="c"] .cwc-no{font-size:56px;margin-bottom:10px}
+}
+
+/* ---------- Company sheet ---------- */
+html[data-cw="c"] .co4-nav{border-bottom:1px solid var(--ink)!important}
+html[data-cw="c"] .co4-nav button{counter-increment:cwc}
+html[data-cw="c"] .co4-nav{counter-reset:cwc}
+html[data-cw="c"] .co4-nav button::before{content:"0" counter(cwc) "  ";color:var(--muted)}
+html[data-cw="c"] .co4-copy h2{font-weight:300!important;letter-spacing:-.024em!important}
+html[data-cw="c"] .co4-copy p{max-width:33em!important}
+
+/* ---------- Contact sheet ---------- */
+html[data-cw="c"] .contact-sheet{border-top:1px solid var(--ink);padding-top:18px}
+html[data-cw="c"] .contact-inquiry{border-top:1px solid var(--ink);padding-top:18px}
+html[data-cw="c"] .contact-inquiry textarea{border-color:var(--hair)!important}
+
+/* ---------- Map: the register gains the same expressive numbers ---------- */
+html[data-cw="c"] .tb-title{font-weight:600!important;letter-spacing:.06em!important}
+html[data-cw="c"] .tb-grid>div{font:300 34px/1 var(--mono)!important;letter-spacing:-.04em!important;padding:8px 0 10px!important}
+html[data-cw="c"] .tb-grid .tb-k{font:500 8px/1.4 var(--mono)!important;letter-spacing:.08em!important;margin-bottom:6px}
+html[data-cw="c"] .tb-set button[aria-current="true"],html[data-cw="c"] .tb-set button[aria-pressed="true"]{color:var(--red-text)}
+html[data-cw="c"] .lede h1{font-weight:300!important;letter-spacing:-.034em!important}
+html[data-cw="c"] .ref span{font-weight:500;letter-spacing:.06em}

@@ -1,0 +1,39 @@
+@import url("cw-base.css");
+/* A · ARCHITECTURAL WHITE — Freeman V5, executed under light.
+   Same signature, same eagle, same Libre Franklin, same positions, same orange word-highlight.
+   The changes are optical: paper, greys, hairlines, spacing of small capitals, image value,
+   and a single consistent rhythm for every label (10 px · 500 · +.08em · #6b665c).
+   Nothing moves more than a few pixels; the difference should be felt before it is seen. */
+
+/* Small capitals: one register everywhere (production uses 9, 9.5, 10 and 11 px with
+   four trackings). 10 px / 500 / +.08em holds Monaco's grey on white without bolding. */
+html[data-cw="a"] :is(.panel-head,.site-nav,.close,.co4-nav button,.pg-place,.pg-credits dt,.contact-label,.contact-disclaimer,
+  .contact-email-label,.legal,.mark,.client-access-entry,.co4-visual figcaption,.pg-count,.sheet-controls){
+  font-size:10px!important;letter-spacing:.08em!important;font-weight:500!important}
+html[data-cw="a"] :is(.legal,.mark){line-height:1.6!important}
+html[data-cw="a"] .legal{left:30px!important}html[data-cw="a"] .mark{right:30px!important}
+html[data-cw="a"] :is(.legal,.mark){bottom:28px!important}
+html[data-cw="a"] .v4-home-nav{letter-spacing:.11em!important}
+html[data-cw="a"] .v4-home-nav .sep,html[data-cw="a"] .site-nav .sep{color:#c9c6bf!important}
+
+/* Company: 66-character measure, statement one optical step lighter. */
+html[data-cw="a"] .co4-nav{border-bottom-color:var(--hair)!important;padding-bottom:15px!important}
+html[data-cw="a"] .co4-copy h2{font-weight:300!important;letter-spacing:-.024em!important}
+html[data-cw="a"] .co4-copy p{max-width:33em!important;line-height:1.62!important}
+html[data-cw="a"] .co4-choice{border-bottom-color:var(--hair)!important}
+
+/* Project: the photograph sits on white with nothing behind it; credits on a 12 px rhythm. */
+html[data-cw="a"] .pg-name{font-size:13px!important;letter-spacing:.06em!important}
+html[data-cw="a"] .pg-credits div{border-top-color:var(--hair)!important;padding:10px 0 11px!important}
+html[data-cw="a"] .pg-credits dd{margin-top:3px!important;font-size:12px!important;letter-spacing:0!important}
+html[data-cw="a"] .pg-controls{height:20px!important}
+html[data-cw="a"] .pg-arrow{font-size:14px!important}
+
+/* Contact: the field's hairline and the page's hairline become the same line. */
+html[data-cw="a"] .contact-inquiry textarea{border-color:var(--hair)!important;background:var(--surface)!important}
+html[data-cw="a"] .contact-inquiry input[type="email"]{border-bottom-color:var(--hair)!important}
+
+/* Map (Projects): neutral water and land, hairline register, unchanged geometry. */
+html[data-cw="a"] .border{border-color:color-mix(in srgb,var(--ink) 55%,transparent)!important}
+html[data-cw="a"] .tblock :is(.tb-row,.tb-grid,.tb-foot,.tb-set li){border-color:var(--hair)!important}
+html[data-cw="a"] .find input{border-bottom-color:color-mix(in srgb,var(--ink) 40%,transparent)!important}
