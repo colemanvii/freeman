@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Freeman Motion 001</title>
+<style>
+  :root { --paper:#fff9f1; --ink:#332e20; --orange:#f93822; --muted:#777a75; --hair:#e4ddd1; --mono:Monaco, Menlo, monospace; }
+  html, body { margin:0; height:100%; background:var(--paper); color:var(--ink); font-family:var(--mono); -webkit-font-smoothing:none; overflow:hidden; }
+  body.dark { background:#1d1b16; }
+  .stage { position:absolute; inset:0; display:grid; place-items:center; }
+  canvas { height:min(calc(100vh - 110px), calc(100vw - 60px)); aspect-ratio:1; display:block; outline:1px solid var(--hair); }
+  nav { position:absolute; left:30px; right:30px; top:24px; display:flex; justify-content:space-between; font-size:10px; text-transform:uppercase; letter-spacing:.04em; }
+  nav a { color:inherit; text-decoration:none; margin-left:18px; } nav a[aria-current] { color:var(--orange); }
+  .time { position:absolute; left:30px; bottom:22px; font-size:9px; color:var(--muted); }
+  .keys { position:absolute; right:30px; bottom:22px; font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+</style>
+</head>
+<body>
+<nav><a href="index.html" style="margin:0">← Motion 001</a><div><a href="?s=01">01 Sundial</a><a href="?s=02">02 Material</a><a href="?s=03">03 Plumb</a><a href="?s=04">Material No. 2</a><a href="?s=02r2">02 round 2</a><a href="?s=02r1">02 round 1</a></div></nav>
+<div class="stage"><canvas width="1080" height="1080"></canvas><div class="time"></div></div>
+<div class="keys">space pause · ← → frame · L seam</div>
+<script>
+  const s = new URLSearchParams(location.search).get('s') || '01';
+  document.querySelector('canvas').dataset.study = s;
+  document.querySelector(`nav a[href="?s=${s}"]`)?.setAttribute('aria-current', 'page');
+  if (new URLSearchParams(location.search).has('render')) document.body.dataset.render = '1';
+</script>
+<script src="../../v5/pixel-mark.js"></script>
+<script src="motion.js"></script>
+<script src="play.js"></script>
+</body>
+</html>

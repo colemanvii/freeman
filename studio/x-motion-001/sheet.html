@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>Motion 001 Sheet</title>
+<style>
+  html, body { margin:0; background:#fff9f1; font:9px Monaco, monospace; color:#777a75; }
+  .grid { display:grid; gap:10px; padding:10px; }
+  canvas { width:100%; display:block; outline:1px solid #e4ddd1; }
+</style>
+</head>
+<body data-render="1">
+<div class="grid"></div>
+<script>
+  // sheet.html?s=02&n=16&cols=4  — n evenly spaced frames; &from=0.4&to=0.6 to zoom in on a stretch
+  const q = new URLSearchParams(location.search), s = q.get('s') || '01', n = +(q.get('n') || 16), cols = +(q.get('cols') || 4);
+  const from = +(q.get('from') || 0), to = +(q.get('to') || 1);
+  const grid = document.querySelector('.grid'); grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+  for (let i = 0; i < n; i++) { const f = document.createElement('figure'); f.style.margin = 0; const c = document.createElement('canvas'); c.width = c.height = 1080; c.dataset.p = from + (to - from) * i / (to === 1 && from === 0 ? n : n - 1); f.append(c); grid.append(f); }
+</script>
+<script src="../../v5/pixel-mark.js"></script>
+<script src="motion.js"></script>
+<script>
+  FreemanMotion.load().then((st) => { for (const c of document.querySelectorAll('canvas')) { st[s].draw(c.getContext('2d'), +c.dataset.p); const l = document.createElement('div'); l.textContent = (+c.dataset.p * st[s].D).toFixed(2) + ' s'; c.after(l); } });
+</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Freeman Motion 001</title>
+<style>
+  :root { --paper:#fff9f1; --ink:#332e20; --orange:#f93822; --muted:#777a75; --hair:#e4ddd1; --mono:Monaco, Menlo, monospace; }
+  * { box-sizing:border-box; }
+  html, body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--mono); -webkit-font-smoothing:none; }
+  header { display:flex; justify-content:space-between; padding:28px 30px 0; font-size:10px; letter-spacing:.04em; text-transform:uppercase; }
+  header span { color:var(--muted); }
+  main { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:30px; padding:40px 30px 30px; }
+  figure { margin:0; }
+  canvas { width:100%; aspect-ratio:1; display:block; outline:1px solid var(--hair); }
+  a { color:inherit; text-decoration:none; }
+  a:hover canvas { outline-color:var(--orange); }
+  figcaption { padding-top:16px; font-size:11px; line-height:1.7; }
+  .n { color:var(--orange); }
+  .title { text-transform:uppercase; letter-spacing:.04em; }
+  .idea { margin-top:8px; max-width:34em; }
+  .time { margin-top:10px; font-size:9px; color:var(--muted); }
+  footer { padding:10px 30px 40px; font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; line-height:1.8; }
+  @media (max-width: 800px) { main { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header><div>Freeman — Motion 001</div><span>1080 × 1080 · 8.00 s loops · study, not production</span></header>
+<main>
+  <figure><a href="study.html?s=01"><canvas data-study="01" width="1080" height="1080"></canvas></a>
+    <figcaption><div class="title"><span class="n">01</span> Sundial</div>
+      <div class="idea">A drawing becomes a building the moment it casts a shadow. The signature stands in the sun for one polar day — the sun never sets, so the loop is an orbit, not a rewind.</div>
+      <div class="time"></div></figcaption></figure>
+  <figure><a href="study.html?s=02"><canvas data-study="02" width="1080" height="1080"></canvas></a>
+    <figcaption><div class="title"><span class="n">02</span> Material</div>
+      <div class="idea">Nothing added, nothing taken away. The signature is 2,278 pixels — exactly a 67 × 34 block. Rows only slide sideways, then columns only rise: courses, then plumb. Halfway, the band is the signature's own tone in 1-bit dither; every frame holds all 2,278. Round 3 · <a href="study.html?s=02r2" style="text-decoration:underline">round 2</a> · <a href="study.html?s=02r1" style="text-decoration:underline">round 1</a> · <a href="study.html?s=04" style="text-decoration:underline">No. 2: Eagle</a>.</div>
+      <div class="time"></div></figcaption></figure>
+  <figure><a href="study.html?s=03"><canvas data-study="03" width="1080" height="1080"></canvas></a>
+    <figcaption><div class="title"><span class="n">03</span> Plumb</div>
+      <div class="idea">Level and plumb are the first two lines of any building; the weathervane is the last thing set on it. Facing you, the eagle is level. Turned into the wind, it is plumb — and the vane becomes the crosshair.</div>
+      <div class="time"></div></figcaption></figure>
+</main>
+<footer>Artwork read live from production: v5/pixel-mark.js (signature, 160 × 61) · v5/eagle/stamp.pbm (Stamp eagle, 192 × 60). Nothing is redrawn.<br>Click a study to play it alone · space pauses · ← → steps a frame · L jumps to the loop seam.</footer>
+<script src="../../v5/pixel-mark.js"></script>
+<script src="motion.js"></script>
+<script src="play.js"></script>
+</body>
+</html>
