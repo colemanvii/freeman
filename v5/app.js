@@ -24,7 +24,7 @@
   const { projects, archive } = window.RECORDS;
   const root = document.querySelector("#main");
   const PALETTES = ["chalk", "sand", "umber"];
-  const PAPER = { chalk: "#fff9f1", sand: "#ddcfb3", umber: "#484335" };
+  const PAPER = { chalk: "#fff9f1", sand: "#ddcfb3", umber: "#332e20" };
   const DESTINATIONS = [
     ["COMPANY", "company.html", ""],
     // PROJECTS is the map (26 Oct 2026); the former Projects index redirects there (_redirects).
