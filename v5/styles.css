@@ -770,3 +770,111 @@ body[data-route="entrance"] .client-access-entry {
     font-size:11px;
   }
 }
+
+
+/* Company 001 — Architectural White (study, 8 Nov 2026; not production).
+   The Company page as four plates on a 12-column field: the plate's name holds columns 1–3,
+   the material starts at column 4. White ground like the entrance; umber ink; orange only as
+   the signal for the current plate and a hovered link. Hierarchy from size and placement alone. */
+:root[data-palette="chalk"] body[data-route="company"],
+:root[data-palette="chalk"] body[data-route="company"] #site,
+:root[data-palette="chalk"] body[data-route="company"] #main{background:#fff}
+body[data-route="company"]{--cw-quiet:#8a857c;--cw-hair:#e7e4dd;--cw-gap:clamp(16px,1.9vw,28px)}
+:root[data-palette="sand"] body[data-route="company"],:root[data-palette="umber"] body[data-route="company"]{--cw-quiet:var(--muted);--cw-hair:var(--hair)}
+body[data-route="company"] .sheet-controls{display:flex}
+body[data-route="company"] .sheet-controls .count{display:none}
+body[data-route="company"] .sheet-controls .section-link{max-width:none;font-size:10px}
+body[data-route="company"] .viewport{overflow:hidden}
+
+.cw{height:100%;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+.cw::-webkit-scrollbar{display:none}
+.cw-plate{min-height:100%;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:auto minmax(0,1fr) auto;column-gap:var(--cw-gap);align-content:stretch}
+:where(.cw-plate) :is(h2,h3,p,ol,dl,dd,figure,blockquote){margin:0;padding:0;font-weight:400}
+.cw-label{grid-column:1/4;grid-row:1;display:flex;gap:16px;align-self:start;font-size:10px;line-height:1.5;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.cw-no{color:var(--cw-quiet);font-variant-numeric:tabular-nums;letter-spacing:.06em}
+
+/* 01 Philosophy — one monumental sentence, three columns of argument, signed. */
+.cw-statement{grid-column:4/13;grid-row:1;font-size:clamp(30px,3.75vw,56px);line-height:1.1;letter-spacing:-.03em;margin-top:-.14em!important;color:var(--ink)}
+.cw-columns{grid-column:4/13;grid-row:3;display:grid;grid-template-columns:subgrid;align-items:start;padding-top:56px}
+.cw-columns>*{grid-column:span 3}
+.cw-columns p{font-size:12px;line-height:1.75;max-width:35ch;color:var(--ink)}
+.cw-sig{display:block;width:160px;height:auto;aspect-ratio:160/61;image-rendering:pixelated;margin-top:34px;margin-left:-4px}
+
+/* 02 Services — three lines of a schedule; one photograph in the margin. */
+.cw-rows{grid-column:4/13;grid-row:1/3;list-style:none;display:grid;grid-template-columns:subgrid;align-content:start}
+.cw-rows li{grid-column:1/-1;display:grid;grid-template-columns:subgrid;align-items:baseline;padding:0 0 30px;margin-bottom:28px;border-bottom:1px solid var(--cw-hair)}
+.cw-rows li:last-child{border-bottom:0}
+.cw-rows .cw-no{grid-column:1;font-size:10px}
+.cw-rows h3{grid-column:2/6;font-size:clamp(20px,2.1vw,30px);line-height:1.2;letter-spacing:-.02em}
+.cw-rows p{grid-column:6/10;font-size:12px;line-height:1.75;max-width:34ch}
+.cw-figure{grid-column:1/4;grid-row:2/4;align-self:end;display:flex;flex-direction:column;gap:12px;margin-top:40px!important}
+.cw-figure a{display:block;align-self:flex-start}
+.cw-figure img{height:clamp(130px,36dvh,320px);width:auto;max-width:100%;object-fit:cover}
+.cw-figure figcaption{display:flex;flex-direction:column;gap:2px;font-size:9px;line-height:1.5;letter-spacing:.08em;text-transform:uppercase;color:var(--cw-quiet)}
+.cw-figure figcaption span:first-child{color:var(--ink)}
+
+/* 03 People — set as credits: the role in the margin of the column, the name large. */
+.cw-credits{grid-column:4/13;grid-row:1/3;display:grid;grid-template-columns:subgrid;align-content:start}
+.cw-credits>div{grid-column:1/-1;display:grid;grid-template-columns:subgrid;align-items:baseline;padding-bottom:20px;margin-bottom:22px;border-bottom:1px solid var(--cw-hair)}
+.cw-credits>div:last-child{border-bottom:0}
+.cw-credits dt{grid-column:1/4;grid-row:1;font-size:10px;line-height:1.5;letter-spacing:.1em;text-transform:uppercase;color:var(--cw-quiet)}
+.cw-credits dd{grid-column:4/10;font-size:clamp(20px,2.1vw,30px);line-height:1.32;letter-spacing:-.02em}
+.cw-quote{grid-column:7/13;grid-row:2/4;align-self:end;margin-top:36px!important}
+.cw-quote p{font-size:13px;line-height:1.65;max-width:42ch;text-indent:-.6em}
+.cw-quote footer{margin-top:12px;font-size:9px;line-height:1.5;letter-spacing:.08em;text-transform:uppercase;color:var(--cw-quiet)}
+
+/* 04 Work — the record as an index of works, each line a door to the project. */
+.cw-aside{grid-column:1/4;grid-row:2;align-self:start;margin-top:22px!important;font-size:10px;line-height:1.6;letter-spacing:.1em;text-transform:uppercase;color:var(--cw-quiet)}
+.cw-index{grid-column:4/13;grid-row:1/3;list-style:none;display:grid;grid-template-columns:subgrid;align-content:start;border-top:1px solid var(--cw-hair)}
+.cw-index li{grid-column:1/-1;display:grid;grid-template-columns:subgrid}
+.cw-index a{grid-column:1/-1;display:grid;grid-template-columns:subgrid;align-items:baseline;padding:clamp(5px,.85dvh,10px) 0;border-bottom:1px solid var(--cw-hair)}
+.cw-index .cw-no{grid-column:1;font-size:10px}
+.cw-index .cw-name{grid-column:2/7;justify-self:start;font-size:13px;line-height:1.5;letter-spacing:.01em}
+.cw-index .cw-place{grid-column:7/10;font-size:10px;line-height:1.5;letter-spacing:.08em;text-transform:uppercase;color:var(--cw-quiet)}
+.cw-index a:hover .cw-name,.cw-index a:focus-visible .cw-name{background:var(--orange);color:var(--paper)}
+.cw-index a:focus-visible{outline:none}
+.cw-colophon{grid-column:4/13;grid-row:3;display:grid;grid-template-columns:subgrid;align-items:baseline;padding-top:32px;font-size:10px;line-height:1.5;letter-spacing:.08em;text-transform:uppercase;color:var(--cw-quiet)}
+.cw-colophon span:first-child{grid-column:2/7;color:var(--ink)}
+.cw-colophon span:nth-child(2){grid-column:7/9}
+.cw-colophon a{grid-column:9/10;justify-self:end;color:var(--ink)}
+
+/* Contents line at the foot: where you are among the four plates. */
+.cw-contents{display:flex;gap:clamp(18px,2.2vw,30px);align-items:baseline}
+.cw-contents button{display:inline-flex;gap:9px;font-size:10px;line-height:1.5;letter-spacing:.1em;text-transform:uppercase;color:var(--cw-quiet)}
+.cw-contents button[aria-current="true"],.cw-contents button[aria-current="true"] .cw-no{color:var(--orange)}
+.cw-contents button:hover .cw-no{color:inherit}
+
+@media(max-width:760px){
+  body[data-route="company"] .viewport{inset:66px 18px 70px}
+  .cw-plate{display:flex;flex-direction:column;min-height:100%}
+  .cw-label{margin-bottom:30px;font-size:10px}
+  .cw-statement{font-size:clamp(25px,7.6vw,34px);line-height:1.12;margin:0 0 30px!important}
+  .cw-columns{display:block;padding-top:0}
+  .cw-columns p{font-size:12.5px;line-height:1.68;max-width:none;margin-bottom:14px!important}
+  .cw-sig{margin-top:26px}
+  .cw-rows,.cw-credits,.cw-index,.cw-colophon{display:block}
+  .cw-rows li{display:grid;grid-template-columns:30px minmax(0,1fr);row-gap:8px;padding-bottom:22px;margin-bottom:20px}
+  .cw-rows .cw-no{grid-column:1;grid-row:1}
+  .cw-rows h3{grid-column:2;font-size:21px}
+  .cw-rows p{grid-column:2;font-size:12px;line-height:1.65}
+  .cw-plate>*{align-self:stretch}
+  .cw-figure{margin-top:auto!important;padding-top:10px;gap:10px}
+  .cw-figure a{width:44%}
+  .cw-figure img{width:100%;height:auto;max-height:22dvh;object-fit:cover;object-position:center top}
+  .cw-credits>div{display:block;padding-bottom:16px;margin-bottom:16px}
+  .cw-credits dt{margin-bottom:6px}
+  .cw-credits dd{font-size:21px;line-height:1.35}
+  .cw-quote{margin-top:auto!important;padding-top:28px}
+  .cw-quote p{font-size:12.5px}
+  .cw-aside{display:none}
+  .cw-index a{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:10px;padding:clamp(6px,1dvh,9px) 0}
+  .cw-index .cw-name{grid-column:2;font-size:13px}
+  .cw-index .cw-place{grid-column:3;font-size:9px;text-align:right}
+  .cw-colophon{display:grid;grid-template-columns:1fr auto;gap:4px 14px;margin-top:auto!important;padding-top:26px;font-size:9px}
+  .cw-colophon span:first-child{grid-column:1;grid-row:1}
+  .cw-colophon span:nth-child(2){grid-column:1;grid-row:2}
+  .cw-colophon a{grid-column:2;grid-row:1/3;align-self:end}
+  .cw-contents{gap:16px}
+  .cw-contents .cw-word{display:none}
+  .cw-contents button[aria-current="true"] .cw-word{display:inline}
+}

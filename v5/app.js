@@ -298,97 +298,76 @@
     count();
   }
 
-  /* ---------- COMPANY: the company, as an editorial reading page ---------- */
+  /* ---------- COMPANY — Architectural White / Company 001 (study, not production) ----------
+     The company as four plates, turned like the front matter of a monograph:
+     01 Philosophy · 02 Services · 03 People · 04 Work. Every word is Freeman's published copy;
+     the Work index reads records.js. Nothing is a placeholder. PREV / NEXT, ← →, a swipe, or
+     the contents line at the foot turn the plate; ?sheet=n keeps the place on reload. */
   function company() {
-    // V4: one editorial frame; three views, no route changes or layout jumps.
     chrome({ title: "Company / Freeman General Contracting", section: "company" });
     const vp = root.querySelector(".viewport");
-    const people = [
-      {name:"Gabe Freeman",role:"Founder / President"},
-      {name:"Dillon Vanderpool",role:"Project Manager"},
-      {name:"Cameron Dombi",role:"Superintendent"},
-      {name:"Mac Thompson",role:"Superintendent"},
-      {name:"Jimmy Jennings",role:"Superintendent"},
-      {name:"Macee Murray",role:"Controller"}
-    ];
+    const plates = ["Philosophy", "Services", "People", "Work"];
     const services = [
-      {name:"General Contracting",detail:"Construction execution, coordination of trades, quality, and completion.",image:"assets/projects/barnsley-gardens-2.jpg",alt:"Architectural photograph of Barnsley Gardens",caption:"BARNSLEY GARDENS"},
-      {name:"Construction Management",detail:"Planning and coordination throughout the life of a project.",image:"assets/projects/barnsley-gardens-2.jpg",alt:"Photograph of Barnsley Gardens",caption:"BARNSLEY GARDENS"},
-      {name:"Preconstruction",detail:"Early collaboration around scope, budgets, schedules, and constructability.",image:"assets/projects/beetlecat-interior-2.jpg",alt:"Interior photograph of Beetlecat",caption:"BEETLECAT"}
+      ["General Contracting", "Construction execution, coordination of trades, quality, and completion."],
+      ["Construction Management", "Planning and coordination throughout the life of a project."],
+      ["Preconstruction", "Early collaboration around scope, budgets, schedules, and constructability."]
     ];
-    let currentTab="philosophy",currentPerson=0,currentService=0;
-    vp.innerHTML = `<div class="co4" data-co4-view="philosophy">
-      <div class="co4-stage">
-        <section class="co4-editorial" id="co4-panel" role="tabpanel" aria-live="polite">
-          <nav class="co4-nav" aria-label="Company views" role="tablist">
-            <button type="button" role="tab" data-co4-tab="philosophy" aria-selected="true" aria-controls="co4-copy">PHILOSOPHY</button>
-            <button type="button" role="tab" data-co4-tab="services" aria-selected="false" aria-controls="co4-copy">SERVICES</button>
-            <button type="button" role="tab" data-co4-tab="people" aria-selected="false" aria-controls="co4-copy">PEOPLE</button>
-          </nav>
-          <div class="co4-copy" id="co4-copy"></div>
-        </section>
-        <figure class="co4-visual co4-placeholder-visual" aria-live="polite"><div class="co4-media"><div class="co4-image-placeholder" id="co4-image-placeholder">ADD IMAGE HERE</div></div><figcaption id="co4-image-caption">PHILOSOPHY / IMAGE TO COME</figcaption></figure>
-      </div>
-    </div>`;
-    const copy=vp.querySelector("#co4-copy");
-    const imageCaption=vp.querySelector("#co4-image-caption");
-    const imagePlaceholder=vp.querySelector("#co4-image-placeholder");
-    function updateImageSpace(){
-      const item=currentTab==="people" ? people[currentPerson] : currentTab==="services" ? services[currentService] : null;
-      imagePlaceholder.textContent="ADD IMAGE HERE";
-      imageCaption.textContent=currentTab==="people" ? item.name.toUpperCase()+" / HEADSHOT TO COME" : currentTab==="services" ? item.name.toUpperCase()+" / IMAGE TO COME" : "PHILOSOPHY / IMAGE TO COME";
-    }
-    const philosophyParagraphs=[
-      "The way a place gets built matters.",
-      "We work alongside owners, architects, designers, and operators who care deeply about what they create. We come to the table early, bring the right people together, and carry ambitious ideas through construction.",
-      "Good construction is a relationship, not a transaction. It takes clear judgment, difficult conversations, respect for the people doing the work, and decisions made for the long term.",
-      "We believe the process of building should be something people look forward to, not simply something they have to get through."
+    const people = [
+      ["Founder / President", ["Gabe Freeman"]],
+      ["Project Manager", ["Dillon Vanderpool"]],
+      ["Superintendents", ["Cameron Dombi", "Mac Thompson", "Jimmy Jennings"]],
+      ["Controller", ["Macee Murray"]]
     ];
-    function renderCompanySheet() {
-      if(currentTab!=="philosophy")return;
-      const paragraphs=philosophyParagraphs;
-      copy.innerHTML=`<h2>Built for generations<span class="co4-accent">.</span></h2>${paragraphs.map(p=>`<p>${esc(p)}</p>`).join("")}`;
-    }
-    function setCompanySheets() {
-      pageCount=1;
-      pageIndex=Math.min(pageIndex,pageCount-1);
-      renderPage=renderCompanySheet;
-      renderPage();
-      count();
-    }
-    function show(tab) {
-      currentTab=tab;
-      vp.querySelector(".co4").dataset.co4View=tab;
-      updateImageSpace();
-      vp.querySelectorAll("[data-co4-tab]").forEach(el=>el.setAttribute("aria-selected",String(el.dataset.co4Tab===tab)));
-      pageIndex=0;
-      if(tab==="philosophy"){
-        setCompanySheets();
-      } else if(tab==="services"){
-        pageCount=1;renderPage=()=>{};count();
-        copy.innerHTML=`<h2>What we do<span class="co4-accent">.</span></h2>
-          <div class="co4-menu" role="group" aria-label="Services">${services.map((s,i)=>`<button type="button" class="co4-choice" data-co4-service="${i}" aria-pressed="${i===currentService}"><span>0${i+1}</span><strong>${esc(s.name)}</strong></button>`).join("")}</div>
-          <div class="co4-description"><span>OUR APPROACH</span><p id="co4-service-text">${esc(services[currentService].detail)}</p></div>`;
-      } else {
-        pageCount=1;renderPage=()=>{};count();
-        const person=people[currentPerson];
-        copy.innerHTML=`<h2>Our people<span class="co4-accent">.</span></h2>
-          <div class="co4-people" role="group" aria-label="Select a team member">${people.map((p,i)=>`<button type="button" class="co4-choice" data-co4-person="${i}" aria-pressed="${i===currentPerson}"><span>0${i+1}</span><strong>${esc(p.name)}</strong></button>`).join("")}</div>
-          <div class="co4-description"><span id="co4-person-role">${esc(person.role)}</span><p id="co4-person-name">${esc(person.name)}</p><small>Full biography and portrait forthcoming.</small></div>`;
-      }
-    }
-    vp.addEventListener("click",e=>{
-      const tab=e.target.closest("[data-co4-tab]"),service=e.target.closest("[data-co4-service]"),person=e.target.closest("[data-co4-person]");
-      if(tab){show(tab.dataset.co4Tab);return;}
-      if(service){currentService=Number(service.dataset.co4Service);vp.querySelectorAll("[data-co4-service]").forEach(el=>el.setAttribute("aria-pressed",String(Number(el.dataset.co4Service)===currentService)));vp.querySelector("#co4-service-text").textContent=services[currentService].detail;updateImageSpace();return;}
-      if(person){currentPerson=Number(person.dataset.co4Person);show("people");}
-    });
-    vp.querySelector(".co4-nav").addEventListener("keydown",e=>{
-      const tabs=[...vp.querySelectorAll("[data-co4-tab]")],i=tabs.indexOf(document.activeElement);
-      if(i===-1||!["ArrowLeft","ArrowRight"].includes(e.key))return;
-      e.preventDefault();const next=tabs[(i+(e.key==="ArrowRight"?1:tabs.length-1))%tabs.length];next.focus();show(next.dataset.co4Tab);
-    });
-    show("philosophy");
+    const projects = ((window.RECORDS && RECORDS.projects) || []).slice().sort((a, b) => a.id.localeCompare(b.id));
+    const label = (i) => `<p class="cw-label"><span class="cw-no">${pad(i + 1)}</span><span>${esc(plates[i])}</span></p>`;
+    const sheets = [
+      () => `<section class="cw-plate cw-philosophy">${label(0)}
+        <h2 class="cw-statement">The way a place<br>gets built matters.</h2>
+        <div class="cw-columns">
+          <p>We work alongside owners, architects, designers, and operators who care deeply about what they create. We come to the table early, bring the right people together, and carry ambitious ideas through construction.</p>
+          <p>Good construction is a relationship, not a transaction. It takes clear judgment, difficult conversations, respect for the people doing the work, and decisions made for the long term.</p>
+          <div><p>We believe the process of building should be something people look forward to, not simply something they have to get through.</p>
+          <canvas class="cw-sig" width="160" height="61" role="img" aria-label="Freeman"></canvas></div>
+        </div>
+      </section>`,
+      () => `<section class="cw-plate cw-services">${label(1)}
+        <ol class="cw-rows">${services.map(([n, d], i) => `<li><span class="cw-no">${pad(i + 1)}</span><h3>${esc(n)}</h3><p>${esc(d)}</p></li>`).join("")}</ol>
+        <figure class="cw-figure"><a href="project-barnsley-gardens.html" aria-label="Barnsley Family Pool — open project"><img src="assets/projects/barnsley-gardens-2.jpg" alt="Pool house at Barnsley Family Pool: a timber-framed service window in a white wall, in raking sun."></a>
+          <figcaption><span>P—03 Barnsley Family Pool</span><span>Adairsville, Georgia</span></figcaption></figure>
+      </section>`,
+      () => `<section class="cw-plate cw-people">${label(2)}
+        <dl class="cw-credits">${people.map(([role, names]) => `<div><dt>${esc(role)}</dt>${names.map((n) => `<dd>${esc(n)}</dd>`).join("")}</div>`).join("")}</dl>
+        <blockquote class="cw-quote"><p>“Highly communicative, attentive to detail, and easy to be around.”</p>
+          <footer><a class="phrase" href="project-savi-provisions.html">Paul Nair / Savi Provisions</a></footer></blockquote>
+      </section>`,
+      () => `<section class="cw-plate cw-work">${label(3)}
+        <p class="cw-aside">${projects.length} projects<br>in the record</p>
+        <ol class="cw-index">${projects.map((p) => `<li><a href="project-${esc(p.slug)}.html"><span class="cw-no">P—${esc(p.id)}</span><span class="cw-name">${esc(p.name)}</span><span class="cw-place">${esc(p.location.replace(/, Georgia$/, ""))}</span></a></li>`).join("")}</ol>
+        <p class="cw-colophon"><span>Freeman General Contracting</span><span>Cartersville, Georgia</span><a class="phrase" href="contact.html">Contact</a></p>
+      </section>`
+    ];
+    const foot = root.querySelector(".sheet-controls .section-link");
+    foot.removeAttribute("aria-hidden");
+    foot.innerHTML = `<nav class="cw-contents" aria-label="Company plates">${plates.map((p, i) => `<button type="button" class="phrase" data-cw="${i}"><span class="cw-no">${pad(i + 1)}</span><span class="cw-word">${esc(p)}</span></button>`).join("")}</nav>`;
+    foot.addEventListener("click", (e) => { const b = e.target.closest("[data-cw]"); if (b) go(Number(b.dataset.cw)); });
+    pageCount = sheets.length;
+    pageIndex = Math.min(sheetFromUrl(), pageCount - 1);
+    renderPage = () => {
+      vp.innerHTML = `<div class="cw" data-plate="${pageIndex}">${sheets[pageIndex]()}</div>`;
+      vp.scrollTop = 0;
+      foot.querySelectorAll("[data-cw]").forEach((b) => b.setAttribute("aria-current", String(Number(b.dataset.cw) === pageIndex)));
+      const sig = vp.querySelector(".cw-sig");
+      if (sig) loadSignature().then(() => window.FreemanPixelMark && window.FreemanPixelMark.mount(sig, { play: false }));
+    };
+    renderPage();
+    count();
+    // Phones: a horizontal swipe turns the plate; vertical movement is left to the plate.
+    let sx = 0, sy = 0;
+    vp.addEventListener("touchstart", (e) => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+    vp.addEventListener("touchend", (e) => {
+      const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+      if (Math.abs(dx) > 56 && Math.abs(dx) > Math.abs(dy) * 1.6) go(pageIndex + (dx < 0 ? 1 : -1));
+    }, { passive: true });
   }
 
   /* ---------- Project credits ----------

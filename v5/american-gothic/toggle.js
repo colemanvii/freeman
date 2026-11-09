@@ -5,7 +5,8 @@
    Keep the attribute in the head so the face is selected before first paint. */
 (() => {
   "use strict";
-  document.documentElement.dataset.type = "gothic";
+  // Company 001 study: the preview runs in Monaco, as the Architectural White study was drawn.
+  // document.documentElement.dataset.type = "gothic";
   const settle = () => dispatchEvent(new Event("resize"));
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", settle, { once: true });
