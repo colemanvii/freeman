@@ -42,7 +42,7 @@ a,button,.hover-word,.phrase{transition:none!important;animation:none!important}
 
 /* Three quiet palette swatches, inspired by the Cole Calfee portfolio. */
 :root[data-palette="sand"]{--paper:#ddcfb3;--ink:#332e20;--muted:#6d6150;--hair:#b5a68c;--orange:#f93822}
-:root[data-palette="umber"]{--paper:#484335;--ink:#fff9f1;--muted:#c5b9a7;--hair:#71685c;--orange:#f93822}
+:root[data-palette="umber"]{--paper:#332e20;--ink:#fff9f1;--muted:#c5b9a7;--hair:#71685c;--orange:#f93822}
 :root[data-palette="umber"]{--cursor-crosshair:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='21' height='21' viewBox='0 0 21 21'%3E%3Cpath d='M10.5 1v19M1 10.5h19' stroke='%23f93822' stroke-width='1'/%3E%3Crect x='9' y='9' width='3' height='3' fill='%23f93822'/%3E%3C/svg%3E") 10 10,crosshair;--cursor-orange:var(--cursor-crosshair)}
 /* Align fixed labels, separators and metadata with the active palette. */
 :root[data-palette="sand"] .sep,:root[data-palette="sand"] .legal,:root[data-palette="sand"] .mark,:root[data-palette="sand"] .subtle,:root[data-palette="sand"] .index-title,:root[data-palette="sand"] .index-row .number,:root[data-palette="sand"] .reading .micro,:root[data-palette="sand"] .reading .data span:first-child,:root[data-palette="sand"] .photo-sheet figcaption,:root[data-palette="sand"] .preview figcaption,:root[data-palette="sand"] .sheet-controls .count{color:var(--muted)}
@@ -430,7 +430,7 @@ body[data-route="entrance"] #main{height:100%;width:100%}
 .v4-home-nav a:hover,.v4-home-nav a:focus-visible{background:var(--orange);color:var(--paper)}
 .v4-colorways{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);display:flex;gap:9px;z-index:20}
 .v4-way{position:relative;display:block;width:16px;height:16px;padding:0;border:1px solid color-mix(in srgb,var(--ink) 28%,transparent);border-radius:0;touch-action:manipulation;cursor:pointer}
-.v4-way-chalk{background:#fff9f1}.v4-way-umber{background:#484335}.v4-way-sand{background:#f93822}
+.v4-way-chalk{background:#fff9f1}.v4-way-umber{background:#332e20}.v4-way-sand{background:#f93822}
 .v4-way[aria-pressed="true"]{outline:none}
 .v4-way:hover:not([aria-pressed="true"]){outline:none}.v4-way:focus-visible{outline:1px solid var(--orange);outline-offset:3px}
 @media(max-width:760px){
