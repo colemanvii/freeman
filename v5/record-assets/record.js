@@ -366,10 +366,19 @@
       if (!ok) { n.el.classList.add('off'); continue; }
       const [x, y] = toScreen(n.x, n.y);
       const w = n.w || (n.w = n.el.offsetWidth), h = 11;
-      const nx = n.cls.includes('dot') ? x + 7 : x - w / 2, ny = y - h / 2;
+      const hit = (b) => taken.some((o) => !(b.x1 < o.x0 || b.x0 > o.x1 || b.y1 < o.y0 || b.y0 > o.y1));
+      let nx = n.cls.includes('dot') ? x + 7 : x - w / 2;
+      const ny = y - h / 2;
+      let box = { x0: nx - 4, y0: ny - 3, x1: nx + w + 4, y1: ny + h + 3 };
+      let clash = hit(box);
+      // A regional city whose right side is taken (by a mark, a group's name) may read to the left of its dot.
+      // North Georgia's own names keep the approved placement.
+      if (clash && n.rk !== null && n.cls.includes('dot')) {
+        const lx = x - 7 - w, lb = { x0: lx - 4, y0: ny - 3, x1: lx + w + 4, y1: ny + h + 3 };
+        if (!hit(lb)) { nx = lx; box = lb; clash = false; }
+      }
+      n.el.classList.toggle('left', n.rk !== null && nx < x);
       n.el.style.transform = `translate(${nx}px,${ny}px)`;
-      const box = { x0: nx - 4, y0: ny - 3, x1: nx + w + 4, y1: ny + h + 3 };
-      const clash = taken.some((o) => !(box.x1 < o.x0 || box.x0 > o.x1 || box.y1 < o.y0 || box.y0 > o.y1));
       // A name is shown whole or not at all: never cut by the edge of the map
       const off = box.x0 < 2 || box.y0 < 0 || box.x1 > W - 2 || box.y1 > H;
       n.el.classList.toggle('off', clash || off);
@@ -970,8 +979,15 @@
   const home = () => {
     const v = visible(), tall = v.w / v.h < .9;
     const b = tall ? regionBounds(-88.4, -79.3, 30.4, 36.7) : regionBounds(-91.4, -75.8, 29.6, 37.0);
-    const h0 = fitView(b, { pad: tall ? 10 : 24, maxS: FAR * .8 });
-    return { ...h0, s: Math.max(h0.s, coverS()) };
+    const h0 = fitView(b, { pad: tall ? 10 : 24, maxS: FAR * .8 }), s = Math.max(h0.s, coverS());
+    // Where the cover scale overrides the fit (small phones), the region is re-centred: hold every place
+    // inside the view and below the title block
+    const t = { s, tx: v.x + v.w / 2 - (b.x0 + b.x1) / 2 * s, ty: v.y + v.h / 2 - (b.y0 + b.y1) / 2 * s };
+    const pb = placedBounds(), m = 34;
+    const py0 = pb.y0 * s + t.ty, py1 = pb.y1 * s + t.ty, px0 = pb.x0 * s + t.tx, px1 = pb.x1 * s + t.tx;
+    if (py0 < v.y + m) t.ty += v.y + m - py0; else if (py1 > v.y + v.h - m) t.ty -= py1 - (v.y + v.h - m);
+    if (px0 < v.x + m) t.tx += v.x + m - px0; else if (px1 > v.x + v.w - m) t.tx -= px1 - (v.x + v.w - m);
+    return t;
   };
   // ALL: the approved opening (8c057c9) — every placed project and the Tennessee line at Chattanooga
   const CHATT = G.places.find((p) => p[0] === 'Chattanooga');

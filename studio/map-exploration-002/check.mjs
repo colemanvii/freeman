@@ -32,10 +32,13 @@ for (const [engine, type] of [['chromium', chromium], ['webkit', webkit]]) {
       const R = window.__record, m = document.getElementById('map').getBoundingClientRect();
       const on = {}; for (const [k, [lon, lat]] of Object.entries(must)) { const [x, y] = R.project(lon, lat); const sx = x * R.view.s + R.view.tx, sy = y * R.view.s + R.view.ty; on[k] = sx > 8 && sx < m.width - 8 && sy > 8 && sy < m.height - 8; }
       const marks = [...document.querySelectorAll('.marklayer .mk')].map((b) => { const r = b.getBoundingClientRect(); return { x: r.left + r.width / 2 - m.left, y: r.top + r.height / 2 - m.top }; });
-      const doc = document.documentElement;
+      const doc = document.documentElement, lede = document.getElementById('lede').getBoundingClientRect();
+      const below = marks.every((k) => k.y + m.top > lede.bottom - 4);
+      const chatt = [...document.querySelectorAll('.nm')].filter((n) => n.textContent === 'Chattanooga').some((n) => !n.classList.contains('off'));
       return { s: R.view.s, far: document.getElementById('map').classList.contains('far'), on, clusters: R.clusters.length, inClusters: R.clusters.reduce((a, c) => a + c.items.length, 0),
         placed: R.items.filter((i) => i.placed).length, marksIn: marks.every((k) => k.x > 0 && k.y > 0 && k.x < m.width && k.y < m.height),
-        scroll: [doc.scrollHeight - innerHeight, doc.scrollWidth - innerWidth],
+        scroll: [doc.scrollHeight - innerHeight, doc.scrollWidth - innerWidth], below, chatt,
+        register: getComputedStyle(document.getElementById('tblock')).display,
         names: [...document.querySelectorAll('.nm:not(.off)')].map((n) => n.textContent), states: [...document.querySelectorAll('.nm.state:not(.off)')].length,
         cut: [...document.querySelectorAll('.nm:not(.off)')].filter((n) => { const r = n.getBoundingClientRect(); return r.left < m.left || r.right > m.right; }).map((n) => n.textContent) };
     }, w / h < 1 ? MUST.phone : MUST.desktop);
@@ -44,6 +47,9 @@ for (const [engine, type] of [['chromium', chromium], ['webkit', webkit]]) {
     ok(o.inClusters === o.placed && o.placed === 14, `${tag} every placed project is on the map at the opening`, `${o.inClusters}/${o.placed}`);
     ok(o.clusters >= 2 && o.clusters <= 5, `${tag} the work reads as a few concentrations, not a scatter`, o.clusters);
     ok(o.marksIn, `${tag} every mark is inside the map at the opening`);
+    ok(o.below, `${tag} every mark sits below the title block (8c057c9)`);
+    ok(o.chatt, `${tag} Chattanooga, the Tennessee line, is named at the opening (8c057c9)`);
+    ok(o.register === 'none', `${tag} no permanent register on the map (8c057c9)`);
     ok(o.scroll[0] <= 0 && o.scroll[1] <= 0, `${tag} the page itself does not scroll`, JSON.stringify(o.scroll));
     ok(o.states >= 3, `${tag} state names are shown at the opening`, o.states);
     ok(o.names.includes('NASHVILLE') || o.names.includes('BIRMINGHAM') || o.names.includes('Nashville') || o.names.includes('Birmingham'), `${tag} neighbouring cities are named`, o.names.join(','));
@@ -133,6 +139,15 @@ for (const [engine, type] of [['chromium', chromium], ['webkit', webkit]]) {
     ok(!errs.length, `${tag} no console errors or failed requests`, errs.join(' | '));
     await ctx.close();
   }
+  await browser.close();
+}
+// Degenerate start (8c057c9's blank-map fix): open at almost no height, then grow — the view refits to the region
+{
+  const browser = await chromium.launch(); const p = await browser.newPage({ viewport: { width: 1280, height: 60 } });
+  await p.goto(BASE + '/map'); await p.waitForFunction(() => window.__record); await p.waitForTimeout(300);
+  await p.setViewportSize({ width: 1280, height: 800 }); await p.waitForTimeout(800);
+  const r = await p.evaluate(() => { const R = window.__record, h = R.home(); return { s: R.view.s, home: h.s, far: document.getElementById('map').classList.contains('far') }; });
+  ok(Math.abs(Math.log(r.s / r.home)) < .02 && r.far, 'a late-sized map refits to the region, not a pinpoint', JSON.stringify(r));
   await browser.close();
 }
 // Geography: the reprojection agrees with its inverse, and projects sit where their coordinates say

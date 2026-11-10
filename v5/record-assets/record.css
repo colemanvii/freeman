@@ -504,3 +504,6 @@ body[data-mode="map"] .field{grid-column:1 / -1}
 .wide .l-grat{opacity:.6}
 .region g.l-counties path{vector-effect:non-scaling-stroke}
 .near .region .l-counties{display:none}
+/* A regional city named to the left of its dot: the dot moves to the name's right */
+.nm.dot.left::before{left:auto;right:-7px}
+.nm.t1.dot.left::before{right:-8px}

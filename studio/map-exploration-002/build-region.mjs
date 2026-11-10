@@ -212,11 +212,12 @@ const interstates = lines(roads.flatMap((f) => geomLines(f.geometry)), 0.8);
 const CAPS = new Set(['Montgomery', 'Tallahassee', 'Atlanta', 'Columbia', 'Raleigh', 'Nashville', 'Jackson', 'Baton Rouge', 'Frankfort', 'Richmond', 'Little Rock', 'Charleston']);
 const placesRaw = rd(path.join(NE, 'ne_10m_populated_places_simple.geojson')).features.map((f) => f.properties)
   .filter((p) => p.sov_a3 === 'USA' && inExt([p.longitude, p.latitude], -0.2));
-// Tier 1 is an editorial choice: the cities by which a reader finds their way around the Southeast.
+// Tier 1 is an editorial choice: the cities by which a reader finds their way around the Southeast, and
+// Chattanooga, the Tennessee line the approved opening (8c057c9) is anchored on.
 const T1 = new Set(['Atlanta', 'Nashville', 'Memphis', 'Birmingham', 'Charlotte', 'Raleigh', 'New Orleans', 'Jacksonville', 'Tampa', 'Orlando', 'Miami', 'Louisville', 'St. Louis', 'Richmond', 'Washington,  D.C.', 'Washington, D.C.']);
 const cands = placesRaw.map((p) => {
   const pop = p.pop_max, cap = CAPS.has(p.name) && /capital/i.test(p.featurecla);
-  const tier = T1.has(p.name) && pop >= 4e5 ? 1 : (cap || pop >= 4e5) ? 2 : pop >= 1.2e5 ? 3 : 0;
+  const tier = (T1.has(p.name) && pop >= 4e5) || (p.name === 'Chattanooga' && p.adm1name === 'Tennessee') ? 1 : (cap || pop >= 4e5) ? 2 : pop >= 1.2e5 ? 3 : 0;
   const [x, y] = P(p.longitude, p.latitude);
   return tier ? { name: p.name.replace(/,\s+/, ', '), x, y, tier, pop } : null;
 }).filter(Boolean).sort((a, b) => a.tier - b.tier || b.pop - a.pop);
