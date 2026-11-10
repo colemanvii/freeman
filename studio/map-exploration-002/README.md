@@ -1,6 +1,6 @@
 # Map Exploration 002 — the Southeast
 
-Branch `study/map-exploration-002`, cut from production `f50c47e` (`release/approved-v5-2026-10-18`, verified byte-identical to freemangc.com on 2026-11-09). Not built on the Vercel experiment or `study/freeman-atlas-from-approved-map-001`.
+Branch `study/map-exploration-002`. Cut from production `f50c47e` on 2026-11-09, then rebased on 2026-11-10 onto production `8c057c9` ("the map is the page": no permanent register, small title block, find lists every project, blank-map refit). Both bases were verified identical to freemangc.com at the time. Not built on the Vercel experiment or `study/freeman-atlas-from-approved-map-001`.
 
 PROJECTS now opens on the Southeast: Georgia among Tennessee, Alabama, Mississippi, the Carolinas and Florida. The work sits in North Georgia as a few small orange concentrations. Coming in, the region gives way to the approved North Georgia drawing, then to streets, exactly as before.
 
@@ -22,7 +22,9 @@ PROJECTS now opens on the Southeast: Georgia among Tennessee, Alabama, Mississip
 | Hand-off | Inside the approved drawing's frame, the OpenStreetMap layers take over from the regional ones at a scale tied to the screen (FAR = 90% of the ALL framing, capped at ×0.32). State and county lines come from the same Census source on both sides of the frame, so they join exactly. |
 | Opening view | Desktop: 91.4–75.8°W, 29.6–37°N. Portrait: 88.4–79.3°W, 30.4–36.7°N, so Georgia keeps its size. The drawing always covers the map; you cannot pan off it. |
 | Marks | Same marks, drawn smaller at the regional scale. Groups keep their count and place name. Single sites and approximate areas show no label until you come in. Choosing a regional group comes down to the place first (at most ×3.2), not straight to the street. |
-| Controls | ALL still shows every place, framed exactly as the approved map opens. `0` returns to the region. Find also knows the region's cities. |
+| Controls | ALL shows the approved opening of `8c057c9`: every placed project and the Tennessee line at Chattanooga. `0` returns to the region. Find also knows the region's cities, and an empty field still lists every project. |
+| `8c057c9` plate | Production's neatline and rectangle clip around the surveyed area are replaced by the curved frame clip on the detail layers. Inside the region, the edge of North Georgia's drawing is not drawn as a border. The blank-map refit is kept and refits to the region. |
+| Chattanooga | Promoted to the first tier of regional names, because the approved opening anchors on it. Regional city names may read to the left of their dot when the right is taken; North Georgia's own names keep their placement. |
 | Names | A name is shown whole or not at all (production allowed "HATTANOOGA" cut at the edge). Names also avoid the north arrow, scale and zoom buttons. |
 | Attribution | Adds NATURAL EARTH. On phones the line drops "MAP DATA" and "U.S." so it stays on one line clear of the zoom buttons. |
 
@@ -30,9 +32,14 @@ The verified project coordinates (`sites.js`) and the precise/approximate distin
 
 ## Checks
 
-- `node studio/map-projects-001/check.mjs` (the approved suite): 359 / 359.
-- `node studio/map-exploration-002/check.mjs`: 251 / 251. Covers Chromium and WebKit at 1440×900, 1280×760, 820×1180, 1180×820, 390×844 and 360×740: opening framing, cover clamp, clustering, discovery click, hand-off, ALL, Find, project open and close, frame pacing, console and network errors, and page scroll.
-- Outside the map element, the page is pixel-identical to production at 1440, 820 and 390 wide (header, lede, register, project panel).
+- `node studio/projects-map-composition/check.mjs` (the current production suite, 171/171 on `8c057c9`): 150 / 171 on the study. All 21 failures are intended, since the study opens on the region:
+  - opening scale below 0.1;
+  - ALL goes to the approved North Georgia framing, not back to the opening;
+  - the iPhone SE opening shows two groups, where that check wants three or more, all below the title;
+  - a late-sized map refits to the region.
+- `node studio/map-projects-001/check.mjs` (the October suite): it stops at `#reg-toggle`, which `8c057c9` retired; production `8c057c9` stops at the same place. Before the rebase, the study passed it 359 / 359.
+- `node studio/map-exploration-002/check.mjs`: 288 / 288. Covers Chromium and WebKit at 1440×900, 1280×760, 820×1180, 1180×820, 390×844 and 360×740: opening framing, places below the title, Chattanooga named, no register, cover clamp, clustering, discovery click, hand-off, ALL, Find, project open and close, frame pacing, console and network errors, and page scroll.
+- Outside the map element, the page is pixel-identical to production `8c057c9` at 1440, 820 and 390 wide (header, title block, project panel).
 - Wheel zoom from the region in headless Chromium: p95 frame 16.8 ms, the same as production.
 
 ## Rebuild
