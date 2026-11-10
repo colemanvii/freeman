@@ -6,14 +6,21 @@
   'use strict';
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const G = window.RECORD_GEO, SUR = window.RECORD_GEO_SURROUND, SITES = window.RECORD_SITES, REG = window.RECORDS.projects;
+  const G = window.RECORD_GEO, R = window.RECORD_REGION, SITES = window.RECORD_SITES, REG = window.RECORDS.projects;
   const CREDITS = window.FREEMAN_CREDITS || { roles: [], partners: {}, projects: {} }, PHOTOS = window.RECORD_PHOTOS || {};
   const phone = () => matchMedia('(max-width:760px)').matches;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const NOW = 2026;
   const KM_PER_UNIT = 0.11132; // one map unit is 1/1000 degree of latitude
-  const project = (lon, lat) => [(lon - G.proj.lon0) * G.proj.cos * G.proj.k, (G.proj.lat0 - lat) * G.proj.k];
-  const unproject = (x, y) => [x / (G.proj.cos * G.proj.k) + G.proj.lon0, G.proj.lat0 - y / G.proj.k];
+  // Lambert conformal conic about 34.15°N 84.6°W (standard parallels 31° and 37°N); one unit is 1/1000° of latitude
+  // at the centre, as before, so the North Georgia drawing keeps its scale. Parallels curve across the region.
+  const PJ = G.proj, RAD = Math.PI / 180;
+  const project = (lon, lat) => { const r = PJ.F / Math.pow(Math.tan(Math.PI / 4 + lat * RAD / 2), PJ.n), t = PJ.n * (lon - PJ.lon0) * RAD; return [PJ.K * r * Math.sin(t), -PJ.K * (PJ.rho0 - r * Math.cos(t))]; };
+  const unproject = (x, y) => { const X = x / PJ.K, Y = PJ.rho0 + y / PJ.K, r = Math.sign(PJ.n) * Math.hypot(X, Y); return [PJ.lon0 + Math.atan2(X, Y) / (PJ.n * RAD), (2 * Math.atan(Math.pow(PJ.F / r, 1 / PJ.n)) - Math.PI / 2) / RAD]; };
+  // Scales: below FAR the opening region (state lines, coast, Interstates, cities); North Georgia's own drawing above it.
+  // FAR follows the screen: the approved framing of every place (ALL) is always drawn as North Georgia, however small the phone.
+  let FAR = .32, WIDE = .17;
+  const lim = (v) => (v === 'FAR' ? FAR : v);
 
   /* ---------- Photographs: resized copies from photos.js; the published original is always the largest source ---------- */
   function photo(src) {
@@ -48,47 +55,67 @@
   /* ---------- Base map ---------- */
   const NS = 'http://www.w3.org/2000/svg';
   const svg = $('svg'), world = $('world'), mapEl = $('map'), marks = $('marks');
+  const el = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
+  // The region: sea, land and the lines that run beyond North Georgia. Its rivers, lakes and roads give way to
+  // North Georgia's own (OpenStreetMap) drawing inside that drawing's frame once the view comes in close enough.
+  const defs = el('defs', {}, svg);
+  el('path', { d: G.frame }, el('clipPath', { id: 'inside-frame' }, defs));
+  el('path', { d: R.sea + G.frame, 'clip-rule': 'evenodd' }, el('clipPath', { id: 'outside-frame' }, defs));
+  const region = el('g', { class: 'region' }, world);
+  const regionLayer = (k, cls, parent = region, src = R) => { const p = el('path', { class: cls }, parent); if (src[k]) p.setAttribute('d', src[k]); p.dataset.layer = 'r-' + k; return p; };
+  regionLayer('sea', 'l-sea'); regionLayer('land', 'l-land'); regionLayer('graticule', 'l-grat');
+  const regionOut = el('g', { 'clip-path': 'url(#outside-frame)' }, region); // always outside the frame: same Census source as inside
+  // County lines arrive after first paint, in tiles; only tiles in view are drawn (see cullTiles)
+  const countyG = el('g', { class: 'l-counties' }, regionOut); countyG.dataset.layer = 'r-counties';
+  let tiles = [];
+  regionLayer('states', 'l-states', regionOut);
+  const regionSwap = el('g', {}, region); // inside the frame only while far out
+  regionLayer('lakesMinor', 'l-lakes l-minor', regionSwap); regionLayer('lakes', 'l-lakes', regionSwap);
+  regionLayer('riversMinor', 'l-rivers l-minor', regionSwap); regionLayer('rivers', 'l-rivers', regionSwap);
+  regionLayer('coast', 'l-coast'); regionLayer('interstates', 'l-roads', regionSwap);
+  const detailG = el('g', { class: 'detail', 'clip-path': 'url(#inside-frame)' }, world);
   [['states', 'l-states', 0], ['counties', 'l-counties', .08], ['lakes', 'l-lakes', .2], ['rivers', 'l-rivers', .28], ['limits', 'l-limits', .4], ['local', 'l-local', .42], ['primary', 'l-primary', .45], ['interstates', 'l-roads', .5]]
-    .forEach(([k, cls, d]) => { const p = document.createElementNS(NS, 'path'); if (G[k]) p.setAttribute('d', G[k]); p.setAttribute('class', cls); p.dataset.layer = k; p.style.setProperty('--d', d + 's'); world.appendChild(p); });
-  // The surveyed drawing is clipped exactly at its box; the ground around it (geo-surround.js) is drawn outside
-  // the box only, so the map fills the page with no frame and no bare paper. No neatline: the map is not an inset.
-  { const b = G.box, cp = document.createElementNS(NS, 'clipPath'), cr = document.createElementNS(NS, 'rect');
-    cr.setAttribute('x', b.x0); cr.setAttribute('y', b.y0); cr.setAttribute('width', b.x1 - b.x0); cr.setAttribute('height', b.y1 - b.y0);
-    cp.id = 'plate'; cp.setAttribute('clipPathUnits', 'userSpaceOnUse'); cp.appendChild(cr); svg.insertBefore(cp, svg.firstChild);
-    world.querySelectorAll('path').forEach((p) => p.setAttribute('clip-path', 'url(#plate)'));
-    if (SUR) {
-      const e = SUR.ext, op = document.createElementNS(NS, 'clipPath'), oh = document.createElementNS(NS, 'path');
-      op.id = 'outside-plate'; op.setAttribute('clipPathUnits', 'userSpaceOnUse');
-      oh.setAttribute('d', `M${e.x0} ${e.y0}H${e.x1}V${e.y1}H${e.x0}ZM${b.x0} ${b.y0}H${b.x1}V${b.y1}H${b.x0}Z`); oh.setAttribute('clip-rule', 'evenodd');
-      op.appendChild(oh); svg.insertBefore(op, svg.firstChild);
-      const g = document.createElementNS(NS, 'g'); g.setAttribute('class', 'surround'); g.setAttribute('clip-path', 'url(#outside-plate)');
-      [['counties', 'l-counties'], ['lakes', 'l-lakes'], ['rivers', 'l-rivers'], ['states', 'l-states'], ['interstates', 'l-roads']]
-        .forEach(([k, cls]) => { const p = document.createElementNS(NS, 'path'); p.setAttribute('d', SUR[k] || ''); p.setAttribute('class', cls); p.dataset.layer = 's-' + k; g.appendChild(p); });
-      world.insertBefore(g, world.firstChild);
-    } }
+    .forEach(([k, cls, d]) => { const p = document.createElementNS(NS, 'path'); if (G[k]) p.setAttribute('d', G[k]); p.setAttribute('class', cls); p.dataset.layer = k; p.style.setProperty('--d', d + 's'); detailG.appendChild(p); });
+  // Production's plate (a neatline and rectangle clip at the edge of the surveyed area, 8c057c9) is replaced
+  // here by the frame clip on the detail group: in the region, the edge of North Georgia's drawing is not a border.
+  let regionDetail = null;
+  function loadRegionDetail() {
+    if (regionDetail) return;
+    regionDetail = document.createElement('script');
+    regionDetail.src = '/record-assets/geo-region-detail.js?v=map-exploration-002';
+    regionDetail.onload = () => {
+      const D = window.RECORD_REGION_DETAIL || {};
+      tiles = (D.counties || []).map(([b, d]) => ({ b, el: el('path', { d, style: 'display:none' }, countyG), on: false }));
+      for (const k in D) if (k !== 'counties') world.querySelector(`[data-layer="r-${k}"]`)?.setAttribute('d', D[k]);
+      cullTiles();
+    };
+    document.head.appendChild(regionDetail);
+  }
   // Street-level layers only show when zoomed in, so they arrive after the first paint (or at once, if needed sooner).
   let detail = null;
   function loadDetail() {
     if (detail || G.local) return;
     detail = document.createElement('script');
-    detail.src = '/record-assets/geo-detail.js?v=20261026-map-projects';
+    detail.src = '/record-assets/geo-detail.js?v=map-exploration-002';
     detail.onload = () => { const D = window.RECORD_GEO_DETAIL || {}; for (const k in D) world.querySelector(`[data-layer="${k}"]`)?.setAttribute('d', D[k]); };
     document.head.appendChild(detail);
   }
 
   // Names: towns, neighbourhoods, rivers, states. Each knows the zoom at which it belongs.
   const names = [];
-  const addName = (text, x, y, cls, minS, maxS = Infinity) => {
+  const addName = (text, x, y, cls, minS, maxS = Infinity, rk = null) => {
     const el = document.createElement('span'); el.className = 'nm ' + cls; el.textContent = text; marks.appendChild(el);
-    names.push({ el, x, y, minS, maxS, cls });
+    names.push({ el, x, y, minS, maxS, cls, rk });
   };
-  G.stateLabels.forEach(([n, x, y]) => addName(n, x, y, 'state', 0, 1.4));
+  // North Georgia's names take over from the region's inside the detailed drawing's frame
+  const fb = G.box, inFrame = (x, y) => x > fb.x0 && x < fb.x1 && y > fb.y0 && y < fb.y1;
+  const localStates = new Set(G.stateLabels.map((s) => s[0]));
+  R.stateLabels.forEach(([n, x, y]) => addName(n, x, y, 'state region', 0, localStates.has(n) ? 'FAR' : 1.4, 6));
+  R.waterLabels.forEach(([n, x, y]) => addName(n, x, y, 'sea', 0, 1.4, 7));
+  R.places.forEach(([n, x, y, t]) => addName(n, x, y, 't' + Math.min(t, 2) + ' dot r' + t, t === 1 ? 0 : t === 2 ? .075 : .15, inFrame(x, y) ? 'FAR' : Infinity, t === 1 ? 1 : t === 2 ? 2.5 : 3.5));
+  G.stateLabels.forEach(([n, x, y]) => addName(n, x, y, 'state', 'FAR', 1.4));
   G.riverLabels.forEach(([n, x, y]) => addName(n, x, y, 'river', .5));
-  G.places.forEach(([n, x, y, t]) => addName(n, x, y, 't' + t + (t < 3 ? ' dot' : ''), t === 1 ? 0 : t === 2 ? .62 : 2.6, t === 1 && n === 'Atlanta' ? 3.2 : Infinity));
-  if (SUR) {
-    SUR.stateLabels.forEach(([n, x, y]) => addName(n, x, y, 'state', 0, 1.4));
-    SUR.places.forEach(([n, x, y, t]) => addName(n, x, y, 't' + t + ' dot', t === 1 ? 0 : .62));
-  }
+  G.places.forEach(([n, x, y, t]) => addName(n, x, y, 't' + t + (t < 3 ? ' dot' : ''), t === 1 ? 'FAR' : t === 2 ? .62 : 2.6, t === 1 && n === 'Atlanta' ? 3.2 : Infinity));
 
   /* ---------- View: screen = world * s + t ---------- */
   const view = { s: 1, tx: 0, ty: 0 };
@@ -129,20 +156,13 @@
   }
   function centreOn(x, y, s) { const v = visible(); return { s, tx: v.x + v.w / 2 - x * s, ty: v.y + v.h / 2 - y * s }; }
   function clampView() {
-    if (SUR) {
-      // The ground always covers the map: it can be moved, never moved off
-      const e = SUR.ext;
-      view.s = Math.max(sMin, view.s);
-      view.tx = Math.min(-e.x0 * view.s, Math.max(W - e.x1 * view.s, view.tx));
-      view.ty = Math.min(-e.y0 * view.s, Math.max(H - e.y1 * view.s, view.ty));
-      return;
-    }
-    // Keep some of the drawing on screen
-    const b = G.box, m = 80;
-    view.tx = Math.min(W - m - b.x0 * view.s, Math.max(m - b.x1 * view.s, view.tx));
-    view.ty = Math.min(H - m - b.y0 * view.s, Math.max(m - b.y1 * view.s, view.ty));
+    // The sheet always covers the view: the drawing never ends inside the frame
+    const b = R.box;
+    view.s = Math.max(sMin, view.s);
+    view.tx = Math.min(-b.x0 * view.s, Math.max(W - b.x1 * view.s, view.tx));
+    view.ty = Math.min(-b.y0 * view.s, Math.max(H - b.y1 * view.s, view.ty));
   }
-  const minScale = () => SUR ? Math.max(W / (SUR.ext.x1 - SUR.ext.x0), H / (SUR.ext.y1 - SUR.ext.y0)) : Math.min(W / (G.box.x1 - G.box.x0), H / (G.box.y1 - G.box.y0)) * .9;
+  const coverS = () => Math.max(W / (R.box.x1 - R.box.x0), H / (R.box.y1 - R.box.y0));
 
   let anim = 0, flying = false;
   function flyTo(target, ms = 650) {
@@ -166,6 +186,15 @@
       };
       anim = requestAnimationFrame(step);
     });
+  }
+
+  function cullTiles() {
+    if (!tiles.length) return;
+    const x0 = -view.tx / view.s, y0 = -view.ty / view.s, x1 = (W - view.tx) / view.s, y1 = (H - view.ty) / view.s;
+    for (const t of tiles) {
+      const on = t.b[2] >= x0 && t.b[0] <= x1 && t.b[3] >= y0 && t.b[1] <= y1;
+      if (on !== t.on) { t.on = on; t.el.style.display = on ? '' : 'none'; }
+    }
   }
 
   /* ---------- Marks: clusters by screen distance, recomputed when the scale changes ---------- */
@@ -312,7 +341,7 @@
       const off = x < -40 || y < -40 || x > v.w + 40 || y > v.h + 40;
       const clash = placedTags.some((o) => !(box.x1 < o.x0 || box.x0 > o.x1 || box.y1 < o.y0 || box.y0 > o.y1));
       // Groups always carry their place name; single records show theirs when there is room at a working zoom
-      const want = c.items.length > 1 || view.s > 1.1 || c.items[0].site.precision === 'area';
+      const want = view.s < FAR ? c.items.length > 1 : c.items.length > 1 || view.s > 1.1 || c.items[0].site.precision === 'area';
       const vis = want && !clash && !off;
       c.tagEl.classList.toggle('off', !vis);
       if (vis) placedTags.push(box);
@@ -321,12 +350,19 @@
     return placedTags;
   }
 
+  // The instruments (north arrow, scale, zoom) are taken ground for names: measured on resize, not per frame
+  let instBoxes = [];
+  function measureInstruments() {
+    const m = mapEl.getBoundingClientRect();
+    instBoxes = ['.zoom', '.north', '.scale'].map((q) => mapEl.querySelector(q)?.getBoundingClientRect()).filter((r) => r && r.width)
+      .map((r) => ({ x0: r.left - m.left - 4, y0: r.top - m.top - 4, x1: r.right - m.left + 4, y1: r.bottom - m.top + 4 }));
+  }
   function positionNames(tagBoxes) {
-    const taken = tagBoxes.slice();
+    const taken = tagBoxes.concat(instBoxes);
     for (const c of clusters) { const [x, y] = toScreen(c.x, c.y); taken.push({ x0: x - 16, y0: y - 16, x1: x + 16, y1: y + 16 }); }
     const order = names.slice().sort((a, b) => rank(a) - rank(b));
     for (const n of order) {
-      const ok = view.s >= n.minS && view.s < n.maxS;
+      const ok = view.s >= lim(n.minS) && view.s < lim(n.maxS);
       if (!ok) { n.el.classList.add('off'); continue; }
       const [x, y] = toScreen(n.x, n.y);
       const w = n.w || (n.w = n.el.offsetWidth), h = 11;
@@ -340,12 +376,23 @@
       if (!clash && !off) taken.push(box);
     }
   }
-  const rank = (n) => n.cls.includes('t1') ? 0 : n.cls.includes('t2') ? 2 : n.cls.includes('t3') ? 3 : n.cls.includes('river') ? 4 : 5;
+  const rank = (n) => n.rk !== null ? n.rk : n.cls.includes('t1') ? 0 : n.cls.includes('t2') ? 2 : n.cls.includes('t3') ? 3 : n.cls.includes('river') ? 4 : 5;
 
   function draw(recluster = false) {
     clampView();
     world.setAttribute('transform', `translate(${view.tx.toFixed(2)} ${view.ty.toFixed(2)}) scale(${view.s.toFixed(5)})`);
     if (view.s > 1.8) loadDetail();
+    if (view.s > WIDE * .8) loadRegionDetail();
+    const far = view.s < FAR;
+    if (far !== mapEl.classList.contains('far')) {
+      mapEl.classList.toggle('far', far);
+      if (far) regionSwap.removeAttribute('clip-path'); else regionSwap.setAttribute('clip-path', 'url(#outside-frame)');
+    }
+    mapEl.classList.toggle('wide', view.s < WIDE);
+    // Wholly inside North Georgia's drawing the region would only be painted to be clipped away: leave it out
+    const m = 14, inner = !far && -view.tx / view.s > fb.x0 + m && (W - view.tx) / view.s < fb.x1 - m && -view.ty / view.s > fb.y0 + m && (H - view.ty) / view.s < fb.y1 - m;
+    if (inner !== (region.style.display === 'none')) region.style.display = inner ? 'none' : '';
+    if (!far && !inner) cullTiles();
     mapEl.classList.toggle('near', view.s > 2.4);
     mapEl.classList.toggle('close', view.s > 4.5);
     // The title steps back once someone is exploring, and returns at the overview
@@ -360,8 +407,8 @@
 
   function scaleBar() {
     const pxPerMile = view.s / (KM_PER_UNIT / 1.609344);
-    const nice = [.1, .25, .5, 1, 2, 5, 10, 20, 25, 50, 100];
-    const miles = nice.find((m) => m * pxPerMile >= 70) || 100;
+    const nice = [.1, .25, .5, 1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500];
+    const miles = nice.find((m) => m * pxPerMile >= 70) || 500;
     const el = $('scale');
     el.querySelector('i').style.width = Math.round(miles * pxPerMile) + 'px';
     el.querySelector('span').textContent = `${miles} ${miles === 1 ? 'MILE' : 'MILES'}`;
@@ -391,9 +438,10 @@
     if (c.items.length === 1) return open(c.items[0].slug);
     const b = bounds(c.items, 2);
     const spread = Math.max(b.x1 - b.x0, b.y1 - b.y0);
-    const target = fitView(b, { pad: 90, maxS: S_MAX });
+    // From the region, come down to the place first (a city, not a street); then separate the group
+    const target = fitView(b, { pad: 90, maxS: view.s < FAR ? 3.2 : S_MAX });
     // Zoom in while it will separate the group; at a single site, list the records there
-    if (spread > 1.2 && target.s > view.s * 1.25) return flyTo(target);
+    if (spread > 1.2 && target.s > view.s * 1.25) return flyTo(target, view.s < FAR ? 900 : 650);
     callout(c);
   }
 
@@ -485,7 +533,7 @@
   mapEl.addEventListener('dblclick', (e) => { if (e.target.closest('.mk,.callout,.zoom')) return; const r = mapEl.getBoundingClientRect(); zoomAt(e.clientX - r.left, e.clientY - r.top, 2.2, 380); });
   $('zin').addEventListener('click', () => zoomAt(W / 2, H / 2, 1.8, 320));
   $('zout').addEventListener('click', () => zoomAt(W / 2, H / 2, 1 / 1.8, 320));
-  $('zfit').addEventListener('click', () => { closeCallout(); flyTo(home()); });
+  $('zfit').addEventListener('click', () => { closeCallout(); flyTo(allPlaces(), view.s < FAR ? 900 : 650); });
   mapEl.addEventListener('keydown', (e) => {
     if (e.target !== mapEl) return;
     const step = 90, k = { ArrowLeft: [step, 0], ArrowRight: [-step, 0], ArrowUp: [0, step], ArrowDown: [0, -step] }[e.key];
@@ -833,6 +881,7 @@
     const lift = phone() && body.dataset.mode === 'record' ? Math.max(0, H - visible().h) : 0;
     instruments.style.transform = lift ? `translateY(${-lift}px)` : '';
     instruments.classList.toggle('lifted', !!lift);
+    measureInstruments();
     $('field').style.setProperty('--lift', lift + 'px');
   }
 
@@ -854,7 +903,10 @@
     if (!t) { results = items.map((i) => ({ kind: 'p', i })); sel = -1; paintResults(); return; }
     const proj = items.filter((i) => [i.name, i.location, i.site.area, i.type, i.client].some((f) => norm(f).includes(t)))
       .sort((a, b) => (norm(b.name).startsWith(t) - norm(a.name).startsWith(t)));
-    const plc = G.places.filter((p) => norm(p[0]).includes(t) && !proj.some((i) => norm(i.name) === norm(p[0]))).slice(0, 4);
+    const local = G.places.filter((p) => norm(p[0]).includes(t) && !proj.some((i) => norm(i.name) === norm(p[0])));
+    // Cities across the region, unless North Georgia's drawing already names that place
+    const wider = R.places.filter((p) => norm(p[0]).includes(t) && !local.some((l) => Math.hypot(l[1] - p[1], l[2] - p[2]) < 40)).map((p) => [p[0], p[1], p[2], 0]);
+    const plc = [...local, ...wider].slice(0, 4);
     results = [...proj.slice(0, 6).map((i) => ({ kind: 'p', i })), ...plc.map((p) => ({ kind: 'place', p }))];
     sel = results.length ? 0 : -1;
     paintResults();
@@ -874,7 +926,7 @@
     q.blur();
     if (r.kind === 'p') return open(r.i.slug);
     const [, x, y, t] = r.p;
-    flyTo(centreOn(x, y, Math.max(view.s, t === 3 ? 7 : t === 2 ? 2.4 : 1.6)), 800);
+    flyTo(centreOn(x, y, Math.max(view.s, t === 3 ? 7 : t === 2 ? 2.4 : t === 0 ? .9 : 1.6)), 800);
   }
 
   /* ---------- Keys, history, resize ---------- */
@@ -909,15 +961,30 @@
     history.go(-1 - (history.state?.d || 0));
   });
   let homeS = 1;
-  // Home frames every placed project and the Tennessee line at Chattanooga, so Atlanta, North Georgia and
-  // Tennessee sit together in one balanced view.
+  // Opening: the Southeast, Georgia among Tennessee, Alabama, Mississippi, the Carolinas and Florida.
+  // A portrait screen frames a narrower band so Georgia keeps its size.
+  const regionBounds = (lon0, lon1, lat0, lat1) => {
+    const pts = []; for (let i = 0; i <= 8; i++) for (const lat of [lat0, lat1]) pts.push(project(lon0 + (lon1 - lon0) * i / 8, lat)); pts.push(project(lon0, (lat0 + lat1) / 2), project(lon1, (lat0 + lat1) / 2));
+    return { x0: Math.min(...pts.map((p) => p[0])), x1: Math.max(...pts.map((p) => p[0])), y0: Math.min(...pts.map((p) => p[1])), y1: Math.max(...pts.map((p) => p[1])) };
+  };
+  const home = () => {
+    const v = visible(), tall = v.w / v.h < .9;
+    const b = tall ? regionBounds(-88.4, -79.3, 30.4, 36.7) : regionBounds(-91.4, -75.8, 29.6, 37.0);
+    const h0 = fitView(b, { pad: tall ? 10 : 24, maxS: FAR * .8 });
+    return { ...h0, s: Math.max(h0.s, coverS()) };
+  };
+  // ALL: the approved opening (8c057c9) — every placed project and the Tennessee line at Chattanooga
   const CHATT = G.places.find((p) => p[0] === 'Chattanooga');
   const homeBounds = () => {
     const b = placedBounds();
     if (CHATT) { b.x0 = Math.min(b.x0, CHATT[1] - 40); b.x1 = Math.max(b.x1, CHATT[1] + 40); b.y0 = Math.min(b.y0, CHATT[2] - 40); b.y1 = Math.max(b.y1, CHATT[2] + 40); }
     return b;
   };
-  const home = () => fitView(homeBounds(), { pad: phone() ? 36 : 80, maxS: 4 });
+  const allPlaces = () => fitView(homeBounds(), { pad: phone() ? 36 : 80, maxS: 4 });
+  function setTiers() {
+    if (body.dataset.mode === 'record' && phone()) return; // the sheet shortens the view; keep the tiers set for the full map
+    FAR = Math.min(.32, allPlaces().s * .9); WIDE = Math.min(.17, FAR * .55);
+  }
   new ResizeObserver(() => {
     const was = { W, H };
     size();
@@ -925,16 +992,20 @@
     // Arrived before the sheet had a size (a slow stylesheet, a hidden tab): the first fit was degenerate.
     // Fit again now rather than keeping a view drawn at a pinpoint.
     if (was.W < 120 || was.H < 120) {
-      sMin = minScale();
+      sMin = coverS();
+      setTiers();
       names.forEach((n) => (n.w = 0));
+      measureInstruments();
       if (body.dataset.mode === 'map') { const h = home(); homeS = h.s; Object.assign(view, h); }
       draw(true); placeInstruments();
       return;
     }
     // Keep the centre of the drawing fixed as the sheet changes size
     view.tx += (W - was.W) / 2; view.ty += (H - was.H) / 2;
-    sMin = minScale();
+    sMin = coverS();
+    setTiers();
     names.forEach((n) => (n.w = 0));
+    measureInstruments();
     draw(true); placeCallout();
     if (body.dataset.mode === 'record' && phone()) setSheet(sheet.state, { fly: false });
     else { recEl.style.removeProperty('--y'); sheet.y = 0; placeInstruments(); }
@@ -945,7 +1016,9 @@
   /* ---------- Begin: the map is drawn complete on arrival ---------- */
   renderRegister();
   size();
-  sMin = minScale();
+  measureInstruments();
+  sMin = coverS();
+  setTiers();
   const h = home(); homeS = h.s;
   Object.assign(view, h);
   renderRule();
@@ -956,5 +1029,5 @@
   (window.requestIdleCallback || ((f) => setTimeout(f, 1200)))(loadDetail, { timeout: 2500 });
 
   // For automated checks only
-  window.__record = { items, view, setYear, open, close, step, get clusters() { return clusters; }, get sheet() { return { ...sheet }; }, get flying() { return flying; }, setSheet };
+  window.__record = { items, view, home, allPlaces, get FAR() { return FAR; }, project, unproject, flyTo, setYear, open, close, step, get clusters() { return clusters; }, get sheet() { return { ...sheet }; }, get flying() { return flying; }, setSheet };
 })();

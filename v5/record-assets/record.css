@@ -468,7 +468,7 @@ body[data-mode="map"] .field{grid-column:1 / -1}
 .l-plate{fill:none;stroke:var(--muted);stroke-width:1;vector-effect:non-scaling-stroke}
 
 /* MAP FULL BLEED — 10 Nov 2026. The map fills the sheet: on desktop the map view runs to the sheet's border
-   (no inner margin, no rule beneath it), and the ground around the survey box (geo-surround.js) fills the
+   (no inner margin, no rule beneath it), and the ground around North Georgia (geo-region.js) fills the
    screen, so there is no framed inset. The heading and the instruments keep their places on the page. */
 @media (min-width:761px){
   body[data-mode="map"] .field{margin:0 calc(11px - var(--edge)) calc(11px - var(--edge))}
@@ -476,4 +476,42 @@ body[data-mode="map"] .field{grid-column:1 / -1}
   body[data-mode="map"] .lede{left:calc(var(--edge) - 11px)}
   body[data-mode="map"] .instruments{left:calc(var(--edge) - 11px + 16px);right:calc(var(--edge) - 11px + 16px);bottom:calc(var(--edge) - 11px)}
 }
-.near .surround .l-counties{display:none}
+
+/* ---------- MAP EXPLORATION 002 — the Southeast ----------
+   The region opens the map; North Georgia's drawing takes over inside its frame as the view comes in (.far ends at s .32).
+   Only the geography is new: sea and land, coast, graticule, region-wide state and county lines, rivers, lakes,
+   Interstates and cities. Everything else is the approved map. */
+.l-sea{fill:var(--water);stroke:none}
+.l-land{fill:var(--paper);stroke:none}
+.l-coast{fill:none;stroke:var(--muted);stroke-width:.7;vector-effect:non-scaling-stroke}
+.l-grat{fill:none;stroke:var(--hair);stroke-width:.5;vector-effect:non-scaling-stroke;display:none}
+.region .l-lakes{stroke-width:.4}
+.l-minor{opacity:.8;transition:opacity .25s steps(3,end)}
+.l-rivers.l-minor{stroke-width:.5}
+.wide .l-minor{display:none}
+/* Far out: the region's own lines, lighter, so the empty ground stays quiet */
+.far .detail [data-layer="counties"],.far .detail [data-layer="lakes"],.far .detail [data-layer="rivers"],
+.far .detail [data-layer="limits"],.far .detail [data-layer="interstates"],.far .region .l-counties{display:none} /* display, not visibility: hidden dashes are still computed */
+.far .region .l-roads{stroke-width:.6;opacity:.55}
+.far .region .l-rivers{stroke-width:.6}
+.far .l-grat{display:inline}
+.nm.sea{font-size:8px;letter-spacing:.42em;font-style:italic;color:var(--muted)}
+.nm.state.region{color:var(--muted);opacity:.75;letter-spacing:.42em}
+/* Marks at regional scale: the same marks, drawn smaller; a group keeps its count */
+.far .mk::before{inset:8px}
+.far .mk::after{width:7px;height:7px}
+.far .mk.approx::after{width:6px;height:6px}
+.far .mk.grp::before{inset:5px}
+.far .mk .ct{width:16px;height:16px;font-size:8px}
+.far .mk.grp .ring2{inset:-1px;opacity:.35}
+.far .area{opacity:0}
+@media(max-width:760px){
+  .far .mk::before{inset:14px}
+  .far .mk.grp::before{inset:11px}
+  .nm.sea{font-size:8.5px}
+}
+.wide .region .l-roads{stroke:var(--muted);stroke-width:.5;opacity:.5}
+.wide .region .l-rivers{stroke-width:.5;opacity:.7}
+.wide .l-grat{opacity:.6}
+.region g.l-counties path{vector-effect:non-scaling-stroke}
+.near .region .l-counties{display:none}
