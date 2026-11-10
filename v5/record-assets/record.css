@@ -466,3 +466,14 @@ body[data-mode="map"] .field{grid-column:1 / -1}
   .found{max-height:58vh}
 }
 .l-plate{fill:none;stroke:var(--muted);stroke-width:1;vector-effect:non-scaling-stroke}
+
+/* MAP FULL BLEED — 10 Nov 2026. The map fills the sheet: on desktop the map view runs to the sheet's border
+   (no inner margin, no rule beneath it), and the ground around the survey box (geo-surround.js) fills the
+   screen, so there is no framed inset. The heading and the instruments keep their places on the page. */
+@media (min-width:761px){
+  body[data-mode="map"] .field{margin:0 calc(11px - var(--edge)) calc(11px - var(--edge))}
+  body[data-mode="map"] .map{border-bottom:0}
+  body[data-mode="map"] .lede{left:calc(var(--edge) - 11px)}
+  body[data-mode="map"] .instruments{left:calc(var(--edge) - 11px + 16px);right:calc(var(--edge) - 11px + 16px);bottom:calc(var(--edge) - 11px)}
+}
+.near .surround .l-counties{display:none}

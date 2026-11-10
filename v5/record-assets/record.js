@@ -6,7 +6,7 @@
   'use strict';
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const G = window.RECORD_GEO, SITES = window.RECORD_SITES, REG = window.RECORDS.projects;
+  const G = window.RECORD_GEO, SUR = window.RECORD_GEO_SURROUND, SITES = window.RECORD_SITES, REG = window.RECORDS.projects;
   const CREDITS = window.FREEMAN_CREDITS || { roles: [], partners: {}, projects: {} }, PHOTOS = window.RECORD_PHOTOS || {};
   const phone = () => matchMedia('(max-width:760px)').matches;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -50,10 +50,22 @@
   const svg = $('svg'), world = $('world'), mapEl = $('map'), marks = $('marks');
   [['states', 'l-states', 0], ['counties', 'l-counties', .08], ['lakes', 'l-lakes', .2], ['rivers', 'l-rivers', .28], ['limits', 'l-limits', .4], ['local', 'l-local', .42], ['primary', 'l-primary', .45], ['interstates', 'l-roads', .5]]
     .forEach(([k, cls, d]) => { const p = document.createElementNS(NS, 'path'); if (G[k]) p.setAttribute('d', G[k]); p.setAttribute('class', cls); p.dataset.layer = k; p.style.setProperty('--d', d + 's'); world.appendChild(p); });
-  // The drawing's neatline: the surveyed area ends at a fine frame, like a plate, not a clipped edge
-  { const b = G.box, r = document.createElementNS(NS, 'rect'); r.setAttribute('x', b.x0); r.setAttribute('y', b.y0); r.setAttribute('width', b.x1 - b.x0); r.setAttribute('height', b.y1 - b.y0); r.setAttribute('class', 'l-plate'); world.insertBefore(r, world.firstChild);
-    const cp = document.createElementNS(NS, 'clipPath'), cr = r.cloneNode(); cp.id = 'plate'; cp.setAttribute('clipPathUnits', 'userSpaceOnUse'); cr.removeAttribute('class'); cp.appendChild(cr); svg.insertBefore(cp, svg.firstChild);
-    world.querySelectorAll('path').forEach((p) => p.setAttribute('clip-path', 'url(#plate)')); }
+  // The surveyed drawing is clipped exactly at its box; the ground around it (geo-surround.js) is drawn outside
+  // the box only, so the map fills the page with no frame and no bare paper. No neatline: the map is not an inset.
+  { const b = G.box, cp = document.createElementNS(NS, 'clipPath'), cr = document.createElementNS(NS, 'rect');
+    cr.setAttribute('x', b.x0); cr.setAttribute('y', b.y0); cr.setAttribute('width', b.x1 - b.x0); cr.setAttribute('height', b.y1 - b.y0);
+    cp.id = 'plate'; cp.setAttribute('clipPathUnits', 'userSpaceOnUse'); cp.appendChild(cr); svg.insertBefore(cp, svg.firstChild);
+    world.querySelectorAll('path').forEach((p) => p.setAttribute('clip-path', 'url(#plate)'));
+    if (SUR) {
+      const e = SUR.ext, op = document.createElementNS(NS, 'clipPath'), oh = document.createElementNS(NS, 'path');
+      op.id = 'outside-plate'; op.setAttribute('clipPathUnits', 'userSpaceOnUse');
+      oh.setAttribute('d', `M${e.x0} ${e.y0}H${e.x1}V${e.y1}H${e.x0}ZM${b.x0} ${b.y0}H${b.x1}V${b.y1}H${b.x0}Z`); oh.setAttribute('clip-rule', 'evenodd');
+      op.appendChild(oh); svg.insertBefore(op, svg.firstChild);
+      const g = document.createElementNS(NS, 'g'); g.setAttribute('class', 'surround'); g.setAttribute('clip-path', 'url(#outside-plate)');
+      [['counties', 'l-counties'], ['lakes', 'l-lakes'], ['rivers', 'l-rivers'], ['states', 'l-states'], ['interstates', 'l-roads']]
+        .forEach(([k, cls]) => { const p = document.createElementNS(NS, 'path'); p.setAttribute('d', SUR[k] || ''); p.setAttribute('class', cls); p.dataset.layer = 's-' + k; g.appendChild(p); });
+      world.insertBefore(g, world.firstChild);
+    } }
   // Street-level layers only show when zoomed in, so they arrive after the first paint (or at once, if needed sooner).
   let detail = null;
   function loadDetail() {
@@ -73,6 +85,10 @@
   G.stateLabels.forEach(([n, x, y]) => addName(n, x, y, 'state', 0, 1.4));
   G.riverLabels.forEach(([n, x, y]) => addName(n, x, y, 'river', .5));
   G.places.forEach(([n, x, y, t]) => addName(n, x, y, 't' + t + (t < 3 ? ' dot' : ''), t === 1 ? 0 : t === 2 ? .62 : 2.6, t === 1 && n === 'Atlanta' ? 3.2 : Infinity));
+  if (SUR) {
+    SUR.stateLabels.forEach(([n, x, y]) => addName(n, x, y, 'state', 0, 1.4));
+    SUR.places.forEach(([n, x, y, t]) => addName(n, x, y, 't' + t + ' dot', t === 1 ? 0 : .62));
+  }
 
   /* ---------- View: screen = world * s + t ---------- */
   const view = { s: 1, tx: 0, ty: 0 };
@@ -113,11 +129,20 @@
   }
   function centreOn(x, y, s) { const v = visible(); return { s, tx: v.x + v.w / 2 - x * s, ty: v.y + v.h / 2 - y * s }; }
   function clampView() {
+    if (SUR) {
+      // The ground always covers the map: it can be moved, never moved off
+      const e = SUR.ext;
+      view.s = Math.max(sMin, view.s);
+      view.tx = Math.min(-e.x0 * view.s, Math.max(W - e.x1 * view.s, view.tx));
+      view.ty = Math.min(-e.y0 * view.s, Math.max(H - e.y1 * view.s, view.ty));
+      return;
+    }
     // Keep some of the drawing on screen
     const b = G.box, m = 80;
     view.tx = Math.min(W - m - b.x0 * view.s, Math.max(m - b.x1 * view.s, view.tx));
     view.ty = Math.min(H - m - b.y0 * view.s, Math.max(m - b.y1 * view.s, view.ty));
   }
+  const minScale = () => SUR ? Math.max(W / (SUR.ext.x1 - SUR.ext.x0), H / (SUR.ext.y1 - SUR.ext.y0)) : Math.min(W / (G.box.x1 - G.box.x0), H / (G.box.y1 - G.box.y0)) * .9;
 
   let anim = 0, flying = false;
   function flyTo(target, ms = 650) {
@@ -309,7 +334,8 @@
       n.el.style.transform = `translate(${nx}px,${ny}px)`;
       const box = { x0: nx - 4, y0: ny - 3, x1: nx + w + 4, y1: ny + h + 3 };
       const clash = taken.some((o) => !(box.x1 < o.x0 || box.x0 > o.x1 || box.y1 < o.y0 || box.y0 > o.y1));
-      const off = x < -100 || y < -20 || x > W + 100 || y > H + 20;
+      // A name is shown whole or not at all: never cut by the edge of the map
+      const off = box.x0 < 2 || box.y0 < 0 || box.x1 > W - 2 || box.y1 > H;
       n.el.classList.toggle('off', clash || off);
       if (!clash && !off) taken.push(box);
     }
@@ -899,7 +925,7 @@
     // Arrived before the sheet had a size (a slow stylesheet, a hidden tab): the first fit was degenerate.
     // Fit again now rather than keeping a view drawn at a pinpoint.
     if (was.W < 120 || was.H < 120) {
-      sMin = Math.min(W / (G.box.x1 - G.box.x0), H / (G.box.y1 - G.box.y0)) * .9;
+      sMin = minScale();
       names.forEach((n) => (n.w = 0));
       if (body.dataset.mode === 'map') { const h = home(); homeS = h.s; Object.assign(view, h); }
       draw(true); placeInstruments();
@@ -907,7 +933,7 @@
     }
     // Keep the centre of the drawing fixed as the sheet changes size
     view.tx += (W - was.W) / 2; view.ty += (H - was.H) / 2;
-    sMin = Math.min(W / (G.box.x1 - G.box.x0), H / (G.box.y1 - G.box.y0)) * .9;
+    sMin = minScale();
     names.forEach((n) => (n.w = 0));
     draw(true); placeCallout();
     if (body.dataset.mode === 'record' && phone()) setSheet(sheet.state, { fly: false });
@@ -919,7 +945,7 @@
   /* ---------- Begin: the map is drawn complete on arrival ---------- */
   renderRegister();
   size();
-  sMin = Math.min(W / (G.box.x1 - G.box.x0), H / (G.box.y1 - G.box.y0)) * .9;
+  sMin = minScale();
   const h = home(); homeS = h.s;
   Object.assign(view, h);
   renderRule();
