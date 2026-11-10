@@ -873,7 +873,9 @@
     history.go(-1 - (history.state?.d || 0));
   });
   let homeS = 1;
-  const home = () => fitView(placedBounds(), { pad: 90, maxS: 4 });
+  // Atlas study: show the full geography already included in the approved map source.
+  // All other project, sheet, typography, pointer and navigation behaviour is unchanged.
+  const home = () => fitView(G.box, { pad: 32, maxS: 4 });
   new ResizeObserver(() => {
     const was = { W, H };
     size();
