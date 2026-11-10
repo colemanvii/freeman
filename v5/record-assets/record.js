@@ -342,7 +342,10 @@
         c.areaEl.style.cssText = `width:${2 * r}px;height:${2 * r}px;transform:translate(${x - r}px,${y - r}px)`;
       }
       const tw = c.tw || 120, th = 18;
-      const flip = x + 14 + tw > v.w - 6;
+      // A name reads to the right of its mark unless that runs past the open map, or through another mark
+      const crosses = (x0, x1) => clusters.some((o) => o !== c && (() => { const [ox, oy] = toScreen(o.x, o.y); return ox + 12 > x0 && ox - 12 < x1 && Math.abs(oy - y) < 14; })());
+      let flip = x + 14 + tw > v.w - 6;
+      if (!flip && crosses(x + 14, x + 14 + tw) && x - 14 - tw > 6 && !crosses(x - 14 - tw, x - 14)) flip = true;
       const tx = flip ? x - 14 - tw : x + 14, ty = y - th / 2;
       c.tagEl.classList.toggle('flip', flip);
       c.tagEl.style.transform = `translate(${tx}px,${ty}px)`;
@@ -997,8 +1000,35 @@
     if (CHATT) { b.x0 = Math.min(b.x0, CHATT[1] - 40); b.x1 = Math.max(b.x1, CHATT[1] + 40); b.y0 = Math.min(b.y0, CHATT[2] - 40); b.y1 = Math.max(b.y1, CHATT[2] + 40); }
     return b;
   };
-  // On phones the zoom buttons stand at the right edge: keep the places clear of that column
-  const allPlaces = () => fitView(homeBounds(), { pad: phone() ? 36 : 80, maxS: 4, right: phone() ? 44 : 0 });
+  // The opening frames Freeman's footprint closely. The title is a small block in the upper-left corner, so the
+  // footprint is fitted to the whole height of the open map, with the title treated as an obstacle rather than a band;
+  // the step in from a band fit is held to 20%. On phones the zoom buttons stand at the right edge: keep clear of them.
+  const allPlaces = () => {
+    const b = homeBounds(), ph = phone(), right = ph ? 44 : 0;
+    const band = fitView(b, { pad: ph ? 36 : 80, maxS: 4, right });
+    const w = openW() - right, pt = ph ? 26 : 70, pb = ph ? 70 : 80, px = ph ? 28 : 80; // phones: the credit and scale run along the bottom
+    const s = Math.max(band.s, Math.min(4, band.s * 1.2, (w - 2 * px) / Math.max(1, b.x1 - b.x0), (H - pt - pb) / Math.max(1, b.y1 - b.y0)));
+    // Names read to the right of their marks: centre the footprint with its names, not the marks alone (desktop)
+    const lab = ph ? 0 : Math.min(160, (w - 2 * px - (b.x1 - b.x0) * s) / 2);
+    const t = { s, tx: w / 2 - (b.x0 + b.x1) / 2 * s - Math.max(0, lab) / 2, ty: pt + (H - pt - pb) / 2 - (b.y0 + b.y1) / 2 * s };
+    const L = $('lede');
+    if (body.dataset.mode === 'map' && L && L.offsetParent) {
+      const m = mapEl.getBoundingClientRect(), r = L.getBoundingClientRect(), lx = r.right - m.left + 16, ly = r.bottom - m.top + 16;
+      // Any project, or Chattanooga, under the title? Move the frame down if the bottom allows; else a tighter band fit
+      const pts = placed.map((i) => [i.x, i.y]).concat(CHATT ? [[CHATT[1], CHATT[2]]] : []).map(([x, y]) => [x * s + t.tx, y * s + t.ty]);
+      const under = pts.filter(([x, y]) => x < lx + 40 && y < ly);
+      if (under.length) {
+        const dy = Math.max(...under.map(([, y]) => ly - y)), low = b.y1 * s + t.ty + dy;
+        if (low <= H - pb * .6) t.ty += dy;
+        else {
+          // Fit below the title instead, still with room for the credit and scale beneath
+          const v = visible(), top = 16, s2 = Math.max(band.s, Math.min(4, band.s * 1.2, (v.w - right - 2 * px) / Math.max(1, b.x1 - b.x0), (v.h - top - pb) / Math.max(1, b.y1 - b.y0)));
+          return { s: s2, tx: v.x + (v.w - right) / 2 - (b.x0 + b.x1) / 2 * s2, ty: v.y + top + (v.h - top - pb) / 2 - (b.y0 + b.y1) / 2 * s2 };
+        }
+      }
+    }
+    return t;
+  };
   function setTiers() {
     if (body.dataset.mode === 'record' && phone()) return; // the sheet shortens the view; keep the tiers set for the full map
     FAR = Math.min(.32, allPlaces().s * .9); WIDE = Math.min(.17, FAR * .55);
