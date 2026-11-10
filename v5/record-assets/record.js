@@ -110,12 +110,13 @@
   // North Georgia's names take over from the region's inside the detailed drawing's frame
   const fb = G.box, inFrame = (x, y) => x > fb.x0 && x < fb.x1 && y > fb.y0 && y < fb.y1;
   const localStates = new Set(G.stateLabels.map((s) => s[0]));
-  R.stateLabels.forEach(([n, x, y]) => addName(n, x, y, 'state region', 0, localStates.has(n) ? 'FAR' : 1.4, 6));
-  R.waterLabels.forEach(([n, x, y]) => addName(n, x, y, 'sea', 0, 1.4, 7));
-  R.places.forEach(([n, x, y, t]) => addName(n, x, y, 't' + Math.min(t, 2) + ' dot r' + t, t === 1 ? 0 : t === 2 ? .075 : .15, inFrame(x, y) ? 'FAR' : Infinity, t === 1 ? 1 : t === 2 ? 2.5 : 3.5));
   G.stateLabels.forEach(([n, x, y]) => addName(n, x, y, 'state', 'FAR', 1.4));
   G.riverLabels.forEach(([n, x, y]) => addName(n, x, y, 'river', .5));
   G.places.forEach(([n, x, y, t]) => addName(n, x, y, 't' + t + (t < 3 ? ' dot' : ''), t === 1 ? 'FAR' : t === 2 ? .62 : 2.6, t === 1 && n === 'Atlanta' ? 3.2 : Infinity));
+  // The region's names follow North Georgia's own (the opening view reads the latter first)
+  R.stateLabels.forEach(([n, x, y]) => addName(n, x, y, 'state region', 0, localStates.has(n) ? 'FAR' : 1.4, 6));
+  R.waterLabels.forEach(([n, x, y]) => addName(n, x, y, 'sea', 0, 1.4, 7));
+  R.places.forEach(([n, x, y, t]) => addName(n, x, y, 't' + Math.min(t, 2) + ' dot r' + t, t === 1 ? 0 : t === 2 ? .075 : .15, inFrame(x, y) ? 'FAR' : Infinity, t === 1 ? 1 : t === 2 ? 2.5 : 3.5));
 
   /* ---------- View: screen = world * s + t ---------- */
   const view = { s: 1, tx: 0, ty: 0 };
@@ -141,15 +142,22 @@
       return { x: 0, y: 0, w: W, h: Math.max(120, Math.min(H, top)) };
     }
     // The heading is a small title block laid over the map's upper left: fit below it so no place hides under it.
-    const L = $('lede');
+    // The project directory lies over the map's right side on wider screens: fit to the open map beside it.
+    const L = $('lede'), w = openW();
     if (body.dataset.mode === 'map' && L && L.offsetParent) {
       const top = L.getBoundingClientRect().bottom - mapEl.getBoundingClientRect().top;
-      if (top > 0 && top < H / 3) return { x: 0, y: top, w: W, h: H - top };
+      if (top > 0 && top < H / 3) return { x: 0, y: top, w, h: H - top };
     }
-    return { x: 0, y: 0, w: W, h: H };
+    return { x: 0, y: 0, w, h: H };
   }
-  function fitView(b, { pad = 60, maxS = S_MAX } = {}) {
-    const v = visible();
+  // Width of the map not covered by the directory (the whole map on phones and while a project is open)
+  function openW() {
+    if (body.dataset.mode !== 'map' || phone() || !tb.offsetParent) return W;
+    const left = tb.getBoundingClientRect().left - mapEl.getBoundingClientRect().left;
+    return left > W / 3 && left < W ? left : W;
+  }
+  function fitView(b, { pad = 60, maxS = S_MAX, right = 0 } = {}) {
+    const v = { ...visible() }; v.w -= right;
     const p = Math.min(pad, v.w / 5, v.h / 5);
     const s = Math.max(sMin, Math.min(maxS, (v.w - 2 * p) / Math.max(1, b.x1 - b.x0), (v.h - 2 * p) / Math.max(1, b.y1 - b.y0)));
     return { s, tx: v.x + v.w / 2 - (b.x0 + b.x1) / 2 * s, ty: v.y + v.h / 2 - (b.y0 + b.y1) / 2 * s };
@@ -290,11 +298,12 @@
     let x, y;
     if (peekOrigin === 'mark' && it.placed) {
       const pos = toScreen(it.x, it.y), mx = pos[0], my = pos[1];
-      x = mx + 30 + w < W - 12 ? mx + 30 : mx - w - 30;
-      x = Math.max(12, Math.min(W - w - 12, x));
+      const ow = openW();
+      x = mx + 30 + w < ow - 12 ? mx + 30 : mx - w - 30;
+      x = Math.max(12, Math.min(ow - w - 12, x));
       y = Math.max(14, Math.min(H - h - 20, my - h * .38));
     } else {
-      x = Math.max(12, W - w - 19);
+      x = Math.max(12, openW() - w - 19);
       y = 20;
     }
     peek.style.transform = 'translate(' + Math.round(x) + 'px, ' + Math.round(y) + 'px)';
@@ -323,7 +332,7 @@
 
   function positionMarks() {
     const placedTags = [];
-    const v = { w: W, h: H };
+    const v = { w: openW(), h: H };
     for (const c of clusters) {
       const [x, y] = toScreen(c.x, c.y);
       c.el.style.transform = `translate(${x}px,${y}px)`;
@@ -333,7 +342,7 @@
         c.areaEl.style.cssText = `width:${2 * r}px;height:${2 * r}px;transform:translate(${x - r}px,${y - r}px)`;
       }
       const tw = c.tw || 120, th = 18;
-      const flip = x + 14 + tw > W - 6;
+      const flip = x + 14 + tw > v.w - 6;
       const tx = flip ? x - 14 - tw : x + 14, ty = y - th / 2;
       c.tagEl.classList.toggle('flip', flip);
       c.tagEl.style.transform = `translate(${tx}px,${ty}px)`;
@@ -358,7 +367,7 @@
       .map((r) => ({ x0: r.left - m.left - 4, y0: r.top - m.top - 4, x1: r.right - m.left + 4, y1: r.bottom - m.top + 4 }));
   }
   function positionNames(tagBoxes) {
-    const taken = tagBoxes.concat(instBoxes);
+    const taken = tagBoxes.concat(instBoxes), nameW = openW();
     for (const c of clusters) { const [x, y] = toScreen(c.x, c.y); taken.push({ x0: x - 16, y0: y - 16, x1: x + 16, y1: y + 16 }); }
     const order = names.slice().sort((a, b) => rank(a) - rank(b));
     for (const n of order) {
@@ -380,7 +389,7 @@
       n.el.classList.toggle('left', n.rk !== null && nx < x);
       n.el.style.transform = `translate(${nx}px,${ny}px)`;
       // A name is shown whole or not at all: never cut by the edge of the map
-      const off = box.x0 < 2 || box.y0 < 0 || box.x1 > W - 2 || box.y1 > H;
+      const off = box.x0 < 2 || box.y0 < 0 || box.x1 > nameW - 2 || box.y1 > H;
       n.el.classList.toggle('off', clash || off);
       if (!clash && !off) taken.push(box);
     }
@@ -428,10 +437,18 @@
     const slug = c.items.length === 1 ? c.items[0].slug : null;
     c.tagEl.classList.toggle('hot', on);
     c.el.classList.toggle('hot', on);
-    document.querySelectorAll('.tb-set button').forEach((b) => b.classList.toggle('hot', on && c.items.some((i) => i.slug === b.dataset.slug)));
+    let first = null;
+    document.querySelectorAll('.tb-set button').forEach((b) => { const hit = on && c.items.some((i) => i.slug === b.dataset.slug); b.classList.toggle('hot', hit); if (hit && !first) first = b; });
+    if (first) revealEntry(first);
     if (slug) { if (on) showPeek(slug, 'mark'); else hidePeek(slug, 'mark'); }
     else if (on && peekOrigin === 'mark') hidePeek();
     if (on) announce(slug ? `${bySlug[slug].name}, ${bySlug[slug].site.area}` : `${c.items.length} projects: ${c.items.map((i) => i.name).join(', ')}`);
+  }
+  // Scroll the directory (not the page) just enough to show an entry
+  function revealEntry(b) {
+    const set = $('tb-set'); if (!set || set.scrollHeight <= set.clientHeight + 1) return;
+    const r = b.getBoundingClientRect(), sr = set.getBoundingClientRect();
+    if (r.top < sr.top) set.scrollTop -= sr.top - r.top + 8; else if (r.bottom > sr.bottom) set.scrollTop += r.bottom - sr.bottom + 8;
   }
   function setHot(slug, on) {
     hotSlug = on ? slug : null;
@@ -477,7 +494,7 @@
     if (!calloutEl || !calloutC) return;
     const [x, y] = toScreen(calloutC.x, calloutC.y);
     const w = calloutEl.offsetWidth, h = calloutEl.offsetHeight;
-    const left = Math.max(8, Math.min(W - w - 8, x)), top = Math.min(H - h - 8, y + 26);
+    const left = Math.max(8, Math.min(openW() - w - 8, x)), top = Math.min(H - h - 8, y + 26);
     calloutEl.style.transform = `translate(${left}px,${top}px)`;
   }
   function closeCallout() { if (calloutEl) { calloutEl.remove(); calloutEl = calloutC = null; } }
@@ -970,25 +987,9 @@
     history.go(-1 - (history.state?.d || 0));
   });
   let homeS = 1;
-  // Opening: the Southeast, Georgia among Tennessee, Alabama, Mississippi, the Carolinas and Florida.
-  // A portrait screen frames a narrower band so Georgia keeps its size.
-  const regionBounds = (lon0, lon1, lat0, lat1) => {
-    const pts = []; for (let i = 0; i <= 8; i++) for (const lat of [lat0, lat1]) pts.push(project(lon0 + (lon1 - lon0) * i / 8, lat)); pts.push(project(lon0, (lat0 + lat1) / 2), project(lon1, (lat0 + lat1) / 2));
-    return { x0: Math.min(...pts.map((p) => p[0])), x1: Math.max(...pts.map((p) => p[0])), y0: Math.min(...pts.map((p) => p[1])), y1: Math.max(...pts.map((p) => p[1])) };
-  };
-  const home = () => {
-    const v = visible(), tall = v.w / v.h < .9;
-    const b = tall ? regionBounds(-88.4, -79.3, 30.4, 36.7) : regionBounds(-91.4, -75.8, 29.6, 37.0);
-    const h0 = fitView(b, { pad: tall ? 10 : 24, maxS: FAR * .8 }), s = Math.max(h0.s, coverS());
-    // Where the cover scale overrides the fit (small phones), the region is re-centred: hold every place
-    // inside the view and below the title block
-    const t = { s, tx: v.x + v.w / 2 - (b.x0 + b.x1) / 2 * s, ty: v.y + v.h / 2 - (b.y0 + b.y1) / 2 * s };
-    const pb = placedBounds(), m = 34;
-    const py0 = pb.y0 * s + t.ty, py1 = pb.y1 * s + t.ty, px0 = pb.x0 * s + t.tx, px1 = pb.x1 * s + t.tx;
-    if (py0 < v.y + m) t.ty += v.y + m - py0; else if (py1 > v.y + v.h - m) t.ty -= py1 - (v.y + v.h - m);
-    if (px0 < v.x + m) t.tx += v.x + m - px0; else if (px1 > v.x + v.w - m) t.tx -= px1 - (v.x + v.w - m);
-    return t;
-  };
+  // Opening: where Freeman has built — every placed project and the Tennessee line at Chattanooga, fitted to the
+  // open map beside the directory. The Southeast is reached by zooming out (the minus button, wheel, pinch).
+  const home = () => allPlaces();
   // ALL: the approved opening (8c057c9) — every placed project and the Tennessee line at Chattanooga
   const CHATT = G.places.find((p) => p[0] === 'Chattanooga');
   const homeBounds = () => {
@@ -996,7 +997,8 @@
     if (CHATT) { b.x0 = Math.min(b.x0, CHATT[1] - 40); b.x1 = Math.max(b.x1, CHATT[1] + 40); b.y0 = Math.min(b.y0, CHATT[2] - 40); b.y1 = Math.max(b.y1, CHATT[2] + 40); }
     return b;
   };
-  const allPlaces = () => fitView(homeBounds(), { pad: phone() ? 36 : 80, maxS: 4 });
+  // On phones the zoom buttons stand at the right edge: keep the places clear of that column
+  const allPlaces = () => fitView(homeBounds(), { pad: phone() ? 36 : 80, maxS: 4, right: phone() ? 44 : 0 });
   function setTiers() {
     if (body.dataset.mode === 'record' && phone()) return; // the sheet shortens the view; keep the tiers set for the full map
     FAR = Math.min(.32, allPlaces().s * .9); WIDE = Math.min(.17, FAR * .55);

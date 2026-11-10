@@ -518,3 +518,22 @@ body[data-mode="map"] .field{grid-column:1 / -1}
 /* A regional city named to the left of its dot: the dot moves to the name's right */
 .nm.dot.left::before{left:auto;right:-7px}
 .nm.t1.dot.left::before{right:-8px}
+
+/* MAP DIRECTORY — 10 Nov 2026. The full project register returns on the right. The map stays one expansive canvas
+   running beneath it to the sheet border: the directory is laid over the map's right side on its own paper, with
+   the register's ink rule, and the framing, instruments and previews keep to the open map beside it. Phones keep
+   the register as a collapsible bar beneath the map. */
+@media (min-width:761px){
+  body[data-mode="map"] .tblock{display:flex;grid-column:2;grid-row:2;position:relative;z-index:6;background:var(--paper);
+    margin:0 calc(11px - var(--edge)) calc(11px - var(--edge)) 0;padding:18px calc(var(--edge) - 11px) 0 18px}
+  body[data-mode="map"] .instruments{right:calc(var(--tb) + var(--edge) - 11px + 16px)}
+  body[data-mode="map"] .tb-set{scrollbar-width:thin}
+}
+@media (max-width:760px){
+  body[data-mode="map"] .app{grid-template-rows:auto minmax(0,1fr) auto}
+  body[data-mode="map"] .tblock{display:flex}
+}
+@media (max-width:760px){
+  /* While the list is open the map is a sliver above it: the instruments and credit step aside until it closes */
+  body[data-mode="map"]:has(.tblock.open) .instruments,body[data-mode="map"]:has(.tblock.open) .field>.record-attribution{visibility:hidden}
+}
