@@ -50,6 +50,10 @@
   const svg = $('svg'), world = $('world'), mapEl = $('map'), marks = $('marks');
   [['states', 'l-states', 0], ['counties', 'l-counties', .08], ['lakes', 'l-lakes', .2], ['rivers', 'l-rivers', .28], ['limits', 'l-limits', .4], ['local', 'l-local', .42], ['primary', 'l-primary', .45], ['interstates', 'l-roads', .5]]
     .forEach(([k, cls, d]) => { const p = document.createElementNS(NS, 'path'); if (G[k]) p.setAttribute('d', G[k]); p.setAttribute('class', cls); p.dataset.layer = k; p.style.setProperty('--d', d + 's'); world.appendChild(p); });
+  // The drawing's neatline: the surveyed area ends at a fine frame, like a plate, not a clipped edge
+  { const b = G.box, r = document.createElementNS(NS, 'rect'); r.setAttribute('x', b.x0); r.setAttribute('y', b.y0); r.setAttribute('width', b.x1 - b.x0); r.setAttribute('height', b.y1 - b.y0); r.setAttribute('class', 'l-plate'); world.insertBefore(r, world.firstChild);
+    const cp = document.createElementNS(NS, 'clipPath'), cr = r.cloneNode(); cp.id = 'plate'; cp.setAttribute('clipPathUnits', 'userSpaceOnUse'); cr.removeAttribute('class'); cp.appendChild(cr); svg.insertBefore(cp, svg.firstChild);
+    world.querySelectorAll('path').forEach((p) => p.setAttribute('clip-path', 'url(#plate)')); }
   // Street-level layers only show when zoomed in, so they arrive after the first paint (or at once, if needed sooner).
   let detail = null;
   function loadDetail() {
@@ -93,7 +97,12 @@
       const top = rec.offsetTop + sheet.y - mapEl.getBoundingClientRect().top;
       return { x: 0, y: 0, w: W, h: Math.max(120, Math.min(H, top)) };
     }
-    // The heading occupies its own layout row; it no longer covers the map.
+    // The heading is a small title block laid over the map's upper left: fit below it so no place hides under it.
+    const L = $('lede');
+    if (body.dataset.mode === 'map' && L && L.offsetParent) {
+      const top = L.getBoundingClientRect().bottom - mapEl.getBoundingClientRect().top;
+      if (top > 0 && top < H / 3) return { x: 0, y: top, w: W, h: H - top };
+    }
     return { x: 0, y: 0, w: W, h: H };
   }
   function fitView(b, { pad = 60, maxS = S_MAX } = {}) {
@@ -805,7 +814,8 @@
   const q = $('q'), found = $('found');
   let results = [], sel = -1;
   q.addEventListener('input', search);
-  q.addEventListener('focus', () => { if (q.value) search(); });
+  // An empty field lists every project: the register, on demand
+  q.addEventListener('focus', search);
   q.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); if (!results.length) return; sel = (sel + (e.key === 'ArrowDown' ? 1 : -1) + results.length) % results.length; paintResults(); }
     else if (e.key === 'Escape') { endSearch(); }
@@ -815,7 +825,7 @@
   const norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ’']/g, '');
   function search() {
     const t = norm(q.value.trim());
-    if (!t) { endSearch(false); return; }
+    if (!t) { results = items.map((i) => ({ kind: 'p', i })); sel = -1; paintResults(); return; }
     const proj = items.filter((i) => [i.name, i.location, i.site.area, i.type, i.client].some((f) => norm(f).includes(t)))
       .sort((a, b) => (norm(b.name).startsWith(t) - norm(a.name).startsWith(t)));
     const plc = G.places.filter((p) => norm(p[0]).includes(t) && !proj.some((i) => norm(i.name) === norm(p[0]))).slice(0, 4);
@@ -873,11 +883,28 @@
     history.go(-1 - (history.state?.d || 0));
   });
   let homeS = 1;
-  const home = () => fitView(placedBounds(), { pad: 90, maxS: 4 });
+  // Home frames every placed project and the Tennessee line at Chattanooga, so Atlanta, North Georgia and
+  // Tennessee sit together in one balanced view.
+  const CHATT = G.places.find((p) => p[0] === 'Chattanooga');
+  const homeBounds = () => {
+    const b = placedBounds();
+    if (CHATT) { b.x0 = Math.min(b.x0, CHATT[1] - 40); b.x1 = Math.max(b.x1, CHATT[1] + 40); b.y0 = Math.min(b.y0, CHATT[2] - 40); b.y1 = Math.max(b.y1, CHATT[2] + 40); }
+    return b;
+  };
+  const home = () => fitView(homeBounds(), { pad: phone() ? 36 : 80, maxS: 4 });
   new ResizeObserver(() => {
     const was = { W, H };
     size();
-    if (!was.W) return;
+    if (W < 2 || H < 2) return;
+    // Arrived before the sheet had a size (a slow stylesheet, a hidden tab): the first fit was degenerate.
+    // Fit again now rather than keeping a view drawn at a pinpoint.
+    if (was.W < 120 || was.H < 120) {
+      sMin = Math.min(W / (G.box.x1 - G.box.x0), H / (G.box.y1 - G.box.y0)) * .9;
+      names.forEach((n) => (n.w = 0));
+      if (body.dataset.mode === 'map') { const h = home(); homeS = h.s; Object.assign(view, h); }
+      draw(true); placeInstruments();
+      return;
+    }
     // Keep the centre of the drawing fixed as the sheet changes size
     view.tx += (W - was.W) / 2; view.ty += (H - was.H) / 2;
     sMin = Math.min(W / (G.box.x1 - G.box.x0), H / (G.box.y1 - G.box.y0)) * .9;

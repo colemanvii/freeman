@@ -443,3 +443,26 @@ body[data-mode="record"] .field{grid-template-rows:minmax(0,1fr)}
   .tb-progress li{font-size:13px;letter-spacing:.03em;text-transform:uppercase}
   .v-bar,.v-foot{font-size:10px}
 }
+
+/* PROJECTS COMPOSITION — 10 Nov 2026. The map is the page. No permanent register: the map spans the
+   sheet, the title is a small block over its upper left, and the full list of projects opens from the
+   find field on demand. Project sheets (data-mode="record") are unchanged. */
+.field{grid-template-rows:minmax(0,1fr)}
+body[data-mode="map"] .app{column-gap:0}
+body[data-mode="map"] .tblock{display:none}
+body[data-mode="map"] .field{grid-column:1 / -1}
+.lede{position:absolute;z-index:4;top:0;left:0;padding:16px 22px 12px 0;background:var(--paper)}
+.lede h1{font-size:clamp(22px,1.75vw,28px);line-height:1.08;letter-spacing:-.03em}
+:root[data-type="gothic"] .lede h1{letter-spacing:-.018em;line-height:1.08}
+.found{max-height:min(62vh,560px);overflow-y:auto;scrollbar-width:thin}
+@media (min-width:761px){
+  .instruments{left:16px;right:16px}
+}
+@media (max-width:760px){
+  body[data-mode="map"] .app{grid-template-rows:auto minmax(0,1fr)}
+  .lede{padding:10px 14px 8px 12px}
+  .lede .kicker{font-size:9.5px}
+  .lede h1{font-size:18px;line-height:1.15;letter-spacing:0}
+  .found{max-height:58vh}
+}
+.l-plate{fill:none;stroke:var(--muted);stroke-width:1;vector-effect:non-scaling-stroke}
