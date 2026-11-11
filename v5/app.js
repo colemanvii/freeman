@@ -10,7 +10,7 @@
  *  - index.html is the entrance. It stays in history like any other page; the original
  *    Freeman script is written by hand on fresh arrival and shown finished on Back/Forward.
  *  - Every interior page carries the same section line at top-left:
- *      COMPANY / PROJECTS / IG ↗ / CONTACT  (current section in orange).
+ *      COMPANY / PROJECTS / IG / CONTACT  (current section in orange).
  *    "FREEMAN GC" is the brand, never a navigation link.
  *    IG opens Instagram in a new tab; the photographs archive remains at /photographs.
  *  - × CLOSE (upper right on every interior page; Escape on detail pages) is real history:
@@ -30,7 +30,7 @@
     // PROJECTS is the map (26 Oct 2026); the former Projects index redirects there (_redirects).
     // NOTES stays withdrawn.
     ["PROJECTS", "map.html", ""],
-    ["IG ↗", "https://www.instagram.com/builtforgenerations/", ""],
+    ["IG", "https://www.instagram.com/builtforgenerations/", ""],
     ["CONTACT", "contact.html", ""],
   ];
   const TITLES = {
