@@ -10,9 +10,9 @@
  *  - index.html is the entrance. It stays in history like any other page; the original
  *    Freeman script is written by hand on fresh arrival and shown finished on Back/Forward.
  *  - Every interior page carries the same section line at top-left:
- *      COMPANY / PROJECTS / PHOTOGRAPHS / CONTACT  (current section in orange).
+ *      COMPANY / PROJECTS / IG ↗ / CONTACT  (current section in orange).
  *    "FREEMAN GC" is the brand, never a navigation link.
- *    The sections link directly; the photographs archive loads as its own document.
+ *    IG opens Instagram in a new tab; the photographs archive remains at /photographs.
  *  - × CLOSE (upper right on every interior page; Escape on detail pages) is real history:
  *    it returns to wherever the visitor actually came from, exactly like browser Back or a
  *    swipe-back. Each entry stores its depth within this visit; with no earlier same-site
@@ -30,7 +30,7 @@
     // PROJECTS is the map (26 Oct 2026); the former Projects index redirects there (_redirects).
     // NOTES stays withdrawn.
     ["PROJECTS", "map.html", ""],
-    ["PHOTOGRAPHS", "photographs.html", ""],
+    ["IG ↗", "https://www.instagram.com/builtforgenerations/", ""],
     ["CONTACT", "contact.html", ""],
   ];
   const TITLES = {
@@ -174,7 +174,7 @@
       const here = u === current + ".html";
       const href = here && parent ? parent.href : u;
       const cl = ["site-link", "phrase", c, here ? "is-current" : ""].filter(Boolean).join(" ");
-      return link(t, href, cl, { "aria-current": here && !parent ? "page" : null, "data-focus": here && parent ? parent.focus : null });
+      return link(t, href, cl, { "aria-current": here && !parent ? "page" : null, "data-focus": here && parent ? parent.focus : null, "target": u.startsWith("https://") ? "_blank" : null, "rel": u.startsWith("https://") ? "noopener noreferrer" : null, "aria-label": u.startsWith("https://") ? "Instagram (opens in a new tab)" : null });
     });
     return `<nav class="site-nav" aria-label="Sections">${items.join('<span class="sep" aria-hidden="true">/</span>')}</nav>`;
   }
@@ -696,7 +696,7 @@
      device pixels per bitmap pixel, so every pixel of the script is the same size. */
   const COLORWAYS = [["chalk", "Light"], ["umber", "Dark"], ["sand", "Freeman"]];
   function entrance({ play = true } = {}) {
-    const nav = DESTINATIONS.map(([t, u]) => link(t, u, "", { "data-entry": "1" })).join('<span class="sep" aria-hidden="true">/</span>');
+    const nav = DESTINATIONS.map(([t, u]) => link(t, u, "", { "data-entry": "1", "target": u.startsWith("https://") ? "_blank" : null, "rel": u.startsWith("https://") ? "noopener noreferrer" : null, "aria-label": u.startsWith("https://") ? "Instagram (opens in a new tab)" : null })).join('<span class="sep" aria-hidden="true">/</span>');
     const ways = COLORWAYS.map(([id, name]) =>
       `<button type="button" class="v4-way v4-way-${id}" data-v4-color="${id}" aria-label="${name} colorway" aria-pressed="${id === palette}"></button>`).join("");
     root.innerHTML = `<div class="v4-home">
