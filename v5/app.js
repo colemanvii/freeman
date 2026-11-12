@@ -708,7 +708,7 @@
       <a class="client-access-entry phrase" href="client-access.html" aria-label="Access">ACCESS</a>
       <div class="legal">FREEMAN GENERAL CONTRACTING<br>CARTERSVILLE, GEORGIA</div>
       <div class="v4-colorways" role="group" aria-label="Colorway">${ways}</div>
-      <div class="mark">BUILT FOR GENERATIONS™</div>
+      <div class="mark"><a class="phrase" href="https://www.instagram.com/builtforgenerations/" target="_blank" rel="noopener noreferrer" aria-label="Freeman on Instagram">INSTAGRAM</a><span class="mark-divider" aria-hidden="true">/</span><span class="mark-tagline">BUILT FOR GENERATIONS™</span></div>
     </div>`;
     const home = root.querySelector(".v4-home");
     const canvas = root.querySelector("#v4-pixel-mark");
