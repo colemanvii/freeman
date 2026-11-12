@@ -883,3 +883,54 @@ body[data-route="company"] .co4[data-co4-view="people"] .co4-visual{display:none
   body[data-route="company"] .co4[data-co4-view="services"] .co4-stage,
   body[data-route="company"] .co4[data-co4-view="people"] .co4-stage{display:block}
 }
+
+
+/* Company portrait visibility correction: overrides legacy no-placeholder rule. */
+body[data-route="company"] .co4[data-co4-view="philosophy"] .co4-visual{
+  display:flex;
+  visibility:visible;
+  opacity:1;
+}
+@media(min-width:761px){
+  body[data-route="company"] .co4[data-co4-view="philosophy"] .co4-stage{
+    width:min(1050px,calc(100% - 64px));
+    grid-template-columns:minmax(0,560px) minmax(0,340px);
+    gap:clamp(42px,5vw,86px);
+    justify-content:center;
+    align-items:center;
+  }
+  body[data-route="company"] .co4[data-co4-view="philosophy"] .co4-visual{
+    grid-column:2;
+    grid-row:1;
+    width:100%;
+    max-width:340px;
+    justify-self:end;
+    align-self:center;
+  }
+}
+body[data-route="company"] .co4[data-co4-view="philosophy"] .co4-media{
+  display:block;
+  width:100%;
+  aspect-ratio:4/5;
+  overflow:hidden;
+}
+body[data-route="company"] .co4[data-co4-view="philosophy"] .co4-media>.co4-gabe-photo{
+  display:block!important;
+  position:relative;
+  width:100%;
+  height:100%;
+  max-height:none;
+  object-fit:cover;
+  object-position:center 42%;
+}
+@media(max-width:760px){
+  body[data-route="company"] .co4[data-co4-view="philosophy"] .co4-visual{
+    display:flex;
+    width:min(60vw,250px);
+    margin:0 auto 22px;
+  }
+  body[data-route="company"] .co4[data-co4-view="philosophy"] .co4-stage{
+    display:flex;
+    flex-direction:column-reverse;
+  }
+}
