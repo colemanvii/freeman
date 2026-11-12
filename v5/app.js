@@ -327,16 +327,20 @@
           </nav>
           <div class="co4-copy" id="co4-copy"></div>
         </section>
-        <figure class="co4-visual co4-placeholder-visual" aria-live="polite"><div class="co4-media"><div class="co4-image-placeholder" id="co4-image-placeholder">ADD IMAGE HERE</div></div><figcaption id="co4-image-caption">PHILOSOPHY / IMAGE TO COME</figcaption></figure>
+        <figure class="co4-visual" aria-live="polite"><div class="co4-media"><img class="co4-gabe-photo" src="assets/gabe-freeman-company.webp" alt="Gabe Freeman outdoors at a construction site" width="600" height="768" loading="eager"><div class="co4-image-placeholder" id="co4-image-placeholder" hidden>ADD IMAGE HERE</div></div><figcaption id="co4-image-caption">GABE FREEMAN / FOUNDER &amp; PRESIDENT</figcaption></figure>
       </div>
     </div>`;
     const copy=vp.querySelector("#co4-copy");
     const imageCaption=vp.querySelector("#co4-image-caption");
     const imagePlaceholder=vp.querySelector("#co4-image-placeholder");
+    const gabePhoto=vp.querySelector(".co4-gabe-photo");
     function updateImageSpace(){
       const item=currentTab==="people" ? people[currentPerson] : currentTab==="services" ? services[currentService] : null;
+      const showGabe=currentTab==="philosophy" || (currentTab==="people" && currentPerson===0);
+      gabePhoto.hidden=!showGabe;
+      imagePlaceholder.hidden=showGabe;
       imagePlaceholder.textContent="ADD IMAGE HERE";
-      imageCaption.textContent=currentTab==="people" ? item.name.toUpperCase()+" / HEADSHOT TO COME" : currentTab==="services" ? item.name.toUpperCase()+" / IMAGE TO COME" : "PHILOSOPHY / IMAGE TO COME";
+      imageCaption.textContent=showGabe ? "GABE FREEMAN / FOUNDER & PRESIDENT" : currentTab==="people" ? item.name.toUpperCase()+" / HEADSHOT TO COME" : item.name.toUpperCase()+" / IMAGE TO COME";
     }
     const philosophyParagraphs=[
       "The way a place gets built matters.",
