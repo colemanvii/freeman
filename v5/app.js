@@ -327,7 +327,7 @@
           </nav>
           <div class="co4-copy" id="co4-copy"></div>
         </section>
-        <figure class="co4-visual" aria-live="polite"><div class="co4-media"><img class="co4-gabe-photo" src="assets/gabe-freeman-company-hq.jpg" alt="Gabe Freeman outdoors at a construction site" width="980" height="1425" loading="eager"><div class="co4-image-placeholder" id="co4-image-placeholder" hidden>ADD IMAGE HERE</div></div><figcaption id="co4-image-caption">GABE FREEMAN / FOUNDER &amp; PRESIDENT</figcaption></figure>
+        <figure class="co4-visual" aria-live="polite"><div class="co4-media"><img class="co4-gabe-photo" src="assets/gabe-freeman-original.jpeg" alt="Gabe Freeman outdoors at a construction site" width="1638" height="2048" loading="eager"><div class="co4-image-placeholder" id="co4-image-placeholder" hidden>ADD IMAGE HERE</div></div><figcaption id="co4-image-caption">GABE FREEMAN / FOUNDER &amp; PRESIDENT</figcaption></figure>
       </div>
     </div>`;
     const copy=vp.querySelector("#co4-copy");
