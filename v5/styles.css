@@ -966,3 +966,30 @@ body[data-route="company"] .co4[data-co4-view="philosophy"] .co4-media>.co4-gabe
     display:none;
   }
 }
+
+
+/* Gabe portrait: show the entire original photograph, never crop. */
+body[data-route="company"] .co4[data-co4-view="philosophy"] .co4-media{
+  width:100%;
+  aspect-ratio:auto;
+  height:auto;
+  overflow:visible;
+}
+body[data-route="company"] .co4[data-co4-view="philosophy"] .co4-media>.co4-gabe-photo{
+  position:static!important;
+  display:block!important;
+  width:100%;
+  height:auto;
+  max-width:100%;
+  max-height:min(540px,66dvh);
+  object-fit:contain!important;
+  object-position:center center;
+}
+@media(max-width:760px){
+  body[data-route="company"] .co4[data-co4-view="philosophy"] .co4-media>.co4-gabe-photo{
+    max-height:250px;
+    width:100%;
+    height:auto;
+    object-fit:contain!important;
+  }
+}
