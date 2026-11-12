@@ -1,4 +1,4 @@
-import { galleryPage, photographFile, driveConfigured } from "../lib/photographs-drive.js";
+import { galleryPage, photographFile, driveConfigured, listPhotographs, barnsleyFolder } from "../lib/photographs-drive.js";
 // Server-side demo gate. Cloudflare Pages secrets required:
 // FREEMAN_OS_PASSWORD and FREEMAN_OS_SESSION_KEY (32+ random characters).
 const COOKIE="fos_session", AGE=8*60*60, ROOT="/team-os", enc=new TextEncoder();
@@ -73,10 +73,46 @@ async function photos(ctx,req,url,path){
   for(const [k,v] of Object.entries(PUBLIC_PHOTO_HEADERS))headers.set(k,v);
   return new Response(req.method==="HEAD"?null:html,{status:200,headers});
 }
+// /assuranceamerica: Barnsley, 11 November 2026, for AssuranceAmerica. The /photographs page and
+// pipeline exactly, fed by its own Drive folder. Unlisted: noindex, no nav link, not in the sitemap.
+const AA="/assuranceamerica",AA_COVER="/assuranceamerica-cover.jpg";
+const AA_HEADERS={...PUBLIC_PHOTO_HEADERS,"X-Robots-Tag":"noindex, nofollow, noarchive"};
+const isAA=p=>p===AA||p===AA+".html"||p===AA+"/";
+async function assuranceamerica(ctx,req,url){
+  if(req.method!=="GET"&&req.method!=="HEAD")return new Response("Method not allowed",{status:405,headers:{"Allow":"GET, HEAD"}});
+  if(url.pathname!==AA)return new Response(null,{status:308,headers:{"Location":AA,"Cache-Control":"public, max-age=0"}});
+  const unavailable=()=>new Response("Photographs are unavailable.",{status:503,headers:{"Cache-Control":"no-store",...AA_HEADERS}});
+  if(!driveConfigured(ctx.env))return unavailable();
+  let html;
+  try{html=await galleryPage(await ctx.next(),ctx.env,barnsleyFolder(ctx.env));}catch(e){console.error(e);return unavailable();}
+  const headers=new Headers({"Content-Type":"text/html; charset=utf-8","Cache-Control":"public, max-age=0, must-revalidate"});
+  for(const [k,v] of Object.entries(AA_HEADERS))headers.set(k,v);
+  return new Response(req.method==="HEAD"?null:html,{status:200,headers});
+}
+// Link preview image: the first photograph in the Barnsley folder, so it follows the folder too.
+async function assuranceamericaCover(ctx,req,url){
+  if(req.method!=="GET"&&req.method!=="HEAD")return new Response("Method not allowed",{status:405,headers:{"Allow":"GET, HEAD"}});
+  const none=s=>new Response("Unavailable",{status:s,headers:{"Cache-Control":"no-store"}});
+  if(!driveConfigured(ctx.env))return none(503);
+  let file;
+  try{
+    const first=(await listPhotographs(ctx.env,barnsleyFolder(ctx.env)))[0];
+    if(!first)return none(404);
+    file=await photographFile(new URL(PHOTO_FILES+"/"+first.id+"/1280",url),ctx.env,p=>ctx.waitUntil(p));
+  }catch(e){console.error(e);return none(503);}
+  if(!file||!file.ok)return none(file?502:404);
+  const headers=new Headers(file.headers);
+  headers.set("Cache-Control","public, max-age=600");
+  headers.set("X-Content-Type-Options","nosniff");
+  headers.set("X-Robots-Tag","noindex, nofollow, noarchive");
+  return new Response(req.method==="HEAD"?null:file.body,{status:200,headers});
+}
 export async function onRequest(ctx){
  const req=ctx.request,url=new URL(req.url),path=canonical(url.pathname);
  if(path===null)return new Response("Bad request",{status:400,headers:{"Cache-Control":"no-store"}});
  if(path===PHOTOS_COVER)return photosCover(ctx,req,url);
+ if(isAA(path))return assuranceamerica(ctx,req,url);
+ if(path===AA_COVER)return assuranceamericaCover(ctx,req,url);
  if(isPhotos(path))return photos(ctx,req,url,path);
  if(!isProtected(path))return ctx.next();
  const password=ctx.env.FREEMAN_OS_PASSWORD,secret=ctx.env.FREEMAN_OS_SESSION_KEY;
