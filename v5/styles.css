@@ -772,24 +772,38 @@ body[data-route="entrance"] .client-access-entry {
 }
 
 
-/* Entrance footer: quiet Instagram text link alongside the Freeman motto. */
+/* Small grey Instagram glyph beside the Freeman motto. */
 body[data-route="entrance"] .v4-home .mark{
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:13px;
   white-space:nowrap;
 }
-body[data-route="entrance"] .v4-home .mark-divider{color:var(--hair)}
-body[data-route="entrance"] .v4-home .mark a{color:inherit}
-body[data-route="entrance"] .v4-home .mark a:hover,
-body[data-route="entrance"] .v4-home .mark a:focus-visible{background:var(--orange);color:var(--paper)}
+body[data-route="entrance"] .v4-home .mark-divider{display:none}
+body[data-route="entrance"] .v4-home .instagram-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:20px;
+  height:20px;
+  color:#898781;
+  line-height:0;
+}
+body[data-route="entrance"] .v4-home .instagram-link svg{display:block;width:16px;height:16px}
+body[data-route="entrance"] .v4-home .instagram-link:hover,
+body[data-route="entrance"] .v4-home .instagram-link:focus-visible{
+  background:transparent;
+  color:var(--ink);
+}
 @media(max-width:760px){
   body[data-route="entrance"] .v4-home .mark{
     display:flex;
     right:18px;
     bottom:max(18px,env(safe-area-inset-bottom));
-    font-size:9px;
   }
-  body[data-route="entrance"] .v4-home .mark-divider,
   body[data-route="entrance"] .v4-home .mark-tagline{display:none}
+  body[data-route="entrance"] .v4-home .instagram-link{
+    width:32px;
+    height:32px;
+  }
 }
