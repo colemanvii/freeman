@@ -934,3 +934,35 @@ body[data-route="company"] .co4[data-co4-view="philosophy"] .co4-media>.co4-gabe
     flex-direction:column-reverse;
   }
 }
+
+
+/* Company tabs: retain the exact same editorial grid across every view.
+   Hide the portrait on Services/People but reserve its column, so the
+   navigation, rule, heading and copy never reposition on tab changes. */
+@media(min-width:761px){
+  body[data-route="company"] .co4[data-co4-view="philosophy"] .co4-stage,
+  body[data-route="company"] .co4[data-co4-view="services"] .co4-stage,
+  body[data-route="company"] .co4[data-co4-view="people"] .co4-stage{
+    width:min(1050px,calc(100% - 64px));
+    height:min(540px,100%);
+    margin-inline:auto;
+    display:grid;
+    grid-template-columns:minmax(0,560px) minmax(0,340px);
+    grid-template-rows:minmax(0,1fr);
+    column-gap:clamp(42px,5vw,86px);
+    justify-content:center;
+    align-items:center;
+  }
+  body[data-route="company"] .co4[data-co4-view="philosophy"] .co4-editorial,
+  body[data-route="company"] .co4[data-co4-view="services"] .co4-editorial,
+  body[data-route="company"] .co4[data-co4-view="people"] .co4-editorial{
+    grid-column:1;
+    grid-row:1;
+    align-self:stretch;
+    height:100%;
+  }
+  body[data-route="company"] .co4[data-co4-view="services"] .co4-visual,
+  body[data-route="company"] .co4[data-co4-view="people"] .co4-visual{
+    display:none;
+  }
+}
