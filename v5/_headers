@@ -49,3 +49,8 @@
   Cache-Control: public, max-age=0, must-revalidate
   Referrer-Policy: same-origin
   X-Robots-Tag: noindex, nofollow, noarchive
+
+# /assuranceamerica films: web versions with a content hash in the name (studio/assuranceamerica-films/build-films.mjs).
+/assets/films/*
+  Cache-Control: public, max-age=31536000, immutable
+  X-Robots-Tag: noindex, nofollow, noarchive
