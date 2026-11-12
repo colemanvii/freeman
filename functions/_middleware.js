@@ -44,7 +44,7 @@ async function photosCover(ctx,req,url){
  let file;
  try{file=await photographFile(thumbUrl,ctx.env,p=>ctx.waitUntil(p));}catch(e){console.error(e);return new Response("Unavailable",{status:503,headers:{"Cache-Control":"no-store"}});
  }
- if(!file)return new Response("Not found",{status:404,headers:{"Cache-Control":"no-store"}});
+ if(!file||!file.ok)return new Response("Not found",{status:file?file.status:404,headers:{"Cache-Control":"no-store"}});
  const headers=new Headers(file.headers);
  headers.set("Cache-Control","public, max-age=3600, s-maxage=86400");
  headers.set("X-Content-Type-Options","nosniff");
@@ -62,6 +62,7 @@ async function photos(ctx,req,url,path){
     let file;
     try{file=await photographFile(url,ctx.env,p=>ctx.waitUntil(p));}catch(e){console.error(e);return new Response("Photographs are unavailable.",{status:503,headers:{"Cache-Control":"no-store",...PUBLIC_PHOTO_HEADERS}});}
     if(!file)return new Response("Not found",{status:404,headers:{"Cache-Control":"no-store",...PUBLIC_PHOTO_HEADERS}});
+    if(!file.ok)return new Response("Photograph unavailable.",{status:file.status,headers:{"Cache-Control":"no-store",...PUBLIC_PHOTO_HEADERS}});
     const headers=new Headers(file.headers);
     headers.set("Cache-Control","public, max-age=31536000, immutable");
     for(const [k,v] of Object.entries(PUBLIC_PHOTO_HEADERS))headers.set(k,v);
