@@ -2,7 +2,7 @@
    Synchronous in <head>: apply before paint, including POST error responses. */
 (() => {
   'use strict';
-  const colors = { chalk: '#fff9f1', sand: '#ddcfb3', umber: '#332e20' };
+  const colors = { chalk: '#ffffff', sand: '#ddcfb3', umber: '#332e20' };
   let palette = 'chalk';
   try {
     const saved = sessionStorage.getItem('freeman-palette');
