@@ -770,3 +770,26 @@ body[data-route="entrance"] .client-access-entry {
     font-size:11px;
   }
 }
+
+
+/* Entrance footer: quiet Instagram text link alongside the Freeman motto. */
+body[data-route="entrance"] .v4-home .mark{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  white-space:nowrap;
+}
+body[data-route="entrance"] .v4-home .mark-divider{color:var(--hair)}
+body[data-route="entrance"] .v4-home .mark a{color:inherit}
+body[data-route="entrance"] .v4-home .mark a:hover,
+body[data-route="entrance"] .v4-home .mark a:focus-visible{background:var(--orange);color:var(--paper)}
+@media(max-width:760px){
+  body[data-route="entrance"] .v4-home .mark{
+    display:flex;
+    right:18px;
+    bottom:max(18px,env(safe-area-inset-bottom));
+    font-size:9px;
+  }
+  body[data-route="entrance"] .v4-home .mark-divider,
+  body[data-route="entrance"] .v4-home .mark-tagline{display:none}
+}
