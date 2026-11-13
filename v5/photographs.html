@@ -38,37 +38,6 @@ main{padding:0 var(--edge) calc(var(--edge)*2);display:block}
 .video-tile[data-playing="true"]:hover .video-action,.video-tile[data-playing="true"]:focus-within .video-action{opacity:1;pointer-events:auto}
 @media(hover:none){.video-tile[data-playing="true"] .video-action{opacity:0;pointer-events:none}}
 @media(max-width:700px){body[data-gallery-mode="scroll"] .video-tile{aspect-ratio:16/9;margin-bottom:7px;overflow:hidden}body[data-gallery-mode="scroll"] .video-tile video{height:100%}}
-/* Freeman archive / quiet chronology, with genuinely useful dates. */
-@media(min-width:901px){main{padding-right:clamp(122px,12.2vw,192px)}}
-.archive-period{scroll-margin-top:34px;margin-bottom:clamp(30px,4.2vw,64px)}
-.period-heading{display:flex;align-items:baseline;justify-content:space-between;gap:16px;border-top:1px solid var(--hair);padding:11px 0 13px;color:var(--ink);font-size:10px;letter-spacing:.07em}
-.period-heading small{font:400 9px/1.4 var(--mono);color:var(--muted)}
-.archive-timeline{position:fixed;z-index:10;right:var(--edge);top:27vh;width:clamp(100px,10vw,152px);font-size:9px;letter-spacing:.035em;color:var(--muted)}
-.archive-timeline-title{padding-bottom:12px;border-bottom:1px solid var(--hair);color:var(--ink);font-weight:500}
-.archive-timeline-title span{color:var(--muted);font-weight:400}
-.archive-timeline-links{display:flex;flex-direction:column;gap:0;padding:6px 0 8px}
-.archive-timeline-links a{display:block;padding:8px 0;color:var(--muted);line-height:1.5;transition:color .2s}
-.archive-timeline-links a[aria-current="true"]{color:var(--ink);font-weight:600}
-.archive-timeline-links a:hover{color:var(--ink)}
-.archive-timeline-note{border-top:1px solid var(--hair);padding-top:10px;font-size:8px;opacity:.85}
-.video-tile{min-width:0;background:var(--paper)}
-.video-tile video{width:100%;height:100%;object-fit:cover}
-@media(min-width:701px){.photo-row > .video-tile:only-child{flex:none;width:min(100%,560px);max-height:315px;margin-inline:auto}}
-@media(max-width:900px){.archive-timeline{right:var(--edge);width:102px}.archive-timeline-title{font-size:8px}}
-@media(max-width:700px){
- .archive-timeline{position:sticky;top:0;width:auto;background:var(--paper);padding:8px var(--edge);display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--hair);overflow:auto;white-space:nowrap;scrollbar-width:none}
- .archive-timeline::-webkit-scrollbar{display:none}
- .archive-timeline-title{padding:0;border:0;flex:none;font-size:8px}
- .archive-timeline-links{flex-direction:row;gap:16px;padding:0}
- .archive-timeline-links a{padding:5px 0;font-size:8px}
- .archive-timeline-note{display:none}
- .archive-period{scroll-margin-top:63px;margin-bottom:30px}
- .period-heading{padding:11px 0 12px;font-size:9px}
- .period-heading small{font-size:8px}
- body[data-gallery-mode="scroll"] .period-body .photo-row{display:contents}
- body[data-gallery-mode="scroll"] .period-body .video-tile{aspect-ratio:16/9;margin-bottom:7px}
-}
-
 dialog{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:var(--paper);color:var(--ink)}
 dialog::backdrop{background:var(--paper)}
 dialog[open]{display:grid;grid-template-rows:94px minmax(0,1fr) 94px}
@@ -85,7 +54,6 @@ dialog[open]{display:grid;grid-template-rows:94px minmax(0,1fr) 94px}
   <span class="divider" aria-hidden="true">/</span>
   <button type="button" data-gallery-view="scroll" aria-pressed="false" aria-label="Single photograph scroll">SCROLL</button>
 </nav>
-<!-- timeline -->
 <main>
 <!-- Photographs are inserted from Google Drive by lib/photographs-drive.js. -->
 </main>
@@ -108,94 +76,67 @@ dialog[open]{display:grid;grid-template-rows:94px minmax(0,1fr) 94px}
   setMode(saved);
   buttons.forEach(button=>button.addEventListener('click',()=>setMode(button.dataset.galleryView,true)));
 })();
-/* Responsive archive: preserve period boundaries as well as the photo order. */
+/* Same Drive collection at every width: editorial desktop sequence, dynamically
+   balanced mobile rows. No hard-coded photo IDs, even when Drive changes. */
 (() => {
- const main=document.querySelector('main'), bp=matchMedia('(max-width:700px)');
- const periods=[...main.querySelectorAll('.archive-period')].map(node=>{
-   const body=node.querySelector('.period-body');
-   const desktopRows=[...body.querySelectorAll('.photo-row')].map(row=>[...row.children]);
-   return {node,body,desktopRows,tiles:desktopRows.flat()};
- });
+ const main=document.querySelector('main');
+ const bp=matchMedia('(max-width:700px)');
+ const desktopRows=[...main.querySelectorAll('.photo-row')].map(row=>[...row.children]);
+ const tiles=desktopRows.flat();
  const dialog=document.querySelector('dialog'),image=dialog.querySelector('.stage img');
  let active=0,startX=null,swiped=false;
- function mobileRows(tiles){
+ function mobileRows(){
    if(tiles.length<2)return [tiles];
+   // Keep the photographic narrative, but fit groups to the narrow viewport.
    const n=tiles.length,dp=Array(n+1).fill(Infinity),steps=Array(n);
    dp[n]=0;
    for(let i=n-1;i>=0;i--){
-     for(const count of [2]){
+     for(const count of [2,3]){
        if(i+count>n)continue;
        const group=tiles.slice(i,i+count);
        const sum=group.reduce((v,t)=>v+Math.max(.45,Math.min(3.1,Number(t.dataset.w)/Number(t.dataset.h)||1.5)),0);
-       const cost=2.5*Math.log(sum/2.2)**2+(count===3?.17:0)+dp[i+count];
+       const cost=2.5*Math.log(sum/1.9)**2+(count===3?.12:0)+dp[i+count];
        if(cost<dp[i]){dp[i]=cost;steps[i]=count;}
      }
    }
-   if(!Number.isFinite(dp[0])){const out=[];for(let i=0;i<tiles.length;i+=2)out.push(tiles.slice(i,i+2));return out;}
-   const out=[];
-   for(let i=0;i<n;){const count=steps[i]||n-i;out.push(tiles.slice(i,i+count));i+=count;}
-   return out;
+   const rows=[];
+   for(let i=0;i<n;){const count=steps[i]||n-i;rows.push(tiles.slice(i,i+count));i+=count;}
+   return rows;
  }
  function arrange(){
-   for(const period of periods){
-     const rows=bp.matches?mobileRows(period.tiles):period.desktopRows;
-     const fragment=document.createDocumentFragment();
-     for(const group of rows){
-       if(!group.length)continue;
-       const row=document.createElement('div');row.className='photo-row';
-       group.forEach(tile=>row.appendChild(tile));fragment.appendChild(row);
-     }
-     period.body.replaceChildren(fragment);
+   const groups=bp.matches?mobileRows():desktopRows;
+   const fragment=document.createDocumentFragment();
+   for(const group of groups){
+     if(!group.length)continue;
+     const row=document.createElement('div');row.className='photo-row';
+     group.forEach(tile=>row.appendChild(tile));fragment.appendChild(row);
    }
+   main.replaceChildren(fragment);
    if(dialog.open)dialog.close();
  }
  bp.addEventListener('change',arrange);
  arrange();
- const timelineLinks=[...document.querySelectorAll('[data-period-link]')];
- function highlight(week){
-   timelineLinks.forEach(link=>{
-     if(link.dataset.periodLink===week)link.setAttribute('aria-current','true');
-     else link.removeAttribute('aria-current');
-   });
- }
- if(periods.length){
-   highlight(periods[0].node.dataset.period);
-   if('IntersectionObserver' in window){
-     const observer=new IntersectionObserver(entries=>{
-       const visible=entries.filter(x=>x.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top);
-       if(visible.length)highlight(visible[0].target.dataset.period);
-     },{rootMargin:'-18% 0px -65% 0px'});
-     periods.forEach(p=>observer.observe(p.node));
-   }
- }
- // Delegated controls survive viewport reflow.
- main.addEventListener('click',event=>{
-   const action=event.target.closest('.video-action');
-   if(action){
-     event.preventDefault();event.stopPropagation();
-     const tile=action.closest('.video-tile'),video=tile?.querySelector('video');
-     if(!video)return;
+ // A film is presented as a still tile until the visitor elects to watch it.
+ // Keep native controls during playback; never start audio or download the full film on page load.
+ for(const tile of main.querySelectorAll('.video-tile')){
+   const video=tile.querySelector('video'),action=tile.querySelector('.video-action');
+   if(!video||!action)continue;
+   action.addEventListener('click',event=>{
+     event.stopPropagation();
      if(video.paused){
        video.controls=true;
-       video.play().then(()=>{tile.dataset.playing='true';action.setAttribute('aria-label','Pause film');action.firstChild.textContent='PAUSE FILM ';}).catch(()=>{tile.dataset.playing='false';});
+       video.play().then(()=>{tile.dataset.playing='true';action.setAttribute('aria-label','Pause film');action.firstChild.textContent='PAUSE FILM ';}).catch(()=>{video.controls=true;});
      }else{
        video.pause();tile.dataset.playing='false';action.setAttribute('aria-label','Play film');action.firstChild.textContent='PLAY FILM ';
      }
-     return;
-   }
-   const tile=event.target.closest('a.tile');
-   if(!tile||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
-   event.preventDefault();show(ordered().indexOf(tile));dialog.showModal();
- });
- main.addEventListener('ended',event=>{
-   if(event.target.tagName!=='VIDEO')return;
-   const tile=event.target.closest('.video-tile'),action=tile?.querySelector('.video-action');
-   if(!action)return;
-   tile.dataset.playing='false';action.setAttribute('aria-label','Replay film');action.firstChild.textContent='REPLAY FILM ';
- },true);
+   });
+   video.addEventListener('ended',()=>{tile.dataset.playing='false';action.setAttribute('aria-label','Replay film');action.firstChild.textContent='REPLAY FILM ';});
+ }
+
  function ordered(){return [...main.querySelectorAll('a.tile')];}
  function show(index){
-   const orderedTiles=ordered();if(!orderedTiles.length)return;
+   const orderedTiles=ordered();
+   if(!orderedTiles.length)return;
    active=(index+orderedTiles.length)%orderedTiles.length;
    image.src=orderedTiles[active].href;
    for(const offset of [-1,1]){
@@ -203,11 +144,20 @@ dialog[open]{display:grid;grid-template-rows:94px minmax(0,1fr) 94px}
      new Image().src=next.href;
    }
  }
+ main.addEventListener('click',event=>{
+   const tile=event.target.closest('.tile');
+   if(!tile||tile.classList.contains('video-tile')||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+   event.preventDefault();
+   show(ordered().indexOf(tile));dialog.showModal();
+ });
  dialog.querySelector('.prev').addEventListener('click',()=>{if(!swiped)show(active-1);});
  dialog.querySelector('.next').addEventListener('click',()=>{if(!swiped)show(active+1);});
  dialog.querySelector('[data-close]').addEventListener('click',()=>dialog.close());
  image.addEventListener('click',()=>{if(!swiped)dialog.close();});
- dialog.addEventListener('close',()=>{image.removeAttribute('src');ordered()[active]?.focus({preventScroll:true});});
+ dialog.addEventListener('close',()=>{
+   image.removeAttribute('src');
+   ordered()[active]?.focus({preventScroll:true});
+ });
  document.addEventListener('keydown',event=>{
    if(!dialog.open)return;
    if(event.key==='ArrowRight')show(active+1);
