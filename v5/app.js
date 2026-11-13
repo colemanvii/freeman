@@ -509,7 +509,118 @@
     show(index, false);
     count();
   }
+  /* ---------- Case study ----------
+     One template for every project that has an entry in /case-study/studies.js and
+     "caseStudy": true on its record. It opens at the project's existing address, so the map's
+     "Full project" link, the sitemap and old links all arrive here unchanged.
+     Nothing is written here: the account is Freeman's published record (records.js), credits come
+     from project-credits.js, the address from record-assets/sites.js. A fact that is not on file
+     is left out rather than filled in.
+     The sheet scrolls inside the site's fixed frame; its position is kept for Back/Forward. */
+  const STUDY_CSS = "/case-study/case-study.css?v=cs-001";
+  const STUDY_SCRIPTS = [
+    ["FREEMAN_STUDIES", "/case-study/studies.js?v=cs-001"],
+    ["RECORD_PHOTOS", "/record-assets/photos.js?v=20261026-map-projects"],
+    ["RECORD_SITES", "/record-assets/sites.js?v=20261026-map-projects"],
+  ];
+  const studySheet = () => document.querySelector("link[data-case-study]");
+  const studyReady = () => STUDY_SCRIPTS.every(([name]) => window[name]) && !!(studySheet() && studySheet().sheet);
+  let studyLoad = null;
+  // The pilot's own page carries these files in its head; arriving from another page loads them here.
+  function loadStudy() {
+    const add = (el) => new Promise((done) => {
+      el.onload = el.onerror = done;
+      document.head.append(el);
+    });
+    const sheet = () => {
+      const l = document.createElement("link");
+      l.rel = "stylesheet"; l.href = STUDY_CSS; l.dataset.caseStudy = "";
+      return l;
+    };
+    return studyLoad || (studyLoad = Promise.all([
+      studySheet() ? null : add(sheet()),
+      ...STUDY_SCRIPTS.filter(([name]) => !window[name]).map(([, src]) => add(Object.assign(document.createElement("script"), { src }))),
+    ]));
+  }
+  function caseStudy(p) {
+    const frame = { title: "Projects / " + p.name, section: "map", parent: { href: "map.html?p=" + encodeURIComponent(p.slug), focus: p.slug } };
+    if (!studyReady()) {
+      // Hold the frame, fetch the template, then draw. If anything is missing, the photographs page stands in.
+      chrome(frame);
+      count();
+      const mine = view;
+      loadStudy().then(() => {
+        if (view !== mine) return;
+        if (studyReady() && window.FREEMAN_STUDIES[p.slug]) caseStudy(p);
+        else project({ ...p, caseStudy: false });
+      });
+      return;
+    }
+    const study = window.FREEMAN_STUDIES[p.slug];
+    const plates = study ? study.plates.filter((g) => window.RECORD_PHOTOS[g.src]) : [];
+    if (!plates.length) return project({ ...p, caseStudy: false });
+    chrome(frame);
+    document.body.dataset.study = p.slug;
+    const site = (window.RECORD_SITES.sites || {})[p.slug] || {};
+    const venue = site.precision === "venue";
+    // A plate: the published photograph at the size the screen needs, never larger than its file.
+    const plate = (g, n, sizes, lead) => {
+      const ph = window.RECORD_PHOTOS[g.src];
+      const set = ph.set.map(([w, u]) => `${u} ${w}w`).join(", ");
+      const mid = (ph.set.find(([w]) => w >= 960) || ph.set[ph.set.length - 1])[1];
+      return `<figure class="cs-plate${lead ? " cs-lead" : ""}" style="--r:${(ph.w / ph.h).toFixed(4)}"><img src="${esc(mid)}" srcset="${esc(set)}" sizes="${esc(sizes)}" width="${ph.w}" height="${ph.h}" alt="${esc(g.alt || p.name + " — photograph " + (n + 1))}" decoding="async"${lead ? ' fetchpriority="high"' : ' loading="lazy"'}><figcaption class="cs-micro"><b>${pad(n + 1)}</b>${g.caption ? `<span>${esc(g.caption)}</span>` : ""}</figcaption></figure>`;
+    };
+    // Rows after the opening plate: study.rows, or pairs.
+    const rest = plates.slice(1), groups = [];
+    for (let i = 0, k = 0; i < rest.length; k++) {
+      const n = Math.max(1, Math.min(rest.length - i, (study.rows && study.rows[k]) || 2));
+      groups.push(rest.slice(i, i + n));
+      i += n;
+    }
+    let at = 1;
+    const rows = groups.map((g) => {
+      const sum = g.reduce((a, x) => a + window.RECORD_PHOTOS[x.src].w / window.RECORD_PHOTOS[x.src].h, 0);
+      return `<div class="cs-row" data-n="${g.length}">${g.map((x) => {
+        const ph = window.RECORD_PHOTOS[x.src];
+        const share = g.length > 1 ? Math.ceil((ph.w / ph.h / sum) * 100) : 50;
+        return plate(x, at++, `(max-width:760px) 100vw, ${share}vw`);
+      }).join("")}</div>`;
+    }).join("");
+    // The published account, first sentence set as the standfirst. The words are not edited.
+    const account = (p.summary || "").trim();
+    const cut = account.match(/^(.+?[.!?])\s+(\S[\s\S]*)$/);
+    const body = [cut ? cut[2] : "", p.details || ""].filter(Boolean);
+    const record = [
+      ["Location", venue ? [site.address, site.area].filter(Boolean).map(esc).join("<br>") : esc(site.area || p.location)],
+      ["General contractor", "Freeman General Contracting"],
+      ...projectCredits(p).map(([k, v]) => [k, creditLinks(v)]),
+    ];
+    const order = [...projects].sort((a, b) => Number(a.id) - Number(b.id));
+    const next = order[(order.indexOf(p) + 1) % order.length];
+    const vp = root.querySelector(".viewport");
+    vp.setAttribute("aria-label", p.name + " — case study");
+    vp.setAttribute("tabindex", "0");
+    vp.innerHTML = `<article class="cs"><header class="cs-open cs-grid"><div class="cs-head"><p class="cs-k cs-micro"><b>No. ${esc(p.id)}</b> / ${esc(p.type)}</p><h2 class="cs-name">${esc(p.name)}</h2><p class="cs-where cs-micro">${esc(site.area || p.location)}</p></div>${plate(plates[0], 0, "(max-width:760px) 100vw, 66vw", true)}<dl class="cs-record">${record
+      .map(([k, v]) => `<div><dt class="cs-micro">${esc(k)}</dt><dd>${v}</dd></div>`)
+      .join("")}</dl></header>${account ? `<section class="cs-account cs-grid" aria-labelledby="cs-account"><h3 class="cs-label cs-micro" id="cs-account">Account</h3><div class="cs-text"><p class="cs-standfirst">${esc(cut ? cut[1] : account)}</p>${body.map((t) => `<p class="cs-body">${esc(t)}</p>`).join("")}</div></section>` : ""}${rows}<footer class="cs-foot cs-micro"><a href="map.html?p=${encodeURIComponent(p.slug)}">← ${esc(p.name)} on the map</a>${next && next !== p ? `<a href="project-${esc(next.slug)}.html"><span>Next / </span>${esc(next.name)} →</a>` : ""}</footer></article>`;
+    vp.scrollTop = Number(hist.state.scroll) || 0;
+    // The layout is CSS alone, so a resize needs no redraw; leaving remembers the place.
+    view.resize = null;
+    view.save = () => ({ scroll: vp.scrollTop });
+    // Reading keys work wherever focus is (the section line, CLOSE), not only inside the sheet.
+    galleryKey = (e) => {
+      if (vp.contains(e.target) || e.target.closest("button")) return false;
+      const page = vp.clientHeight * 0.9;
+      const by = { ArrowDown: 80, ArrowUp: -80, PageDown: page, PageUp: -page, " ": e.shiftKey ? -page : page, Home: -vp.scrollHeight, End: vp.scrollHeight }[e.key];
+      if (!by) return false;
+      e.preventDefault();
+      vp.scrollBy({ top: by });
+      return true;
+    };
+    count();
+  }
   function project(p) {
+    if (p.caseStudy) return caseStudy(p);
     if (Array.isArray(p.gallery) && p.gallery.length) return gallery(p);
     const related = archive.filter((a) => a.link === p.slug);
     const b = [
@@ -807,6 +918,7 @@
     if (view && view.destroy && !stayInFieldwork) view.destroy();
     document.querySelectorAll(".freeman-intro").forEach((s) => route.kind !== "entrance" && s.remove());
     document.body.dataset.route = route.kind;
+    delete document.body.dataset.study;
     pageIndex = sheetFromUrl();
     pageCount = 1;
     renderPage = () => {};
