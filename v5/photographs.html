@@ -29,13 +29,15 @@ main{padding:0 var(--edge) calc(var(--edge)*2);display:block}
 }
 @media(max-width:700px){header{height:64px;padding:0;display:flex;align-items:center;justify-content:center}.desktop-home{display:none}.mobile-eagle{display:inline-flex;align-items:center;justify-content:center;min-width:88px;min-height:44px}.mobile-eagle svg{display:block;width:76px;height:auto}.mobile-eagle:hover{background:transparent;color:var(--ink)}main{padding:0 var(--edge) 42px}.photo-row{display:flex;align-items:stretch;gap:7px;margin-bottom:7px}.tile{flex:var(--r) 1 0;min-width:0;aspect-ratio:var(--r);margin:0}.tile img{width:100%;height:100%;object-fit:cover}}
 
-/* Drive films flow inline beneath the photo sequence; preserve the same page gutters. */
-.films{padding:0 var(--edge) calc(var(--edge)*2);margin-top:calc(var(--edge)*-2)}
-.film-row{display:flex;align-items:stretch;gap:var(--gap);width:100%;margin-bottom:var(--gap)}
-.film{flex:var(--r) 1 0;min-width:0;width:100%;height:auto;aspect-ratio:var(--r);display:block;background:var(--paper);object-fit:contain}
-@media(min-width:701px){.film-row:has(> .film:only-child){justify-content:center}.film-row > .film:only-child{flex:none;width:min(100%,calc(68vh * var(--r)))}}
-@media(max-width:700px){.films{margin-top:-42px;padding-bottom:42px}.film-row{flex-direction:column;gap:7px;margin-bottom:7px}.film{flex:none}}
-
+/* Films are photographic tiles, not separate rows or native-player blocks. */
+.video-tile{position:relative;cursor:default;background:#e2dfd7}
+.video-tile video{display:block;width:100%;height:100%;object-fit:cover}
+.video-action{position:absolute;left:12px;bottom:12px;z-index:2;padding:8px 10px;border:0;border-radius:0;background:var(--paper);color:var(--ink);font:500 9px/1.2 var(--mono);letter-spacing:.05em;cursor:pointer;transition:opacity .2s}
+.video-action span{margin-left:6px}
+.video-tile[data-playing="true"] .video-action{opacity:0;pointer-events:none}
+.video-tile[data-playing="true"]:hover .video-action,.video-tile[data-playing="true"]:focus-within .video-action{opacity:1;pointer-events:auto}
+@media(hover:none){.video-tile[data-playing="true"] .video-action{opacity:0;pointer-events:none}}
+@media(max-width:700px){body[data-gallery-mode="scroll"] .video-tile{aspect-ratio:16/9;margin-bottom:7px;overflow:hidden}body[data-gallery-mode="scroll"] .video-tile video{height:100%}}
 dialog{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:var(--paper);color:var(--ink)}
 dialog::backdrop{background:var(--paper)}
 dialog[open]{display:grid;grid-template-rows:94px minmax(0,1fr) 94px}
@@ -114,7 +116,24 @@ dialog[open]{display:grid;grid-template-rows:94px minmax(0,1fr) 94px}
  }
  bp.addEventListener('change',arrange);
  arrange();
- function ordered(){return [...main.querySelectorAll('.tile')];}
+ // A film is presented as a still tile until the visitor elects to watch it.
+ // Keep native controls during playback; never start audio or download the full film on page load.
+ for(const tile of main.querySelectorAll('.video-tile')){
+   const video=tile.querySelector('video'),action=tile.querySelector('.video-action');
+   if(!video||!action)continue;
+   action.addEventListener('click',event=>{
+     event.stopPropagation();
+     if(video.paused){
+       video.controls=true;
+       video.play().then(()=>{tile.dataset.playing='true';action.setAttribute('aria-label','Pause film');action.firstChild.textContent='PAUSE FILM ';}).catch(()=>{video.controls=true;});
+     }else{
+       video.pause();tile.dataset.playing='false';action.setAttribute('aria-label','Play film');action.firstChild.textContent='PLAY FILM ';
+     }
+   });
+   video.addEventListener('ended',()=>{tile.dataset.playing='false';action.setAttribute('aria-label','Replay film');action.firstChild.textContent='REPLAY FILM ';});
+ }
+
+ function ordered(){return [...main.querySelectorAll('a.tile')];}
  function show(index){
    const orderedTiles=ordered();
    if(!orderedTiles.length)return;
@@ -127,7 +146,7 @@ dialog[open]{display:grid;grid-template-rows:94px minmax(0,1fr) 94px}
  }
  main.addEventListener('click',event=>{
    const tile=event.target.closest('.tile');
-   if(!tile||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+   if(!tile||tile.classList.contains('video-tile')||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
    event.preventDefault();
    show(ordered().indexOf(tile));dialog.showModal();
  });
