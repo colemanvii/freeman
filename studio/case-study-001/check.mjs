@@ -1,10 +1,16 @@
 // Case Study 001 — behaviour, image, metadata and regression checks.
-// Usage: PW=<path to node_modules/playwright> BASE=http://127.0.0.1:8921 node studio/case-study-001/check.mjs
+// Usage: PW=<path to node_modules/playwright> BASE=http://127.0.0.1:8921 node studio/case-study-001/check.mjs [slug ...]
+// LIVE=1 skips nothing but tolerates a deployed host (no local-only assumptions).
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { chromium, webkit, devices } = require(process.env.PW || 'playwright');
 const BASE = (process.env.BASE || 'http://127.0.0.1:8921').replace(/\/$/, '');
 let pass = 0, fail = 0;
+const STUDIES = {
+  'beetlecat': { name: 'Beetlecat', plates: 4, record: [/299 N Highland/, /Freeman General Contracting/, /Rocket Farm/, /Jared Swafford/], next: 'project-the-optimist.html', nextSel: '.pg' },
+  'muchacho-decatur': { name: 'Muchacho Decatur', plates: 6, record: [/129 Church St/, /Freeman General Contracting/, /Electric Hospitality/, /BLUR Workshop/], next: 'project-brewhouse-cafe.html', nextSel: '.viewport' },
+};
+const WANT = process.argv.slice(2).length ? process.argv.slice(2) : Object.keys(STUDIES);
 const ok = (c, msg, extra = '') => { if (c) pass++; else { fail++; console.log('  FAIL', msg, extra); } };
 const SIZES = [
   ['1600x900@2x', { viewport: { width: 1600, height: 900 }, deviceScaleFactor: 2 }],
@@ -15,16 +21,17 @@ const SIZES = [
 ];
 for (const [ename, engine] of [['chromium', chromium], ['webkit', webkit]]) {
   const browser = await engine.launch();
-  for (const [name, opts] of SIZES) {
+  for (const SLUG of WANT) for (const [name, opts] of SIZES) {
+    const ST = STUDIES[SLUG];
     if (ename === 'webkit' && name === 'Pixel 5') continue;
-    const tag = `[${ename} ${name}]`;
+    const tag = `[${ename} ${SLUG} ${name}]`;
     const ctx = await browser.newContext(opts); const p = await ctx.newPage();
     const errs = []; let bytes = 0;
     p.on('pageerror', (e) => errs.push(String(e))); p.on('console', (m) => m.type() === 'error' && errs.push(m.text()));
     p.on('response', async (r) => { if (r.status() >= 400) errs.push(r.status() + ' ' + r.url()); });
-    await p.goto(BASE + '/project-beetlecat', { waitUntil: 'networkidle' });
+    await p.goto(BASE + '/project-' + SLUG, { waitUntil: 'networkidle' });
     await p.waitForTimeout(300);
-    const o = await p.evaluate(async () => {
+    const o = await p.evaluate(async (SLUG) => {
       const vp = document.querySelector('.viewport');
       vp.scrollTop = vp.scrollHeight; await new Promise((r) => setTimeout(r, 900)); vp.scrollTop = 0;
       const imgs = [...document.querySelectorAll('.cs-plate img')];
@@ -40,7 +47,7 @@ for (const [ename, engine] of [['chromium', chromium], ['webkit', webkit]]) {
         h: [...document.querySelectorAll('h1,h2,h3')].map((h) => h.tagName + ':' + h.textContent.trim()),
         record: [...document.querySelectorAll('.cs-record div')].map((d) => d.innerText.replace(/\s+/g, ' ')),
         account: document.querySelector('.cs-text').innerText.replace(/\s+/g, ' '),
-        published: window.RECORDS.projects.find((x) => x.slug === 'beetlecat').summary,
+        published: window.RECORDS.projects.find((x) => x.slug === SLUG).summary,
         links: [...document.querySelectorAll('.cs-foot a')].map((a) => a.getAttribute('href')),
         ext: [...document.querySelectorAll('.cs-record a')].map((a) => [a.href, a.target, a.rel]),
         taps: [...document.querySelectorAll('.cs-foot a')].map((a) => a.getBoundingClientRect().height),
@@ -48,19 +55,19 @@ for (const [ename, engine] of [['chromium', chromium], ['webkit', webkit]]) {
         imgkb: res.filter((e) => /\.jpg/.test(e.name)).reduce((a, e) => a + (e.encodedBodySize || 0), 0),
         tab: vp.tabIndex, label: vp.getAttribute('aria-label'), controls: getComputedStyle(document.querySelector('.sheet-controls')).display,
       };
-    });
+    }, SLUG);
     ok(!errs.length, tag + ' no errors', errs.join(' | '));
-    ok(o.study === 'beetlecat' && o.title === 'Beetlecat — Freeman GC', tag + ' study mounted');
+    ok(o.study === SLUG && o.title === ST.name + ' — Freeman GC', tag + ' study mounted');
     ok(o.sh > o.vp.height * 1.5, tag + ' sheet scrolls');
     ok(o.sw <= o.cw && o.doc[0] <= 0 && o.doc[1] <= 0, tag + ' no sideways scroll, document itself fixed', JSON.stringify([o.sw, o.cw, o.doc]));
-    ok(o.imgs.length === 4 && o.imgs.every((i) => i.nw > 0 && i.alt.length > 40), tag + ' four plates loaded with descriptions');
+    ok(o.imgs.length === ST.plates && o.imgs.every((i) => i.nw > 0 && i.alt.length > 40), tag + ' all plates loaded with descriptions', String(o.imgs.length));
     ok(o.imgs.every((i) => i.ar < 0.01), tag + ' no plate cropped or stretched');
     ok(o.imgs.every((i) => i.ratio >= 0.74), tag + ' plates sharp (file px / screen px >= .74)', JSON.stringify(o.imgs.map((i) => [i.src, +i.ratio.toFixed(2)])));
     ok(o.imgs.every((i) => i.ratio <= 2.6), tag + ' no plate far larger than needed', JSON.stringify(o.imgs.map((i) => [i.src, +i.ratio.toFixed(2)])));
     ok(o.account === o.published.replace(/\s+/g, ' '), tag + ' account is the published record, word for word');
-    ok(o.record.length === 4 && /299 N Highland/.test(o.record[0]) && /Rocket Farm/.test(o.record[2]) && /Jared Swafford/.test(o.record[3]), tag + ' record rows', o.record.join(' | '));
-    ok(o.h.join() === 'H1:Projects / Beetlecat,H2:Beetlecat,H3:Account', tag + ' heading order', o.h.join());
-    ok(o.links[0] === 'map.html?p=beetlecat' && o.links[1] === 'project-the-optimist.html', tag + ' foot links', o.links.join());
+    ok(o.record.length === ST.record.length && ST.record.every((re, k) => re.test(o.record[k])), tag + ' record rows', o.record.join(' | '));
+    ok(o.h.join() === `H1:Projects / ${ST.name},H2:${ST.name},H3:Account`, tag + ' heading order', o.h.join());
+    ok(o.links[0] === 'map.html?p=' + SLUG && o.links[1] === ST.next, tag + ' foot links', o.links.join());
     ok(o.ext.every(([h, t, r]) => /^https:/.test(h) && t === '_blank' && /noopener/.test(r)), tag + ' partner link safe');
     ok(o.tab === 0 && /case study/.test(o.label) && o.controls === 'none', tag + ' sheet focusable, pager hidden');
     if (o.phone) {
@@ -82,30 +89,32 @@ for (const [ename, engine] of [['chromium', chromium], ['webkit', webkit]]) {
     await p.waitForTimeout(150);
     const yEnd = await p.evaluate(() => document.querySelector('.viewport').scrollTop);
     await p.evaluate(() => document.querySelector('.cs-foot a:last-child').click()); await p.waitForTimeout(500);
-    const g = await p.evaluate(() => ({ path: location.pathname, study: document.body.dataset.study || '', pg: !!document.querySelector('.pg'), controls: getComputedStyle(document.querySelector('.sheet-controls')).display, vpBottom: innerHeight - document.querySelector('.viewport').getBoundingClientRect().bottom }));
-    ok(/project-the-optimist/.test(g.path) && !g.study && g.pg && g.vpBottom > 40, tag + ' Next opens the existing Optimist page, frame restored', JSON.stringify(g));
+    const g = await p.evaluate((sel) => ({ path: location.pathname, study: document.body.dataset.study || '', pg: !!document.querySelector(sel), controls: getComputedStyle(document.querySelector('.sheet-controls')).display, vpBottom: innerHeight - document.querySelector('.viewport').getBoundingClientRect().bottom }), ST.nextSel);
+    ok(g.path.includes(ST.next.replace('.html', '')) && !g.study && g.pg && g.vpBottom > 40, tag + ' Next opens the next project’s existing page, frame restored', JSON.stringify(g));
     await p.goBack(); await p.waitForTimeout(500);
     const back = await p.evaluate(() => ({ study: document.body.dataset.study, y: document.querySelector('.viewport').scrollTop }));
-    ok(back.study === 'beetlecat' && Math.abs(back.y - yEnd) < 4, tag + ' Back returns to the same place', JSON.stringify([back, yEnd]));
+    ok(back.study === SLUG && Math.abs(back.y - yEnd) < 4, tag + ' Back returns to the same place', JSON.stringify([back, yEnd]));
 
     // Arriving in place from another page: the template is fetched on the way.
     await p.goto(BASE + '/project-the-optimist', { waitUntil: 'networkidle' });
-    await p.evaluate(() => { const a = document.createElement('a'); a.href = 'project-beetlecat.html'; a.id = 'x'; a.textContent = 'x'; document.querySelector('.panel-head').append(a); });
+    await p.evaluate((SLUG) => { const a = document.createElement('a'); a.href = 'project-' + SLUG + '.html'; a.id = 'x'; a.textContent = 'x'; document.querySelector('.panel-head').append(a); }, SLUG);
     await p.evaluate(() => document.getElementById('x').click()); await p.waitForSelector('.cs-name', { timeout: 4000 }).catch(() => {});
     await p.waitForTimeout(300);
     const inplace = await p.evaluate(() => ({ study: document.body.dataset.study, n: document.querySelectorAll('.cs-plate img').length, bottom: innerHeight - document.querySelector('.viewport').getBoundingClientRect().bottom }));
-    ok(inplace.study === 'beetlecat' && inplace.n === 4 && inplace.bottom === 0, tag + ' in-place arrival', JSON.stringify(inplace));
+    ok(inplace.study === SLUG && inplace.n === ST.plates && inplace.bottom === 0, tag + ' in-place arrival', JSON.stringify(inplace));
     await p.keyboard.press('Escape'); await p.waitForTimeout(400);
     ok(/project-the-optimist/.test(p.url()), tag + ' Escape closes back to where the visitor was', p.url());
 
     // The map hands over and takes back.
-    await p.goto(BASE + '/map?p=beetlecat', { waitUntil: 'load' }); await p.waitForSelector('.p-full');
+    await p.goto(BASE + '/map?p=' + SLUG, { waitUntil: 'load' }); await p.waitForSelector('.p-full');
     const href = await p.getAttribute('.p-full', 'href');
-    ok(href === '/project-beetlecat', tag + ' map sheet links to the case study', href);
+    ok(href === '/project-' + SLUG, tag + ' map sheet links to the case study', href);
+    const sheet = await p.evaluate(() => ({ photos: document.querySelectorAll('#record .p-slide img').length, where: [...document.querySelectorAll('#record .p-where span')].map((x) => x.textContent).join(' '), story: !!document.querySelector('#record .p-story') }));
+    ok(sheet.photos === ST.plates && sheet.story && ST.record[0].test(sheet.where), tag + ' map sheet shows photographs, account and address', JSON.stringify(sheet));
     await p.waitForTimeout(900);
     await p.evaluate(() => document.querySelector('.p-full').click()); await p.waitForSelector('.cs-name');
     await p.evaluate(() => document.querySelector('.panel-head .close').click()); await p.waitForTimeout(700);
-    ok(/\/map\?p=beetlecat/.test(p.url()), tag + ' CLOSE returns to Beetlecat on the map', p.url());
+    ok(p.url().includes('/map?p=' + SLUG), tag + ' CLOSE returns to the project on the map', p.url());
 
     // Untouched pages.
     for (const [path, sel] of [['/project-the-optimist', '.pg'], ['/project-woodlands-at-barnsley-resort', '.project-plate'], ['/project-dugans-pub', '.reading, .viewport'], ['/company', '.viewport']]) {
@@ -118,11 +127,13 @@ for (const [ename, engine] of [['chromium', chromium], ['webkit', webkit]]) {
   await browser.close();
 }
 // Metadata, as served.
-const html = await (await fetch(BASE + '/project-beetlecat')).text();
-for (const [re, what] of [[/<title>Beetlecat — Freeman GC<\/title>/, 'title'], [/name="description" content="[^"]{60,170}"/, 'description 60–170 chars'], [/rel="canonical" href="https:\/\/www\.freemangc\.com\/project-beetlecat"/, 'canonical'], [/property="og:image" content="https:\/\/www\.freemangc\.com\/assets\/map\/project-0-1440\.[0-9a-f]{8}\.jpg"/, 'og:image'], [/og:image:alt/, 'og:image:alt'], [/twitter:card" content="summary_large_image"/, 'twitter card'], [/rel="preload" as="image"/, 'opening plate preloaded']]) ok(re.test(html), '[meta] ' + what);
+for (const SLUG of WANT) {
+const html = await (await fetch(BASE + '/project-' + SLUG)).text();
+for (const [re, what] of [[new RegExp('<title>' + STUDIES[SLUG].name + ' — Freeman GC</title>'), 'title'], [/name="description" content="[^"]{60,170}"/, 'description 60–170 chars'], [new RegExp('rel="canonical" href="https://www\\.freemangc\\.com/project-' + SLUG + '"'), 'canonical'], [/property="og:image" content="https:\/\/www\.freemangc\.com\/assets\/map\/[a-z0-9-]+-1440\.[0-9a-f]{8}\.jpg"/, 'og:image'], [/og:image:alt/, 'og:image:alt'], [/twitter:card" content="summary_large_image"/, 'twitter card'], [/rel="preload" as="image"/, 'opening plate preloaded']]) ok(re.test(html), '[meta ' + SLUG + '] ' + what);
 const og = html.match(/og:image" content="https:\/\/www\.freemangc\.com([^"]+)"/);
 ok(og && (await fetch(BASE + og[1])).ok, '[meta] og:image file exists');
 const pre = html.match(/imagesrcset="([^"]+)"/)[1].split(', ').map((s) => s.split(' ')[0]);
 for (const u of pre) ok((await fetch(BASE + u)).ok, '[meta] preload file exists ' + u);
+}
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

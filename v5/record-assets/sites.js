@@ -8,7 +8,7 @@
 
    year: completion year, only once verified by Freeman. Every year is empty in this study; nothing is estimated. */
 window.RECORD_SITES = {
-  checked: '2026-10-22',
+  checked: '2026-11-13',
   sites: {
     'beetlecat': { precision: 'venue', lat: 33.76234, lon: -84.35884, area: 'Inman Park, Atlanta', address: '299 N Highland Ave NE', source: 'OSM address point for 299 N Highland Ave NE; address per The Infatuation' },
     'the-optimist': { precision: 'venue', lat: 33.77985, lon: -84.41064, area: 'West Midtown, Atlanta', address: '914 Howell Mill Rd NW', source: 'OSM node 3021100658' },
@@ -20,11 +20,11 @@ window.RECORD_SITES = {
     'barnsley-gardens': { precision: 'venue', lat: 34.29874, lon: -84.98641, area: 'Barnsley Resort, Adairsville', address: '597 Barnsley Gardens Rd', source: 'OSM node 10812691451 (resort); the pool is not mapped separately' },
     'dugans-pub': { precision: 'venue', lat: 34.29874, lon: -84.98641, area: 'Barnsley Resort, Adairsville', address: '597 Barnsley Gardens Rd', source: 'OSM node 10812691451 (resort); the pub is not mapped separately' },
     'woodlands-at-barnsley-resort': { precision: 'venue', lat: 34.29874, lon: -84.98641, area: 'Barnsley Resort, Adairsville', address: '597 Barnsley Gardens Rd', source: 'OSM node 10812691451 (resort)' },
+    'muchacho-decatur': { precision: 'venue', lat: 33.77161, lon: -84.29464, area: 'Downtown Decatur', address: '129 Church St', source: 'OSM way 48296311 (building, 129 Church Street); address per What Now Atlanta, 4 Nov 2026; street number visible on the door in the 7 Nov 2026 photograph' },
     // Approximate by policy: private residences and a healthcare facility are shown as an area around the town centre.
     'la-cresta-on-main': { precision: 'area', lat: 34.86665, lon: -84.32624, radiusKm: 2.5, area: 'Blue Ridge, Georgia', reason: 'Private residences', source: 'Blue Ridge city hall, OSM way 270247829' },
     'dalton-surgery-center': { precision: 'area', lat: 34.77459, lon: -84.97023, radiusKm: 3, area: 'Dalton, Georgia', reason: 'Healthcare facility', source: 'Dalton city hall, OSM node 5397409639' },
     // Approximate because the site itself is not yet confirmed.
-    'muchacho-decatur': { precision: 'area', lat: 33.77375, lon: -84.29618, radiusKm: 1.5, area: 'Decatur, Georgia', reason: 'Site to be confirmed', source: 'Decatur city hall, OSM way 40813538' },
     'azalea-marketplace': { precision: 'area', lat: 33.75432, lon: -84.38935, radiusKm: 1.2, area: 'Downtown, Atlanta', reason: 'Site to be confirmed', source: 'Downtown Atlanta; probable match Azalea Fresh Market, 25 Peachtree St NW (Savi Provisions partnership)' },
     // Bocado had several locations (West Midtown closed 2021; Sandy Springs 2024). Which one Freeman built is not known.
     'bocado-pizza': { precision: null, area: 'Atlanta, Georgia', reason: 'Location not on file' }

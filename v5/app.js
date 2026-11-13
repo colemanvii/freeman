@@ -519,9 +519,9 @@
      The sheet scrolls inside the site's fixed frame; its position is kept for Back/Forward. */
   const STUDY_CSS = "/case-study/case-study.css?v=cs-001";
   const STUDY_SCRIPTS = [
-    ["FREEMAN_STUDIES", "/case-study/studies.js?v=cs-001"],
-    ["RECORD_PHOTOS", "/record-assets/photos.js?v=20261026-map-projects"],
-    ["RECORD_SITES", "/record-assets/sites.js?v=20261026-map-projects"],
+    ["FREEMAN_STUDIES", "/case-study/studies.js?v=cs-002"],
+    ["RECORD_PHOTOS", "/record-assets/photos.js?v=cs-002"],
+    ["RECORD_SITES", "/record-assets/sites.js?v=cs-002"],
   ];
   const studySheet = () => document.querySelector("link[data-case-study]");
   const studyReady = () => STUDY_SCRIPTS.every(([name]) => window[name]) && !!(studySheet() && studySheet().sheet);

@@ -63,6 +63,55 @@ suite compares the two strings.
 - A verified site for the photographer, Jared Swafford (shown without a link)
 - Photograph originals above 1920 px, and the photographer's permission for crops
 
+## Muchacho Decatur (second case study, 13 Nov 2026)
+
+Same template, no design changes. Six photographs: the front of the house as the opening plate, then
+front room + bar, door + cased opening, and one detail.
+
+### Photographs
+
+- **Source:** the Freeman Photographs Drive folder (`1oTSehQllUmR-f-amymYXjY114EP0SqXT`), uploaded Saturday
+  7 Nov 2026. The files here are the 2400 px copies made that day in `~/Sites/freeman-photographs/v5/photographs`
+  (frames 06, 08, 07, 05, 11, 12 of that set). The set is mixed: Barnsley and Muchacho frames together.
+- **Already public:** every frame is in the public Photographs section.
+- **Left out:** the second exterior (duplicate, more guests), the ribbon-cutting (an event photograph of people),
+  and the wall light (no evidence it is Muchacho, and the weakest frame).
+- Sized copies were added with `studio/case-study-001/add-photos.mjs`, which leaves existing entries alone.
+
+### What is verified
+
+| On the page | Source |
+|---|---|
+| 129 Church St, Downtown Decatur | What Now Atlanta, 4 Nov 2026; OSM building way 48296311; "129" on the door in plate 01 |
+| Electric Hospitality (hospitality operator) | Freeman's published credit; What Now Atlanta names it as Muchacho's owner |
+| BLUR Workshop (interior design) | Freeman's published credit only (see below) |
+| It is a house | Visible in plate 01; What Now Atlanta: "renovated 1940 Craftsman bungalow" |
+
+The map record changed with this: Muchacho was an approximate ring ("site to be confirmed") and is now placed at
+its address.
+
+### The account is new writing and needs approval
+
+Freeman had published no account for this project. The four sentences on the page were written for this branch.
+They state only what is visible in the photographs, a general truth about working in an existing building, and
+the published credits. They are in `records.js` (`summary`), so the map sheet shows the same words.
+
+### Needs confirmation before release
+
+1. **The building's age.** The brief calls it a century-old home. The only published source found (What Now
+   Atlanta, 4 Nov 2026) says "renovated 1940 Craftsman bungalow", which is 86 years. The page states no age.
+2. **"Historic".** No historic designation was found. The page does not use the word.
+3. **BLUR Workshop on Decatur.** BLUR's own site lists only "Muchacho at Hemphill" (West Midtown), as architecture
+   and interior design. Its role on Decatur rests on Freeman's record alone. Was BLUR also the architect here?
+4. **Freeman's scope.** What was kept, what was replaced, what was new: windows, doors, trim, floors, porch,
+   structure, services, kitchen, the outdoor space. Nothing is on file, so the page claims none of it.
+5. **The door plate (04).** No sign or address in frame; placed by its position in the 7 Nov set and matching
+   paint. Confirm it is Muchacho Decatur.
+6. **Photographer.** Not on file; no credit is shown.
+7. **Capture date.** The files carry no date; 7 Nov is the upload date (the opening weekend ran 6 to 8 Nov).
+8. **Guests in frame.** Plates 02 and 03 show identifiable guests, as the Photographs section already does.
+9. **Dates, floor area, seat count, contract value, prior tenant work** (the building was Revival before).
+
 ## Checks
 
 ```

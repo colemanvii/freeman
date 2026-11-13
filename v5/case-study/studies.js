@@ -27,5 +27,25 @@ window.FREEMAN_STUDIES = {
         alt: "Detail: a model sailboat with a yellow hull, a blue and white bowl and a model schooner in a glass case, on a ledge against a walnut wall." }
     ],
     rows: [2, 1]
+  },
+  // Photographs: Freeman Photographs Drive folder, uploaded 7 Nov 2026 (the opening weekend). Photographer not on file.
+  // The door plate carries no sign or address; it is placed here by its position in that set and its matching
+  // paint and trim, and needs Freeman's confirmation.
+  "muchacho-decatur": {
+    plates: [
+      { src: "assets/projects/muchacho-decatur-01.jpg", caption: "Front porch, Church Street",
+        alt: "The front of Muchacho Decatur: a white house with a grey shingle roof and a dormer of lattice windows. The Muchacho sign hangs over a yellow glazed door numbered 129, between lattice-paned windows, behind a white porch rail under a magnolia branch." },
+      { src: "assets/projects/muchacho-decatur-02.jpg", caption: "Front room",
+        alt: "A front room in use: cream walls and ceiling, a pair of tall lattice-paned windows in a wide painted casing, a framed photograph of a wave above them, a globe wall light, and guests at the counter in the foreground." },
+      { src: "assets/projects/muchacho-decatur-04.jpg", caption: "Bar",
+        alt: "Behind the bar: a timber counter with bottles and taps, a square timber-lined opening in the wall through which two guests are seen talking, a painted post, and warm light on cream walls." },
+      { src: "assets/projects/muchacho-decatur-05.jpg", caption: "Door",
+        alt: "A cream-painted panelled door, close up, with the letters W.C. painted in red on its middle panel." },
+      { src: "assets/projects/muchacho-decatur-06.jpg", caption: "Cased opening",
+        alt: "A doorway with a painted moulded casing and a parted bead curtain, lit from within. Above it hangs a framed photograph of a motocross rider and a wall speaker." },
+      { src: "assets/projects/muchacho-decatur-07.jpg", caption: "Detail",
+        alt: "An orange motorcycle helmet, a reel-to-reel tape recorder and a twin-shade lamp on a timber sideboard against an orange wall." }
+    ],
+    rows: [2, 2, 1]
   }
 };
