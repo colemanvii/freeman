@@ -30,3 +30,27 @@
 /admin/*
   Cache-Control: private, no-store
   X-Robots-Tag: noindex, nofollow, noarchive
+
+# Projects map photographs: resized copies with a content hash in the name (studio/map-projects-001/build-photos.mjs).
+# A changed photograph gets a new name, so these never need revalidating.
+/assets/map/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Public photographs section, dynamically populated from the Freeman Drive folder.
+/photographs
+  Cache-Control: public, max-age=0, must-revalidate
+  Referrer-Policy: same-origin
+
+/photograph-files/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Barnsley × AssuranceAmerica (11 Nov 2026): unlisted Drive-backed gallery, never indexed.
+/assuranceamerica
+  Cache-Control: public, max-age=0, must-revalidate
+  Referrer-Policy: same-origin
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+# /assuranceamerica films: web versions with a content hash in the name (studio/assuranceamerica-films/build-films.mjs).
+/assets/films/*
+  Cache-Control: public, max-age=31536000, immutable
+  X-Robots-Tag: noindex, nofollow, noarchive
