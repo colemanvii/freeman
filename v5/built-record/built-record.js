@@ -5,13 +5,13 @@
    Sections: opening · overview · architectural record (drawing set) · the build · finished work · particulars. */
 (() => {
   "use strict";
-  const slug = document.documentElement.dataset.record;
+  const slug = window.BR_SLUG || document.documentElement.dataset.record;
   const rec = (window.BUILT_RECORDS || {})[slug];
   const p = ((window.RECORDS || {}).projects || []).find((x) => x.slug === slug);
   const root = document.getElementById("record");
   if (!rec || !p || !root) { if (root) root.innerHTML = '<p class="br-none">This record is not available.</p>'; return; }
 
-  const BASE = "../";
+  const BASE = window.BR_BASE != null ? window.BR_BASE : "../"; // the site root, seen from this page
   const PHOTOS = window.RECORD_PHOTOS || {};
   const site = ((window.RECORD_SITES || {}).sites || {})[slug] || {};
   const calm = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -113,7 +113,7 @@
   const next = order[(order.indexOf(p) + 1) % order.length];
   const foot = `<footer class="br-foot br-micro"><a href="${BASE}map.html?p=${encodeURIComponent(slug)}">← ${esc(p.name)} on the map</a><a href="${BASE}project-${esc(slug)}.html">Current published version</a><a href="${BASE}project-${esc(next.slug)}.html"><span>Next</span> ${esc(next.name)} →</a></footer>`;
 
-  root.innerHTML = opening() + overview() + drawings() + build() + finished() + particulars() + review() + foot;
+  root.innerHTML = opening() + overview() + drawings() + build() + finished() + particulars() + review() + (window.BR_STANDALONE ? "" : foot);
   document.title = `${p.name} — The Built Record — Freeman GC`;
 
   // ---------- opening: the seam between drawing and photograph ----------
