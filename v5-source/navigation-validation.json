@@ -1,0 +1,29 @@
+{
+ "date": "2026-10-12",
+ "engine": "Chromium (Playwright); WebKit: unavailable in QA environment",
+ "checks": 363,
+ "passed": 363,
+ "failures": [],
+ "viewports": [
+  "375x667",
+  "390x844",
+  "430x932",
+  "1280x720",
+  "1440x900",
+  "667x375",
+  "844x390",
+  "932x430"
+ ],
+ "safari_handling": [
+  "History writes wrapped in try/catch (Safari rate-limits pushState/replaceState); page-load fallback if history is unavailable",
+  "Search redraws only the list, so the focused input and the iOS keyboard are not replaced while typing",
+  "Inputs are 16px on touch devices to prevent iOS focus zoom",
+  "List scrolling uses scrollTop on the record column, never scrollIntoView, so the fixed page cannot shift",
+  "Back/forward cache restores are handled (pageshow); the eagle never replays on Back/Forward",
+  "100dvh with 100% fallback; safe-area insets on all edges of interior pages and Fieldwork",
+  "Palette carried in history.state and sessionStorage (works with storage blocked)"
+ ],
+ "outstanding": [
+  "Physical iPhone Safari pass (swipe-back gesture, URL-bar resize) before publishing"
+ ]
+}

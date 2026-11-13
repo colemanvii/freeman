@@ -1,0 +1,205 @@
+{
+  "$schema": "./tutorial-registry.schema.json",
+  "note": "Seed registry. No Freeman policy is stated here; every module needs an owner and approved content before external use.",
+  "modules": [
+    {
+      "id": "procore-account-setup",
+      "title": "Procore account setup",
+      "audiences": [
+        "client",
+        "architect",
+        "trade"
+      ],
+      "pathway_steps": [
+        "client/2",
+        "architect/2",
+        "trade/3"
+      ],
+      "scope": "person",
+      "platform": "procore",
+      "procedure_version": "0.0",
+      "status": "needs-content",
+      "owner": "TBD",
+      "reviewed_on": null,
+      "review_every_days": 180,
+      "steps": [],
+      "video": null,
+      "open_questions": [
+        "Which Procore tools and permission template does each audience receive?"
+      ]
+    },
+    {
+      "id": "procore-project-information",
+      "title": "Locating project information in Procore",
+      "audiences": [
+        "client",
+        "architect",
+        "trade"
+      ],
+      "pathway_steps": [
+        "client/2",
+        "architect/2",
+        "trade/3"
+      ],
+      "scope": "person",
+      "platform": "procore",
+      "procedure_version": "0.0",
+      "status": "needs-content",
+      "owner": "TBD",
+      "reviewed_on": null,
+      "review_every_days": 180,
+      "steps": [],
+      "video": null,
+      "open_questions": [
+        "Folder/tool conventions Freeman uses for drawings, specifications and photos."
+      ]
+    },
+    {
+      "id": "procore-rfis-submittals",
+      "title": "Reviewing RFIs and submittals in Procore",
+      "audiences": [
+        "architect",
+        "client"
+      ],
+      "pathway_steps": [
+        "architect/2",
+        "client/2"
+      ],
+      "scope": "person",
+      "platform": "procore",
+      "procedure_version": "0.0",
+      "status": "needs-content",
+      "owner": "TBD",
+      "reviewed_on": null,
+      "review_every_days": 180,
+      "steps": [],
+      "video": null,
+      "open_questions": [
+        "Response times Freeman asks architects to meet.",
+        "Which items require client review?"
+      ]
+    },
+    {
+      "id": "buildingconnected-setup",
+      "title": "BuildingConnected setup",
+      "audiences": [
+        "trade"
+      ],
+      "pathway_steps": [
+        "trade/2"
+      ],
+      "scope": "person",
+      "platform": "buildingconnected",
+      "procedure_version": "0.0",
+      "status": "needs-content",
+      "owner": "TBD",
+      "reviewed_on": null,
+      "review_every_days": 180,
+      "steps": [],
+      "video": null,
+      "open_questions": [
+        "How Freeman sends bid invitations and what bidders must complete."
+      ]
+    },
+    {
+      "id": "trade-prequalification",
+      "title": "Trade partner prequalification",
+      "audiences": [
+        "trade"
+      ],
+      "pathway_steps": [
+        "trade/1"
+      ],
+      "scope": "organization",
+      "platform": "none",
+      "procedure_version": "0.0",
+      "status": "needs-policy",
+      "owner": "TBD",
+      "reviewed_on": null,
+      "review_every_days": 180,
+      "steps": [],
+      "video": null,
+      "open_questions": [
+        "Required forms, safety record, licences and references.",
+        "Where prequalification is completed (TradeTapp, Procore, other).",
+        "Certificate of insurance coverages, limits and renewal tracking."
+      ]
+    },
+    {
+      "id": "billing-and-payment",
+      "title": "Freeman billing and payment procedures",
+      "audiences": [
+        "trade"
+      ],
+      "pathway_steps": [
+        "trade/4"
+      ],
+      "scope": "organization",
+      "platform": "none",
+      "procedure_version": "0.0",
+      "status": "needs-policy",
+      "owner": "TBD",
+      "reviewed_on": null,
+      "review_every_days": 180,
+      "steps": [],
+      "video": null,
+      "open_questions": [
+        "Pay-application format and monthly cut-off.",
+        "Required backup and lien-waiver type and timing.",
+        "Retainage and payment terms.",
+        "Where invoices are submitted."
+      ]
+    },
+    {
+      "id": "project-contacts",
+      "title": "Project contacts and communication",
+      "audiences": [
+        "client",
+        "architect",
+        "trade"
+      ],
+      "pathway_steps": [
+        "client/1",
+        "architect/1",
+        "trade/5"
+      ],
+      "scope": "engagement",
+      "platform": "none",
+      "procedure_version": "0.0",
+      "status": "needs-content",
+      "owner": "TBD",
+      "reviewed_on": null,
+      "review_every_days": 180,
+      "steps": [],
+      "video": null,
+      "open_questions": [
+        "Whether project communication must stay in Procore.",
+        "Escalation contact."
+      ]
+    },
+    {
+      "id": "kickoff-scheduling",
+      "title": "Scheduling a kickoff meeting",
+      "audiences": [
+        "client",
+        "architect"
+      ],
+      "pathway_steps": [
+        "client/4",
+        "architect/3"
+      ],
+      "scope": "engagement",
+      "platform": "none",
+      "procedure_version": "0.0",
+      "status": "needs-policy",
+      "owner": "TBD",
+      "reviewed_on": null,
+      "review_every_days": 180,
+      "steps": [],
+      "video": null,
+      "open_questions": [
+        "Booking tool, who schedules, standard attendees and agenda."
+      ]
+    }
+  ]
+}
