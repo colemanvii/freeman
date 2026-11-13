@@ -1,4 +1,4 @@
-import { galleryPage, photographFile, driveConfigured, listPhotographs, barnsleyFolder } from "../lib/photographs-drive.js";
+import { galleryPage, photographFile, photographVideo, driveConfigured, listPhotographs, barnsleyFolder } from "../lib/photographs-drive.js";
 // Server-side demo gate. Cloudflare Pages secrets required:
 // FREEMAN_OS_PASSWORD and FREEMAN_OS_SESSION_KEY (32+ random characters).
 const COOKIE="fos_session", AGE=8*60*60, ROOT="/team-os", enc=new TextEncoder();
@@ -28,7 +28,7 @@ function page(error){
 function respond(body,status,extra){return new Response(body,{status:status||200,headers:{"Content-Type":"text/html; charset=utf-8","Cache-Control":"private, no-store",...SECURITY,...extra}});}
 // /photographs: public, editorial, Drive-backed photography section.
 // The Drive service account remains private; only folder-listed images are served.
-const PHOTOS="/photographs",PHOTO_FILES="/photograph-files";
+const PHOTOS="/photographs",PHOTO_FILES="/photograph-files",VIDEO_FILES="/photograph-videos";
 const PHOTOS_COVER="/photographs-cover.jpg",PHOTOS_COVER_ID="1TlLcPA9LQ2V1qLVHPeRf1TR-4Oh31kXB";
 const PUBLIC_PHOTO_HEADERS={
   "X-Content-Type-Options":"nosniff",
@@ -52,12 +52,20 @@ async function photosCover(ctx,req,url){
  return new Response(req.method==="HEAD"?null:file.body,{status:200,headers});
 }
 
-const isPhotos=p=>p===PHOTOS||p.startsWith(PHOTOS+"/")||p.startsWith(PHOTOS+".")||p===PHOTO_FILES||p.startsWith(PHOTO_FILES+"/");
+const isPhotos=p=>p===PHOTOS||p.startsWith(PHOTOS+"/")||p.startsWith(PHOTOS+".")||p===PHOTO_FILES||p.startsWith(PHOTO_FILES+"/")||p===VIDEO_FILES||p.startsWith(VIDEO_FILES+"/");
 async function photos(ctx,req,url,path){
   if(req.method!=="GET"&&req.method!=="HEAD")return new Response("Method not allowed",{status:405,headers:{"Allow":"GET, HEAD"}});
   const page=path===PHOTOS||path===PHOTOS+".html"||path===PHOTOS+"/";
   if(page&&url.pathname!==PHOTOS)return new Response(null,{status:308,headers:{"Location":PHOTOS,"Cache-Control":"public, max-age=0"}});
   if(!driveConfigured(ctx.env))return new Response("Photographs are unavailable.",{status:503,headers:{"Cache-Control":"no-store",...PUBLIC_PHOTO_HEADERS}});
+  if(!page && (path===VIDEO_FILES || path.startsWith(VIDEO_FILES+"/"))){
+    let video;
+    try{video=await photographVideo(url,ctx.env,req);}catch(e){console.error(e);return new Response("Video unavailable",{status:503,headers:{"Cache-Control":"no-store",...PUBLIC_PHOTO_HEADERS}});}
+    if(!video)return new Response("Not found",{status:404,headers:{"Cache-Control":"no-store",...PUBLIC_PHOTO_HEADERS}});
+    const headers=new Headers(video.headers);
+    for(const [k,v] of Object.entries(PUBLIC_PHOTO_HEADERS))headers.set(k,v);
+    return new Response(req.method==="HEAD"?null:video.body,{status:video.status,headers});
+  }
   if(!page){
     let file;
     try{file=await photographFile(url,ctx.env,p=>ctx.waitUntil(p));}catch(e){console.error(e);return new Response("Photographs are unavailable.",{status:503,headers:{"Cache-Control":"no-store",...PUBLIC_PHOTO_HEADERS}});}
