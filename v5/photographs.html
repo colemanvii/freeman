@@ -35,9 +35,7 @@ main{padding:0 var(--edge) calc(var(--edge)*2);display:block}
 .video-action{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;display:flex;justify-content:center;align-items:center;width:64px;height:64px;padding:0;border:1px solid rgba(255,255,255,.8);border-radius:50%;background:rgba(20,20,20,.32);color:#fff;cursor:pointer;transition:background .15s ease,opacity .15s ease}
 .video-action svg{display:block;margin-left:3px;width:25px;height:25px}
 .video-action:hover{background:rgba(20,20,20,.55)}
-.video-tile[data-playing="true"] .video-action{opacity:0;pointer-events:none}
-.video-tile[data-playing="true"]:hover .video-action,.video-tile[data-playing="true"]:focus-within .video-action{opacity:1;pointer-events:auto}
-@media(hover:none){.video-tile[data-playing="true"] .video-action{opacity:0;pointer-events:none}}
+.video-tile[data-playing="true"] .video-action,.video-tile[data-playing="true"]:hover .video-action,.video-tile[data-playing="true"]:focus-within .video-action{display:none!important;opacity:0!important;pointer-events:none!important}
 @media(max-width:700px){body[data-gallery-mode="scroll"] .video-tile{aspect-ratio:16/9;margin-bottom:7px;overflow:hidden}body[data-gallery-mode="scroll"] .video-tile video{height:100%}.video-action{width:54px;height:54px}}
 dialog{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:var(--paper);color:var(--ink)}
 dialog::backdrop{background:var(--paper)}
@@ -117,20 +115,25 @@ dialog[open]{display:grid;grid-template-rows:94px minmax(0,1fr) 94px}
  }
  bp.addEventListener('change',arrange);
  arrange();
- // One restrained play icon; browser controls appear after playback begins.
+ // The overlay is exclusively a start/replay affordance.
+ // Native controls handle pause and seeking after playback begins.
  for(const tile of main.querySelectorAll('.video-tile')){
    const video=tile.querySelector('video'),action=tile.querySelector('.video-action');
    if(!video||!action)continue;
+   const sync=()=>{
+     const playing=!video.paused&&!video.ended;
+     tile.dataset.playing=String(playing);
+     action.setAttribute('aria-label',video.ended?'Replay film':'Play film');
+   };
+   for(const event of ['play','playing','pause','ended','emptied'])video.addEventListener(event,sync);
    action.addEventListener('click',event=>{
-     event.stopPropagation();
-     if(video.paused){
-       video.controls=true;
-       video.play().then(()=>{tile.dataset.playing='true';action.setAttribute('aria-label','Pause film');}).catch(()=>{video.controls=true;});
-     }else{
-       video.pause();tile.dataset.playing='false';action.setAttribute('aria-label','Play film');
-     }
+     event.preventDefault();event.stopPropagation();
+     video.controls=true;
+     // Hide immediately, including while the promise to play is pending.
+     tile.dataset.playing='true';
+     video.play().catch(()=>{sync();});
    });
-   video.addEventListener('ended',()=>{tile.dataset.playing='false';action.setAttribute('aria-label','Replay film');});
+   sync();
  }
 
  function ordered(){return [...main.querySelectorAll('a.tile')];}
