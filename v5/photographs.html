@@ -114,7 +114,7 @@ dialog[open]{display:grid;grid-template-rows:94px minmax(0,1fr) 94px}
    const fragment=document.createDocumentFragment();
    for(const group of groups){
      if(!group.length)continue;
-     const row=document.createElement('div');row.className='photo-row';
+     const row=document.createElement('div');row.className='photo-row'+(group.some(tile=>tile.classList.contains('video-tile'))?' closing-photo-row':'');
      group.forEach(tile=>row.appendChild(tile));fragment.appendChild(row);
    }
    main.replaceChildren(fragment);
