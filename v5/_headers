@@ -54,3 +54,7 @@
 /assets/films/*
   Cache-Control: public, max-age=31536000, immutable
   X-Robots-Tag: noindex, nofollow, noarchive
+
+# The Built Record (study 001, 13 Nov 2026): unpublished case-study prototype, never indexed.
+/built-record/*
+  X-Robots-Tag: noindex, nofollow, noarchive
