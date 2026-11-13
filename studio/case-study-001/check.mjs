@@ -19,11 +19,12 @@ const SIZES = [
   ['1024x768', { viewport: { width: 1024, height: 768 } }],
   ['iPhone 13', devices['iPhone 13']], ['iPhone SE', devices['iPhone SE']], ['Pixel 5', devices['Pixel 5']],
 ];
-for (const [ename, engine] of [['chromium', chromium], ['webkit', webkit]]) {
+for (const [ename, engine] of [['chromium', chromium], ['webkit', webkit]].filter(([n]) => !process.env.ENGINE || process.env.ENGINE === n)) {
   const browser = await engine.launch();
   for (const SLUG of WANT) for (const [name, opts] of SIZES) {
     const ST = STUDIES[SLUG];
     if (ename === 'webkit' && name === 'Pixel 5') continue;
+    if (process.env.ONLY && !process.env.ONLY.split(',').includes(name)) continue;
     const tag = `[${ename} ${SLUG} ${name}]`;
     const ctx = await browser.newContext(opts); const p = await ctx.newPage();
     const errs = []; let bytes = 0;
@@ -33,9 +34,11 @@ for (const [ename, engine] of [['chromium', chromium], ['webkit', webkit]]) {
     await p.waitForTimeout(300);
     const o = await p.evaluate(async (SLUG) => {
       const vp = document.querySelector('.viewport');
-      vp.scrollTop = vp.scrollHeight; await new Promise((r) => setTimeout(r, 900)); vp.scrollTop = 0;
+      // Read down the sheet a window at a time, as a visitor would, so lazy photographs load in every engine.
+      for (let y = 0; y < vp.scrollHeight; y += vp.clientHeight * 0.8) { vp.scrollTop = y; await new Promise((r) => setTimeout(r, 350)); }
+      await new Promise((r) => setTimeout(r, 600)); vp.scrollTop = 0;
       const imgs = [...document.querySelectorAll('.cs-plate img')];
-      await Promise.all(imgs.map((i) => i.decode().catch(() => {})));
+      await Promise.all(imgs.map((i) => Promise.race([i.decode().catch(() => {}), new Promise((r) => setTimeout(r, 4000))])));
       const r = (s) => document.querySelector(s)?.getBoundingClientRect().toJSON();
       const res = performance.getEntriesByType('resource');
       return {

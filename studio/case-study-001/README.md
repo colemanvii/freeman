@@ -98,8 +98,8 @@ the published credits. They are in `records.js` (`summary`), so the map sheet sh
 
 ### Needs confirmation before release
 
-1. **The building's age.** The brief calls it a century-old home. The only published source found (What Now
-   Atlanta, 4 Nov 2026) says "renovated 1940 Craftsman bungalow", which is 86 years. The page states no age.
+1. ~~The building's age.~~ **Settled 13 Nov 2026:** Cole confirmed 1940 (as What Now Atlanta reported), not a
+   century. The account now says "a house built in 1940".
 2. **"Historic".** No historic designation was found. The page does not use the word.
 3. **BLUR Workshop on Decatur.** BLUR's own site lists only "Muchacho at Hemphill" (West Midtown), as architecture
    and interior design. Its role on Decatur rests on Freeman's record alone. Was BLUR also the architect here?

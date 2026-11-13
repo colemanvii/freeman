@@ -597,10 +597,14 @@
     ];
     const order = [...projects].sort((a, b) => Number(a.id) - Number(b.id));
     const next = order[(order.indexOf(p) + 1) % order.length];
+    // The opening plate is held to the window's height, so a tall photograph is shown narrower than its column.
+    // Keep in step with the preload's imagesizes in the project's page.
+    const lead = window.RECORD_PHOTOS[plates[0].src];
+    const leadSizes = `(max-width:760px) 100vw, min(66vw, calc((100vh - 190px) * ${(lead.w / lead.h).toFixed(3)}))`;
     const vp = root.querySelector(".viewport");
     vp.setAttribute("aria-label", p.name + " — case study");
     vp.setAttribute("tabindex", "0");
-    vp.innerHTML = `<article class="cs"><header class="cs-open cs-grid"><div class="cs-head"><p class="cs-k cs-micro"><b>No. ${esc(p.id)}</b> / ${esc(p.type)}</p><h2 class="cs-name">${esc(p.name)}</h2><p class="cs-where cs-micro">${esc(site.area || p.location)}</p></div>${plate(plates[0], 0, "(max-width:760px) 100vw, 66vw", true)}<dl class="cs-record">${record
+    vp.innerHTML = `<article class="cs"><header class="cs-open cs-grid"><div class="cs-head"><p class="cs-k cs-micro"><b>No. ${esc(p.id)}</b> / ${esc(p.type)}</p><h2 class="cs-name">${esc(p.name)}</h2><p class="cs-where cs-micro">${esc(site.area || p.location)}</p></div>${plate(plates[0], 0, leadSizes, true)}<dl class="cs-record">${record
       .map(([k, v]) => `<div><dt class="cs-micro">${esc(k)}</dt><dd>${v}</dd></div>`)
       .join("")}</dl></header>${account ? `<section class="cs-account cs-grid" aria-labelledby="cs-account"><h3 class="cs-label cs-micro" id="cs-account">Account</h3><div class="cs-text"><p class="cs-standfirst">${esc(cut ? cut[1] : account)}</p>${body.map((t) => `<p class="cs-body">${esc(t)}</p>`).join("")}</div></section>` : ""}${rows}<footer class="cs-foot cs-micro"><a href="map.html?p=${encodeURIComponent(p.slug)}">← ${esc(p.name)} on the map</a>${next && next !== p ? `<a href="project-${esc(next.slug)}.html"><span>Next / </span>${esc(next.name)} →</a>` : ""}</footer></article>`;
     vp.scrollTop = Number(hist.state.scroll) || 0;
