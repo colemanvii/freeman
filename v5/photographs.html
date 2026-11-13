@@ -29,16 +29,12 @@ main{padding:0 var(--edge) calc(var(--edge)*2);display:block}
 }
 @media(max-width:700px){header{height:64px;padding:0;display:flex;align-items:center;justify-content:center}.desktop-home{display:none}.mobile-eagle{display:inline-flex;align-items:center;justify-content:center;min-width:88px;min-height:44px}.mobile-eagle svg{display:block;width:76px;height:auto}.mobile-eagle:hover{background:transparent;color:var(--ink)}main{padding:0 var(--edge) 42px}.photo-row{display:flex;align-items:stretch;gap:7px;margin-bottom:7px}.tile{flex:var(--r) 1 0;min-width:0;aspect-ratio:var(--r);margin:0}.tile img{width:100%;height:100%;object-fit:cover}}
 
-/* A portrait film must never make the final gallery row nearly full-screen.
-   Keep both tiles at original proportions, centered as a modest closing pair. */
+/* Final row spans every available pixel between the SAME gallery gutters.
+   Four proportional tiles give a portrait video a modest height naturally;
+   never cap and center the row, which creates empty wings. */
 @media(min-width:701px){
-  .photo-row:has(> .video-tile){justify-content:center;height:min(45vw,460px)}
-  .photo-row:has(> .video-tile) > .tile{
-    flex:0 0 auto;
-    height:100%;
-    width:calc(min(45vw,460px) * var(--r));
-    max-width:calc(100% - var(--gap));
-  }
+  .closing-photo-row{display:flex;width:100%;justify-content:stretch;align-items:stretch}
+  .closing-photo-row > .tile{flex:var(--r) 1 0;min-width:0;width:auto;height:auto;max-width:none}
 }
 /* The film is the final gallery tile, with precisely the same image row geometry. */
 .video-tile{position:relative;cursor:default;background:#dcd8d0}
