@@ -123,7 +123,7 @@ dialog[open]{display:grid;grid-template-rows:94px minmax(0,1fr) 94px}
    const n=tiles.length,dp=Array(n+1).fill(Infinity),steps=Array(n);
    dp[n]=0;
    for(let i=n-1;i>=0;i--){
-     for(const count of [2,3]){
+     for(const count of [2]){
        if(i+count>n)continue;
        const group=tiles.slice(i,i+count);
        const sum=group.reduce((v,t)=>v+Math.max(.45,Math.min(3.1,Number(t.dataset.w)/Number(t.dataset.h)||1.5)),0);
@@ -131,7 +131,7 @@ dialog[open]{display:grid;grid-template-rows:94px minmax(0,1fr) 94px}
        if(cost<dp[i]){dp[i]=cost;steps[i]=count;}
      }
    }
-   if(!Number.isFinite(dp[0]))return [tiles];
+   if(!Number.isFinite(dp[0])){const out=[];for(let i=0;i<tiles.length;i+=2)out.push(tiles.slice(i,i+2));return out;}
    const out=[];
    for(let i=0;i<n;){const count=steps[i]||n-i;out.push(tiles.slice(i,i+count));i+=count;}
    return out;
