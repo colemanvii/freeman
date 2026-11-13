@@ -103,8 +103,8 @@ dialog[open]{display:grid;grid-template-rows:94px minmax(0,1fr) 94px}
     buttons.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.galleryView===mode)));
     if(save){try{localStorage.setItem(key,mode)}catch(e){}}
   }
-  let saved='collage';
-  try{saved=localStorage.getItem(key)||'collage'}catch(e){}
+  let saved='scroll';
+  try{saved=localStorage.getItem(key)||'scroll'}catch(e){}
   setMode(saved);
   buttons.forEach(button=>button.addEventListener('click',()=>setMode(button.dataset.galleryView,true)));
 })();
