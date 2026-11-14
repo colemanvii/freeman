@@ -1,0 +1,196 @@
+{
+  "version": "001",
+  "published": "2026-11-13T21:27:00-05:00",
+  "work": [
+    {
+      "id": "record",
+      "number": "002",
+      "title": "The Building Record",
+      "type": "study",
+      "stage": "IN STUDY",
+      "date": "2026-11-13",
+      "image": "/edition-002/img/muchacho-03.jpg",
+      "alt": "Interior of Muchacho Decatur, a Freeman project",
+      "description": "A building told through its drawings, photographs, details and people. The Muchacho record is a study, not an approved record.",
+      "url": "/edition-002/index.html#record"
+    },
+    {
+      "id": "film",
+      "number": "003",
+      "title": "Built for Generations",
+      "type": "study",
+      "stage": "CONCEPT / PILOT PROPOSED",
+      "date": "2026-11-13",
+      "image": "/edition-002/img/field-gabe.jpg",
+      "alt": "Authentic Freeman field photograph",
+      "description": "A documentary series about the people and places behind the work. One pilot proposed; no production commissioned.",
+      "url": "/edition-002/index.html#series"
+    },
+    {
+      "id": "house",
+      "number": "004",
+      "title": "Freeman as a publishing house",
+      "type": "study",
+      "stage": "EXPLORING",
+      "date": "2026-11-13",
+      "image": "/edition-002/img/beetlecat-room.jpg",
+      "alt": "BeetleCat interior photographed for Freeman",
+      "description": "One coherent catalogue for projects, photographs, records, films, and collaborations.",
+      "url": "/edition-002/index.html#house"
+    }
+  ],
+  "notes": [
+    {
+      "id": "publishing",
+      "date": "2026-11-13",
+      "subject": "THE BIGGER IDEA",
+      "title": "A builder that publishes.",
+      "body": "What if Freeman becomes known not only for the buildings we deliver, but for the attention we pay to them? The record is evidence of care, not just promotion.",
+      "aside": "A working hypothesis, not a strategy approved by the company."
+    },
+    {
+      "id": "visibility",
+      "date": "2026-11-13",
+      "subject": "BUSINESS DEVELOPMENT",
+      "title": "Make the work open doors.",
+      "body": "A beautiful record of a project should travel to the architect, the owner, the operator, and the next person thinking about building something remarkable.",
+      "aside": "The commercial purpose behind the creative work."
+    },
+    {
+      "id": "practice",
+      "date": "2026-11-13",
+      "subject": "PROCESS",
+      "title": "An hour every week.",
+      "body": "I want this place to change as the real work changes. Not a monthly spectacle. A steady record of what we did, saw, made, and learned.",
+      "aside": "The rhythm I want for this studio."
+    }
+  ],
+  "questions": [
+    {
+      "id": "record",
+      "num": "01",
+      "title": "Which building becomes the first complete Record?",
+      "desc": "Muchacho is the working study; original drawings and permission are not yet in hand.",
+      "options": [
+        [
+          "muchacho",
+          "MUCHACHO"
+        ],
+        [
+          "another",
+          "ANOTHER PROJECT"
+        ],
+        [
+          "hold",
+          "HOLD"
+        ]
+      ]
+    },
+    {
+      "id": "film",
+      "num": "02",
+      "title": "Should I explore one pilot with Tristan?",
+      "desc": "A conversation is the first step. No quote, agreement, or shoot exists.",
+      "options": [
+        [
+          "pilot",
+          "EXPLORE PILOT"
+        ],
+        [
+          "talk",
+          "TALK ONLY"
+        ],
+        [
+          "hold",
+          "HOLD"
+        ]
+      ]
+    },
+    {
+      "id": "house",
+      "num": "03",
+      "title": "How should Freeman sign the publishing work?",
+      "desc": "The globe is a study. The eagle is an existing production mark.",
+      "options": [
+        [
+          "globe",
+          "EXPLORE GLOBE"
+        ],
+        [
+          "eagle",
+          "EAGLE"
+        ],
+        [
+          "hold",
+          "HOLD"
+        ]
+      ]
+    }
+  ],
+  "archive": [
+    {
+      "number": "001",
+      "title": "Freeman Three Ideas / Edition 001",
+      "category": "study",
+      "status": "ORIGINAL TREATMENT",
+      "date": "2026-11-13",
+      "url": "/edition-001/index.html"
+    },
+    {
+      "number": "002",
+      "title": "Freeman Creative Vision / Edition 002",
+      "category": "study",
+      "status": "WORKING REVIEW",
+      "date": "2026-11-13",
+      "url": "/edition-002/index.html"
+    },
+    {
+      "number": "003",
+      "title": "Building Record / Muchacho Decatur",
+      "category": "study",
+      "status": "UNAPPROVED STUDY",
+      "date": "2026-11-13",
+      "url": "/edition-002/index.html#record"
+    },
+    {
+      "number": "004",
+      "title": "Built for Generations / Film Studies",
+      "category": "study",
+      "status": "CONCEPT ONLY",
+      "date": "2026-11-13",
+      "url": "/edition-002/index.html#series"
+    },
+    {
+      "number": "005",
+      "title": "Freeman / Photographs",
+      "category": "photography",
+      "status": "ON THE WEBSITE",
+      "date": "2026-11-07",
+      "url": "https://freemangc.com/photographs"
+    },
+    {
+      "number": "006",
+      "title": "The Globe / Identity Study",
+      "category": "study",
+      "status": "EXPLORE",
+      "date": "2026-11-13",
+      "url": "/edition-002/index.html#globe"
+    },
+    {
+      "number": "007",
+      "title": "Freeman × Represent",
+      "category": "study",
+      "status": "PARKED / UNCONTACTED",
+      "date": "2026-11-13",
+      "url": "/edition-002/index.html#represent"
+    },
+    {
+      "number": "008",
+      "title": "A builder that publishes",
+      "category": "note",
+      "status": "WORKING NOTE",
+      "date": "2026-11-13",
+      "url": "#thinking"
+    }
+  ]
+}
