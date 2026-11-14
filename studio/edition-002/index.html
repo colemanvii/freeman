@@ -1,0 +1,2075 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Freeman Edition 002</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,300..700;1,300..700&display=swap">
+<style>
+/* ── Edition 001 styles, lifted unchanged by tools/build.py ── */
+/* Layout: a small architectural publication. One centred plate per idea, a label column and a reading column, hairlines for structure. Chapter 02 is the dark room. */
+:root{
+  --paper:#fff9f1; --ink:#332e20; --muted:#6f6b60; --hair:#d9d0c2; --plate:#f7efe2; --red:#f93822;
+  --film-ink:#1d1910; --film-light:#eee2ca;
+  --gothic:"Libre Franklin","Franklin Gothic Book","Franklin Gothic",Arial,sans-serif;
+  --mono:Menlo,Monaco,"DejaVu Sans Mono",Consolas,monospace;
+  --gut:max(20px,env(safe-area-inset-left,0px));
+  --gutr:max(20px,env(safe-area-inset-right,0px));
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --paper:#2b2619; --ink:#fff9f1; --muted:#c1b6a3; --hair:#5b5345; --plate:#332e20; --red:#f93822; color-scheme:dark } }
+:root[data-theme="dark"]{ --paper:#2b2619; --ink:#fff9f1; --muted:#c1b6a3; --hair:#5b5345; --plate:#332e20; --red:#f93822; color-scheme:dark }
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--paper);color:var(--ink);font-family:var(--gothic);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+h1,h2,h3,h4,p,figure,ol,ul,dl,dd{margin:0;padding:0;font-weight:400}
+ol,ul{list-style:none}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;border-radius:0;cursor:pointer}
+button:focus-visible,a:focus-visible,textarea:focus-visible{outline:1px solid var(--red);outline-offset:4px}
+img{display:block}
+canvas{display:block}
+
+.wrap{max-width:1240px;margin:0 auto;padding-left:var(--gut);padding-right:var(--gutr)}
+.cap{font-size:10.5px;line-height:1.5;font-weight:500;letter-spacing:.09em;text-transform:uppercase}
+.q{color:var(--muted)}
+.red{color:var(--red)}
+.mono{font-family:var(--mono);letter-spacing:0}
+
+/* running head */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--paper);border-bottom:1px solid var(--hair)}
+.bar .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;height:46px}
+.bar nav{display:flex;align-items:baseline;white-space:nowrap}
+.bar nav a{padding:6px 0}
+.bar nav a:hover{background:var(--red);color:#fff9f1}
+.bar nav a[aria-current="true"]{color:var(--red)}
+.bar .sep{padding:0 10px;color:var(--muted);font-weight:300}
+.bar .t{display:inline}
+@media(max-width:820px){.bar .t{display:none}.bar .sep{padding:0 9px}.bar nav a{padding:10px 4px}}
+
+/* opening */
+.open{padding-block:clamp(56px,10vw,128px) clamp(56px,9vw,112px)}
+.open-mark{margin:0 0 clamp(40px,7vw,84px)}.open-mark canvas{margin:0 auto}
+.open h1{font-size:clamp(34px,6.4vw,84px);line-height:1.02;letter-spacing:-.024em;text-align:center;text-wrap:balance}
+.open .date{text-align:center;margin-top:22px}
+.open-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,7vw,110px);margin-top:clamp(56px,9vw,120px);padding-top:28px;border-top:1px solid var(--hair)}
+.note p{max-width:33em;margin-bottom:1em;font-size:17px;line-height:1.62}
+.note p:first-child,.note p:last-child{margin-bottom:1.3em}
+.toc li{border-bottom:1px solid var(--hair)}
+.toc li:first-child{border-top:1px solid var(--hair)}
+.toc a{display:grid;grid-template-columns:34px minmax(0,1fr);gap:8px;padding:15px 0;align-items:baseline}
+.toc a:hover b{background:var(--red);color:#fff9f1}
+.toc b{font-weight:500;font-size:17px;letter-spacing:-.005em;justify-self:start}
+.toc span.d{grid-column:2;color:var(--muted);font-size:14px}
+@media(max-width:760px){.open-grid{grid-template-columns:1fr}}
+
+/* chapters */
+.ch{padding-block:clamp(72px,11vw,150px);border-top:1px solid var(--hair)}
+.ch-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:24px;align-items:start;margin-bottom:clamp(40px,7vw,88px)}
+.ch-head h2{font-size:clamp(44px,8.6vw,118px);line-height:.96;letter-spacing:-.03em}
+.ch-head>.cap{padding-top:14px}.ch-head .sub{margin-top:18px;font-size:clamp(17px,1.9vw,22px);color:var(--muted);letter-spacing:-.005em}
+@media(max-width:760px){.ch-head{grid-template-columns:1fr;gap:10px}}
+
+.rows{border-top:1px solid var(--hair)}
+.row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:24px;padding:22px 0 26px;border-bottom:1px solid var(--hair)}
+.row>.cap{padding-top:5px;font-size:10.5px;line-height:1.5}
+.row p{max-width:36em;font-size:17px;line-height:1.6}
+.row p+p{margin-top:.8em}
+.row .small{font-size:14px;color:var(--muted);line-height:1.55}
+@media(max-width:760px){.row{grid-template-columns:1fr;gap:8px}}
+.block{margin-top:clamp(56px,9vw,120px)}
+.block-h{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;padding-bottom:12px;border-bottom:1px solid var(--hair);margin-bottom:24px}
+.block-h h3{font-size:clamp(24px,3.2vw,38px);letter-spacing:-.02em;line-height:1.1}
+
+/* segmented controls: squares, hairlines */
+.seg{display:inline-flex;flex-wrap:wrap}
+.seg button{padding:10px 14px;border:1px solid var(--hair);margin-right:-1px;min-height:40px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink);position:relative;z-index:1}
+.seg button:hover:not([aria-pressed="true"]){border-color:var(--ink);position:relative;z-index:1}
+.ctl{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center}
+.ctl .lab{margin-right:10px}
+
+/* 01 globe plate */
+.plate{position:relative;background:var(--plate);border:1px solid var(--hair);padding:clamp(64px,8vw,104px) 16px;display:grid;place-items:center;overflow:hidden}
+.plate .corner{position:absolute;max-width:46%}
+.plate .tl{left:14px;top:12px}.plate .tr{right:14px;top:12px;text-align:right}
+.plate .bl{left:14px;bottom:12px}.plate .br{right:14px;bottom:12px;text-align:right}
+.plate-ctl{margin-top:16px;justify-content:space-between}
+.mk{image-rendering:pixelated;image-rendering:crisp-edges}
+.mk{--mark:var(--red);--globe:var(--red)}
+.open-mark .mk{--mark:var(--ink)}
+
+/* homepage comparison */
+.hp{position:relative;container-type:inline-size;aspect-ratio:16/10;border:1px solid var(--hair);overflow:hidden;
+  --hp-paper:#fff9f1;--hp-ink:#332e20;--hp-mark:#332e20;--hp-muted:#747772;--hp-sep:#9a9c97;background:var(--hp-paper);color:var(--hp-ink);transition:background .25s}
+.hp[data-way="umber"]{--hp-paper:#332e20;--hp-ink:#fff9f1;--hp-mark:#fff9f1;--hp-muted:#c5b9a7;--hp-sep:#c5b9a7}
+.hp[data-way="sand"]{--hp-paper:#ddcfb3;--hp-ink:#332e20;--hp-mark:#f93822;--hp-muted:#6d6150;--hp-sep:#6d6150}
+.hp .mk{--mark:var(--hp-mark);--globe:#f93822}
+.hp-id{position:absolute;left:50%;top:47%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center}
+.hp-nav{display:flex;white-space:nowrap;font-weight:500;letter-spacing:.1em;font-size:clamp(8px,.86cqw,12px);transition:margin-top .5s cubic-bezier(.2,.7,.2,1)}
+.hp-nav .s{padding:0 1em;color:var(--hp-sep);font-weight:300}
+.hp-access{position:absolute;right:2.05cqw;top:2cqw;font-size:clamp(7.5px,.72cqw,10px);font-weight:500;letter-spacing:.075em;color:#f93822}
+.hp-legal,.hp-bfg{position:absolute;bottom:1.8cqw;font-size:clamp(6.5px,.64cqw,9px);line-height:1.5;font-weight:500;letter-spacing:.075em;color:var(--hp-muted)}
+.hp-legal{left:2cqw}.hp-legal b{font-weight:600}.hp-bfg{right:2cqw}
+.hp-ways{position:absolute;left:50%;bottom:1.7cqw;transform:translateX(-50%);display:flex;gap:9px}
+.hp-ways button{width:16px;height:16px;border:1px solid color-mix(in srgb,var(--hp-ink) 28%,transparent);position:relative}
+.hp-ways button::after{content:"";position:absolute;inset:-9px -4px}
+.hp-ways button:focus-visible{outline:1px solid #f93822;outline-offset:3px}
+@media(max-width:640px){
+  .hp{aspect-ratio:390/700}
+  .hp-id{top:46%}
+  .hp-nav{flex-direction:column;align-items:center;font-size:16px;line-height:2.25;letter-spacing:.1em}
+  .hp-nav .s,.hp-legal,.hp-bfg{display:none}
+  .hp-access{right:18px;top:18px;font-size:11px}
+  .hp-ways{bottom:22px}
+  .hp-ways button{width:24px;height:24px}
+}
+.cmp-ctl{justify-content:space-between;margin-bottom:14px}
+.fig-cap{margin-top:12px;font-size:13px;color:var(--muted);max-width:60em;line-height:1.5}
+
+/* feedback */
+.ask{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,6vw,90px);margin-top:clamp(56px,9vw,120px);padding-top:22px;border-top:1px solid var(--ink)}
+.ask h3{margin-bottom:16px}
+.ask ol li{padding:11px 0;border-bottom:1px solid var(--hair);font-size:17px;line-height:1.4;max-width:30em}
+.ask ol li:first-child{border-top:1px solid var(--hair)}
+.fb label,.take label{display:block;margin:20px 0 8px}
+textarea{display:block;width:100%;min-height:96px;resize:vertical;font:400 16px/1.5 var(--gothic);color:var(--ink);background:transparent;border:1px solid var(--hair);border-radius:0;padding:12px}
+textarea::placeholder{color:var(--muted);opacity:.75}
+textarea:focus{border-color:var(--ink);outline:none}
+.choice button{min-width:96px;letter-spacing:.09em;font-size:11px;font-weight:500}
+.choice button[aria-pressed="true"][data-v="explore"]{background:var(--red);border-color:var(--red);color:#fff9f1}
+@media(max-width:760px){.ask{grid-template-columns:1fr}.choice{display:flex}.choice button{flex:1;min-width:0;padding-inline:6px}}
+
+/* 02 film: the dark room */
+.film{--paper:#1f1b12;--ink:#fff9f1;--muted:#b9ae9b;--hair:#4d463a;--plate:#171409;background:var(--paper);color:var(--ink);border-top:0}
+.bleed{margin:0 0 clamp(40px,7vw,88px)}
+.bleed .ph{aspect-ratio:2.39/1;overflow:hidden;background:#000}
+.bleed img,.shot img{width:100%;height:100%;object-fit:cover;filter:saturate(.86) contrast(.97)}
+.bleed figcaption{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:10px;color:var(--muted)}
+@media(max-width:640px){.bleed .ph{aspect-ratio:16/10}}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 32px;max-width:44em}
+.two h4{margin-bottom:8px}
+.two li{padding:6px 0;border-top:1px solid var(--hair);font-size:15px;line-height:1.4}
+@media(max-width:480px){.two{grid-template-columns:1fr;gap:22px}}
+
+.board{display:grid;gap:clamp(40px,6vw,72px)}
+.frame{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(0,1fr);gap:18px clamp(20px,3.5vw,48px);align-items:start}
+.shot{position:relative;aspect-ratio:400/168;background:var(--film-ink);overflow:hidden}
+.shot canvas{width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges}
+.shot.trip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;background:var(--paper)}
+.shot.trip div{overflow:hidden;min-width:0}
+.shot .tc{position:absolute;left:5%;bottom:9%;font:11px/1 var(--mono);color:var(--film-light);letter-spacing:.04em}
+.slate{display:flex;justify-content:space-between;gap:12px;margin-top:8px;color:var(--muted);font:10px/1.4 var(--mono);text-transform:uppercase}
+.frame h4{font-size:clamp(20px,2.3vw,27px);letter-spacing:-.015em;line-height:1.15;margin:4px 0 10px}
+.frame .desc{font-size:15.5px;line-height:1.55;max-width:30em}
+.frame dl{margin-top:14px;border-top:1px solid var(--hair)}
+.frame dl div{display:grid;grid-template-columns:64px minmax(0,1fr);gap:10px;padding:7px 0;border-bottom:1px solid var(--hair);font-size:13.5px;line-height:1.45}
+.frame dt{padding-top:2px;color:var(--muted)}
+.frame blockquote{margin:14px 0 0;padding-left:14px;border-left:1px solid var(--red);font-size:15.5px;line-height:1.5;font-style:italic;max-width:28em}
+@media(max-width:820px){.frame{grid-template-columns:1fr}}
+
+.eps li{display:grid;grid-template-columns:52px minmax(0,1.1fr) minmax(0,1.6fr);gap:6px 20px;padding:13px 0;border-bottom:1px solid var(--hair);align-items:baseline}
+.eps .n{font:12px/1.4 var(--mono);color:var(--muted)}
+.eps b{font-weight:500;font-size:18px;letter-spacing:-.01em}
+.eps span.w{color:var(--muted);font-size:14.5px;line-height:1.45}
+.eps li:first-child .n{color:var(--red)}
+@media(max-width:640px){.eps li{grid-template-columns:44px minmax(0,1fr)}.eps span.w{grid-column:2}}
+.year{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:3px;margin:26px 0 8px}
+.year i{display:block;height:26px;border:1px solid var(--hair);font:9px/24px var(--mono);font-style:normal;text-align:center;color:var(--muted)}
+.year i.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.cycle{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--hair)}
+.cycle li{padding:14px 16px 18px 0;border-bottom:1px solid var(--hair)}
+.cycle li+li{padding-left:16px;border-left:1px solid var(--hair)}
+.cycle b{display:block;font-weight:500;font-size:17px;margin:6px 0 4px}
+.cycle p{font-size:14px;line-height:1.5;color:var(--muted)}
+@media(max-width:760px){.cycle{grid-template-columns:1fr 1fr}.cycle li:nth-child(3){padding-left:0;border-left:0}}
+@media(max-width:420px){.cycle{grid-template-columns:1fr}.cycle li+li{padding-left:0;border-left:0}}
+.scope{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px clamp(28px,6vw,90px)}
+.scope li{padding:9px 0;border-bottom:1px solid var(--hair);font-size:15.5px;line-height:1.45}
+.scope li:first-child{border-top:1px solid var(--hair)}
+.scope h4{margin-bottom:12px}
+@media(max-width:760px){.scope{grid-template-columns:1fr}}
+.flag{margin-top:22px;padding:12px 14px;border:1px solid var(--red);font-size:14.5px;line-height:1.5;max-width:46em}
+
+/* 03 garment */
+.gar{--cloth:#d6c9ae;--cloth2:#c8ba9c;--cloth-in:#b7a886;--seam:#9d8e6f;--edge:#7d7058;--thread:#f93822;--btn:#6b5f4b}
+.gar[data-cw="umber"]{--cloth:#40362b;--cloth2:#372e24;--cloth-in:#2a231b;--seam:#74654f;--edge:#1c1711;--thread:#f93822;--btn:#8a7a62}
+.plates{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+.gplate{position:relative;background:var(--plate);border:1px solid var(--hair)}
+.gplate svg{display:block;width:100%;height:auto}
+.gplate .corner{position:absolute;left:14px;top:12px}
+.gplate .corner.r{left:auto;right:14px;text-align:right}
+.gplate .corner.b{top:auto;bottom:12px}
+.gplate .mk{position:absolute;image-rendering:auto;--mark:var(--thread);--globe:var(--thread)}
+.cl{fill:var(--cloth);stroke:var(--edge);stroke-width:1.4;stroke-linejoin:round}
+.cl2{fill:var(--cloth2);stroke:var(--edge);stroke-width:1.4;stroke-linejoin:round}
+.cin{fill:var(--cloth-in);stroke:var(--edge);stroke-width:1.2;stroke-linejoin:round}
+.tw{fill:url(#twill);stroke:none;color:var(--edge)}
+.st{fill:none;stroke:var(--seam);stroke-width:1.1;stroke-dasharray:3.2 2.2}
+.ln{fill:none;stroke:var(--edge);stroke-width:1.1}
+.bt{fill:var(--btn);stroke:var(--edge);stroke-width:1}
+.details{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:20px}
+.det{background:var(--cloth);border:1px solid var(--hair);aspect-ratio:4/3;position:relative;overflow:hidden}
+.det canvas,.det svg{position:absolute;inset:0;width:100%;height:100%}
+.det-cap{margin-top:10px;font-size:13.5px;line-height:1.45;color:var(--muted)}
+.det-cap b{display:block;color:var(--ink);font-weight:500;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;margin-bottom:3px}
+@media(max-width:760px){.plates{grid-template-columns:1fr}.details{grid-template-columns:1fr}}
+.spec{border-top:1px solid var(--hair)}
+.spec div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:24px;padding:11px 0;border-bottom:1px solid var(--hair);font-size:15.5px;line-height:1.45}
+.spec dt{color:var(--muted)}
+@media(max-width:760px){.spec div{grid-template-columns:96px minmax(0,1fr);gap:12px}}
+.path{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--hair)}
+.path li{padding:14px 16px 18px 0;border-bottom:1px solid var(--hair)}
+.path li+li{padding-left:16px;border-left:1px solid var(--hair)}
+.path b{display:block;font-weight:500;font-size:17px;line-height:1.25;margin:6px 0 6px}
+.path p{font-size:14px;line-height:1.5;color:var(--muted)}
+@media(max-width:820px){.path{grid-template-columns:1fr}.path li+li{padding-left:0;border-left:0}}
+
+/* 04 */
+.take{border-top:1px solid var(--ink)}
+.take>li{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:16px 24px;padding:26px 0 30px;border-bottom:1px solid var(--hair)}
+.take h3{font-size:clamp(24px,3vw,34px);letter-spacing:-.02em;line-height:1.1;margin-top:4px}
+.take .next{margin-top:14px;font-size:15px;line-height:1.5;color:var(--muted);max-width:40em}
+.take .next b{color:var(--ink);font-weight:500}
+@media(max-width:760px){.take>li{grid-template-columns:1fr}}
+.fourth{margin-top:clamp(48px,7vw,88px)}
+.fourth label{display:block;font-size:clamp(28px,4.6vw,56px);letter-spacing:-.025em;line-height:1.05;margin-bottom:20px}
+.fourth textarea{min-height:140px;font-size:18px}
+.brief{margin-top:clamp(48px,7vw,88px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:16px 24px;padding-top:22px;border-top:1px solid var(--ink)}
+.brief textarea{min-height:300px;font:12.5px/1.6 var(--mono);background:var(--plate)}
+.brief .act{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;margin-top:14px}
+.btn{padding:12px 18px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);min-height:44px}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--hair)}
+.btn:hover{background:var(--red);border-color:var(--red);color:#fff9f1}
+#sync{margin-top:14px;font-size:14px;line-height:1.5;color:var(--muted);max-width:44em}
+#sync::before{content:"";display:inline-block;width:7px;height:7px;margin-right:9px;background:var(--muted);vertical-align:1px}
+#sync[data-s="shared"]::before{background:var(--red)}
+@media(max-width:760px){.brief{grid-template-columns:1fr}}
+
+.colophon{padding-block:48px 72px;border-top:1px solid var(--hair)}
+.colophon .g{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:16px 24px}
+.colophon li{padding:8px 0;border-bottom:1px solid var(--hair);font-size:13.5px;line-height:1.5;color:var(--muted);max-width:58em}
+.colophon li b{color:var(--ink);font-weight:500}
+@media(max-width:760px){.colophon .g{grid-template-columns:1fr}}
+
+/* ── Edition 002 additions. Same tokens, same hairlines, same label column. New components only. ── */
+[hidden]{display:none!important}
+.bar .sep{padding:0 8px}
+@media(max-width:820px){.bar .sep{padding:0 5px}.bar nav a{padding:10px 3px}}
+@media(max-width:380px){.bar .sep{padding:0 2px}.bar nav a{padding:10px 2px}.bar .wrap{gap:8px}}
+.open h1 .l{display:block}
+.open-grid .toc-g+.toc-g{margin-top:26px}
+.toc-g>.cap{margin-bottom:10px;display:flex;justify-content:space-between;gap:12px}
+.toc .st{font-style:normal;font-size:10.5px;font-weight:500;letter-spacing:.09em;color:var(--ink);white-space:nowrap}
+.toc .st.n{color:var(--red)}
+
+/* status line above a chapter title */
+.tag{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;color:var(--muted)}
+.tag i{width:8px;height:8px;border:1px solid var(--muted);flex:none}
+.tag b{font-weight:600;color:var(--ink)}
+.tag.new{color:var(--red)}.tag.new i{background:var(--red);border-color:var(--red)}
+
+/* part dividers */
+.part{border-top:1px solid var(--ink);padding-block:clamp(40px,6vw,76px)}
+.part .g{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:16px 24px;align-items:start}
+.part h2{font-size:clamp(26px,3.6vw,46px);line-height:1.08;letter-spacing:-.022em;max-width:20em;text-wrap:balance}
+.part .lede{margin-top:18px;font-size:17px;line-height:1.6;max-width:36em;color:var(--muted)}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:clamp(28px,4vw,48px);border-top:1px solid var(--hair)}
+.three li{padding:16px 18px 20px 0;border-bottom:1px solid var(--hair);min-width:0}
+.three li+li{padding-left:18px;border-left:1px solid var(--hair)}
+.three b{display:block;font-weight:500;font-size:19px;letter-spacing:-.01em;margin:8px 0 6px}
+.three p{font-size:14.5px;line-height:1.5;color:var(--muted)}
+.three .arrow{color:var(--red)}
+@media(max-width:760px){.part .g{grid-template-columns:1fr}.three{grid-template-columns:1fr}.three li+li{padding-left:0;border-left:0}}
+
+/* what changed since 001 */
+.changed{margin-top:clamp(40px,6vw,72px);border-top:1px solid var(--ink)}
+.changed .row{border-bottom:1px solid var(--hair)}
+.changed .row>.cap{color:var(--red)}
+details.kept{margin-top:clamp(32px,5vw,56px);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+details.kept>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 0}
+details.kept>summary::-webkit-details-marker{display:none}
+details.kept>summary:focus-visible{outline:1px solid var(--red);outline-offset:4px}
+details.kept>summary b{font-weight:400;font-size:clamp(19px,2.2vw,25px);letter-spacing:-.015em}
+details.kept>summary .cap::after{content:"OPEN";margin-left:12px;color:var(--ink)}
+details.kept[open]>summary .cap::after{content:"CLOSE"}
+details.kept>.in{padding-bottom:clamp(32px,5vw,56px)}
+details.kept>.in>.block:first-child{margin-top:clamp(20px,3vw,36px)}
+
+/* thesis line */
+.thesis{font-weight:300;font-size:clamp(28px,4.4vw,60px);line-height:1.06;letter-spacing:-.026em;max-width:17em;text-wrap:balance;margin-bottom:clamp(40px,7vw,88px)}
+.thesis cite{display:block;margin-top:18px;font-style:normal}
+
+/* commercial rationale */
+.rat li>p{font-size:15px;line-height:1.5;color:var(--ink);margin-top:8px}
+.rat li{padding-top:16px}
+
+/* 04 the record sheet */
+.rec{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(20px,4vw,64px);align-items:start}
+.rec-sheet{position:relative;aspect-ratio:1920/2400;max-width:100%;background:var(--plate);border:1px solid var(--hair);overflow:hidden;--seam:50%;--s:1;touch-action:pan-y}
+.rec-layer{position:absolute;inset:0;overflow:hidden}
+.rec-layer.draw{clip-path:inset(0 0 0 var(--seam));background:var(--plate)}
+.rec-sheet.ease .rec-layer.draw{transition:clip-path .42s cubic-bezier(.2,.7,.2,1)}
+.rec-move{position:absolute;inset:0;transform-origin:0 0;transition:transform .42s cubic-bezier(.2,.7,.2,1)}
+.rec-move img{width:100%;height:100%;object-fit:cover}
+.rec-move svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.dw .a,.dw .b,.dw .c{fill:none;stroke:var(--ink);stroke-linecap:square;stroke-linejoin:miter}
+.dw .a{stroke-width:calc(var(--u,3.6)*1.7)}.dw .b{stroke-width:calc(var(--u,3.6)*1.05)}.dw .c{stroke-width:calc(var(--u,3.6)*.62)}
+.dw .p{fill:var(--plate)}
+.dw .t{font:500 44px var(--gothic);letter-spacing:2px;fill:var(--ink);stroke:none}
+.dw .t.r{fill:var(--red)}
+.rec-line{position:absolute;top:0;bottom:0;left:var(--seam);width:1px;background:var(--red);pointer-events:none}
+.rec-sheet.ease .rec-line{transition:left .42s cubic-bezier(.2,.7,.2,1)}
+.rec-key{position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;background:var(--paper);color:var(--ink);border:1px solid var(--ink);font:500 11px/24px var(--gothic);text-align:center;transform:scale(calc(1/var(--s)));transform-origin:50% 50%}
+.rec-key::after{content:"";position:absolute;inset:-9px}
+.rec-key[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff9f1}
+.rec-res{position:absolute;inset:0;background:var(--plate);display:flex;flex-direction:column;justify-content:space-between;padding:16px}
+.rec-res::before,.rec-res::after,.wait::before,.wait::after{content:"";position:absolute;left:50%;top:50%;background:var(--muted)}
+.rec-res::before,.wait::before{width:23px;height:1px;transform:translate(-50%,-50%)}
+.rec-res::after,.wait::after{width:1px;height:23px;transform:translate(-50%,-50%)}
+.rec-res p{position:relative;font-size:14.5px;line-height:1.45;max-width:24em}
+.rec-ctl{display:grid;gap:14px;margin-top:14px}
+.rec-ctl .seg button{flex:1 1 auto}
+.rng{display:flex;align-items:center;gap:14px}
+.rng label{flex:none}
+input[type=range]{-webkit-appearance:none;appearance:none;flex:1;min-width:0;height:40px;background:transparent;margin:0;border-radius:0;cursor:ew-resize}
+input[type=range]::-webkit-slider-runnable-track{height:1px;background:var(--ink)}
+input[type=range]::-moz-range-track{height:1px;background:var(--ink)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:23px;margin-top:-11px;background:var(--red);border:0;border-radius:0}
+input[type=range]::-moz-range-thumb{width:11px;height:23px;background:var(--red);border:0;border-radius:0}
+input[type=range]:focus-visible{outline:1px solid var(--red);outline-offset:4px}
+.tb{border:1px solid var(--ink)}
+.tb div{display:grid;grid-template-columns:92px minmax(0,1fr);gap:12px;padding:8px 12px;border-bottom:1px solid var(--hair);font-size:14px;line-height:1.4}
+.tb div:last-child{border-bottom:0}
+.tb dt{color:var(--muted);padding-top:2px}
+.tb dd b{font-weight:500}
+.keys{margin-top:22px;border-top:1px solid var(--hair)}
+.keys li{border-bottom:1px solid var(--hair)}
+.keys button{display:grid;grid-template-columns:30px minmax(0,1fr);gap:8px;width:100%;text-align:left;padding:11px 0;align-items:baseline;min-height:44px}
+.keys button:hover b,.keys button[aria-pressed="true"] b{background:var(--red);color:#fff9f1}
+.keys b{font-weight:500;font-size:16px;justify-self:start}
+.keys .n{font:12px/1.4 var(--mono);color:var(--muted)}
+.keynote{margin-top:16px;font-size:15.5px;line-height:1.55;max-width:30em;min-height:4.7em}
+@media(max-width:820px){.rec{grid-template-columns:1fr}}
+
+/* 04 the spread */
+.spread{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(12px,1.6vw,24px);align-items:end}
+.spread figure{min-width:0}
+.spread img{width:100%;height:auto}
+.spread figcaption,.credit{margin-top:9px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted)}
+.spread .lead{grid-column:1/8;align-self:start}
+.spread .lead p.first{font-weight:300;font-size:clamp(26px,3.5vw,48px);line-height:1.08;letter-spacing:-.024em;text-wrap:balance}
+.spread .lead p.rest{margin-top:24px;font-size:17px;line-height:1.62;max-width:34em}
+.spread .f-a{grid-column:9/13}
+.spread .f-b{grid-column:1/9}
+.spread .f-c{grid-column:10/13}
+.spread .f-d{grid-column:1/5}
+.spread .f-e{grid-column:6/13}
+@media(max-width:760px){.spread{grid-template-columns:repeat(6,minmax(0,1fr))}.spread .lead{grid-column:1/-1}.spread .f-a{grid-column:2/7}.spread .f-b{grid-column:1/-1}.spread .f-c{grid-column:1/4}.spread .f-d{grid-column:3/7}.spread .f-e{grid-column:1/-1}}
+
+/* 04 the register */
+.scroll{overflow-x:auto;border-top:1px solid var(--ink)}
+table.reg{width:100%;min-width:760px;border-collapse:collapse;font-size:14.5px;line-height:1.4;font-variant-numeric:tabular-nums}
+.reg th{font-size:10.5px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);text-align:left;padding:10px 14px 10px 0;border-bottom:1px solid var(--hair);white-space:nowrap}
+.reg td{padding:10px 14px 11px 0;border-bottom:1px solid var(--hair);vertical-align:baseline;white-space:nowrap}
+.reg td.w{white-space:normal}
+.reg td.no{font:12px/1.4 var(--mono);color:var(--muted)}
+.reg td.nm{font-weight:500;font-size:16px;letter-spacing:-.005em;white-space:nowrap}
+.reg td.w{color:var(--muted);font-size:13.5px}
+.reg .none{color:var(--muted)}
+.reg .sq{display:inline-block;width:8px;height:8px;border:1px solid var(--ink);margin-right:8px;vertical-align:0}
+.reg .sq.on{background:var(--ink)}
+.reg tr.hl td.nm{color:var(--red)}
+.sum{margin-top:14px;font-size:15px;line-height:1.55;max-width:46em}
+
+/* crosshair frame for anything not yet photographed (from Perspective 002) */
+.wait{position:relative;background:var(--plate);border:1px solid var(--hair);display:flex;flex-direction:column;justify-content:space-between;padding:11px;min-width:0}
+.wait .cap,.wait .what{position:relative}
+.wait .what{font-size:13px;line-height:1.4;max-width:20em}
+.strip{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.strip .wait{aspect-ratio:4/5}
+@media(max-width:820px){.strip{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:480px){.strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* 05 the animatic */
+.player{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(0,1fr);gap:18px clamp(20px,3.5vw,48px);align-items:start}
+.screen{position:relative;aspect-ratio:4/3;max-width:100%;background:#000;overflow:hidden}
+.screen img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.9) contrast(.98)}
+.screen .lbl{position:absolute;left:5%;bottom:7%;font-size:clamp(9px,1.05vw,12px);line-height:1.55;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:#fff9f1;text-shadow:0 0 8px rgba(0,0,0,.45)}
+.screen .end{position:absolute;inset:0;background:#fff9f1;display:grid;place-items:center}
+.screen .end canvas.px{width:46%;aspect-ratio:192/60;image-rendering:pixelated;image-rendering:crisp-edges}
+.screen .end .mk{--mark:#332e20;--globe:#f93822}
+.screen .end>div{width:100%;display:grid;place-items:center}
+.pl-ctl{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;margin-top:12px}
+.pl-ctl .go{padding:10px 14px;border:1px solid var(--hair);min-height:40px;min-width:84px}
+.pl-ctl .go:hover{border-color:var(--ink)}
+.pl-ctl .tc{font:11px/1 var(--mono);color:var(--muted);white-space:nowrap}
+.pl-end{margin-top:14px;display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+.shots li{border-bottom:1px solid var(--hair)}
+.shots li:first-child{border-top:1px solid var(--hair)}
+.shots button{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:8px;width:100%;text-align:left;padding:9px 0;align-items:baseline;min-height:40px}
+.shots .n,.shots .d{font:11px/1.4 var(--mono);color:var(--muted)}
+.shots b{font-weight:400;font-size:15px;line-height:1.35}
+.shots small{display:block;font-size:12.5px;line-height:1.4;color:var(--muted)}
+.shots button[aria-current="true"] .n{color:var(--red)}
+.shots button[aria-current="true"] b{font-weight:500}
+@media(max-width:820px){.player{grid-template-columns:1fr}}
+.rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--hair)}
+.rules li{padding:14px 16px 18px 0;border-bottom:1px solid var(--hair);font-size:15px;line-height:1.5;min-width:0}
+.rules li:not(:nth-child(3n+1)){padding-left:16px;border-left:1px solid var(--hair)}
+.rules b{display:block;font-weight:500;margin-bottom:4px}
+@media(max-width:760px){.rules{grid-template-columns:1fr}.rules li:not(:nth-child(3n+1)){padding-left:0;border-left:0}}
+
+/* 06 catalogue */
+.cat{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:clamp(20px,4vw,64px);align-items:start}
+.cat-view{position:sticky;top:calc(64px + env(safe-area-inset-top,0px))}
+.cat-ph{position:relative;aspect-ratio:4/5;max-width:100%;background:var(--plate);border:1px solid var(--hair);overflow:hidden;display:grid;place-items:center}
+.cat-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cat-ph canvas{width:56%;aspect-ratio:192/60;image-rendering:pixelated;image-rendering:crisp-edges}
+.cat-list li{border-bottom:1px solid var(--hair)}
+.cat-list li:first-child{border-top:1px solid var(--ink)}
+.cat-list button{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:6px 14px;width:100%;text-align:left;padding:13px 0 14px;align-items:baseline}
+.cat-list .code{font:12px/1.4 var(--mono);color:var(--muted)}
+.cat-list b{font-weight:500;font-size:18px;letter-spacing:-.01em}
+.cat-list .w{grid-column:2/4;color:var(--muted);font-size:14.5px;line-height:1.45;max-width:38em}
+.cat-list button:hover b,.cat-list button[aria-pressed="true"] b{background:var(--red);color:#fff9f1}
+.chip{font-size:10px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap;padding:3px 7px;border:1px solid var(--hair);color:var(--muted)}
+.chip.site{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.chip.study{border-color:var(--ink);color:var(--ink)}
+.chip.prop{border-color:var(--red);color:var(--red)}
+.cat-filter{margin-bottom:18px}
+@media(max-width:820px){.cat{grid-template-columns:1fr}.cat-view{position:static}.cat-ph{aspect-ratio:4/3}}
+
+/* 06 print edition */
+.book{background:var(--plate);border:1px solid var(--hair);padding:clamp(16px,4vw,56px)}
+.book-sp{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);aspect-ratio:340/240;max-width:980px;margin:0 auto;background:#fff9f1;color:#332e20;border:1px solid #d9d0c2;container-type:inline-size;--plate:#fff9f1;--ink:#332e20;--muted:#6f6b60;--hair:#d9d0c2}
+.pg{position:relative;overflow:hidden;min-width:0}
+.pg+.pg{border-left:1px solid #d9d0c2}
+.pg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pg .in{position:absolute;inset:7cqw 5cqw 5cqw}
+.pg .fo{position:absolute;left:5cqw;right:5cqw;bottom:2.4cqw;display:flex;justify-content:space-between;font-size:max(6px,.86cqw);font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:#6f6b60}
+.pg .k{font-size:max(6px,.86cqw);font-weight:500;letter-spacing:.09em;text-transform:uppercase;line-height:1.5}
+.pg .ti{font-size:5.6cqw;line-height:.98;letter-spacing:-.03em;font-weight:400}
+.pg .tx{font-size:max(7px,1.22cqw);line-height:1.55}
+.pg .tx.first{font-size:2.5cqw;line-height:1.1;letter-spacing:-.022em;font-weight:300;margin-bottom:2cqw}
+.pg .small-ph{position:absolute;left:22%;right:22%;top:26%;aspect-ratio:5/4}
+.pg .small-ph img{position:absolute}
+.pg svg.dw{position:absolute;inset:5cqw 8cqw 7cqw;width:auto;height:auto;--u:5}
+.pg canvas.px{image-rendering:pixelated;image-rendering:crisp-edges;display:block}
+.pg dl{border-top:1px solid #d9d0c2}
+.pg dl div{display:grid;grid-template-columns:9cqw minmax(0,1fr);gap:1cqw;padding:.7cqw 0;border-bottom:1px solid #d9d0c2;font-size:max(6.5px,1.08cqw);line-height:1.4}
+.pg dt{color:#6f6b60}
+.book-ctl{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-top:14px}
+@media(max-width:600px){.book{padding:12px}.book-sp{grid-template-columns:minmax(0,1fr);aspect-ratio:auto}.pg{aspect-ratio:170/240}.pg+.pg{border-left:0;border-top:1px solid #d9d0c2}.pg .fo{font-size:max(7px,1.5cqw)}}
+
+/* 07 decisions and the ninety days */
+.dec{border-top:1px solid var(--ink)}
+.dec>li{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:16px 24px;padding:28px 0 32px;border-bottom:1px solid var(--hair)}
+.dec h3{font-size:clamp(24px,3vw,34px);letter-spacing:-.02em;line-height:1.1;margin-top:4px}
+.dec .qn{font-size:clamp(19px,2.1vw,24px);line-height:1.3;letter-spacing:-.01em;max-width:30em;margin-bottom:18px}
+.dec .opts{display:flex;flex-wrap:wrap}
+.dec .opts button{padding:12px 16px;border:1px solid var(--hair);margin:0 -1px -1px 0;min-height:44px;font-size:11px;font-weight:500;letter-spacing:.09em;text-transform:uppercase}
+.dec .opts button:hover{border-color:var(--ink);position:relative;z-index:1}
+.dec .opts button[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff9f1;position:relative;z-index:1}
+.dec label{display:block;margin:20px 0 8px}
+.dec .next{margin-top:14px;font-size:15px;line-height:1.5;color:var(--muted);max-width:42em}
+.dec .next b{color:var(--ink);font-weight:500}
+@media(max-width:760px){.dec>li{grid-template-columns:1fr}.dec .opts button{flex:1 1 auto}}
+.days{display:grid;grid-template-columns:repeat(90,minmax(0,1fr));row-gap:4px;margin-top:6px}
+.days .tk{grid-row:1;font:10px/1.4 var(--mono);color:var(--muted);white-space:nowrap;padding-bottom:6px;border-left:1px solid var(--ink);padding-left:5px}
+.days .tk.r{border-left:0;border-right:1px solid var(--ink);text-align:right;padding:0 5px 6px 0}
+.days .tr{grid-column:1/-1;display:grid;grid-template-columns:subgrid;align-items:stretch}
+.days .bar90{min-width:0;padding:9px 10px 10px;border:1px solid var(--hair);margin-right:-1px;font-size:13px;line-height:1.35}
+.days .bar90 .cap{display:block;color:var(--muted);margin-bottom:3px}
+.days .bar90.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.days .bar90.on .cap{color:var(--paper);opacity:.7}
+.days .hol{grid-column:36/48;grid-row:5;font:10px/1.4 var(--mono);color:var(--red);border-top:1px solid var(--red);padding-top:5px;white-space:nowrap}
+@media(max-width:760px){.days{display:block}.days .tk,.days .hol{display:none}.days .tr{display:block;margin-bottom:14px}.days .bar90{margin:0 0 -1px}}
+.phases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:clamp(28px,4vw,48px);border-top:1px solid var(--ink)}
+.phases>li{padding:18px 20px 24px 0;min-width:0}
+.phases>li+li{padding-left:20px;border-left:1px solid var(--hair)}
+.phases h4{font-size:clamp(21px,2.3vw,27px);letter-spacing:-.015em;line-height:1.15;margin:8px 0 14px}
+.phases ul li{display:grid;grid-template-columns:22px minmax(0,1fr);padding:8px 0;border-top:1px solid var(--hair);font-size:14.5px;line-height:1.45}
+.phases ul li>span:first-child{font:11px/1.9 var(--mono);color:var(--muted)}
+.phases .gate{margin-top:14px;padding:11px 12px;border:1px solid var(--red);font-size:14px;line-height:1.45}
+.phases .gate b{font-weight:500}
+@media(max-width:820px){.phases{grid-template-columns:1fr}.phases>li+li{padding-left:0;border-left:0;border-top:1px solid var(--ink)}}
+@media (prefers-reduced-motion:reduce){.rec-move,.rec-sheet.ease .rec-layer.draw,.rec-sheet.ease .rec-line{transition:none}}
+</style>
+
+<div class="bar"><div class="wrap">
+  <a class="cap" href="#top"><b style="font-weight:600">FREEMAN</b> <span class="q t">&nbsp;/&nbsp; EDITION 002</span></a>
+  <nav class="cap" aria-label="Chapters">
+    <a href="#globe" data-ch="globe">01<span class="t"> GLOBE</span></a><span class="sep">/</span>
+    <a href="#mission" data-ch="mission">02<span class="t"> MISSION</span></a><span class="sep">/</span>
+    <a href="#represent" data-ch="represent">03<span class="t"> REPRESENT</span></a><span class="sep">/</span>
+    <a href="#record" data-ch="record">04<span class="t"> RECORD</span></a><span class="sep">/</span>
+    <a href="#series" data-ch="series">05<span class="t"> SERIES</span></a><span class="sep">/</span>
+    <a href="#house" data-ch="house">06<span class="t"> HOUSE</span></a><span class="sep">/</span>
+    <a href="#take" data-ch="take">07<span class="t"> YOUR CALL</span></a>
+  </nav>
+</div></div>
+
+<header class="open wrap" id="top">
+  <div class="open-mark"><canvas class="mk" data-globe="0" data-max="3" data-fit=".7" role="img" aria-label="Freeman script signature"></canvas></div>
+  <h1><span class="l">A builder</span><span class="l">that publishes</span></h1>
+  <p class="cap q date">CREATIVE STUDIES / EDITION 002 / 14 NOVEMBER 2026</p>
+
+  <div class="open-grid">
+    <div class="note">
+      <p>Gabe &mdash;</p>
+      <p>Edition 001 put three ideas in front of you. The calls saved on that page were: explore the globe, refine the series, park the jacket. This edition is built on those calls.</p>
+      <p>All three ideas are still here, in the order you saw them, each marked with what has changed. After them are three proposals that are new. They connect: a record of every building, a film series, and one house that publishes all of it.</p>
+      <p>The ambition is simple to say. I think Freeman can be the most compelling hospitality builder in the country, and that the way there is to document the work better than anyone else does, and to publish it with the care we build with.</p>
+      <p>It ends with three decisions and a ninety-day plan.</p>
+      <p>&mdash; Cole</p>
+    </div>
+    <div>
+      <div class="toc-g">
+        <p class="cap q"><span>FROM EDITION 001</span><span>CALL SAVED 13 NOV</span></p>
+        <ol class="toc">
+          <li><a href="#globe"><span class="cap q">01</span><b>The Globe</b><span class="d">An animated Freeman identity study &nbsp;<i class="st">EXPLORE</i></span></a></li>
+          <li><a href="#mission"><span class="cap q">02</span><b>On a Mission</b><span class="d">A documentary series about building the company &nbsp;<i class="st">REFINE</i></span></a></li>
+          <li><a href="#represent"><span class="cap q">03</span><b>Freeman &times; Represent</b><span class="d">An exploratory clothing collaboration &nbsp;<i class="st">PARKED</i></span></a></li>
+        </ol>
+      </div>
+      <div class="toc-g">
+        <p class="cap red"><span>NEW IN EDITION 002</span></p>
+        <ol class="toc">
+          <li><a href="#record"><span class="cap q">04</span><b>The Building Record</b><span class="d">Drawings, photographs and the story of each building</span></a></li>
+          <li><a href="#series"><span class="cap q">05</span><b>Built for Generations</b><span class="d">The series, refined: a recurring documentary</span></a></li>
+          <li><a href="#house"><span class="cap q">06</span><b>The House</b><span class="d">Freeman as a publisher: one catalogue for all of it</span></a></li>
+          <li><a href="#take"><span class="cap q">07</span><b>Your Call</b><span class="d">Three decisions and the next ninety days</span></a></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="part"><div class="wrap g">
+  <p class="cap q">PART ONE</p>
+  <div><h2>The three ideas from Edition 001, as you left them.</h2>
+  <p class="lede">Nothing here has been redrawn. The globe, the homepage comparison, the storyboard and the jacket studies are the originals. Each chapter ends with a short note on what changes in this edition.</p></div>
+</div></section>
+
+<!-- ───────────── 01 ───────────── -->
+<section class="ch" id="globe" style="border-top:1px solid var(--hair)"><div class="wrap">
+  <div class="ch-head">
+    <p class="cap red">01</p>
+    <div><p class="tag cap"><i></i>FROM EDITION 001 &nbsp;/&nbsp; CALL SAVED: <b>EXPLORE</b></p><h2>The Globe</h2><p class="sub">An animated Freeman identity study</p></div>
+  </div>
+
+  <figure>
+    <div class="plate" id="plate">
+      <span class="corner tl cap">FREEMAN / MOTION STUDY 004</span>
+      <span class="corner tr cap q">EXPERIMENT &mdash; NOT LIVE</span>
+      <canvas class="mk" data-globe="1" data-d="100" data-max="4" data-fit=".86" role="img" aria-label="The Freeman script held still in front of a rotating red wireframe globe"></canvas>
+      <span class="corner bl cap q">ORTHOGRAPHIC / 160 PX GRID</span>
+      <span class="corner br cap q" id="rate">ONE TURN / 13 S</span>
+    </div>
+    <div class="ctl plate-ctl">
+      <button class="cap seg-one" id="pause" type="button" aria-pressed="false" style="padding:10px 14px;border:1px solid var(--hair);min-height:40px;min-width:92px">PAUSE</button>
+      <div><span class="cap q lab">ONE TURN</span><span class="seg cap" id="speed" role="group" aria-label="Rotation speed">
+        <button type="button" data-s="18" aria-pressed="false">18 S</button><button type="button" data-s="13" aria-pressed="true">13 S</button><button type="button" data-s="10" aria-pressed="false">10 S</button>
+      </span></div>
+    </div>
+  </figure>
+
+  <div class="rows block">
+    <div class="row"><p class="cap q">THE IDEA</p><div>
+      <p>Here&rsquo;s what I&rsquo;m imagining. We take the globe mark and let it live on the homepage. The signature stays exactly where it is and doesn&rsquo;t move. Behind it, the world turns.</p>
+      <p>It should still look like a flat, printed insignia from another century. It just happens to be rotating, slowly, about once every thirteen seconds.</p>
+    </div></div>
+    <div class="row"><p class="cap q">WHY IT COULD MATTER</p><div>
+      <p>Nobody else building restaurants in Georgia has a mark that does this. It&rsquo;s old-world and very precise at the same time, which is how I think about us.</p>
+      <p>And it travels. The end card of a film. A jobsite sign. The back of a jacket. The point isn&rsquo;t animation. It&rsquo;s identity.</p>
+    </div></div>
+    <div class="row"><p class="cap q">HOW IT&rsquo;S MADE</p><div>
+      <p>This isn&rsquo;t a video or a spinning picture. The meridians and parallels are projected from a real sphere and drawn, pixel by pixel, onto the same grid as the script. That&rsquo;s why the lines stay crisp and the edges foreshorten the way a globe should.</p>
+      <p class="small">A few kilobytes of code, nothing to load. It holds still for anyone whose device asks for reduced motion. The script is the production 160 &times; 61 bitmap, untouched. The globe&rsquo;s line count and weight are set for this study and still need matching against the insignia artwork.</p>
+    </div></div>
+  </div>
+
+  <div class="block">
+    <div class="ctl cmp-ctl">
+      <h3 class="cap">THE HOMEPAGE, BEFORE AND AFTER</h3>
+      <span class="seg cap" id="cmp" role="group" aria-label="Homepage version">
+        <button type="button" data-m="current" aria-pressed="false">CURRENT</button><button type="button" data-m="proposed" aria-pressed="true">PROPOSED</button>
+      </span>
+    </div>
+    <div class="hp" id="hp" data-way="chalk" data-mode="proposed">
+      <span class="hp-access">ACCESS</span>
+      <div class="hp-id">
+        <canvas class="mk" id="hpmk" data-globe="1" data-d="92" role="img" aria-label="Homepage signature"></canvas>
+        <div class="hp-nav" id="hpnav"><span>COMPANY</span><span class="s">/</span><span>PROJECTS</span><span class="s">/</span><span>CONTACT</span></div>
+      </div>
+      <div class="hp-legal"><b>FREEMAN GENERAL CONTRACTING</b><br>CARTERSVILLE, GEORGIA</div>
+      <div class="hp-ways" role="group" aria-label="Colorway">
+        <button type="button" data-way="chalk" aria-label="Light colorway" style="background:#fff9f1"></button>
+        <button type="button" data-way="umber" aria-label="Dark colorway" style="background:#332e20"></button>
+        <button type="button" data-way="sand" aria-label="Freeman colorway" style="background:#f93822"></button>
+      </div>
+      <div class="hp-bfg">BUILT FOR GENERATIONS&trade;</div>
+    </div>
+    <p class="fig-cap">A scale redrawing of the freemangc.com entrance. Same navigation, same type, same three colour squares at the bottom, and they work. The only change in Proposed is the globe and a little more room under it. Nothing here touches the live site.</p>
+  </div>
+
+  <div class="changed rows">
+    <div class="row"><p class="cap">WHAT CHANGES IN 002</p><div>
+      <p>Explore was the call, and the next step I promised was a private preview of the homepage. That has not been built yet, and the live site has not been touched. It is in the first thirty days of the plan in chapter 07.</p>
+      <p>What this edition adds is a second and third job for the globe. In chapter 05 you can switch the end card of a film between the eagle stamp and the globe. In chapter 06 it is a candidate for the mark of everything Freeman publishes. If it holds up in those two places, it has earned the homepage.</p>
+    </div></div>
+  </div>
+</div></section>
+
+<!-- ───────────── 02 ───────────── -->
+<section class="ch film" id="mission">
+  <div class="wrap">
+    <div class="ch-head">
+      <p class="cap red">02</p>
+      <div><p class="tag cap"><i></i>FROM EDITION 001 &nbsp;/&nbsp; CALL SAVED: <b>REFINE</b></p><h2>On a Mission</h2><p class="sub">A documentary series about building the company</p></div>
+    </div>
+  </div>
+  <figure class="bleed">
+    <div class="ph"><img src="img/field-ridge.jpg" alt="A wooded Georgia ridge in autumn colour under a pale evening sky"></div>
+    <figcaption class="wrap cap"><span>FREEMAN PHOTOGRAPH</span><span>REFERENCE FOR TONE. NOT FOOTAGE.</span></figcaption>
+  </figure>
+  <div class="wrap">
+    <div class="rows">
+      <div class="row"><p class="cap q">THE IDEA</p><div>
+        <p>We bring in a filmmaker, Tristan, to follow you and the company for a year. About one film a month, ten episodes, on YouTube.</p>
+        <p>Working title: <b style="font-weight:500">Freeman &mdash; On a Mission.</b> Possibly with <b style="font-weight:500">Built for Generations</b> underneath it.</p>
+        <p class="small">The inspiration is how George Heaton documented building Represent: the journey of the company treated as the interesting thing. I want the philosophy, not the look. Our version belongs to hospitality construction and to Cartersville.</p>
+      </div></div>
+      <div class="row"><p class="cap q">WHY IT COULD MATTER</p><div>
+        <p>People hire builders they feel they know. Ten honest films would let an owner, an architect or a future hire spend an hour with us before we ever meet.</p>
+        <p>It shouldn&rsquo;t be ten advertisements. It should be a record of what building this business was actually like, including the hard parts.</p>
+      </div></div>
+      <div class="row"><p class="cap q">HOW IT LOOKS</p><div>
+        <p>Observational, patient, precise. The camera watches the work instead of performing for it.</p>
+        <div class="two" style="margin-top:20px">
+          <div><h4 class="cap">USE</h4><ul>
+            <li>Strong architectural compositions</li><li>Natural and practical light</li><li>Unforced portraits</li><li>Environmental sound</li><li>Hands, tools, drawings, materials</li><li>Real conversations</li><li>Early mornings against finished rooms</li>
+          </ul></div>
+          <div><h4 class="cap">AVOID</h4><ul>
+            <li>Motivational music</li><li>Fake candid moments</li><li>Drone shots for their own sake</li><li>Corporate interview setups</li><li>Aggressive transitions</li><li>Inspirational speeches</li><li>Staged toughness</li>
+          </ul></div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="changed rows">
+      <div class="row"><p class="cap">WHAT CHANGES IN 002</p><div>
+        <p>Refine was the call, and it came without a note. So what follows is my reading of it, and you should correct it.</p>
+        <p>Three things change, all of them in chapter 05. The title becomes Built for Generations. The subject moves from the company to the places and the people who make them, with you in the films and not presenting them. And the year starts with one pilot, not a commitment to ten episodes.</p>
+      </div></div>
+    </div>
+
+    <details class="kept">
+      <summary><b>Edition 001, unchanged: the storyboard, the year, a month, the scope</b><span class="cap q">8 FRAMES</span></summary>
+      <div class="in">
+    <div class="block">
+      <div class="block-h"><h3>Episode 001 &mdash; Another Day</h3><span class="cap q">OPENING SEQUENCE / EIGHT FRAMES</span></div>
+      <p class="fig-cap" style="margin:0 0 clamp(32px,5vw,56px)">Frames 01&ndash;06 are concept drawings made for this storyboard. Frames 07 and 08 use real Freeman photographs as reference. None of it is footage, and the dialogue is illustrative.</p>
+      <div class="board" id="board">
+
+        <article class="frame">
+          <div><div class="shot"><canvas data-scene="1" width="400" height="168" role="img" aria-label="Concept drawing: a quiet small-town main street at dawn, two rows of brick storefronts receding to the horizon, one shop window lit"></canvas></div>
+            <div class="slate"><span>01 / EXT. DOWNTOWN CARTERSVILLE / DAWN</span><span>CONCEPT DRAWING</span></div></div>
+          <div><h4>Downtown</h4>
+            <p class="desc">A wide, patient shot of the historic downtown before it wakes up. A real small American main street, nobody on it yet.</p>
+            <dl><div><dt class="cap">LIGHT</dt><dd>First natural light. Streetlamps still on.</dd></div>
+            <div><dt class="cap">SOUND</dt><dd>Birds. A train somewhere off. No music.</dd></div>
+            <div><dt class="cap">CAMERA</dt><dd>Locked off, wide. Hold longer than is comfortable.</dd></div></dl></div>
+        </article>
+
+        <article class="frame">
+          <div><div class="shot"><canvas data-scene="2" width="400" height="168" role="img" aria-label="Concept drawing: a small figure walking around the corner of a brick building, seen from across the street"></canvas></div>
+            <div class="slate"><span>02 / EXT. THE CORNER / DAWN</span><span>CONCEPT DRAWING</span></div></div>
+          <div><h4>Gabe arrives</h4>
+            <p class="desc">You come around the corner and walk toward the office. Small in the frame. We watch a man inside the architecture, not a celebrity making an entrance.</p>
+            <dl><div><dt class="cap">LIGHT</dt><dd>Flat, cool, early. The building is the dark mass.</dd></div>
+            <div><dt class="cap">SOUND</dt><dd>Footsteps. Keys.</dd></div>
+            <div><dt class="cap">CAMERA</dt><dd>Static from across the street. You walk through it.</dd></div></dl></div>
+        </article>
+
+        <article class="frame">
+          <div><div class="shot"><canvas data-scene="3" width="400" height="168" role="img" aria-label="Concept drawing: a figure seen from behind climbing a straight staircase toward a bright window"></canvas></div>
+            <div class="slate"><span>03 / INT. STAIRWELL / DAWN</span><span>CONCEPT DRAWING</span></div></div>
+          <div><h4>The stairs</h4>
+            <p class="desc">Up the stairs to the office. Symmetrical, composed, plain.</p>
+            <dl><div><dt class="cap">LIGHT</dt><dd>One window at the top doing all the work.</dd></div>
+            <div><dt class="cap">SOUND</dt><dd>Boots on old treads. The door.</dd></div>
+            <div><dt class="cap">CAMERA</dt><dd>From the foot of the stairs, centred. No effects.</dd></div></dl></div>
+        </article>
+
+        <article class="frame">
+          <div><div class="shot"><canvas data-scene="4" width="400" height="168" role="img" aria-label="Concept drawing: a dark office with three tall windows letting in dawn light, a figure in the doorway reaching for the light switch"></canvas></div>
+            <div class="slate"><span>04 / INT. OFFICE / DAWN</span><span>CONCEPT DRAWING</span></div></div>
+          <div><h4>The office</h4>
+            <p class="desc">The room is mostly dark. Daylight is only starting at the windows. You walk in, hit the lights, and the day begins.</p>
+            <dl><div><dt class="cap">LIGHT</dt><dd>Window light only, then the practicals come on in shot.</dd></div>
+            <div><dt class="cap">SOUND</dt><dd>The switch. The room humming awake.</dd></div>
+            <div><dt class="cap">CAMERA</dt><dd>Wide from the back of the room. One take.</dd></div></dl></div>
+        </article>
+
+        <article class="frame">
+          <div><div class="shot"><canvas data-scene="5" width="400" height="168" role="img" aria-label="Concept drawing: a figure seated at a desk with a monitor, rolled plans, a hard hat and drawings pinned to the wall"></canvas></div>
+            <div class="slate"><span>05 / INT. OFFICE, THE DESK / MORNING</span><span>CONCEPT DRAWING</span></div></div>
+          <div><h4>The desk</h4>
+            <p class="desc">You sit down. Plans, paper, a screen. The actual desk of someone running a construction company, not a tidied one.</p>
+            <dl><div><dt class="cap">LIGHT</dt><dd>Overheads and the window. Nothing added.</dd></div>
+            <div><dt class="cap">SOUND</dt><dd>Chair, paper, a first email.</dd></div>
+            <div><dt class="cap">CAMERA</dt><dd>Side-on, medium wide. Hold until the viewer feels present.</dd></div></dl></div>
+        </article>
+
+        <article class="frame">
+          <div><div class="shot"><canvas data-scene="6" width="400" height="168" role="img" aria-label="Concept drawing: head and shoulders of a man in a cap, lit from a window at the left, with a time stamp in the corner"></canvas><span class="tc">6:42 AM</span></div>
+            <div class="slate"><span>06 / INT. OFFICE / MORNING</span><span>CONCEPT DRAWING</span></div></div>
+          <div><h4>The first words</h4>
+            <p class="desc">A plain time stamp comes up. You start talking the way you&rsquo;d talk to me.</p>
+            <blockquote>&ldquo;It&rsquo;s another day. We&rsquo;re in year three of building this business, and we&rsquo;ve got a lot of projects we&rsquo;re really excited about.&rdquo;</blockquote>
+            <dl><div><dt class="cap">LIGHT</dt><dd>Window side. Let the far side of the face fall off.</dd></div>
+            <div><dt class="cap">SOUND</dt><dd>Your voice, close. Room tone under it.</dd></div>
+            <div><dt class="cap">CAMERA</dt><dd>Close, off-centre. Not a lit interview.</dd></div></dl></div>
+        </article>
+
+        <article class="frame">
+          <div><div class="shot trip">
+              <div><img src="img/field-three.jpg" alt="Three men talking on a graded jobsite with equipment and autumn trees behind them"></div>
+              <div><img src="img/field-machines.jpg" alt="Excavators and a bulldozer parked at the tree line of a cleared site"></div>
+              <div><img src="img/field-table.jpg" alt="Four men meeting around a table in front of a stone fireplace"></div>
+            </div>
+            <div class="slate"><span>07 / VARIOUS / DAY</span><span>FREEMAN PHOTOGRAPHS, AS REFERENCE</span></div></div>
+          <div><h4>The company</h4>
+            <p class="desc">Your voice keeps going and the company fills in around it. People arriving. Drawings. A site. A meeting. Material up close. Work in progress.</p>
+            <dl><div><dt class="cap">LIGHT</dt><dd>Whatever the day gives us.</dd></div>
+            <div><dt class="cap">SOUND</dt><dd>Voice-over into site sound: machines, radios, talk.</dd></div>
+            <div><dt class="cap">CAMERA</dt><dd>Handheld but calm. Hands, tools, faces listening.</dd></div></dl></div>
+        </article>
+
+        <article class="frame">
+          <div><div class="shot trip">
+              <div><img src="img/woodlands-dining.jpg" alt="A finished dining room with green wainscot, patterned wallpaper and framed pictures"></div>
+              <div><img src="img/muchacho-03.jpg" alt="A warm amber-lit bar with a pass-through window"></div>
+              <div><img src="img/field-ruin.jpg" alt="Two people climbing the steps toward the arch of a brick ruin"></div>
+            </div>
+            <div class="slate"><span>08 / VARIOUS / DAY INTO EVENING</span><span>FREEMAN PHOTOGRAPHS, AS REFERENCE</span></div></div>
+          <div><h4>The world of Freeman</h4>
+            <p class="desc">The film widens out to the places and relationships that make the company what it is. Finished rooms with people in them. Partners. Intimate and ambitious, never self-important. Title.</p>
+            <dl><div><dt class="cap">LIGHT</dt><dd>Warm interiors against the cold morning we started in.</dd></div>
+            <div><dt class="cap">SOUND</dt><dd>A full dining room. Then quiet for the title.</dd></div>
+            <div><dt class="cap">CAMERA</dt><dd>Back on the tripod. Composed, like frame 01.</dd></div></dl></div>
+        </article>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-h"><h3>The year</h3><span class="cap q">TEN EPISODES / ALL SUBJECTS PROVISIONAL</span></div>
+      <p class="row-lead" style="max-width:36em;font-size:17px;margin-bottom:22px">These are territories, not a script. The year decides what each film is really about. If something bigger happens in month five, that&rsquo;s the episode.</p>
+      <ol class="eps">
+        <li><span class="n">001</span><b>Another Day</b><span class="w">The beginning of a day. Who you are and what this is.</span></li>
+        <li><span class="n">002</span><b>The People</b><span class="w">The people behind the work, in their own words.</span></li>
+        <li><span class="n">003</span><b>In Motion</b><span class="w">One jobsite, start of a week to the end of it.</span></li>
+        <li><span class="n">004</span><b>The Detail</b><span class="w">Craft. The things nobody notices unless they&rsquo;re wrong.</span></li>
+        <li><span class="n">005</span><b>Growing</b><span class="w">What gets harder as the company gets bigger.</span></li>
+        <li><span class="n">006</span><b>Partners</b><span class="w">Working with ambitious owners, architects and trades.</span></li>
+        <li><span class="n">007</span><b>Opening</b><span class="w">A hospitality project in its last weeks before doors.</span></li>
+        <li><span class="n">008</span><b>New Ground</b><span class="w">Going into a market where nobody knows us yet.</span></li>
+        <li><span class="n">009</span><b>The Weight</b><span class="w">What it means to be responsible for a company.</span></li>
+        <li><span class="n">010</span><b>Built for Generations</b><span class="w">What the phrase means in practice, a year on.</span></li>
+      </ol>
+      <div class="year" aria-hidden="true"><i>M1</i><i class="on">001</i><i class="on">002</i><i class="on">003</i><i class="on">004</i><i class="on">005</i><i>&middot;</i><i class="on">006</i><i class="on">007</i><i class="on">008</i><i class="on">009</i><i class="on">010</i></div>
+      <p class="fig-cap">Twelve months, ten releases. One month up front to prepare and shoot the first film, and one open month mid-year for when a job or a holiday gets in the way.</p>
+    </div>
+
+    <div class="block">
+      <div class="block-h"><h3>A month</h3><span class="cap q">PROPOSED RHYTHM</span></div>
+      <ol class="cycle">
+        <li><span class="cap q">WEEK 1</span><b>Visit</b><p>Tristan with us for about two days. Field footage on whatever is live, plus one sit-down conversation.</p></li>
+        <li><span class="cap q">WEEK 2</span><b>Edit</b><p>He cuts. I send over drawings, dates and names so the facts are right.</p></li>
+        <li><span class="cap q">WEEK 3</span><b>Review</b><p>You and I watch it once and give one round of notes. Partners see anything that shows their project.</p></li>
+        <li><span class="cap q">WEEK 4</span><b>Release</b><p>Finish and publish. We pick next month&rsquo;s subject from what&rsquo;s actually happening.</p></li>
+      </ol>
+    </div>
+
+    <div class="block">
+      <div class="block-h"><h3>Scope</h3><span class="cap q">INDICATIVE / NOTHING PRICED</span></div>
+      <div class="scope">
+        <div><h4 class="cap">WHAT I&rsquo;M ASSUMING</h4><ul>
+          <li>Ten episodes over twelve months</li>
+          <li>One production visit a month, roughly two days</li>
+          <li>One recorded conversation with you per visit</li>
+          <li>Films of around eight to twelve minutes</li>
+          <li>One round of review per episode</li>
+          <li>A few short cuts from each film for social</li>
+        </ul></div>
+        <div><h4 class="cap">STILL TO PRICE OR NEGOTIATE</h4><ul>
+          <li>Whether Tristan is interested and available at all</li>
+          <li>His fee: per episode, per day, or for the year</li>
+          <li>Whether editing, colour and sound are included</li>
+          <li>Music: licensed, original, or mostly none</li>
+          <li>Travel for sites outside the area</li>
+          <li>Who owns the raw footage and how we can reuse it</li>
+          <li>Permission from owners and partners to film their projects</li>
+        </ul></div>
+      </div>
+      <p class="flag">Tristan hasn&rsquo;t been asked. Nothing on this page is a quote, an agreement or his opinion. The first step would simply be a conversation about Episode 001.</p>
+    </div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ───────────── 03 ───────────── -->
+<section class="ch gar" id="represent" data-cw="natural" style="border-top:0"><div class="wrap">
+  <div class="ch-head">
+    <p class="cap red">03</p>
+    <div><p class="tag cap"><i></i>FROM EDITION 001 &nbsp;/&nbsp; CALL SAVED: <b>PARKED</b></p><h2>Freeman &times; Represent</h2><p class="sub">An exploratory clothing and brand collaboration</p></div>
+  </div>
+
+  <div class="rows">
+    <div class="row"><p class="cap q">THE IDEA</p><div>
+      <p>I think there&rsquo;s something here. Represent makes clothes and cares a lot about identity. We&rsquo;re an actual construction company with people who build things. I&rsquo;d like to find out whether there&rsquo;s an honest meeting point.</p>
+      <p>The product I keep coming back to is one heavyweight work jacket. Working line: <b style="font-weight:500">Workwear for people who build.</b></p>
+      <p class="flag" style="margin-top:18px">This is speculative. There is no partnership, endorsement or agreement with Represent, and they haven&rsquo;t seen any of it.</p>
+    </div></div>
+  </div>
+
+  <div class="block">
+    <div class="ctl cmp-ctl">
+      <h3 class="cap">PRODUCT STUDIES / DRAWN, NOT PHOTOGRAPHED</h3>
+      <div><span class="cap q lab">COLORWAY</span><span class="seg cap" id="cw" role="group" aria-label="Jacket colorway">
+        <button type="button" data-cw="natural" aria-pressed="true">NATURAL CANVAS</button><button type="button" data-cw="umber" aria-pressed="false">UMBER</button>
+      </span></div>
+    </div>
+
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+      <pattern id="twill" width="3.2" height="3.2" patternUnits="userSpaceOnUse"><path d="M-1 3.2L3.2 -1M2.2 4.2L4.2 2.2" stroke="currentColor" stroke-width=".45" opacity=".22"/></pattern>
+      <path id="j-sleeve" d="M178 104 L84 420 L132 438 L199 222 Z"/>
+      <path id="j-half" d="M300 92 L262 78 L178 104 Q189 160 198 222 L192 560 L300 560 Z"/>
+      <path id="j-collar" d="M258 72 L300 101 L300 118 L271 152 L238 98 Z"/>
+      <path id="j-back" d="M262 78 L178 104 Q189 160 198 222 L192 560 L408 560 L402 222 Q411 160 422 104 L338 78 Q300 90 262 78 Z"/>
+      <path id="j-bcollar" d="M244 76 Q300 60 356 76 L351 104 Q300 91 249 104 Z"/>
+    </defs></svg>
+
+    <div class="plates">
+      <figure class="gplate">
+        <span class="corner cap">01 / FRONT</span><span class="corner r cap q">CONCEPT</span>
+        <svg viewBox="0 0 600 640" role="img" aria-label="Front of a boxy chore-style work jacket: point collar, five tack buttons, one chest pocket, two lower patch pockets, a small script embroidered on the chest">
+          <g transform="translate(0 18)">
+            <use href="#j-sleeve" class="cl2"/><use href="#j-sleeve" class="tw"/>
+            <use href="#j-sleeve" class="cl2" transform="matrix(-1 0 0 1 600 0)"/><use href="#j-sleeve" class="tw" transform="matrix(-1 0 0 1 600 0)"/>
+            <path class="st" d="M92 398 L139 416M508 398 L461 416"/>
+            <path class="cin" d="M262 78 Q300 66 338 78 L300 104 Z"/>
+            <use href="#j-half" class="cl"/><use href="#j-half" class="cl" transform="matrix(-1 0 0 1 600 0)"/>
+            <use href="#j-half" class="tw"/><use href="#j-half" class="tw" transform="matrix(-1 0 0 1 600 0)"/>
+            <path class="st" d="M181 108 Q192 162 201 222M419 108 Q408 162 399 222M195 549 H405M202 222 L196 549M398 222 L404 549"/>
+            <path class="ln" d="M312 112 V560"/><path class="st" d="M307 116 V556M294 116 V556"/>
+            <use href="#j-collar" class="cl"/><use href="#j-collar" class="cl" transform="matrix(-1 0 0 1 600 0)"/>
+            <use href="#j-collar" class="tw"/><use href="#j-collar" class="tw" transform="matrix(-1 0 0 1 600 0)"/>
+            <path class="st" d="M243 99 L272 146 L296 118M357 99 L328 146 L304 118"/>
+            <!-- chest pocket (wearer's left) -->
+            <rect class="cl" x="328" y="196" width="62" height="72"/><rect class="tw" x="328" y="196" width="62" height="72"/>
+            <path class="st" d="M331 207 H387M331 199 V265 H387 V199"/>
+            <rect x="388.5" y="238" width="5" height="13" fill="var(--thread)"/>
+            <!-- lower pockets -->
+            <rect class="cl" x="212" y="404" width="76" height="98"/><rect class="tw" x="212" y="404" width="76" height="98"/>
+            <rect class="cl" x="324" y="404" width="76" height="98"/><rect class="tw" x="324" y="404" width="76" height="98"/>
+            <path class="st" d="M215 416 H285M215 407 V499 H285 V407M327 416 H397M327 407 V499 H397 V407"/>
+            <g class="bt"><circle cx="303" cy="142" r="6"/><circle cx="303" cy="237" r="6"/><circle cx="303" cy="332" r="6"/><circle cx="303" cy="427" r="6"/><circle cx="303" cy="522" r="6"/></g>
+            <g fill="none" stroke="var(--edge)" stroke-width=".8"><circle cx="303" cy="142" r="3"/><circle cx="303" cy="237" r="3"/><circle cx="303" cy="332" r="3"/><circle cx="303" cy="427" r="3"/><circle cx="303" cy="522" r="3"/></g>
+          </g>
+        </svg>
+        <canvas class="mk" data-globe="0" data-static="1" data-scale="3" style="left:36.2%;top:35.6%;width:10.5%" aria-hidden="true"></canvas>
+        <span class="corner b cap q">SCRIPT, 60 MM, RIGHT CHEST / RED TAB AT POCKET</span>
+      </figure>
+
+      <figure class="gplate">
+        <span class="corner cap">02 / BACK</span><span class="corner r cap q">CONCEPT</span>
+        <svg viewBox="0 0 600 640" role="img" aria-label="Back of the jacket with the red Freeman globe insignia chain-stitched below the yoke">
+          <g transform="translate(0 18)">
+            <use href="#j-sleeve" class="cl2"/><use href="#j-sleeve" class="tw"/>
+            <use href="#j-sleeve" class="cl2" transform="matrix(-1 0 0 1 600 0)"/><use href="#j-sleeve" class="tw" transform="matrix(-1 0 0 1 600 0)"/>
+            <path class="st" d="M92 398 L139 416M508 398 L461 416"/>
+            <use href="#j-back" class="cl"/><use href="#j-back" class="tw"/>
+            <path class="st" d="M181 108 Q192 162 201 222M419 108 Q408 162 399 222M195 549 H405M202 222 L196 549M398 222 L404 549"/>
+            <path class="ln" d="M186 150 Q300 176 414 150"/><path class="st" d="M187 155 Q300 181 413 155"/>
+            <use href="#j-bcollar" class="cl"/><use href="#j-bcollar" class="tw"/>
+            <path class="st" d="M252 99 Q300 87 348 99"/>
+            <rect class="cin" x="293" y="106" width="14" height="5"/>
+          </g>
+        </svg>
+        <canvas class="mk" data-globe="1" data-d="96" data-static="1" data-scale="3" style="left:36.5%;top:38.5%;width:27%" aria-hidden="true"></canvas>
+        <span class="corner b cap q">GLOBE INSIGNIA, CHAIN-STITCH, ABOUT 240 MM WIDE</span>
+      </figure>
+    </div>
+
+    <div class="details">
+      <figure><div class="det"><canvas id="stitch" width="640" height="480" role="img" aria-label="Close-up: the script and globe rendered as red chain-stitch on woven canvas"></canvas></div>
+        <figcaption class="det-cap"><b>03A / EMBROIDERY</b>Traditional chain-stitch in one red thread. The script sits over the globe lines, the way it does in the mark.</figcaption></figure>
+      <figure><div class="det">
+        <svg viewBox="0 0 400 300" role="img" aria-label="Close-up: a woven neck label with the Freeman script and plain REPRESENT lettering">
+          <rect width="400" height="300" class="tw"/>
+          <path class="st" d="M0 54 H400M0 62 H400"/>
+          <rect x="92" y="92" width="216" height="128" fill="#fff9f1" stroke="var(--edge)" stroke-width="1"/>
+          <path d="M98 98 H302 V214 H98 Z" fill="none" stroke="#f93822" stroke-width=".8"/>
+          <path d="M92 92 l8 8M308 92 l-8 8M92 220 l8 -8M308 220 l-8 -8" stroke="var(--seam)" stroke-width="1.6"/>
+          <text x="200" y="182" text-anchor="middle" font-family="Libre Franklin,Arial,sans-serif" font-size="9.5" font-weight="600" letter-spacing="2.4" fill="#332e20">&#215;&#160;&#160;REPRESENT</text>
+          <text x="200" y="201" text-anchor="middle" font-family="Libre Franklin,Arial,sans-serif" font-size="6.2" font-weight="500" letter-spacing="1.3" fill="#747772">CONCEPT SAMPLE / NOT FOR SALE</text>
+        </svg>
+        <canvas class="mk" data-globe="0" data-static="1" data-scale="3" style="position:absolute;inset:auto;left:33%;top:35%;width:34%;height:auto;--mark:#f93822;image-rendering:auto" aria-hidden="true"></canvas>
+      </div>
+        <figcaption class="det-cap"><b>03B / LABEL</b>Woven neck label, four corner tacks. &ldquo;Represent&rdquo; is set in plain type as a placeholder. It is not their logo.</figcaption></figure>
+      <figure><div class="det">
+        <svg viewBox="0 0 400 300" role="img" aria-label="Close-up: a tack button, triple-needle seam and bar tacks at a pocket corner">
+          <rect width="400" height="300" class="tw"/>
+          <path class="ln" d="M0 208 H400" style="stroke-width:1.6"/>
+          <path class="st" d="M0 196 H400M0 220 H400M0 232 H400" style="stroke-width:2.2;stroke-dasharray:9 5"/>
+          <path d="M250 0 V208" class="ln" style="stroke-width:1.6"/><path class="st" d="M262 0 V196" style="stroke-width:2.2;stroke-dasharray:9 5"/>
+          <path d="M240 150 h34 M240 154 h34 M240 158 h34 M240 162 h34" stroke="var(--thread)" stroke-width="2.4"/>
+          <circle cx="128" cy="104" r="44" class="bt" style="stroke-width:1.6"/><circle cx="128" cy="104" r="33" fill="none" stroke="var(--edge)" stroke-width="1.2"/>
+          <circle cx="128" cy="104" r="9" fill="var(--edge)"/>
+          <path id="ring" d="M128 80 a24 24 0 1 1 -.1 0" fill="none"/>
+          <text font-family="Libre Franklin,Arial,sans-serif" font-size="7.6" font-weight="600" letter-spacing="1.7" style="fill:var(--cloth)"><textPath href="#ring">BUILT FOR GENERATIONS &#183;</textPath></text>
+        </svg></div>
+        <figcaption class="det-cap"><b>03C / CONSTRUCTION</b>Triple-needle seams, red bar tacks at the stress points, a tack button that says who made it.</figcaption></figure>
+    </div>
+  </div>
+
+  <div class="changed rows">
+    <div class="row"><p class="cap">WHAT CHANGES IN 002</p><div>
+      <p>Parked means parked. Nobody at Represent has been contacted, no sample has been made, and nothing in the plan spends time on it.</p>
+      <p>The study stays in the edition because the question under it was a good one: who should Freeman make things with? Chapter 06 answers that more widely, and starts with the people already in our credits. The jacket is filed there as a parked entry.</p>
+    </div></div>
+  </div>
+
+  <details class="kept">
+    <summary><b>Edition 001, unchanged: the working spec and a possible path</b><span class="cap q">SPEC</span></summary>
+    <div class="in">
+  <div class="block">
+    <div class="block-h"><h3>The jacket</h3><span class="cap q">WORKING SPEC / ALL OF IT OPEN</span></div>
+    <dl class="spec">
+      <div><dt class="cap">SHELL</dt><dd>Washed heavyweight cotton canvas, the kind that takes a few years to break in.</dd></div>
+      <div><dt class="cap">CUT</dt><dd>Generous through the shoulder, straight to the hip. Room for a layer, not oversized for effect.</dd></div>
+      <div><dt class="cap">HARDWARE</dt><dd>Five metal tack buttons. One chest pocket, two lower pockets you can get a gloved hand into.</dd></div>
+      <div><dt class="cap">MARKS</dt><dd>Front: the script, small, on the chest. Back: the globe insignia, about the width of a hand span and a half. That&rsquo;s it.</dd></div>
+      <div><dt class="cap">COLOURS</dt><dd>Natural washed canvas, and a dark umber. Red thread on both.</dd></div>
+      <div><dt class="cap">THE TEST</dt><dd>It has to be worth owning with the embroidery taken off. And one of our superintendents has to be willing to wear it on site.</dd></div>
+    </dl>
+  </div>
+
+  <div class="rows block">
+    <div class="row"><p class="cap q">BEYOND CLOTHING</p><div>
+      <p>We build physical places. Represent makes retail and cultural spaces as part of what it does. If a jacket ever led to a real relationship, could there one day be a room we build together?</p>
+      <p class="small">That&rsquo;s a question to look into, not an opportunity that exists. I haven&rsquo;t seen anything suggesting they&rsquo;re looking for a builder in the States. The jacket has to earn the conversation first.</p>
+    </div></div>
+  </div>
+
+  <div class="block">
+    <div class="block-h"><h3>A possible path</h3><span class="cap q">FOUR STAGES / NO DATES YET</span></div>
+    <ol class="path">
+      <li><span class="cap q">STAGE 1</span><b>Direction</b><p>Finish the visual and product direction until it&rsquo;s something we&rsquo;d be proud to show.</p></li>
+      <li><span class="cap q">STAGE 2</span><b>Prototype</b><p>Make one real jacket. Wear it for a month.</p></li>
+      <li><span class="cap q">STAGE 3</span><b>Introduction</b><p>Find a credible way in. We don&rsquo;t have one yet.</p></li>
+      <li><span class="cap q">STAGE 4</span><b>Conversation</b><p>See whether there&rsquo;s creative or commercial interest on their side. If not, we still have a great jacket.</p></li>
+    </ol>
+  </div>
+    </div>
+  </details>
+</div></section>
+
+<section class="part"><div class="wrap g">
+  <p class="cap red">PART TWO</p>
+  <div><h2>Three proposals that are new, and that work as one system.</h2>
+  <p class="lede">One site visit, one set of permissions and one archive feed all three. The record is the source. The films are drawn from it. The house is how both reach the people we want to build for.</p>
+  <ol class="three">
+    <li><span class="cap q">04 &nbsp;THE SOURCE</span><b>The Building Record</b><p>Every project kept as drawings, photographs and a plain account of what was built. <span class="arrow">&rarr;</span></p></li>
+    <li><span class="cap q">05 &nbsp;THE FILMS</span><b>Built for Generations</b><p>A recurring documentary made on the same jobs, by the same rules of evidence. <span class="arrow">&rarr;</span></p></li>
+    <li><span class="cap q">06 &nbsp;THE HOUSE</span><b>Freeman, publisher</b><p>One catalogue, one signature, one standard for everything that leaves the building.</p></li>
+  </ol></div>
+</div></section>
+
+<!-- ───────────── 04 ───────────── -->
+<section class="ch" id="record" style="border-top:1px solid var(--hair)"><div class="wrap">
+  <div class="ch-head">
+    <p class="cap red">04</p>
+    <div><p class="tag new cap"><i></i>NEW IN EDITION 002</p><h2>The Building Record</h2><p class="sub">Architectural drawings, project photography and the story of each building, kept as one record</p></div>
+  </div>
+
+  <div class="rec">
+    <figure>
+      <div class="rec-sheet" id="recSheet">
+        <div class="rec-layer"><div class="rec-move"><img src="img/muchacho-01.jpg" alt="The front of Muchacho Decatur: a white house with a grey shingle roof and a dormer of lattice windows. The Muchacho sign hangs over a yellow glazed door numbered 129, between lattice-paned windows, behind a white porch rail under a magnolia branch."></div></div>
+        <div class="rec-layer draw"><div class="rec-move"><svg class="dw" id="recSvg" viewBox="0 0 1920 2400" role="img" aria-label="Record drawing of the same front elevation, traced from the photograph: roof courses, dormer sashes, porch beam, sign board, door, lattice windows, porch rail and steps"></svg></div></div>
+        <div class="rec-layer" style="overflow:visible;pointer-events:none"><div class="rec-move" id="recKeys" style="pointer-events:auto"></div></div>
+        <div class="rec-line" aria-hidden="true"></div>
+        <div class="rec-res" id="recRes" hidden>
+          <span class="cap">B / CONSTRUCTION &nbsp;&middot;&nbsp; RESERVED</span>
+          <p><b style="font-weight:500">Not on file.</b> Wanted: a photograph of this location during the work, taken from the position of the finished plate.</p>
+        </div>
+      </div>
+      <div class="rec-ctl">
+        <div class="rng"><label class="cap q" for="seam">SEAM</label><input type="range" id="seam" min="0" max="100" value="50" step="1" aria-label="Move the seam between photograph and drawing"></div>
+        <div class="ctl" style="justify-content:space-between">
+          <span class="seg cap" id="recState" role="group" aria-label="What the sheet shows">
+            <button type="button" data-st="draw" aria-pressed="false">A DRAWING</button><button type="button" data-st="res" aria-pressed="false">B CONSTRUCTION</button><button type="button" data-st="photo" aria-pressed="false">C COMPLETED</button>
+          </span>
+          <button class="cap" id="recPlay" type="button" style="padding:10px 14px;border:1px solid var(--hair);min-height:40px">PLAY THE DRAWING</button>
+        </div>
+      </div>
+    </figure>
+    <div>
+      <dl class="tb">
+        <div><dt class="cap">RECORD</dt><dd><b>No. 10 &nbsp;Muchacho Decatur</b></dd></div>
+        <div><dt class="cap">PLACE</dt><dd>129 Church Street, Decatur, Georgia</dd></div>
+        <div><dt class="cap">SHEET</dt><dd>R-1 &nbsp;Front elevation, as photographed</dd></div>
+        <div><dt class="cap">SOURCE</dt><dd>Traced from plate 01. Not the architect&rsquo;s drawing. Not to scale.</dd></div>
+        <div><dt class="cap">WITH</dt><dd>Electric Hospitality, hospitality operator. BLUR Workshop, interior design.</dd></div>
+        <div><dt class="cap">STATUS</dt><dd>Study, 13 November 2026. Not published.</dd></div>
+      </dl>
+      <ol class="keys" id="recList"></ol>
+      <p class="keynote" id="recNote"></p>
+    </div>
+  </div>
+  <p class="fig-cap" style="margin-top:18px">Drag the seam. Choose a numbered key to move in. The drawing was traced in the photograph&rsquo;s own coordinates, so the two register line for line. The photograph is Freeman&rsquo;s; the photographer is still to be credited.</p>
+
+  <div class="rows block">
+    <div class="row"><p class="cap q">THE IDEA</p><div>
+      <p>Every finished photograph we own gives the credit to someone else. The room belongs to the designer, the plate to the chef, the picture to the photographer. What the builder did is not in the frame.</p>
+      <p>The Building Record puts it there. One record per project, made of three things: the drawings, the photographs, and a plain account of what was kept, what was replaced and what was built new.</p>
+    </div></div>
+    <div class="row"><p class="cap q">WHAT EXISTS TODAY</p><div>
+      <p>More than a sketch. Built Record Study 001 was built on 13 November around Muchacho Decatur: six photographs, five record drawings traced from them, and a short account. The sheet above is that study&rsquo;s first drawing, running here.</p>
+      <p class="small">It lives on a branch, is not linked from any page of freemangc.com, and is marked not to be indexed.</p>
+    </div></div>
+    <div class="row"><p class="cap q">WHAT IS MISSING</p><div>
+      <p>The real thing. No architect&rsquo;s drawing of any Freeman project is on file. No dated construction photograph is filed to a project. Scope, dates, floor area and the project team are not written down anywhere I can cite.</p>
+      <p>That is why construction is a reserved state on the sheet above, and why the drawings say &ldquo;traced&rdquo; on them. The study invents nothing. When the real material arrives, it replaces the tracing.</p>
+    </div></div>
+  </div>
+
+  <div class="block">
+    <div class="block-h"><h3>The story</h3><span class="cap q">THE ACCOUNT, SET AS A SPREAD</span></div>
+    <div class="spread" id="spread">
+      <div class="lead"><p class="first" id="accFirst"></p><p class="rest" id="accRest"></p></div>
+      <figure class="f-a"><img src="img/muchacho-04.jpg" alt="A cream-painted panelled door, close up, with the letters W.C. painted in red on its middle panel." loading="lazy" width="1600" height="1280"><figcaption class="cap"><span>PLATE 04 &nbsp;DOOR</span></figcaption></figure>
+      <figure class="f-b"><img src="img/muchacho-02.jpg" alt="A front room in use: cream walls and ceiling, a pair of tall lattice-paned windows in a wide painted casing, a framed photograph above them, and guests at the counter in the foreground." loading="lazy" width="1600" height="1280"><figcaption class="cap"><span>PLATE 02 &nbsp;FRONT ROOM</span><span>MUCHACHO DECATUR / DECATUR, GEORGIA</span></figcaption></figure>
+      <figure class="f-c"><svg class="dw" id="doorSvg" viewBox="0 0 2400 1920" style="width:100%;height:auto;display:block;background:var(--plate);border:1px solid var(--hair);--u:9" role="img" aria-label="Record drawing of the panelled door, traced from plate 04"></svg><figcaption class="cap"><span>R-4 &nbsp;TRACED FROM PLATE 04</span></figcaption></figure>
+      <figure class="f-d"><img src="img/muchacho-06.jpg" alt="An orange motorcycle helmet, a reel-to-reel tape recorder and a twin-shade lamp on a timber sideboard against an orange wall." loading="lazy" width="1600" height="1280"><figcaption class="cap"><span>PLATE 06 &nbsp;DETAIL</span></figcaption></figure>
+      <figure class="f-e"><img src="img/muchacho-03.jpg" alt="Behind the bar: a timber counter with bottles and taps, and a square timber-lined opening in the wall through which two guests are seen talking." loading="lazy" width="1600" height="1280"><figcaption class="cap"><span>PLATE 03 &nbsp;BAR</span><span>FREEMAN PHOTOGRAPHS</span></figcaption></figure>
+    </div>
+    <p class="fig-cap">The account is the one written for the study on 13 November. It has not been approved by you, by Electric Hospitality or by BLUR Workshop, and would be before anything is published.</p>
+  </div>
+
+  <div class="block">
+    <div class="block-h"><h3>The register</h3><span class="cap q">EVERY PUBLISHED PROJECT, AND WHAT IS ON FILE</span></div>
+    <div class="scroll"><table class="reg" id="reg"><thead><tr><th>No.</th><th>Project</th><th>Place</th><th>With</th><th>Photographs</th><th>Account</th><th>Drawings</th><th>Construction</th></tr></thead><tbody></tbody></table></div>
+    <p class="sum" id="regSum"></p>
+    <p class="fig-cap">Read from Freeman&rsquo;s published records and credits, checked 26 October 2026. A further set of photographs sits in the Drive folder, including sitework at Barnsley with people in frame; it has not yet been filed to projects.</p>
+  </div>
+
+  <div class="block">
+    <div class="block-h"><h3>How a record gets made</h3><span class="cap q">THE PROTOCOL / FOUR HABITS</span></div>
+    <ol class="cycle">
+      <li><span class="cap q">AT PRECONSTRUCTION</span><b>Ask for the drawings</b><p>Plan, elevations, sections, and written permission to redraw them for publication. Asked once, at the start, as part of how we work.</p></li>
+      <li><span class="cap q">ON SITE</span><b>One position, kept</b><p>One safe, repeatable camera position per room. One person returns to it at each meaningful change, above all before work is closed up.</p></li>
+      <li><span class="cap q">AT CLOSEOUT</span><b>Write it down</b><p>Kept, replaced, new. Dates, area, team. One page, checked by the superintendent who ran the job.</p></li>
+      <li><span class="cap q">AFTER OPENING</span><b>Go back</b><p>The finished photographs from the same positions, then again a year on. The record keeps growing after we leave.</p></li>
+    </ol>
+  </div>
+
+  <div class="block">
+    <div class="block-h"><h3>Commercial rationale</h3><span class="cap q">WHY THIS EARNS ITS COST</span></div>
+    <ol class="cycle rat">
+      <li><span class="cap q">WHO IT IS FOR</span><p>The owner, operator or architect choosing a builder for a design-led hospitality project. They are comparing portfolios that all show finished rooms.</p></li>
+      <li><span class="cap q">WHAT IT WINS</span><p>It is the proposal. For the next pursuit we send the record of the closest job, and it shows how we read drawings and handle an existing building. Designers get their work documented properly, which is a reason to bring us in again.</p></li>
+      <li><span class="cap q">WHAT IT COSTS</span><p>Mostly habit. A request at the start, a camera position on site, a page at closeout. The assembly time per record is real and still to be measured on the first one.</p></li>
+      <li><span class="cap q">HOW WE WOULD KNOW</span><p>Records are asked for by name. Partners link to theirs. A pursuit is won where the record was the thing we sent.</p></li>
+    </ol>
+  </div>
+</div></section>
+
+<!-- ───────────── 05 ───────────── -->
+<section class="ch film" id="series">
+  <div class="wrap">
+    <div class="ch-head">
+      <p class="cap red">05</p>
+      <div><p class="tag new cap"><i></i>NEW IN EDITION 002 &nbsp;/&nbsp; REFINES CHAPTER 02</p><h2>Built for Generations</h2><p class="sub">A recurring original documentary series</p></div>
+    </div>
+
+    <p class="thesis">Hospitality is the moment a guest walks in. Freeman&rsquo;s work is everything before it.<cite class="cap q">THE PREMISE / FROM THE PERSPECTIVE TREATMENT, 12 NOVEMBER 2026</cite></p>
+
+    <div class="player" id="player">
+      <figure>
+        <div class="screen" id="screen">
+          <span class="lbl" id="plLbl" hidden></span>
+          <div class="end" id="plEnd" hidden>
+            <canvas class="px" id="plEagle" width="192" height="60" role="img" aria-label="The Freeman eagle, stamped on paper"></canvas>
+            <div id="plGlobe" hidden><canvas class="mk" id="plMk" data-globe="1" data-d="92" data-max="4" data-fit=".56" role="img" aria-label="The Freeman script in front of the turning globe"></canvas></div>
+          </div>
+        </div>
+        <div class="pl-ctl">
+          <button class="go cap" id="plGo" type="button" aria-pressed="false">PLAY</button>
+          <input type="range" id="plScrub" min="0" max="1000" value="0" step="1" aria-label="Scrub through the animatic">
+          <span class="tc" id="plTc">00:00 / 00:00</span>
+        </div>
+        <div class="pl-end"><span class="cap q">END CARD</span><span class="seg cap" id="plCard" role="group" aria-label="End card">
+          <button type="button" data-c="eagle" aria-pressed="true">EAGLE STAMP</button><button type="button" data-c="globe" aria-pressed="false">THE GLOBE</button>
+        </span></div>
+        <div class="slate" style="margin-top:12px"><span>ANIMATIC / SERIES OPEN / 4:3 / HARD CUTS ONLY</span><span>FREEMAN PHOTOGRAPHS. NOT FOOTAGE.</span></div>
+      </figure>
+      <ol class="shots" id="plShots"></ol>
+    </div>
+
+    <div class="rows block">
+      <div class="row"><p class="cap q">WHAT CHANGED</p><div>
+        <p>On a Mission was about building the company, told by you, in ten episodes. I think the refinement is to turn the camera around.</p>
+        <p>Built for Generations is about the places and the people who make them. You are in it, as the person who reads the room and makes the call, and you never have to explain Freeman to a lens. The name is already ours: it is the line under the signature and the name of the Instagram account.</p>
+      </div></div>
+      <div class="row"><p class="cap q">WHY A SERIES</p><div>
+        <p>One brand film says what a company wants to be. A series that keeps returning shows what it is. Each film is made on a real job, with a real partner, and goes out when their place opens.</p>
+        <p class="small">The opening sequence drawn for Episode 001 in chapter 02 still stands as the way the pilot begins.</p>
+      </div></div>
+    </div>
+
+    <div class="block">
+      <div class="block-h"><h3>The rules</h3><span class="cap q">SIX, AND THEY DO NOT BEND</span></div>
+      <ol class="rules">
+        <li><b>Nothing is staged.</b>We may ask someone to wait. We never ask anyone to do it again.</li>
+        <li><b>The sound was recorded there.</b>The room, the tools, the weather. Music only if it was playing.</li>
+        <li><b>Real speed, hard cuts.</b>A cut lands when the action is finished, not on a beat.</li>
+        <li><b>Text states facts.</b>A place, a true date, a name and a trade. One label in, one mark out.</li>
+        <li><b>Everyone is credited.</b>Operators, designers, photographers, and each tradesperson who appears, with their consent.</li>
+        <li><b>Safety is in the picture.</b>Correct protection in frame, under the superintendent&rsquo;s authority, always.</li>
+      </ol>
+    </div>
+
+    <div class="block">
+      <div class="block-h"><h3>A pilot, then a season</h3><span class="cap q">SIX FORMATS / SUBJECTS DECIDED BY WHAT IS LIVE</span></div>
+      <ol class="eps">
+        <li><span class="n">001</span><b>Another Day</b><span class="w">The pilot. A day with you, from the dark office to a full room. Storyboard in chapter 02.</span></li>
+        <li><span class="n">002</span><b>A Tuesday</b><span class="w">One ordinary working day on one site, gate to lockup.</span></li>
+        <li><span class="n">003</span><b>The Decision</b><span class="w">One decision, from the field condition to the finished detail. The designer approves the cut.</span></li>
+        <li><span class="n">004</span><b>Trades</b><span class="w">One tradesperson, one task, in their own words, named on screen.</span></li>
+        <li><span class="n">005</span><b>The Night Before</b><span class="w">The last hours before an opening. The clock is the plot.</span></li>
+        <li><span class="n">006</span><b>Return</b><span class="w">A room we built, in service, a year on. What wore in and what held.</span></li>
+      </ol>
+      <div class="year" aria-hidden="true"><i>PREP</i><i class="on">001</i><i>&middot;</i><i>002</i><i>003</i><i>&middot;</i><i>004</i><i>005</i><i>&middot;</i><i>006</i><i>&middot;</i><i>&middot;</i></div>
+      <p class="fig-cap">Only the pilot is proposed for commissioning. Films 002 to 006 are the season it would lead to, at roughly one every two months, and they are decided after the pilot is watched. The formats come from the Perspective treatment written on 12 November. Which job each film is made on depends on what is under construction and on the owner&rsquo;s permission, so no project is named here.</p>
+    </div>
+
+    <div class="block">
+      <div class="block-h"><h3>A Tuesday</h3><span class="cap q">SIX FRAMES TO BE SHOT / NONE EXISTS YET</span></div>
+      <div class="strip">
+        <div class="wait"><span class="cap q">BEFORE LIGHT</span><span class="what">Headlights at the gate.</span></div>
+        <div class="wait"><span class="cap q">FIRST HOUR</span><span class="what">The tailgate. Coffee, the day&rsquo;s sequence.</span></div>
+        <div class="wait"><span class="cap q">MORNING</span><span class="what">One task, held from its start to its end.</span></div>
+        <div class="wait"><span class="cap q">MID-MORNING</span><span class="what">A decision, overheard.</span></div>
+        <div class="wait"><span class="cap q">AFTERNOON</span><span class="what">Light across a raw floor.</span></div>
+        <div class="wait"><span class="cap q">LAST</span><span class="what">Last one out. Lights off.</span></div>
+      </div>
+      <p class="fig-cap">A crosshair marks a frame that has to be found on site. Nothing in this edition stands in for footage we do not have.</p>
+    </div>
+
+    <div class="block">
+      <div class="block-h"><h3>Commercial rationale</h3><span class="cap q">WHY THIS EARNS ITS COST</span></div>
+      <ol class="cycle rat">
+        <li><span class="cap q">WHO IT IS FOR</span><p>Owners and developers before the first meeting. Operators on the week they open. The trades and the people we want to hire.</p></li>
+        <li><span class="cap q">WHAT IT WINS</span><p>People hire builders they feel they know. A film made with an operator goes out to that operator&rsquo;s audience when they open, with our name on the work. Trades who are credited share it.</p></li>
+        <li><span class="cap q">WHAT IT COSTS</span><p>A filmmaker&rsquo;s fee, which is not known because nobody has been asked. About a day of your time for each film. Owner approvals, which set the release dates.</p></li>
+        <li><span class="cap q">HOW WE WOULD KNOW</span><p>A restaurateur forwards a film to an architect without a word of explanation. An operator asks for the file. An enquiry names a film.</p></li>
+      </ol>
+      <p class="flag">Tristan has not been asked. There is no quote, no agreement and no schedule behind this chapter. The first step is one conversation about one pilot.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── 06 ───────────── -->
+<section class="ch" id="house" style="border-top:0"><div class="wrap">
+  <div class="ch-head">
+    <p class="cap red">06</p>
+    <div><p class="tag new cap"><i></i>NEW IN EDITION 002</p><h2>The House</h2><p class="sub">Freeman as a publishing house: photographs, records, films, print and collaborations in one catalogue</p></div>
+  </div>
+
+  <div class="rows">
+    <div class="row"><p class="cap q">THE IDEA</p><div>
+      <p>Freeman already publishes. There is a photographs page, a set of project records, motion studies, a signature, an eagle. What is missing is the decision to treat them as one body of work.</p>
+      <p>A publishing house is that decision. Everything that leaves the building gets a place in one catalogue, is made to one standard, and is signed the same way.</p>
+    </div></div>
+    <div class="row"><p class="cap q">ONE NAME</p><div>
+      <p>No new brand. The work is signed Freeman, and the line under it is Built for Generations. The catalogue numbers are a filing system, not a product range.</p>
+    </div></div>
+  </div>
+
+  <div class="block">
+    <div class="block-h"><h3>The catalogue</h3><span class="cap q">WHAT EXISTS, WHAT IS PROPOSED / NUMBERING PROPOSED</span></div>
+    <div class="cat-filter"><span class="seg cap" id="catFilter" role="group" aria-label="Show">
+      <button type="button" data-f="all" aria-pressed="true">ALL</button><button type="button" data-f="R" aria-pressed="false">RECORDS</button><button type="button" data-f="P" aria-pressed="false">PHOTOGRAPHS</button><button type="button" data-f="F" aria-pressed="false">FILMS</button><button type="button" data-f="E" aria-pressed="false">PRINT</button><button type="button" data-f="C" aria-pressed="false">WITH OTHERS</button>
+    </span></div>
+    <div class="cat">
+      <figure class="cat-view">
+        <div class="cat-ph" id="catPh"><img id="catImg" src="img/muchacho-01.jpg" alt=""><canvas class="px" id="catEagle" width="192" height="60" hidden></canvas></div>
+        <figcaption class="credit cap" id="catCap"></figcaption>
+      </figure>
+      <ol class="cat-list" id="catList"></ol>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-h"><h3>Record No. 10, in print</h3><span class="cap q">A PROOF ON SCREEN / NOTHING HAS BEEN PRINTED</span></div>
+    <div class="book">
+      <div class="book-sp" id="bookSp" tabindex="0" aria-label="Printed edition proof. Use the left and right arrow keys to turn the page.">
+        <!-- spread 1 -->
+        <div class="pg" data-sp="0"><div class="in" style="display:grid;align-content:end;justify-items:start"><canvas class="px" id="bkEagle" width="192" height="60" style="width:11cqw;aspect-ratio:192/60"></canvas></div><div class="fo"><span>Freeman General Contracting</span><span>Cartersville, Georgia</span></div></div>
+        <div class="pg" data-sp="0"><div class="in" style="display:grid;grid-template-rows:auto 1fr auto"><p class="k">The Building Record<br>No. 10</p><p class="ti" style="align-self:center">Muchacho<br>Decatur</p><p class="k">129 Church Street<br>Decatur, Georgia</p></div><div class="fo"><span>Built for Generations</span><span>Proof</span></div></div>
+        <!-- spread 2 -->
+        <div class="pg" data-sp="1" hidden><img src="img/muchacho-01.jpg" alt="The front of Muchacho Decatur, as photographed" loading="lazy"></div>
+        <div class="pg" data-sp="1" hidden><svg class="dw" id="bkSvg" viewBox="0 0 1920 2400" role="img" aria-label="Record drawing R-1, front elevation"></svg><div class="fo"><span>R-1 &nbsp;Front elevation. Traced from plate 01. Not to scale.</span><span>3</span></div></div>
+        <!-- spread 3 -->
+        <div class="pg" data-sp="2" hidden><div class="in"><p class="k" style="margin-bottom:3cqw">The account</p><p class="tx first" id="bkFirst"></p><p class="tx" id="bkRest"></p></div><div class="fo"><span>4</span><span>Account not yet approved</span></div></div>
+        <div class="pg" data-sp="2" hidden><img src="img/muchacho-02.jpg" alt="The front room in use" loading="lazy"></div>
+        <!-- spread 4 -->
+        <div class="pg" data-sp="3" hidden><div class="small-ph"><img src="img/muchacho-04.jpg" alt="The panelled door lettered W.C." loading="lazy"></div><div class="fo"><span>6</span><span>Plate 04 &nbsp;Door</span></div></div>
+        <div class="pg" data-sp="3" hidden><img src="img/muchacho-03.jpg" alt="The bar, with guests seen through the opening" loading="lazy"></div>
+        <!-- spread 5 -->
+        <div class="pg" data-sp="4" hidden><img src="img/muchacho-06.jpg" alt="A helmet, a tape recorder and a lamp on a sideboard" loading="lazy"></div>
+        <div class="pg" data-sp="4" hidden><div class="in"><p class="k" style="margin-bottom:2cqw">Particulars</p>
+          <dl><div><dt>Building</dt><dd>A house built in 1940</dd></div><div><dt>Use</dt><dd>Restaurant and bar</dd></div><div><dt>Operator</dt><dd>Electric Hospitality</dd></div><div><dt>Interiors</dt><dd>BLUR Workshop</dd></div><div><dt>Builder</dt><dd>Freeman General Contracting</dd></div><div><dt>Record</dt><dd>6 photographs, 5 record drawings</dd></div><div><dt>Photographs</dt><dd>Photographer to be credited</dd></div></dl>
+          <div style="position:absolute;left:0;bottom:3cqw"><canvas class="mk" id="bkMk" data-globe="0" data-static="1" data-scale="2" style="width:13cqw;height:auto;--mark:#f93822" aria-hidden="true"></canvas></div></div><div class="fo"><span>Built for Generations</span><span>9</span></div></div>
+      </div>
+      <div class="book-ctl">
+        <span class="seg cap" role="group" aria-label="Turn the page"><button type="button" id="bkPrev">PREVIOUS</button><button type="button" id="bkNext">NEXT</button></span>
+        <span class="cap q" id="bkPos" role="status">SPREAD 1 / 5</span>
+      </div>
+    </div>
+    <dl class="spec" style="margin-top:24px">
+      <div><dt class="cap">FORMAT</dt><dd>A small stitched booklet, about the size of a paperback page turned upright. Proposed, to be settled with a printer.</dd></div>
+      <div><dt class="cap">CONTENT</dt><dd>Exactly the record: the drawings, the photographs, the account, the particulars. No sales copy.</dd></div>
+      <div><dt class="cap">WHO GETS IT</dt><dd>The owner, the designer, the trades who built it, and the next owner we would like to build for.</dd></div>
+      <div><dt class="cap">THE TEST</dt><dd>The designer of the room would want a copy on their own shelf.</dd></div>
+    </dl>
+  </div>
+
+  <div class="rows block">
+    <div class="row"><p class="cap q">WITH OTHERS</p><div>
+      <p>The jacket in chapter 03 asked who Freeman should make things with. The answer I would start from is the people already in our credits: operators, design studios, a photographer.</p>
+      <p>Two rules. The thing has to be worth having with our name taken off it, which was the jacket&rsquo;s own test. And the other party has to be better known for it afterwards, not only us.</p>
+      <p class="flag" style="margin-top:18px">Nobody named in this edition has been asked about any collaboration. Every entry marked proposed in the catalogue is an idea of mine and nothing more.</p>
+    </div></div>
+    <div class="row"><p class="cap q">ALREADY IN THE CREDITS</p><div>
+      <ul class="two" style="max-width:none">
+        <li>Rocket Farm Restaurants</li><li>David Thompson Studio</li>
+        <li>The Indigo Road Hospitality Group</li><li>Chuck Marie Studio</li>
+        <li>Electric Hospitality</li><li>BLUR Workshop</li>
+        <li>South Street Partners</li><li>NO Architecture</li>
+        <li>South Downtown</li><li>Gentle Works</li>
+      </ul>
+      <p class="small" style="margin-top:14px">As published in Freeman&rsquo;s project credits, checked 26 October 2026. Photography on Beetlecat, The Optimist and Barnsley is by Jared Swafford.</p>
+    </div></div>
+  </div>
+
+  <div class="block">
+    <div class="block-h"><h3>Commercial rationale</h3><span class="cap q">WHY THIS EARNS ITS COST</span></div>
+    <ol class="cycle rat">
+      <li><span class="cap q">WHO IT IS FOR</span><p>A few hundred people: architects, restaurateurs, hotel operators, developers and designers who decide where the next important place gets built, and by whom.</p></li>
+      <li><span class="cap q">WHAT IT WINS</span><p>One coherent body of work in place of scattered posts. A printed record stays on a desk long after a link is closed. Work made with partners reaches their audience as well as ours.</p></li>
+      <li><span class="cap q">WHAT IT COSTS</span><p>Editing time, which is mine. A print run, priced only after a proof. The discipline to publish less when the work is not ready.</p></li>
+      <li><span class="cap q">HOW WE WOULD KNOW</span><p>Every published piece has a number, a date and a credit. Partners ask for copies. Introductions arrive that can be traced to something we made.</p></li>
+    </ol>
+  </div>
+</div></section>
+
+<!-- ───────────── 07 ───────────── -->
+<section class="ch" id="take"><div class="wrap">
+  <div class="ch-head">
+    <p class="cap red">07</p>
+    <div><h2>Your Call</h2><p class="sub">Three decisions. Each one starts something specific on Monday 16 November.</p></div>
+  </div>
+
+  <ol class="dec" id="decs">
+    <li data-k="record"><div><p class="cap q">DECISION 1</p><h3>The Record</h3></div><div class="slot"></div></li>
+    <li data-k="series"><div><p class="cap q">DECISION 2</p><h3>The Series</h3></div><div class="slot"></div></li>
+    <li data-k="house"><div><p class="cap q">DECISION 3</p><h3>The House and the Globe</h3></div><div class="slot"></div></li>
+  </ol>
+
+  <div class="block">
+    <div class="block-h"><h3>The next ninety days</h3><span class="cap q">16 NOVEMBER 2026 TO 13 FEBRUARY 2027</span></div>
+    <div class="days" role="img" aria-label="Three tracks across ninety days in three thirty-day phases: permission, make, publish">
+      <span class="tk" style="grid-column:1/30">DAY 1 &nbsp;16 NOV</span><span class="tk" style="grid-column:31/60">DAY 31 &nbsp;16 DEC</span><span class="tk" style="grid-column:61/80">DAY 61 &nbsp;15 JAN</span><span class="tk r" style="grid-column:80/91">DAY 90 &nbsp;13 FEB</span>
+      <div class="tr"><div class="bar90 on" style="grid-column:1/31"><span class="cap">RECORD</span>Ask for drawings. Start the protocol.</div><div class="bar90 on" style="grid-column:31/61"><span class="cap">RECORD</span>Build No. 10 on real drawings.</div><div class="bar90 on" style="grid-column:61/91"><span class="cap">RECORD</span>Partner review. Publish.</div></div>
+      <div class="tr"><div class="bar90" style="grid-column:1/31"><span class="cap">SERIES</span>Talk to Tristan. Scope and releases.</div><div class="bar90" style="grid-column:31/61"><span class="cap">SERIES</span>Recce, shoot, first cut.</div><div class="bar90" style="grid-column:61/91"><span class="cap">SERIES</span>Lock. Screen. Release.</div></div>
+      <div class="tr"><div class="bar90" style="grid-column:1/31"><span class="cap">HOUSE</span>Number the catalogue. Clear rights.</div><div class="bar90" style="grid-column:31/61"><span class="cap">HOUSE</span>Print proof. Globe preview.</div><div class="bar90" style="grid-column:61/91"><span class="cap">HOUSE</span>Print run. Decide the season.</div></div>
+      <span class="hol">21 DEC TO 1 JAN &nbsp;HOLIDAY: DRAWING AND EDITING, NO SITE VISITS</span>
+    </div>
+
+    <ol class="phases">
+      <li><span class="cap q">DAYS 1 TO 30 &nbsp;/&nbsp; 16 NOV TO 15 DEC</span><h4>Permission and protocol</h4>
+        <ul>
+          <li><span>R</span><span>Ask Electric Hospitality and BLUR Workshop for the Muchacho drawings and permission to redraw them.</span></li>
+          <li><span>R</span><span>Write down scope, dates, area and team for Muchacho. Confirm the door plate is Muchacho.</span></li>
+          <li><span>R</span><span>Give every superintendent the one-page capture protocol. Start fixed-position photographs on each live job.</span></li>
+          <li><span>F</span><span>One conversation with Tristan: days, fee, credit, who owns the footage. Come back with a number for one pilot.</span></li>
+          <li><span>F</span><span>Release forms in English and Spanish. A list of what is on site from December to February.</span></li>
+          <li><span>H</span><span>Number what exists. Confirm with Jared Swafford which photographs are cleared for what.</span></li>
+          <li><span>H</span><span>Correct the project copy that would not survive a careful reader, and settle the Barnsley project name.</span></li>
+        </ul>
+        <p class="gate"><b>Gate, day 30.</b> Real drawings are in hand, or a second project is chosen. Tristan has said yes or no, with a number.</p>
+      </li>
+      <li><span class="cap q">DAYS 31 TO 60 &nbsp;/&nbsp; 16 DEC TO 14 JAN</span><h4>Make</h4>
+        <ul>
+          <li><span>R</span><span>Rebuild Record No. 10 on the architect&rsquo;s drawings: a plan sheet, the construction state filled where photographs exist, the account approved.</span></li>
+          <li><span>R</span><span>Start a second record from the register. Barnsley has sitework photographs; Beetlecat has the strongest finished set.</span></li>
+          <li><span>F</span><span>Recce and shoot the pilot. First cut by day 60.</span></li>
+          <li><span>F</span><span>Record the empty room and its sound at the start of every new job, for the film that needs it a year from now.</span></li>
+          <li><span>H</span><span>One printed proof of Record No. 10. The private homepage preview with the globe, promised in Edition 001.</span></li>
+        </ul>
+        <p class="gate"><b>Gate, day 60.</b> The record has been read by the partner it credits. You and I have watched the first cut once, together.</p>
+      </li>
+      <li><span class="cap q">DAYS 61 TO 90 &nbsp;/&nbsp; 15 JAN TO 13 FEB</span><h4>Publish and decide</h4>
+        <ul>
+          <li><span>R</span><span>Publish Record No. 10 on freemangc.com as its own reviewed change, and use it in the next pursuit.</span></li>
+          <li><span>F</span><span>Lock the pilot. Partner approvals. Show it once, in a room Freeman built, to the people in the credits. Then release it.</span></li>
+          <li><span>H</span><span>Deliver the printed record to the owner, the designer and the trades. Put the catalogue on the site.</span></li>
+          <li><span>H</span><span>Decide: a season of five films or none; the next three records; whether the globe goes on the homepage.</span></li>
+        </ul>
+        <p class="gate"><b>Gate, day 90.</b> One record published, one film shown, one edition printed. We decide what continues on evidence.</p>
+      </li>
+    </ol>
+    <p class="fig-cap">Dates are the plan, not a commitment from anyone outside Freeman. Every step that touches a partner waits for their answer, and every change to the live site is made as a separate reviewed release.</p>
+  </div>
+
+  <div class="fourth">
+    <label for="fourth">What&rsquo;s the fourth idea?</label>
+    <textarea id="fourth" placeholder="The thing you&rsquo;ve been thinking about that I haven&rsquo;t."></textarea>
+  </div>
+
+  <div class="brief">
+    <div><h3 class="cap">WHERE THAT LEAVES US</h3></div>
+    <div>
+      <textarea id="brief" readonly aria-label="Summary of your decisions"></textarea>
+      <div class="act">
+        <button class="btn cap" id="copy" type="button">COPY FOR COLE</button>
+        <button class="btn ghost cap" id="clear" type="button">CLEAR ANSWERS</button>
+        <span class="cap q" id="copied" role="status"></span>
+      </div>
+      <p id="sync" data-s="local" role="status">Your answers are kept on this device as you type. They are not sent anywhere on their own, so use Copy for Cole to send them.</p>
+    </div>
+  </div>
+</div></section>
+
+<footer class="colophon"><div class="wrap g">
+  <p class="cap q">WHAT&rsquo;S REAL AND WHAT ISN&rsquo;T</p>
+  <ul>
+    <li><b>Real:</b> every photograph. Beetlecat, The Optimist and Barnsley are from Freeman&rsquo;s published portfolio, photographed by Jared Swafford. Muchacho Decatur, Woodlands and the site and landscape photographs are from the Freeman Photographs folder; their photographers are still to be credited. None is stock, and none is generated.</li>
+    <li><b>Real:</b> the script and the eagle, drawn from the production bitmaps. The fifteen projects, their numbers and their credits, as Freeman published them.</li>
+    <li><b>Traced, not surveyed:</b> the record drawings. They were drawn over Freeman&rsquo;s own photographs for Built Record Study 001. They are not the architect&rsquo;s drawings and carry no dimensions.</li>
+    <li><b>From Edition 001, unchanged:</b> the globe, the homepage comparison, storyboard frames 01 to 06 and every jacket study. The storyboard dialogue was illustrative then and still is.</li>
+    <li><b>Built for this edition:</b> the record sheet, the spread, the register, the animatic, the catalogue and the print proof. They run here only. Nothing was changed on or deployed to freemangc.com.</li>
+    <li><b>Read from Edition 001:</b> the three calls shown in Part One are the ones saved on that page on 13 November 2026. No notes were saved with them.</li>
+    <li><b>Not yet true:</b> Tristan has not been asked. Represent has not been contacted. No partner has been approached about drawings, films, print or collaborations. Nothing here is priced.</li>
+    <li class="cap" style="border:0;padding-top:18px">FREEMAN GENERAL CONTRACTING / CARTERSVILLE, GEORGIA / CREATIVE STUDIES, EDITION 002, 14 NOVEMBER 2026</li>
+  </ul>
+</div></footer>
+
+<script>
+(() => {
+"use strict";
+/* ── Edition 001 code, lifted unchanged by tools/build.py: the script bitmap, the globe, the homepage comparison, the storyboard drawings, the jacket ── */
+const RUNS = [4,56,7,5,52,11,6,31,13,6,49,13,7,29,31,8,28,5,8,43,12,9,27,4,9,44,5,10,26,3,10,43,5,11,25,4,11,42,4,12,25,3,12,41,4,13,25,3,13,41,3,14,25,4,14,40,4,15,25,5,15,33,3,15,39,4,16,26,10,16,38,4,17,27,7,17,37,4,18,37,4,19,36,4,20,35,4,21,34,4,22,34,4,23,33,4,23,40,3,23,45,3,24,30,13,24,44,4,24,63,3,24,76,3,24,87,3,24,95,3,24,104,3,24,119,4,24,125,2,24,134,3,24,142,3,25,29,13,25,44,5,25,61,6,25,74,6,25,86,5,25,93,6,25,102,6,25,117,10,25,133,5,25,140,6,26,30,6,26,37,4,26,44,7,26,59,8,26,72,9,26,84,24,26,116,4,26,121,6,26,131,16,27,30,4,27,38,2,27,43,3,27,48,4,27,58,4,27,64,3,27,71,4,27,77,3,27,83,4,27,88,6,27,97,6,27,105,3,27,114,4,27,121,5,27,130,3,27,135,6,27,144,3,28,29,4,28,43,2,28,48,4,28,57,4,28,63,4,28,70,4,28,77,3,28,82,3,28,87,6,28,96,6,28,105,3,28,113,4,28,121,5,28,129,3,28,134,6,28,143,4,29,29,4,29,42,3,29,47,4,29,56,4,29,62,4,29,69,4,29,75,4,29,81,3,29,87,4,29,96,4,29,104,4,29,112,4,29,121,4,29,128,3,29,134,5,29,143,3,30,28,4,30,41,3,30,47,4,30,55,4,30,61,4,30,68,4,30,74,4,30,80,3,30,86,5,30,95,4,30,103,4,30,112,3,30,120,4,30,127,3,30,133,4,30,142,4,30,151,4,31,27,4,31,40,3,31,46,4,31,54,10,31,68,9,31,80,3,31,85,5,31,94,4,31,103,4,31,111,4,31,119,4,31,127,3,31,132,5,31,141,4,31,150,6,32,26,4,32,40,2,32,45,4,32,54,8,32,67,8,32,79,3,32,85,4,32,94,4,32,102,4,32,110,4,32,119,4,32,126,3,32,132,4,32,141,3,32,150,2,32,154,2,33,25,4,33,39,3,33,45,4,33,53,6,33,66,7,33,78,3,33,84,4,33,93,4,33,101,4,33,109,4,33,118,4,33,125,3,33,131,4,33,140,4,33,149,3,33,154,2,34,5,3,34,24,4,34,38,3,34,44,4,34,52,4,34,65,4,34,77,3,34,83,4,34,92,4,34,101,3,34,109,4,34,117,4,34,124,3,34,130,4,34,139,4,34,148,3,34,154,2,35,4,4,35,23,4,35,37,3,35,43,4,35,52,4,35,64,5,35,76,3,35,83,3,35,92,3,35,100,4,35,108,4,35,116,5,35,123,3,35,129,4,35,139,3,35,147,3,35,154,2,36,4,4,36,22,4,36,37,2,36,43,4,36,51,4,36,63,5,36,75,3,36,82,4,36,91,4,36,100,3,36,107,5,36,116,4,36,122,3,36,129,4,36,138,4,36,146,3,36,154,2,37,4,4,37,20,5,37,36,3,37,43,3,37,49,6,37,62,6,37,74,3,37,81,4,37,90,4,37,99,4,37,106,5,37,115,4,37,121,3,37,128,4,37,138,3,37,145,3,37,153,2,38,4,3,38,18,5,38,35,3,38,42,4,38,48,7,38,60,8,38,72,4,38,80,4,38,90,3,38,99,3,38,105,6,38,114,5,38,120,3,38,127,4,38,138,3,38,143,4,38,153,2,39,5,4,39,16,6,39,34,3,39,42,9,39,52,3,39,57,6,39,65,4,39,70,5,39,80,3,39,89,4,39,99,12,39,112,10,39,127,4,39,137,9,39,152,3,40,6,14,40,33,3,40,43,6,40,52,9,40,66,7,40,79,4,40,89,3,40,99,7,40,108,13,40,126,4,40,138,6,40,151,3,41,7,10,41,33,2,41,43,4,41,54,5,41,67,4,41,80,2,41,89,2,41,100,4,41,109,4,41,116,3,41,127,2,41,139,3,41,150,4,42,147,6,43,144,8,44,140,11,45,134,17,46,41,108,47,32,116,48,26,120,49,22,122,50,19,122,51,16,8,51,33,102,52,13,6,52,38,76,53,10,6,53,42,43,54,7,6,54,52,3,55,5,5,56,5,3];            // production script bitmap, 160x61, as [y, x, length] runs
+const SW = 160, SH = 61;
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+
+/* ───────── the mark: still script, turning globe ───────── */
+const script = new Uint8Array(SW * SH);
+for (let i = 0; i < RUNS.length; i += 3) for (let k = 0; k < RUNS[i + 2]; k++) script[RUNS[i] * SW + RUNS[i + 1] + k] = 1;
+const halo = new Uint8Array(SW * SH);   // script grown by one pixel: the globe is cleared here so the signature reads
+for (let y = 0; y < SH; y++) for (let x = 0; x < SW; x++) {
+  let on = 0;
+  for (let dy = -1; dy <= 1 && !on; dy++) for (let dx = -1; dx <= 1; dx++) {
+    const xx = x + dx, yy = y + dy;
+    if (xx >= 0 && yy >= 0 && xx < SW && yy < SH && script[yy * SW + xx]) { on = 1; break; }
+  }
+  halo[y * SW + x] = on;
+}
+const TILT = 12 * Math.PI / 180, ST = Math.sin(TILT), CT = Math.cos(TILT);
+const MER = 20, PAR = 20;          // degrees between meridians / parallels
+
+function globeMask(buf, W, H, D, rot) {
+  buf.fill(0);
+  const R = (D - 1) / 2, cx = (W - 1) / 2, cy = (H - 1) / 2;
+  const plot = (x, y) => { if (x >= 0 && y >= 0 && x < W && y < H) buf[y * W + x] = 1; };
+  const line = (x0, y0, x1, y1) => {
+    let dx = Math.abs(x1 - x0), dy = -Math.abs(y1 - y0), sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1, e = dx + dy;
+    for (;;) { plot(x0, y0); if (x0 === x1 && y0 === y1) break; const e2 = 2 * e; if (e2 >= dy) { e += dy; x0 += sx; } if (e2 <= dx) { e += dx; y0 += sy; } }
+  };
+  let px, py, pv;
+  const to = (lon, lat) => {
+    const cl = Math.cos(lat), x = cl * Math.sin(lon), y = Math.sin(lat), z = cl * Math.cos(lon);
+    const y2 = y * CT - z * ST, z2 = y * ST + z * CT, sx = Math.round(cx + R * x), sy = Math.round(cy - R * y2), v = z2 > 0;
+    if (v && pv) line(px, py, sx, sy);
+    px = sx; py = sy; pv = v;
+  };
+  const d2r = Math.PI / 180, off = ((rot % MER) + MER) % MER;
+  for (let m = -180 + off; m < 180; m += MER) { pv = false; for (let la = -90; la <= 90; la += 3) to(m * d2r, la * d2r); }
+  for (let la = -80; la <= 80; la += PAR) { pv = false; for (let lo = -180; lo <= 180; lo += 3) to(lo * d2r, la * d2r); }
+  // limb
+  let fx = Math.round(cx + R), fy = Math.round(cy);
+  for (let a = 3; a <= 360; a += 3) { const nx = Math.round(cx + R * Math.cos(a * d2r)), ny = Math.round(cy + R * Math.sin(a * d2r)); line(fx, fy, nx, ny); fx = nx; fy = ny; }
+}
+
+const marks = [];
+function setupMark(c) {
+  const globe = c.dataset.globe === "1", D = +(c.dataset.d || 0), scale = +(c.dataset.scale || 1);
+  const W = SW, H = globe ? Math.max(SH, D + 2) : SH, oy = Math.floor((H - SH) / 2);
+  c.width = W * scale; c.height = H * scale;
+  const m = { c, ctx: c.getContext("2d"), W, H, D, oy, scale, globe, buf: new Uint8Array(W * H), stat: c.dataset.static === "1", vis: true, col: null, showGlobe: globe };
+  marks.push(m); return m;
+}
+function colours(m) { const s = getComputedStyle(m.c); m.col = [s.getPropertyValue("--mark").trim() || "#332e20", s.getPropertyValue("--globe").trim() || "#f93822"]; }
+function paint(m, rot) {
+  const { ctx, W, H, oy, scale: k } = m;
+  if (!m.col) colours(m);
+  ctx.clearRect(0, 0, W * k, H * k);
+  if (m.globe && m.showGlobe) {
+    globeMask(m.buf, W, H, m.D, rot);
+    ctx.fillStyle = m.col[1];
+    for (let y = 0; y < H; y++) {
+      const sy = y - oy, inS = sy >= 0 && sy < SH;
+      for (let x = 0; x < W; x++) if (m.buf[y * W + x] && !(inS && halo[sy * SW + x])) ctx.fillRect(x * k, y * k, k, k);
+    }
+  }
+  ctx.fillStyle = m.col[0];
+  for (let i = 0; i < RUNS.length; i += 3) ctx.fillRect(RUNS[i + 1] * k, (RUNS[i] + oy) * k, RUNS[i + 2] * k, k);
+}
+function fit(m) {                      // whole device pixels per bitmap pixel, so the grid stays even
+  if (m.stat) return;
+  const box = m.c.closest(".hp") || m.c.parentElement, avail = box.clientWidth;
+  if (!avail) return;
+  const dpr = window.devicePixelRatio || 1, inHp = !!m.c.closest(".hp");
+  let target = inHp ? (avail <= 640 ? avail * .84 : avail / 3) : avail * +(m.c.dataset.fit || .8);
+  let px = Math.floor(target / m.W * dpr) / dpr;
+  px = Math.max(1 / dpr, Math.min(px, +(m.c.dataset.max || 99)));
+  m.px = px; m.c.style.width = px * m.W + "px"; m.c.style.height = px * m.H + "px";
+  if (m.c.id === "hpmk") placeNav();
+}
+$$("canvas.mk").forEach(setupMark);
+
+let rot = 20, period = 13, paused = reduce.matches, last = 0;
+const pauseBtn = $("#pause"), rate = $("#rate");
+function syncPause() { pauseBtn.textContent = paused ? "PLAY" : "PAUSE"; pauseBtn.setAttribute("aria-pressed", String(paused)); rate.textContent = paused ? "HELD STILL" : "ONE TURN / " + period + " S"; }
+function drawAll(force) { for (const m of marks) if (force || (m.globe && m.showGlobe && !m.stat && m.vis)) paint(m, rot); }
+function tick(now) {
+  const dt = Math.min(64, now - last); last = now;
+  if (!paused && !document.hidden) { rot = (rot + dt / 1000 * 360 / period) % 360; drawAll(false); }
+  requestAnimationFrame(tick);
+}
+pauseBtn.addEventListener("click", () => { paused = !paused; syncPause(); });
+$("#speed").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; period = +b.dataset.s; $$("#speed button").forEach(x => x.setAttribute("aria-pressed", String(x === b))); syncPause(); });
+reduce.addEventListener?.("change", () => { paused = reduce.matches; syncPause(); });
+if ("IntersectionObserver" in window) {
+  const io = new IntersectionObserver(es => es.forEach(e => { const m = marks.find(x => x.c === e.target); if (m) m.vis = e.isIntersecting; }), { rootMargin: "80px" });
+  marks.forEach(m => io.observe(m.c));
+}
+const refit = () => { marks.forEach(fit); };
+const recolour = () => { marks.forEach(m => { m.col = null; }); drawAll(true); };
+addEventListener("resize", refit);
+matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", recolour);
+new MutationObserver(recolour).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+/* homepage comparison */
+const hp = $("#hp"), hpm = marks.find(m => m.c.id === "hpmk"), hpnav = $("#hpnav");
+function placeNav() {                  // Current: nav 12 bitmap pixels under the script, as on the live page. Proposed: clear of the globe.
+  if (!hpm || !hpm.px) return;
+  const below = (hpm.H - SH) / 2 * hpm.px, cur = hp.dataset.mode === "current", narrow = hp.clientWidth <= 640;
+  hpnav.style.marginTop = (cur ? -below + (narrow ? 9 : 12) * hpm.px : (narrow ? 5 : 7) * hpm.px) + "px";
+}
+$("#cmp").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; hp.dataset.mode = b.dataset.m; hpm.showGlobe = b.dataset.m === "proposed";
+  $$("#cmp button").forEach(x => x.setAttribute("aria-pressed", String(x === b))); placeNav(); paint(hpm, rot); });
+$$(".hp-ways button").forEach(b => b.addEventListener("click", () => { hp.dataset.way = b.dataset.way; hpm.col = null; paint(hpm, rot); }));
+
+/* ───────── storyboard: tonal drawings, then a 1-bit screen ───────── */
+const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+function scene(cv) {
+  const W = 400, H = 168, x = cv.getContext("2d", { willReadFrequently: true });
+  const g = v => { const c = Math.round(Math.max(0, Math.min(1, v)) * 255); return `rgb(${c},${c},${c})`; };
+  const R = (a, b, w, h, v) => { x.fillStyle = g(v); x.fillRect(a, b, w, h); };
+  const P = (p, v) => { x.fillStyle = g(v); x.beginPath(); p.forEach((q, i) => i ? x.lineTo(q[0], q[1]) : x.moveTo(q[0], q[1])); x.closePath(); x.fill(); };
+  const L = (a, b, c, d, v, w = 1) => { x.strokeStyle = g(v); x.lineWidth = w; x.beginPath(); x.moveTo(a, b); x.lineTo(c, d); x.stroke(); };
+  const E = (cx, cy, rx, ry, v) => { x.fillStyle = g(v); x.beginPath(); x.ellipse(cx, cy, rx, ry, 0, 0, 7); x.fill(); };
+  const GR = (a, b, w, h, v0, v1) => { const gr = x.createLinearGradient(0, b, 0, b + h); gr.addColorStop(0, g(v0)); gr.addColorStop(1, g(v1)); x.fillStyle = gr; x.fillRect(a, b, w, h); };
+  const man = (fx, fy, h, v, stride = 0) => {          // a small standing or walking figure, feet at (fx, fy)
+    const hd = h * .075;
+    P([[fx - h * .09, fy - h * .5], [fx + h * .09, fy - h * .5], [fx + h * .05 + stride, fy], [fx - .02 * h + stride, fy], [fx, fy - h * .28], [fx - h * .02 - stride, fy], [fx - h * .09 - stride, fy]], v);
+    P([[fx - h * .13, fy - h * .82], [fx + h * .13, fy - h * .82], [fx + h * .1, fy - h * .46], [fx - h * .1, fy - h * .46]], v);
+    E(fx, fy - h * .91, hd, hd * 1.15, v);
+  };
+  const n = +cv.dataset.scene;
+
+  if (n === 1) {                                        // DOWNTOWN
+    const VX = 206, VY = 97;
+    GR(0, 0, W, VY, .34, .93);
+    P([[120, VY], [150, 90], [176, 93], [200, 88], [226, 92], [250, 89], [290, VY]], .5);
+    R(0, VY, W, H - VY, .2);
+    P([[118, H], [300, H], [213, VY], [200, VY]], .31);
+    P([[40, H], [118, H], [200, VY], [196, VY]], .4); P([[300, H], [372, H], [217, VY], [213, VY]], .46);
+    for (let i = 0; i < 6; i++) { const f0 = 1 - Math.pow(.62, i) * .92, f1 = f0 + .035 * Math.pow(.7, i); P([[208 - (1 - f0) * 2, VY + (H - VY) * (1 - f0)], [210 + (1 - f0) * 2, VY + (H - VY) * (1 - f0)], [209 + (1 - f1) * 1.5, VY + (H - VY) * (1 - f1)], [208 - (1 - f1) * 1.5, VY + (H - VY) * (1 - f1)]], .6); }
+    const wall = (side, f, h) => { const xn = side < 0 ? -12 : 412, ya = 150 + (4 - 150) * h; return [xn + (VX - xn) * f, ya + (VY - ya) * f]; };
+    const row = (side, cuts, hs, base, lit) => {
+      for (let i = cuts.length - 2; i >= 0; i--) {
+        const a = cuts[i], b = cuts[i + 1], h = hs[i], v = base + (i % 2 ? .035 : 0) + i * .012;
+        P([wall(side, a, 0), wall(side, b, 0), wall(side, b, h), wall(side, a, h)], v);
+        P([wall(side, a, h), wall(side, b, h), wall(side, b, h - .035), wall(side, a, h - .035)], v + .1);
+        const cols = i < 2 ? 3 : 2;
+        for (let c = 0; c < cols; c++) {
+          const u0 = a + (b - a) * (c + .22) / cols, u1 = a + (b - a) * (c + .78) / cols;
+          for (let s = 0; s < (h > .8 ? 2 : 1); s++) { const h0 = .46 + s * .24, h1 = h0 + .15; if (h1 < h - .06) P([wall(side, u0, h0), wall(side, u1, h0), wall(side, u1, h1), wall(side, u0, h1)], v - .07); }
+        }
+        P([wall(side, a + (b - a) * .08, .05), wall(side, b - (b - a) * .08, .05), wall(side, b - (b - a) * .08, .34), wall(side, a + (b - a) * .08, .34)], lit === i ? .97 : v - .09);
+        P([wall(side, a, .37), wall(side, b, .37), wall(side, b, .4), wall(side, a, .4)], v + .06);
+      }
+    };
+    row(-1, [0, .3, .5, .64, .75, .83, .9], [.8, 1, .72, .9, .76, .84], .1, 3);
+    row(1, [0, .27, .47, .62, .73, .82, .9], [.92, .74, 1, .8, .88, .7], .3, -1);
+    [[.36, -1], [.66, -1], [.52, 1]].forEach(([f, s]) => { const xn = s < 0 ? 96 : 322, bx = xn + (VX - xn) * f, by = H - 4 + (VY - H + 4) * f, top = by - 56 * (1 - f); L(bx, by, bx, top, .08, 1.4); E(bx, top, 2.6 * (1 - f) + .8, 2.6 * (1 - f) + .8, 1); });
+  }
+
+  if (n === 2) {                                        // GABE ARRIVES
+    GR(0, 0, W, 104, .56, .92);
+    P([[150, 104], [150, 58], [196, 58], [196, 46], [262, 46], [262, 62], [318, 62], [318, 50], [400, 50], [400, 104]], .6);
+    for (let i = 0; i < 9; i++) R(204 + i * 22, 70, 9, 15, .5);
+    R(150, 104, 250, 16, .46); R(0, 120, W, 4, .58); R(0, 124, W, 44, .34); R(0, 150, W, 18, .28);
+    P([[150, 0], [214, 18], [214, 110], [150, 124]], .24);
+    P([[166, 46], [198, 50], [198, 96], [166, 100]], .14); P([[150, 26], [214, 38], [214, 41], [150, 30]], .32);
+    R(0, 0, 150, 124, .12);
+    for (let y = 4; y < 124; y += 5) L(0, y + .5, 150, y + .5, .17, 1);
+    R(0, 18, 150, 5, .2); R(34, 34, 44, 62, .06); R(32, 32, 48, 3, .26); R(32, 96, 48, 4, .28); L(56, 34, 56, 96, .2, 1.4); L(34, 64, 78, 64, .2, 1.4);
+    R(102, 60, 30, 64, .05); R(100, 57, 34, 3, .24); R(148, 0, 3, 124, .2);
+    L(338, 132, 338, 60, .1, 1.6); L(338, 60, 348, 60, .1, 1.6); E(349, 62, 3, 3, 1);
+    man(252, 142, 46, .05, 4);
+    P([[252, 142], [300, 147], [300, 149], [252, 145]], .26);
+  }
+
+  if (n === 3) {                                        // THE STAIRS
+    R(0, 0, W, H, .09);
+    P([[0, 0], [158, 0], [158, 46], [62, H], [0, H]], .13); P([[400, 0], [242, 0], [242, 46], [338, H], [400, H]], .17);
+    R(158, 0, 84, 48, .2); R(170, 4, 60, 40, .96);
+    L(200, 4, 200, 44, .2, 2); L(170, 24, 230, 24, .2, 2);
+    const N = 15;
+    for (let i = 0; i < N; i++) {
+      const t0 = i / N, t1 = (i + 1) / N, y0 = H - Math.pow(t0, .82) * 120, y1 = H - Math.pow(t1, .82) * 120, w0 = 138 - 96 * t0, w1 = 138 - 96 * t1, ym = y0 - (y0 - y1) * .58;
+      P([[200 - w0, y0], [200 + w0, y0], [200 + w0, ym], [200 - w0, ym]], .1 + .1 * t0);
+      P([[200 - w0, ym], [200 + w0, ym], [200 + w1, y1], [200 - w1, y1]], .26 + .55 * t0 * t0);
+    }
+    L(82, 148, 163, 34, .5, 1.6); L(318, 148, 237, 34, .42, 1.2);
+    for (let i = 0; i < 4; i++) { const t = i / 3.4, bx = 86 + (160 - 86) * t, by = 143 + (38 - 143) * t; L(bx, by, bx - 6 * (1 - t) - 2, by + 3, .4, 1); }
+    man(200, 112, 50, .03, 3);
+  }
+
+  if (n === 4) {                                        // THE OFFICE
+    R(0, 0, W, 112, .13); R(0, 0, W, 7, .08); R(0, 112, W, 56, .09); L(0, 112.5, W, 112.5, .2, 1);
+    [44, 132, 220].forEach((wx, i) => {
+      R(wx - 3, 15, 62, 78, .24); GR(wx, 18, 56, 72, .74, .95);
+      L(wx + 28, 18, wx + 28, 90, .16, 2); L(wx, 42, wx + 56, 42, .16, 1.6); L(wx, 66, wx + 56, 66, .16, 1.6);
+      P([[wx + 2, 114], [wx + 54, 114], [wx + 96 + i * 6, H], [wx + 22 + i * 6, H]], .25);
+    });
+    [88, 176, 264].forEach(lx => { L(lx, 7, lx, 30, .04, 1); P([[lx - 9, 38], [lx + 9, 38], [lx + 4, 30], [lx - 4, 30]], .04); });
+    R(22, 108, 96, 6, .03); R(26, 114, 4, 40, .03); R(110, 114, 4, 40, .03); R(52, 90, 26, 17, .03); R(63, 106, 4, 3, .03);
+    R(150, 120, 136, 6, .03); R(156, 126, 5, 36, .03); R(276, 126, 5, 36, .03);
+    R(170, 114, 58, 6, .3); E(170, 117, 2, 3, .42); R(236, 116, 34, 4, .22);
+    P([[86, 128], [106, 128], [108, 108], [84, 108]], .03); R(94, 128, 4, 22, .03);
+    R(326, 20, 52, 100, .05); R(330, 24, 44, 96, .42); P([[330, 24], [346, 30], [346, 126], [330, 120]], .2);
+    P([[330, 120], [374, 120], [350, H], [282, H]], .2);
+    man(356, 121, 62, .02, 0); L(350, 78, 322, 66, .02, 3.4);
+    R(316, 60, 6, 10, .55);
+  }
+
+  if (n === 5) {                                        // THE DESK
+    R(0, 0, W, 124, .74); R(0, 124, W, 44, .46); L(0, 124.5, W, 124.5, .34, 1);
+    R(16, 12, 86, 82, .42); GR(20, 16, 78, 74, .9, .99); L(59, 16, 59, 90, .4, 2); L(20, 52, 98, 52, .4, 1.6); R(14, 94, 90, 4, .5);
+    R(138, 14, 150, 62, .36); R(141, 17, 144, 56, .62);
+    [[146, 21, 40, 30], [190, 21, 52, 38], [246, 21, 34, 24], [146, 55, 40, 14], [246, 49, 34, 20]].forEach(([a, b, w, h], i) => {
+      R(a, b, w, h, .95);
+      for (let k = 1; k < 4; k++) L(a + 3, b + h * k / 4, a + w - 3, b + h * k / 4, .5, .6);
+      if (i === 1) { x.strokeStyle = g(.3); x.lineWidth = .8; x.strokeRect(a + 8, b + 7, 22, 16); x.strokeRect(a + 30, b + 12, 14, 18); L(a + 8, b + 30, a + 30, b + 30, .3, .8); }
+    });
+    L(330, 0, 330, 20, .2, 1); P([[316, 34], [344, 34], [338, 20], [322, 20]], .16); E(330, 37, 5, 3, 1);
+    R(96, 110, 290, 7, .16); R(104, 117, 274, 46, .3); R(104, 117, 274, 3, .22);
+    R(168, 70, 62, 36, .12); R(171, 73, 56, 30, .88); for (let k = 0; k < 5; k++) L(175, 78 + k * 5, 175 + [40, 28, 44, 20, 34][k], 78 + k * 5, .5, 1); R(196, 106, 6, 4, .12); R(186, 108, 26, 2.5, .12);
+    R(108, 100, 50, 5, .92); E(108, 102.5, 2, 2.6, .6); R(112, 95, 44, 5, .86); E(112, 97.5, 2, 2.6, .55);
+    R(238, 106, 26, 4, .9); R(240, 103, 26, 3, .82);
+    P([[352, 110], [374, 110], [372, 104], [370, 98], [363, 95], [356, 98], [354, 104]], .93); R(349, 108, 28, 2.4, .8);
+    R(306, 78, 6, 46, .14); R(280, 122, 34, 4, .14); R(294, 126, 4, 30, .14);
+    P([[270, 84], [296, 82], [302, 122], [272, 122]], .1); E(279, 70, 9.5, 11, .1); P([[266, 66], [290, 62], [290, 66], [262, 70]], .1);
+    L(272, 92, 240, 107, .1, 6); P([[272, 122], [302, 122], [300, 130], [250, 130], [250, 124]], .1); L(254, 127, 254, 160, .1, 7);
+  }
+
+  if (n === 6) {                                        // THE FIRST WORDS
+    R(0, 0, W, H, .44);
+    GR(0, 0, 132, H, .97, .84); L(66, 0, 66, H, .5, 5); L(0, 70, 132, 70, .5, 4); R(132, 0, 10, H, .3);
+    R(142, 0, 258, H, .4);
+    R(300, 26, 100, 4, .25); R(300, 78, 100, 4, .25); R(300, 130, 100, 4, .25);
+    [[306, 8, 14], [324, 4, 10], [338, 10, 18], [362, 6, 12], [310, 58, 22], [340, 52, 12], [356, 60, 16], [378, 54, 14], [312, 108, 16], [334, 112, 24], [366, 104, 12]].forEach(([a, b, w]) => R(a, b, w, (b < 30 ? 26 : b < 80 ? 78 : 130) - b, .3 + (a % 7) * .02));
+    P([[150, H], [168, 132], [206, 114], [232, 108], [276, 108], [302, 114], [338, 132], [354, H]], .1);
+    P([[150, H], [168, 132], [206, 114], [232, 108], [240, 108], [214, 120], [186, 138], [176, H]], .34);
+    R(238, 86, 32, 28, .16); P([[238, 86], [248, 86], [246, 112], [238, 112]], .46);
+    E(254, 62, 27, 34, .15);
+    x.save(); x.beginPath(); x.rect(220, 20, 26, 90); x.clip(); E(254, 62, 27, 34, .68); x.restore();
+    P([[246, 50], [240, 62], [246, 76], [250, 62]], .4);
+    x.save(); x.beginPath(); x.rect(220, 20, 70, 32); x.clip(); E(254, 58, 29, 34, .06); x.restore();
+    P([[226, 46], [200, 52], [202, 56], [230, 52]], .06);
+    x.save(); x.beginPath(); x.rect(226, 76, 60, 30); x.clip(); E(254, 66, 25, 31, .1); x.restore();
+    x.save(); x.beginPath(); x.rect(226, 76, 14, 30); x.clip(); E(254, 66, 25, 31, .38); x.restore();
+  }
+
+  const im = x.getImageData(0, 0, W, H), d = im.data, A = [29, 25, 16], B = [238, 226, 202];
+  for (let y = 0, i = 0; y < H; y++) for (let xx = 0; xx < W; xx++, i += 4) {
+    let v = d[i] / 255; v = v * v * (3 - 2 * v) * .6 + v * .4;
+    const c = v > (BAYER[(y & 3) * 4 + (xx & 3)] + .5) / 16 ? B : A;
+    d[i] = c[0]; d[i + 1] = c[1]; d[i + 2] = c[2]; d[i + 3] = 255;
+  }
+  x.putImageData(im, 0, 0);
+}
+$$("canvas[data-scene]").forEach(c => { try { scene(c); } catch (e) { console.error(e); } });
+
+/* ───────── jacket ───────── */
+const gar = $("#represent");
+function stitchPlate() {
+  const c = $("#stitch"), x = c.getContext("2d"), cs = getComputedStyle(gar);
+  const cloth = cs.getPropertyValue("--cloth").trim(), edge = cs.getPropertyValue("--edge").trim(), thread = cs.getPropertyValue("--thread").trim();
+  const W = 160, H = 98, D = 96, oy = Math.floor((H - SH) / 2), buf = new Uint8Array(W * H);
+  globeMask(buf, W, H, D, 20);
+  const cell = 10, X0 = 30, Y0 = 26;                    // the crop: the F, the first letters, a quarter of the globe
+  x.fillStyle = cloth; x.fillRect(0, 0, 640, 480);
+  x.globalAlpha = .16; x.strokeStyle = edge; x.lineWidth = 1;
+  for (let i = -480; i < 640; i += 5) { x.beginPath(); x.moveTo(i, 480); x.lineTo(i + 480, 0); x.stroke(); }
+  x.globalAlpha = .07; for (let i = 0; i < 640; i += 3) { x.beginPath(); x.moveTo(i + .5, 0); x.lineTo(i + .5, 480); x.stroke(); }
+  x.globalAlpha = 1; x.lineCap = "round";
+  const st = (gx, gy, heavy) => {
+    const px = (gx - X0) * cell, py = (gy - Y0) * cell;
+    x.strokeStyle = "rgba(0,0,0,.22)"; x.lineWidth = heavy ? 6.6 : 5; x.beginPath(); x.moveTo(px + 1.2, py + cell + .2); x.lineTo(px + cell + .2, py + 1.2); x.stroke();
+    x.strokeStyle = thread; x.lineWidth = heavy ? 6 : 4.4; x.beginPath(); x.moveTo(px + .6, py + cell - .6); x.lineTo(px + cell - .6, py + .6); x.stroke();
+    x.strokeStyle = "rgba(255,255,255,.26)"; x.lineWidth = 1.2; x.beginPath(); x.moveTo(px + 2.4, py + cell - 3.4); x.lineTo(px + cell - 3.4, py + 2.4); x.stroke();
+  };
+  for (let y = Y0 - 1; y < Y0 + 49; y++) for (let xx = X0 - 1; xx < X0 + 65; xx++) {
+    if (xx < 0 || y < 0 || xx >= W || y >= H) continue;
+    const sy = y - oy, inS = sy >= 0 && sy < SH;
+    if (inS && script[sy * SW + xx]) st(xx, y, true);
+    else if (buf[y * W + xx] && !(inS && halo[sy * SW + xx])) st(xx, y, false);
+  }
+}
+$("#cw").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; gar.dataset.cw = b.dataset.cw;
+  $$("#cw button").forEach(x => x.setAttribute("aria-pressed", String(x === b))); stitchPlate(); });
+
+/* ═════════ Edition 002 ═════════ */
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const press = (group, on) => $$("button", group).forEach(b => b.setAttribute("aria-pressed", String(b === on)));
+
+/* ───────── the Stamp eagle: production bitmap and its approved impression ───────── */
+const EW = 192, EH = 60;
+const EAGLE = (() => { const s = atob("AAAAAAAAAAAAAAAP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAH//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAfc/gAAAAAAAAAAAAAAAAAAAAAAAAAAAA/c/gAAAAAAAAAAAAAAAAAAAAAAAAP/wA/f/gAAf/gAAAAAAAAAAAAAAAAAAB//8A/f/wAA//+AAAAAAAAAAAAAAAAAAP//+A///wAD///4AAAAAAAAAAAAAAAAB////A///wAH////AAAAAAAAAAAAAAAAP/AD/gf//wAP8B//4AAAAAAAAAAAAAAB/4/8PwAf/wAf/+D//gAAAAAA/AAAAAAf////z4Af/wA///8f/8AAAAAA/+AAAAH/////98Afv4A////j//gAAAAA//8AB////wD/+8Adv4B////8P/+AAAAAf/////////9//eAdt4D/////x//+AB/+P////////////vA9t4H/////+P//////HB////8P/////3g9t8P//////x//////H+D///D//////3x9t8f//////+P////+D/8H/w///////7/9t/////////x////4D//4AP///+AD/7/9t///////AP+H///wA//////////9/9//v////////3/4AB/wAP///////////9/////////z///////gAB//8AAf///////////////8D/////+AAAPwD/////////////////////AAD/4AAAB////////////////////B/////wAAAAA////w///////////////+8P///wAAAAA///wP8f//////////////Pw///gAAAAAD/8P/j/////////////+/3/P/+AAAAAAAH//8f8fn///////7//fP7///gAAAAAAAAP/D/j+f///wAf/9/vn3//8AAAAAAAAAAH//8f5/////v//+737//+AAAAAAAAAAAA//////////v///d7//8AAAAAAAAAAAAAB/////8//8A///e//8AAAAAAAAAAAAAAAHH/f/z///v///vf+AAAAAAAAAAAAAAAAABwH/P///f/////AAAAAAAAAAAAAAAAAAAAB////2/////8AAAAAAAAAAAAAAAAAAAAAf///5////8AAAAAAAAAAAAAAAAAAAAAAD////////wAAAAAAAAAAAAAAAAAAAAAAB///////+AAAAAAAAAAAAAAAAAAAAAAAAP/////+AAAAAAAAAAAAAAAAAAAAAAAAAB/+//v8AAAAAAAAAAAAAAAAAAAAAAAAAAf+//v+AAAAAAAAAAAAAAAAAAAAAAAAAAf+//v/gAAAAAAAAAAAAAAAAAAAAAAAAA/9v3u/4AAAAAAAAAAAAAAAAAAAAAAAAD/9t3u98AAAAAAAAAAAAAAAAAAAAAAAAH/9t3298AAAAAAAAAAAAAAAAAAAAAAAAH/9t32+8AAAAAAAAAAAAAAAAAAAAAAAAD/9t13f4AAAAAAAAAAAAAAAAAAAAAAAAB/7t13f4AAAAAAAAAAAAAAAAAAAAAAAAB/7t13f4AAAAAAAAAAAAAAAAAAAAAAAAB/7t23fwAAAAAAAAAAAAAAAAAAAAAAAAB/3t27fgAAAAAAAAAAAAAAAAAAAAAAAAA/3t27+AAAAAAAAAAAAAAAAAAAAAAAAAAH/d37+AAAAAAAAAAAAAAAAAAAAAAAAAAH/d3/8AAAAAAAAAAAAAAAAAAAAAAAAAAD/9//wAAAAAAAAAAAAAAAAAAAAAAAAAAD///+AAAAAAAAAAAAAAAAAAAAAAAAAAAA///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAA/xgAAAAAAAAAAAAAA"), p = []; for (let i = 0; i < EW * EH; i++) if ((s.charCodeAt(i >> 3) >> (7 - (i & 7))) & 1) p.push([i % EW, (i / EW) | 0]); return p; })();
+const eset = new Set(EAGLE.map(([x, y]) => y * EW + x));
+const solid = n => { const p = []; for (let by = 0; by < EH; by += n) for (let bx = 0; bx < EW; bx += n) { let k = 0; for (let y = by; y < by + n; y++) for (let x = bx; x < bx + n; x++) if (eset.has(y * EW + x)) k++; if (k * 2 >= n * n) for (let y = by; y < Math.min(EH, by + n); y++) for (let x = bx; x < bx + n; x++) p.push([x, y]); } return p; };
+const STEPS = [[300, solid(8)], [370, solid(4)], [430, solid(2)], [520, EAGLE]];
+function eagleAt(cv, col, ms) {             // ms < 0 or omitted: the finished artwork
+  const x = cv.getContext("2d"); x.clearRect(0, 0, EW, EH); x.fillStyle = col;
+  let pts = ms == null || ms < 0 ? EAGLE : []; if (ms >= 0) for (const [at, p] of STEPS) if (ms >= at) pts = p;
+  for (const [px, py] of pts) x.fillRect(px, py, 1, 1);
+}
+const UMBER = "#332e20", RED = "#f93822";
+
+/* ───────── 04 the record sheet ───────── */
+const REC = (() => {
+  // ---- drawing helpers: three line weights, heavy (profile), regular, light (pattern) ----
+  const f = (n) => Math.round(n * 10) / 10;
+  const R = (x, y, w, h, c) => `<rect class="${c || "b"}" x="${x}" y="${y}" width="${w}" height="${h}"/>`;
+  const L = (x1, y1, x2, y2, c) => `<line class="${c || "b"}" x1="${f(x1)}" y1="${f(y1)}" x2="${f(x2)}" y2="${f(y2)}"/>`;
+  const P = (pts, c) => `<polyline class="${c || "b"}" points="${pts.map((p) => p.join(",")).join(" ")}"/>`;
+  const G = (pts, c) => `<polygon class="${c || "b"}" points="${pts.map((p) => p.join(",")).join(" ")}"/>`;
+  // Diamond glazing bars inside a sash: two families of diagonals, clipped to the glass.
+  const lattice = (id, x, y, w, h, dx, dy) => {
+    let s = "";
+    const k = dy / dx;
+    for (let c = -Math.ceil(h / dy) - 1; c <= Math.ceil(w / dx) + 1; c++) {
+      const x0 = x + c * dx + dx / 2;
+      s += L(x0, y, x0 + h / k, y + h, "c") + L(x0, y, x0 - h / k, y + h, "c");
+    }
+    return `<clipPath id="${id}"><rect x="${x}" y="${y}" width="${w}" height="${h}"/></clipPath><g clip-path="url(#${id})">${s}</g>${R(x, y, w, h)}`;
+  };
+  // Evenly spaced uprights (balusters), drawn as pairs of lines with paper between.
+  const balusters = (x0, x1, step, y0, y1, w) => {
+    let s = "";
+    for (let x = x0; x <= x1; x += step) s += R(x, y0, w, y1 - y0, "b p");
+    return s;
+  };
+
+  // ---- R-1  Front elevation, traced from plate 01 (1920 x 2400) ----
+  const elevation = (u) => {
+    let s = "";
+    // roof courses, clipped to the visible roof
+    s += `<clipPath id="${u}roof"><polygon points="0,300 338,300 338,574 1920,574 1920,733 0,776"/></clipPath><g clip-path="url(#${u}roof)">`;
+    for (let y = 318; y < 780; y += 36) s += L(0, y, 1920, y - 6, "c");
+    s += "</g>";
+    // dormer: corner board, three sashes visible, sill
+    s += P([[338, 300], [338, 574]], "a") + L(455, 312, 455, 540) + L(455, 312, 1500, 312) + L(440, 540, 1500, 540, "a") + L(440, 572, 1500, 572, "a") + L(440, 540, 440, 572, "a");
+    s += lattice(u + "d1", 484, 356, 262, 164, 88, 82) + lattice(u + "d2", 832, 356, 266, 164, 88, 82) + lattice(u + "d3", 1184, 356, 262, 164, 88, 82);
+    s += L(880, 100, 1920, 100) + L(880, 128, 1920, 128, "a");
+    // eave, fascia, porch beam
+    s += L(0, 776, 1920, 733, "a") + L(0, 800, 1920, 757) + L(0, 832, 1920, 800) + L(0, 1043, 1920, 1040, "a");
+    // wall head and the canted sides of the bay
+    s += P([[0, 1232], [330, 1268], [562, 1268]]) + P([[1442, 1268], [1575, 1268], [1920, 1236]]);
+    s += L(335, 1268, 335, 1830) + L(440, 1268, 440, 1830) + L(1500, 1268, 1500, 1830) + L(1588, 1268, 1588, 1830);
+    // sign board on its two hangers
+    s += L(688, 1043, 688, 1092) + L(1315, 1043, 1315, 1092) + R(562, 1092, 880, 168, "a") + R(576, 1106, 852, 140, "c");
+    // lattice windows, left and right of the bay
+    s += R(58, 1300, 274, 540) + lattice(u + "wl", 84, 1326, 232, 292, 78, 98) + R(84, 1642, 232, 190);
+    s += R(1592, 1318, 270, 524) + lattice(u + "wr", 1608, 1340, 238, 296, 80, 99) + R(1608, 1660, 238, 176);
+    // sidelights and their sills
+    s += R(445, 1300, 236, 652) + R(457, 1312, 212, 628, "c") + L(432, 1954, 694, 1954);
+    s += R(1250, 1315, 232, 650) + R(1262, 1327, 208, 626, "c") + R(1226, 1965, 280, 22);
+    // door: frame, leaf, glass, pull, hinges, threshold
+    s += R(765, 1298, 400, 914, "a") + R(776, 1306, 374, 900) + R(840, 1400, 255, 615) + R(849, 1409, 237, 597, "c");
+    s += R(795, 1775, 13, 92) + R(1150, 1362, 9, 44, "c") + R(1150, 1692, 9, 44, "c") + R(1150, 2040, 9, 44, "c");
+    s += `<text class="t" x="1202" y="1604" text-anchor="middle">129</text>` + R(1183, 1626, 36, 36, "c");
+    // porch floor and step
+    s += L(0, 2212, 1920, 2212, "c") + L(627, 2290, 1357, 2290, "a") + L(627, 2330, 1357, 2330);
+    // railings: rails, balusters, then the newels in front
+    s += R(0, 1820, 603, 16, "b p") + balusters(22, 570, 42, 1836, 2256, 15) + R(0, 2256, 535, 18, "b p");
+    s += R(1389, 1832, 531, 16, "b p") + balusters(1412, 1900, 42, 1848, 2272, 15) + R(1453, 2272, 467, 18, "b p");
+    s += G([[640, 1830], [683, 1830], [627, 2068], [560, 2068]], "b p") + G([[1306, 1840], [1349, 1840], [1440, 2078], [1370, 2078]], "b p");
+    s += R(603, 1790, 80, 610, "a p") + R(594, 1755, 98, 35, "a p") + R(535, 2096, 90, 304, "a p") + R(525, 2065, 110, 31, "a p");
+    s += R(1306, 1800, 82, 600, "a p") + R(1297, 1766, 100, 34, "a p") + R(1360, 2108, 92, 292, "a p") + R(1350, 2077, 112, 31, "a p");
+    return s;
+  };
+
+  // ---- R-2  Front room, window wall, traced from plate 02 (2400 x 1920) ----
+  const frontRoom = (u) => {
+    let s = "";
+    s += L(470, 690, 1930, 690, "a") + L(0, 270, 470, 690) + L(1930, 690, 2400, 480) + L(1935, 690, 1935, 1000, "c") + L(0, 440, 440, 905) + L(440, 905, 440, 1920) + L(385, 950, 385, 1140, "c");
+    s += G([[575, 355], [760, 350], [795, 455], [615, 455]], "c");
+    s += R(1015, 825, 400, 260, "c");
+    // the pair of sashes in its casing
+    s += R(855, 1120, 725, 18, "a") + P([[865, 1920], [865, 1138], [1570, 1138], [1570, 1920]], "a") + P([[940, 1920], [940, 1205], [1505, 1205], [1505, 1920]]);
+    s += lattice(u + "c1", 965, 1238, 228, 682, 114, 166) + lattice(u + "c2", 1240, 1238, 226, 682, 113, 166);
+    // the window at the left edge
+    s += P([[0, 1140], [365, 1140], [365, 1920]], "a") + P([[0, 1235], [295, 1235], [295, 1920]]) + lattice(u + "c3", -40, 1282, 328, 638, 132, 200);
+    s += `<ellipse class="c" cx="620" cy="1432" rx="66" ry="34"/>` + P([[640, 1400], [630, 1330], [655, 1322]], "c");
+    return s;
+  };
+
+  // ---- R-3  Bar, opening in the back wall, traced from plate 04 (2400 x 1920) ----
+  const bar = (u) => {
+    let s = "";
+    s += L(190, 0, 190, 1920, "a") + L(1870, 0, 1870, 1500) + L(2040, 0, 2040, 1560) + P([[1500, 0], [1500, 256], [1600, 256], [1600, 0]]);
+    s += R(910, 685, 590, 610, "a") + R(928, 702, 556, 590) + R(902, 1292, 606, 28, "a");
+    s += P([[190, 1340], [780, 1290], [845, 1345], [190, 1560]]) + L(845, 1345, 845, 1920) + L(690, 1398, 690, 1920, "c") + L(430, 1482, 430, 1920, "c");
+    s += P([[1508, 1320], [2400, 1570]]) + P([[1500, 1345], [1745, 1920]]);
+    s += `<circle class="c" cx="802" cy="1090" r="36"/>`;
+    return s;
+  };
+
+  // ---- R-4  Panelled door, traced from plate 05 (2400 x 1920) ----
+  const door = (u) => {
+    let s = "";
+    s += P([[300, 0], [300, 330], [2170, 330], [2170, 0]], "a") + P([[322, 0], [322, 308], [2148, 308], [2148, 0]], "c") + P([[420, 0], [420, 215], [2040, 215], [2040, 0]]);
+    s += R(290, 630, 1895, 650, "a") + R(315, 655, 1845, 600, "c") + R(410, 760, 1640, 390);
+    s += L(290, 630, 410, 760, "c") + L(2185, 630, 2050, 760, "c") + L(290, 1280, 410, 1150, "c") + L(2185, 1280, 2050, 1150, "c");
+    s += P([[275, 1920], [275, 1590], [2195, 1590], [2195, 1920]], "a") + P([[300, 1920], [300, 1615], [2170, 1615], [2170, 1920]], "c") + P([[400, 1920], [400, 1715], [2060, 1715], [2060, 1920]]);
+    s += `<text class="t r" x="1245" y="1000" text-anchor="middle" style="font-size:96px">W.C.</text>`;
+    return s;
+  };
+
+  // ---- R-5  Cased opening, traced from plate 06 (2400 x 1920) ----
+  const opening = (u) => {
+    let s = "";
+    s += L(335, 160, 2400, 160) + L(335, 160, 292, 1050, "c");
+    s += R(885, 705, 625, 480, "c") + R(905, 725, 585, 440, "c");
+    s += G([[1880, 812], [2255, 822], [2255, 846], [1880, 838]], "c") + G([[1910, 1656], [2280, 1664], [2280, 1690], [1910, 1684]], "c");
+    s += R(545, 1255, 1310, 20, "a") + P([[550, 1920], [550, 1275], [1850, 1275], [1850, 1920]], "a") + P([[600, 1920], [600, 1310], [1800, 1310], [1800, 1920]], "c") + P([[615, 1920], [615, 1325], [1785, 1325], [1785, 1920]]);
+    s += L(615, 1368, 1785, 1368, "c");
+    for (let t = 650; t <= 1160; t += 30) s += L(t, 1368, 640 + (t - 650) * 0.6, 1920, "c");
+    for (let t = 1210; t <= 1770; t += 30) s += L(t, 1368, 1400 + (t - 1210) * 0.66, 1920, "c");
+    return s;
+  };
+  return { elevation, frontRoom, bar, door, opening };
+})();
+const KEYS = [
+  { n: 1, name: "Dormer", view: [300, 60, 1300, 560], note: "A band of lattice sashes above the porch roof. Three are clear of the magnolia; the drawing stops where the photograph does." },
+  { n: 2, name: "Eave and porch beam", view: [0, 690, 1920, 400], note: "The roof edge, the fascia and the beam that carries the porch, running the width of the front." },
+  { n: 3, name: "Sign", view: [500, 1020, 1000, 290], note: "A board hung from the porch beam on two hangers, centred on the door." },
+  { n: 4, name: "Entrance", view: [700, 1270, 600, 1010], note: "A glazed door in its frame, numbered 129, with a fixed light on either side." },
+  { n: 5, name: "Lattice window", view: [20, 1270, 450, 600], note: "One of the two windows on the canted sides of the bay. Diamond bars in the upper sash, clear glass below." },
+  { n: 6, name: "Porch rail and steps", view: [480, 1730, 1010, 670], note: "Square balusters between top and bottom rails, with capped newels at the head and foot of the steps." }
+];
+const WHOLE = "The whole sheet. Six keys, each a place on the front of the house where the drawing and the photograph can be compared.";
+const sheet = $("#recSheet"), recSvg = $("#recSvg"), seam = $("#seam"), recRes = $("#recRes"), recNote = $("#recNote");
+recSvg.innerHTML = REC.elevation("r1");
+$("#doorSvg").innerHTML = REC.door("r4");
+$("#bkSvg").innerHTML = REC.elevation("bk");
+const moves = $$(".rec-move", sheet);
+let curKey = 0, recScale = 1;
+function strokeUnit() {                     // drawing units per CSS pixel, so line weights read the same at any size
+  const w = sheet.clientWidth || 520; recSvg.style.setProperty("--u", (1920 / w / Math.sqrt(recScale)).toFixed(3));
+}
+function setSeam(v, ease) { sheet.classList.toggle("ease", !!ease); sheet.style.setProperty("--seam", v + "%"); seam.value = v; }
+function setKey(n) {
+  curKey = n; const k = KEYS.find(q => q.n === n);
+  let t = "translate(0,0) scale(1)"; recScale = 1;
+  if (k) { const [x, y, w, h] = k.view, s = Math.min(1920 / w, 2400 / h, 3.2); recScale = s;
+    let tx = .5 - (x + w / 2) / 1920 * s, ty = .5 - (y + h / 2) / 2400 * s;
+    tx = Math.min(0, Math.max(1 - s, tx)); ty = Math.min(0, Math.max(1 - s, ty));
+    t = `translate(${(tx * 100).toFixed(3)}%,${(ty * 100).toFixed(3)}%) scale(${s.toFixed(4)})`; }
+  moves.forEach(m => { m.style.transform = t; });
+  sheet.style.setProperty("--s", recScale); strokeUnit();
+  $$("[data-key]").forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.key === n)));
+  recNote.textContent = k ? k.note : WHOLE;
+}
+$("#recKeys").innerHTML = KEYS.map(k => `<button type="button" class="rec-key" data-key="${k.n}" aria-pressed="false" aria-label="Key ${k.n}, ${esc(k.name)}" style="left:${((k.view[0] + k.view[2] / 2) / 19.2).toFixed(2)}%;top:${((k.view[1] + k.view[3] / 2) / 24).toFixed(2)}%">${k.n}</button>`).join("");
+$("#recList").innerHTML = `<li><button type="button" data-key="0" aria-pressed="true"><span class="n">R-1</span><b>Whole sheet</b></button></li>` +
+  KEYS.map(k => `<li><button type="button" data-key="${k.n}" aria-pressed="false"><span class="n">${k.n}</span><b>${esc(k.name)}</b></button></li>`).join("");
+$("#record").addEventListener("click", e => { const b = e.target.closest("[data-key]"); if (!b) return; const n = +b.dataset.key; setKey(n === curKey && b.classList.contains("rec-key") ? 0 : n); });
+seam.addEventListener("input", () => { recRes.hidden = true; press($("#recState"), null); setSeam(+seam.value, false); });
+$("#recState").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; press($("#recState"), b);
+  recRes.hidden = b.dataset.st !== "res"; if (b.dataset.st === "draw") setSeam(0, true); if (b.dataset.st === "photo") setSeam(100, true); });
+let drawing = 0;
+$("#recPlay").addEventListener("click", () => {       // the drawing is made from the roof down, then the photograph arrives against it
+  recRes.hidden = true; press($("#recState"), null); setKey(0);
+  if (reduce.matches) { setSeam(50, false); return; }
+  const id = ++drawing, els = $$("line,polyline,polygon,rect,ellipse,circle", recSvg).filter(el => !el.closest("clipPath"));
+  setSeam(0, true);
+  els.forEach(el => { let len = 0, y = 0; try { len = el.getTotalLength(); y = el.getBBox().y; } catch (_) {}
+    el.style.transition = "none"; el.style.strokeDasharray = len; el.style.strokeDashoffset = len; el.dataset.dl = Math.round(y / 2400 * 1500); });
+  $$("text", recSvg).forEach(t => { t.style.transition = "none"; t.style.opacity = 0; });
+  recSvg.getBoundingClientRect();
+  els.forEach(el => { el.style.transition = `stroke-dashoffset .8s cubic-bezier(.3,.6,.2,1) ${el.dataset.dl}ms`; el.style.strokeDashoffset = 0; });
+  $$("text", recSvg).forEach(t => { t.style.transition = "opacity .3s 1.6s"; t.style.opacity = 1; });
+  setTimeout(() => { if (id !== drawing) return; els.forEach(el => { el.style.transition = ""; el.style.strokeDasharray = ""; el.style.strokeDashoffset = ""; }); setSeam(50, true); }, 2500);
+});
+setKey(0);
+
+/* the account, as published in Freeman's records for this study */
+const ACCOUNT = "Muchacho Decatur is a restaurant made inside a house built in 1940. The porch, the dormer and the lattice windows are the first things a guest meets at 129 Church Street; the bar and the dining rooms sit within the rooms behind them. Work of this kind is governed by what is already there. New openings, services and finishes have to meet existing walls, floors and trim, and the measure of the work is how little of that meeting shows. Freeman General Contracting was the builder, for Electric Hospitality, with interior design by BLUR Workshop.";
+{ const i = ACCOUNT.indexOf(". ") + 1, first = ACCOUNT.slice(0, i), rest = ACCOUNT.slice(i + 1);
+  $("#accFirst").textContent = first; $("#accRest").textContent = rest; $("#bkFirst").textContent = first; $("#bkRest").textContent = rest; }
+
+/* the register */
+const REGISTER = [{"no": "01", "name": "Beetlecat", "place": "Atlanta, Georgia", "type": "Hospitality", "photos": 4, "account": true, "traced": 0, "credits": [["operator", "Rocket Farm Restaurants"]]}, {"no": "02", "name": "The Optimist", "place": "Atlanta, Georgia", "type": "Hospitality", "photos": 3, "account": true, "traced": 0, "credits": [["operator", "Rocket Farm Restaurants"], ["interiors", "Chuck Marie Studio"]]}, {"no": "03", "name": "Barnsley Family Pool", "place": "Adairsville, Georgia", "type": "Hospitality", "photos": 3, "account": true, "traced": 0, "credits": [["owner", "South Street Partners"]]}, {"no": "04", "name": "Bocado Pizza", "place": "Atlanta, Georgia", "type": "Commercial", "photos": 1, "account": true, "traced": 0, "credits": [["client", "Bocado Pizza"]]}, {"no": "05", "name": "Savi Provisions", "place": "Emory Village, Atlanta", "type": "Retail", "photos": 1, "account": true, "traced": 0, "credits": [["client", "Savi Provisions"]]}, {"no": "06", "name": "O-Ku Atlanta", "place": "Atlanta, Georgia", "type": "Hospitality", "photos": 1, "account": true, "traced": 0, "credits": [["operator", "The Indigo Road Hospitality Group"], ["interiors", "David Thompson Studio"]]}, {"no": "07", "name": "La Cresta on Main", "place": "Blue Ridge, Georgia", "type": "High-End Residential", "photos": 1, "account": true, "traced": 0, "credits": []}, {"no": "09", "name": "Dalton Surgery Center", "place": "Dalton, Georgia", "type": "Healthcare", "photos": 1, "account": true, "traced": 0, "credits": [["client", "Interventional Pain Consultants"]]}, {"no": "10", "name": "Muchacho Decatur", "place": "Decatur, Georgia", "type": "Hospitality", "photos": 6, "account": true, "traced": 5, "credits": [["operator", "Electric Hospitality"], ["interiors", "BLUR Workshop"]]}, {"no": "11", "name": "Brewhouse Cafe", "place": "Atlanta, Georgia", "type": "Hospitality", "photos": 0, "account": false, "traced": 0, "credits": [["developer", "South Downtown"], ["interiors", "Gentle Works"]]}, {"no": "12", "name": "Mule Train", "place": "Atlanta, Georgia", "type": "Hospitality", "photos": 0, "account": false, "traced": 0, "credits": [["developer", "South Downtown"], ["interiors", "NO Architecture"]]}, {"no": "13", "name": "Broad Street BBQ", "place": "Atlanta, Georgia", "type": "Hospitality", "photos": 0, "account": false, "traced": 0, "credits": [["developer", "South Downtown"], ["architect", "Wright Gardner Architects"]]}, {"no": "14", "name": "Azalea Marketplace", "place": "Atlanta, Georgia", "type": "Retail", "photos": 0, "account": false, "traced": 0, "credits": [["client", "Savi Provisions"]]}, {"no": "15", "name": "Woodlands at Barnsley Resort", "place": "Adairsville, Georgia", "type": "Hospitality", "photos": 1, "account": false, "traced": 0, "credits": [["owner", "South Street Partners"], ["interiors", "David Thompson Studio"]]}, {"no": "16", "name": "Dugan’s Pub", "place": "Adairsville, Georgia", "type": "Hospitality", "photos": 0, "account": false, "traced": 0, "credits": [["owner", "South Street Partners"], ["interiors", "David Thompson Studio"]]}];
+{ const ROLE = { operator: "operator", owner: "ownership", developer: "developer", client: "client", interiors: "interior design", architect: "architect" };
+  $("#reg tbody").innerHTML = REGISTER.map(r => `<tr${r.no === "10" ? ' class="hl"' : ""}><td class="no">${esc(r.no)}</td><td class="nm">${esc(r.name)}</td><td>${esc(r.place)}</td>` +
+    `<td class="w">${r.credits.length ? r.credits.map(c => esc(c[1])).join(", ") : '<span class="none">None published</span>'}</td>` +
+    `<td><i class="sq${r.photos ? " on" : ""}"></i>${r.photos || '<span class="none">None</span>'}</td>` +
+    `<td><i class="sq${r.account ? " on" : ""}"></i>${r.account ? "Written" : '<span class="none">None</span>'}</td>` +
+    `<td><i class="sq"></i>${r.traced ? r.traced + " traced" : '<span class="none">None</span>'}</td>` +
+    `<td><i class="sq"></i><span class="none">None filed</span></td></tr>`).join("");
+  const ph = REGISTER.reduce((a, r) => a + r.photos, 0), withPh = REGISTER.filter(r => r.photos).length, acc = REGISTER.filter(r => r.account).length;
+  $("#regSum").textContent = `${REGISTER.length} projects. ${ph} photographs filed across ${withPh} of them. ${acc} written accounts. No architect's drawing and no dated construction photograph filed to any project. One record, Muchacho Decatur, has drawings of any kind, and they are traced.`; }
+
+/* ───────── 05 the animatic ───────── */
+const SHOTS = [
+  { img: "field-ridge", d: 5000, t: "The land", s: "Wind in the trees. No music.", lbl: ["Built for Generations"], alt: "A wooded ridge in autumn colour under a pale evening sky" },
+  { img: "field-pines", d: 4000, t: "A walk in", s: "Footsteps on pine straw.", alt: "A figure, small, on a track through tall pines", pos: "50% 78%" },
+  { img: "field-machines", d: 3500, t: "The site, before anyone", s: "Engines cold. A door closes.", alt: "Excavators and a bulldozer parked at the tree line of a cleared site" },
+  { img: "field-three", d: 5000, t: "The day's sequence", s: "Three voices, unhurried.", alt: "Three men talking on a graded site with equipment and autumn trees behind them" },
+  { img: "field-gabe", d: 4000, t: "Gabe, on site", s: "He looks before he speaks.", lbl: ["Gabe Freeman"], alt: "Gabe Freeman standing on a site at the end of the day, autumn hills behind him" },
+  { img: "field-table", d: 4500, t: "The table", s: "Four people, one decision.", alt: "Four men meeting at a table in front of a stone fireplace" },
+  { img: "muchacho-01", d: 4000, t: "A finished place", s: "A street. A screen door.", lbl: ["Muchacho Decatur", "Decatur, Georgia"], alt: "The front porch of Muchacho Decatur", pos: "50% 62%" },
+  { img: "muchacho-03", d: 4000, t: "The room, full", s: "Glasses, voices, a kitchen.", alt: "The bar at Muchacho Decatur with guests seen through an opening in the wall" },
+  { img: "woodlands-dining", d: 3500, t: "The room, set", s: "The quiet before service.", lbl: ["Woodlands at Barnsley Resort", "Adairsville, Georgia"], alt: "The dining room at Woodlands at Barnsley Resort, tables set" },
+  { end: true, d: 4500, t: "End card", s: "Paper. Then the mark." }
+];
+const TOTAL = SHOTS.reduce((a, s) => a + s.d, 0);
+{ let at = 0; SHOTS.forEach(s => { s.at = at; at += s.d; }); }
+const screen = $("#screen"), plLbl = $("#plLbl"), plEnd = $("#plEnd"), plEagle = $("#plEagle"), plGlobe = $("#plGlobe"), plGo = $("#plGo"), plScrub = $("#plScrub"), plTc = $("#plTc");
+SHOTS.forEach((s, i) => { if (s.end) return; const im = document.createElement("img"); im.src = `img/${s.img}.jpg`; im.alt = s.alt; im.hidden = i > 0; if (i > 0) im.loading = "lazy"; if (s.pos) im.style.objectPosition = s.pos; screen.insertBefore(im, plLbl); s.el = im; });
+const mmss = ms => { const s = Math.floor(ms / 1000); return String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0"); };
+$("#plShots").innerHTML = SHOTS.map((s, i) => `<li><button type="button" data-shot="${i}" aria-current="${i === 0}"><span class="n">${String(i + 1).padStart(2, "0")}</span><b>${esc(s.t)}<small>${esc(s.s)}</small></b><span class="d">${mmss(s.at)}</span></button></li>`).join("");
+const shotBtns = $$("#plShots button");
+let plT = 0, plOn = false, plShot = -1, plCard = "eagle";
+function plRender() {
+  let i = SHOTS.findIndex(s => plT < s.at + s.d); if (i < 0) i = SHOTS.length - 1;
+  const s = SHOTS[i], local = plT - s.at;
+  if (i !== plShot) {                      // a hard cut: one picture replaces another, nothing dissolves
+    plShot = i; SHOTS.forEach(q => { if (q.el) q.el.hidden = q !== s; });
+    plEnd.hidden = !s.end; shotBtns.forEach((b, k) => b.setAttribute("aria-current", String(k === i)));
+    if (s.end && plCard === "globe") refit();
+  }
+  const lab = !s.end && s.lbl && local >= 700 && local < Math.min(s.d - 500, 3700);
+  plLbl.hidden = !lab; if (lab && plLbl.dataset.i !== String(i)) { plLbl.dataset.i = i; plLbl.innerHTML = s.lbl.map(esc).join("<br>"); }
+  if (s.end && plCard === "eagle") eagleAt(plEagle, RED, plOn || local < 1300 ? local - 500 : -1);
+  plScrub.value = Math.round(plT / TOTAL * 1000); plTc.textContent = mmss(plT) + " / " + mmss(TOTAL);
+}
+function plSet(on) { plOn = on; plGo.textContent = on ? "PAUSE" : "PLAY"; plGo.setAttribute("aria-pressed", String(on)); }
+plGo.addEventListener("click", () => { if (!plOn && plT >= TOTAL - 50) plT = 0; plSet(!plOn); });
+plScrub.addEventListener("input", () => { plSet(false); plT = +plScrub.value / 1000 * TOTAL; plRender(); });
+$("#plShots").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; plT = SHOTS[+b.dataset.shot].at; plRender(); });
+$("#plCard").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; plCard = b.dataset.c; press($("#plCard"), b);
+  plEagle.hidden = plCard !== "eagle"; plGlobe.hidden = plCard !== "globe"; plSet(false); plT = SHOTS[SHOTS.length - 1].at + (plCard === "eagle" ? 1400 : 0); plRender(); refit(); drawAll(true); });
+let plLast = 0;
+function plTick(now) { const dt = Math.min(64, now - plLast); plLast = now;
+  if (plOn && !document.hidden) { plT += dt; if (plT >= TOTAL) { plT = TOTAL - 1; plSet(false); } plRender(); }
+  requestAnimationFrame(plTick); }
+plRender();
+
+/* ───────── 06 the catalogue ───────── */
+const CAT = [
+  { c: "R-10", k: "R", t: "Muchacho Decatur", w: "Six photographs and five record drawings traced from them. Built Record Study 001, 13 November 2026.", s: "study", img: "muchacho-01", cap: ["MUCHACHO DECATUR / DECATUR, GEORGIA", "FREEMAN PHOTOGRAPH"] },
+  { c: "R-01", k: "R", t: "Beetlecat", w: "Four photographs and Freeman's published account. Case Study 001.", s: "study", img: "beetlecat-aisle", cap: ["BEETLECAT / ATLANTA, GEORGIA", "PHOTOGRAPH: JARED SWAFFORD"] },
+  { c: "R-", k: "R", t: "Thirteen further projects", w: "Listed in the register in chapter 04. Each becomes a record when its material is on file.", s: "res", img: "barnsley-pool", cap: ["BARNSLEY / ADAIRSVILLE, GEORGIA", "PHOTOGRAPH: JARED SWAFFORD"] },
+  { c: "P-01", k: "P", t: "Photographs", w: "Twenty-two frames from the Freeman Photographs folder, on the Photographs page of the site since November 2026.", s: "site", img: "field-three", cap: ["FREEMAN PHOTOGRAPH", "PHOTOGRAPHER TO BE CREDITED"] },
+  { c: "P-02", k: "P", t: "Portfolio photography", w: "Beetlecat, The Optimist and Barnsley, photographed by Jared Swafford.", s: "site", img: "optimist-table", cap: ["THE OPTIMIST / ATLANTA, GEORGIA", "PHOTOGRAPH: JARED SWAFFORD"] },
+  { c: "F-00", k: "F", t: "Material No. 1 and No. 2", w: "Two eight-second motion studies made from the signature and the eagle. Approved for X on 8 November 2026.", s: "study", mark: true, cap: ["THE STAMP EAGLE / 192 × 60", "PRODUCTION BITMAP"] },
+  { c: "F-01", k: "F", t: "Built for Generations, the pilot", w: "One film. Chapter 05. Not commissioned.", s: "prop", img: "field-ridge", cap: ["FREEMAN PHOTOGRAPH", "REFERENCE FOR TONE. NOT FOOTAGE."] },
+  { c: "E-00", k: "E", t: "Ruskin, The Seven Lamps of Architecture", w: "A printed page kept in the Freeman archive: “When we build, let us think that we build forever.”", s: "arch", img: "ruskin", cap: ["JOHN RUSKIN, 1849", "PAGE FROM THE FREEMAN ARCHIVE"] },
+  { c: "E-01", k: "E", t: "Record No. 10, in print", w: "The Muchacho Decatur record as a small printed edition. The proof is below.", s: "prop", img: "muchacho-05", cap: ["MUCHACHO DECATUR / DECATUR, GEORGIA", "FREEMAN PHOTOGRAPH"] },
+  { c: "C-00", k: "C", t: "Freeman × Represent", w: "One work jacket. Edition 001, chapter 03. Nobody contacted.", s: "park", mark: true, cap: ["PARKED", "SEE CHAPTER 03"] },
+  { c: "C-01", k: "C", t: "A record made with its designer", w: "Co-published with the studio that designed the room, under both names. Nobody has been asked.", s: "prop", img: "woodlands-dining", cap: ["WOODLANDS AT BARNSLEY RESORT / ADAIRSVILLE, GEORGIA", "PHOTOGRAPHER TO BE CONFIRMED"] },
+  { c: "C-02", k: "C", t: "A screening in a room Freeman built", w: "The pilot, shown once to the people in the credits. No speeches.", s: "prop", img: "barnsley-window", cap: ["BARNSLEY / ADAIRSVILLE, GEORGIA", "PHOTOGRAPH: JARED SWAFFORD"] }
+];
+const CHIP = { site: ["site", "ON THE SITE"], study: ["study", "STUDY"], prop: ["prop", "PROPOSED"], park: ["", "PARKED"], res: ["", "RESERVED"], arch: ["study", "IN THE ARCHIVE"] };
+const catList = $("#catList"), catImg = $("#catImg"), catEagle = $("#catEagle"), catCap = $("#catCap");
+let catF = "all", catSel = 0;
+function catShow(i) { catSel = i; const e = CAT[i];
+  catImg.hidden = !!e.mark; catEagle.hidden = !e.mark;
+  if (e.mark) eagleAt(catEagle, getComputedStyle(document.documentElement).getPropertyValue("--ink").trim() || UMBER); else { catImg.src = `img/${e.img}.jpg`; catImg.alt = e.t; }
+  catCap.innerHTML = e.cap.map(c => `<span>${esc(c)}</span>`).join("");
+  $$("button", catList).forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.i === i))); }
+function catRender() {
+  catList.innerHTML = CAT.map((e, i) => catF !== "all" && e.k !== catF ? "" :
+    `<li><button type="button" data-i="${i}" aria-pressed="false"><span class="code">${esc(e.c)}</span><b>${esc(e.t)}</b><span class="chip ${CHIP[e.s][0]}">${CHIP[e.s][1]}</span><span class="w">${esc(e.w)}</span></button></li>`).join("");
+  const vis = CAT.map((e, i) => i).filter(i => catF === "all" || CAT[i].k === catF); catShow(vis.includes(catSel) ? catSel : vis[0]); }
+$("#catFilter").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; catF = b.dataset.f; press($("#catFilter"), b); catRender(); });
+catList.addEventListener("click", e => { const b = e.target.closest("button"); if (b) catShow(+b.dataset.i); });
+catRender();
+
+/* the print proof */
+const bookSp = $("#bookSp"), pages = $$(".pg", bookSp), N_SP = 5; let sp = 0;
+function turn(n) { sp = Math.max(0, Math.min(N_SP - 1, n)); pages.forEach(p => { p.hidden = +p.dataset.sp !== sp; });
+  $("#bkPos").textContent = `SPREAD ${sp + 1} / ${N_SP}`; $("#bkPrev").disabled = sp === 0; $("#bkNext").disabled = sp === N_SP - 1;
+  $("#bkPrev").style.opacity = sp === 0 ? .4 : 1; $("#bkNext").style.opacity = sp === N_SP - 1 ? .4 : 1; drawAll(true); }
+$("#bkPrev").addEventListener("click", () => turn(sp - 1)); $("#bkNext").addEventListener("click", () => turn(sp + 1));
+bookSp.addEventListener("keydown", e => { if (e.key === "ArrowRight") { e.preventDefault(); turn(sp + 1); } if (e.key === "ArrowLeft") { e.preventDefault(); turn(sp - 1); } });
+eagleAt($("#bkEagle"), UMBER); turn(0);
+
+/* ───────── running head ───────── */
+const links = $$(".bar nav a"), CH = ["globe", "mission", "represent", "record", "series", "house", "take"];
+if ("IntersectionObserver" in window) {
+  const seen = new Map();
+  const so = new IntersectionObserver(es => {
+    es.forEach(e => seen.set(e.target.id, e.isIntersecting));
+    const cur = [...CH].reverse().find(id => seen.get(id) && $("#" + id).getBoundingClientRect().top < innerHeight * .5);
+    links.forEach(a => a.setAttribute("aria-current", String(a.dataset.ch === cur)));
+  }, { threshold: [0, .02, .1, .3] });
+  CH.forEach(id => so.observe($("#" + id)));
+}
+
+/* ───────── 07 the three decisions ───────── */
+const DEC = [
+  { k: "record", n: "1", name: "THE RECORD", q: "Do we make Muchacho Decatur the first full Building Record?",
+    o: [["yes", "YES, MUCHACHO"], ["other", "A DIFFERENT PROJECT"], ["hold", "NOT YET"]],
+    next: { yes: "On Monday I ask Electric Hospitality and BLUR Workshop for the drawings and for permission to redraw them. You send me whatever site photographs exist, and an hour to write down what was kept, replaced and new.",
+      other: "Tell me which in the note. Barnsley has sitework photographs already. Beetlecat has the strongest finished set. I make the same request to that project's owner and designer.",
+      hold: "The study stays on its branch. No partner is asked for anything. The capture protocol can still start on live jobs if you want it to." } },
+  { k: "series", n: "2", name: "THE SERIES", q: "Do I talk to Tristan about one pilot film of Built for Generations?",
+    o: [["yes", "YES, ONE PILOT"], ["talk", "TALK, NO COMMITMENT"], ["hold", "NOT YET"]],
+    next: { yes: "I have the conversation this week and come back with days, a fee, the credit and who owns the footage. You approve the number before anything is shot.",
+      talk: "I find out whether he is interested and available, and what it would cost. Nothing is agreed and nothing is scheduled until you have seen that.",
+      hold: "No conversation. The treatment and the animatic stay as they are. The empty-room recordings can still begin, because they cost fifteen minutes a job." } },
+  { k: "house", n: "3", name: "THE HOUSE AND THE GLOBE", q: "Does everything Freeman publishes go into one catalogue, and is the globe its mark?",
+    o: [["globe", "YES, WITH THE GLOBE"], ["eagle", "YES, EAGLE ONLY"], ["hold", "NOT YET"]],
+    next: { globe: "I number what exists, build the private homepage preview promised in Edition 001, and proof Record No. 10 in print with the globe on the last page. Nothing goes live without your say.",
+      eagle: "I number what exists and proof Record No. 10 in print. The eagle signs everything, as it does now. The globe stays a study.",
+      hold: "Nothing is numbered and nothing is printed. The record and the series can still go ahead on their own." } }
+];
+const blank = () => ({ v: { record: "", series: "", house: "" }, n: { record: "", series: "", house: "" }, fourth: "", t: 0 });
+let state = blank();
+const KEY = "freeman-edition-002-v1";
+try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); if (s && s.v && s.n) state = Object.assign(blank(), s); } catch (_) {}
+$$("#decs > li").forEach(li => { const D = DEC.find(d => d.k === li.dataset.k);
+  $(".slot", li).innerHTML = `<p class="qn">${esc(D.q)}</p><div class="opts choice" role="group" aria-label="${esc(D.q)}" data-k="${D.k}">` +
+    D.o.map(([v, l]) => `<button type="button" id="d-${D.k}-${v}" data-v="${v}" aria-pressed="false">${l}</button>`).join("") +
+    `</div><p class="next" data-next="${D.k}"></p><label class="cap q" for="note-${D.k}">A LINE OR TWO, IF YOU WANT</label><textarea id="note-${D.k}" data-note="${D.k}" placeholder="First reaction is fine."></textarea>`; });
+const fourth = $("#fourth"), briefEl = $("#brief"), syncEl = $("#sync");
+function briefText() {
+  const L = ["FREEMAN / EDITION 002", "Gabe's three decisions on Cole's creative studies of 14 November 2026", ""];
+  for (const D of DEC) { const v = state.v[D.k], o = D.o.find(x => x[0] === v);
+    L.push(`${D.n}  ${D.name}: ${o ? o[1] : "NO CALL YET"}`);
+    if (o) L.push("    Next: " + D.next[v]);
+    if (state.n[D.k].trim()) L.push("    Note: " + state.n[D.k].trim().replace(/\n+/g, "\n    "));
+    L.push(""); }
+  L.push("THE FOURTH IDEA", "    " + (state.fourth.trim() ? state.fourth.trim().replace(/\n+/g, "\n    ") : "(nothing yet)"));
+  const open = DEC.filter(D => !state.v[D.k]); if (open.length) L.push("", "STILL OPEN: " + open.map(D => D.name.toLowerCase()).join(", ") + ".");
+  return L.join("\n");
+}
+function render(skip) {
+  $$(".choice").forEach(g => $$("button", g).forEach(b => b.setAttribute("aria-pressed", String(state.v[g.dataset.k] === b.dataset.v))));
+  $$("textarea[data-note]").forEach(t => { if (t !== skip && t.value !== state.n[t.dataset.note]) t.value = state.n[t.dataset.note]; });
+  if (fourth !== skip && fourth.value !== state.fourth) fourth.value = state.fourth;
+  $$("[data-next]").forEach(p => { const D = DEC.find(d => d.k === p.dataset.next), v = state.v[D.k]; p.innerHTML = v ? "<b>Next:</b> " + esc(D.next[v]) : "No call yet."; });
+  briefEl.value = briefText();
+}
+/* storage: this device always; the shared page store when this view is allowed to write to it */
+let ref = null, shared = false, writing = false, queued = false, timer = 0, dirty = false;
+const MSG = {
+  local: "Your answers are kept on this device as you type. They are not sent anywhere on their own, so use Copy for Cole to send them.",
+  shared: "Saved to this page. Cole sees these answers when he opens it. Copy for Cole still works if you'd rather send them yourself.",
+  saving: "Saving to this page…"
+};
+function setSync(s, msg) { syncEl.dataset.s = s; syncEl.textContent = msg; }
+async function push() {
+  if (!ref) return;
+  if (writing) { queued = true; return; }
+  writing = true; setSync(shared ? "shared" : "local", MSG.saving);
+  try { await ref.set(JSON.parse(JSON.stringify(state))); shared = true; dirty = false; setSync("shared", MSG.shared); }
+  catch (e) { if (!e || e.code !== "unavailable") { ref = null; shared = false; } setSync("local", MSG.local); }
+  writing = false;
+  if (queued) { queued = false; push(); }
+}
+function changed(skip) {
+  state.t = Date.now(); dirty = true;
+  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (_) {}
+  render(skip);
+  clearTimeout(timer); timer = setTimeout(push, 900);
+}
+$("#decs").addEventListener("click", e => { const b = e.target.closest(".choice button"); if (!b) return;
+  const k = b.parentElement.dataset.k; state.v[k] = state.v[k] === b.dataset.v ? "" : b.dataset.v; changed(); });
+document.addEventListener("input", e => { const t = e.target;
+  if (t.dataset && t.dataset.note) { state.n[t.dataset.note] = t.value; changed(t); }
+  else if (t === fourth) { state.fourth = t.value; changed(t); } });
+$("#copy").addEventListener("click", async () => { const out = $("#copied"), txt = briefText();
+  try { await navigator.clipboard.writeText(txt); out.textContent = "COPIED. PASTE IT INTO A TEXT OR EMAIL TO COLE."; }
+  catch (_) { briefEl.focus(); briefEl.select(); out.textContent = "SELECTED. PRESS COPY ON YOUR KEYBOARD OR MENU."; } });
+let armed = 0;
+$("#clear").addEventListener("click", e => { const b = e.currentTarget;
+  if (Date.now() - armed > 4000) { armed = Date.now(); b.textContent = "TAP AGAIN TO CLEAR"; setTimeout(() => { b.textContent = "CLEAR ANSWERS"; }, 4000); return; }
+  armed = 0; b.textContent = "CLEAR ANSWERS"; state = blank(); changed(); });
+render();
+(async () => {
+  try {
+    if (!window.claude || !window.claude.use) return;
+    const db = await window.claude.use("db");
+    if (!db) return;
+    ref = db.doc("feedback/current");
+    ref.onSnapshot(snap => {
+      if (!snap.exists) { if (state.t) push(); return; }
+      const r = snap.data(); if (!r || !r.v || !r.n) return;
+      if (!snap.metadata.hasPendingWrites) { shared = true; if (!dirty) setSync("shared", MSG.shared); }
+      if ((r.t || 0) > state.t && !dirty) {
+        state = Object.assign(blank(), JSON.parse(JSON.stringify(r)));
+        try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (_) {}
+        render(document.activeElement);
+      } else if (state.t > (r.t || 0) && !writing) push();
+    }, () => { ref = null; shared = false; setSync("local", MSG.local); });
+  } catch (_) { ref = null; }
+})();
+
+/* opening the kept Edition 001 material lays out canvases that had no width while closed */
+$$("details.kept").forEach(d => d.addEventListener("toggle", () => { refit(); drawAll(true); }));
+addEventListener("resize", strokeUnit);
+
+/* go */
+syncPause(); refit(); drawAll(true); stitchPlate(); strokeUnit();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { refit(); drawAll(true); strokeUnit(); });
+requestAnimationFrame(t => { last = t; plLast = t; requestAnimationFrame(tick); requestAnimationFrame(plTick); });
+})();
+</script>
