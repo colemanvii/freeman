@@ -58,3 +58,7 @@
 # The Built Record (study 001, 13 Nov 2026): unpublished case-study prototype, never indexed.
 /built-record/*
   X-Robots-Tag: noindex, nofollow, noarchive
+
+# Freeman Folio (case study system 002, 14 Nov 2026): unpublished case-study prototype, never indexed.
+/folio/*
+  X-Robots-Tag: noindex, nofollow, noarchive

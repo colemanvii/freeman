@@ -12,6 +12,7 @@
 | **FreemanAI 002** | [Approved tag](https://github.com/colemanvii/freeman/tree/archive/freemanai-002-approved) · [study branch](https://github.com/colemanvii/freeman/tree/study/freemanai-002) | Preserved at `3452257`; interactive fictional-data prototype |
 | **FreemanAI 001** | [Earlier study](https://github.com/colemanvii/freeman/tree/study/freemanai-interface-001) | Archived conceptually; kept for comparison |
 | **Website creative principles** | [Current direction](CURRENT-DIRECTION.md) · [Studio](../studio/README.md) | Current website language and creative guardrails |
+| **Case studies** | [Freeman Folio, system 002](../studio/case-study-system-002/README.md) | **Authoritative branch: `claude/freeman-case-study-system-fcz54e`** (14 Nov 2026). Study, not deployed. Supersedes `feature/case-study-001` and `claude/freeman-case-study-system-273x7a`, both preserved |
 | **Eagle / signature / copy** | [Branches](https://github.com/colemanvii/freeman/branches) | Various studies and candidates; verify approval separately |
 
 ## Branch discipline
