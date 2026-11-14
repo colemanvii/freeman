@@ -7,6 +7,8 @@ This is a standalone Freeman media project. It is independent of the architectur
 website and the Three Ideas editions. The Represent clothing collaboration and the globe insignia are on
 hold and are not part of it.
 
+**Preview (private Artifact; share it from the page to let Gabe open it):** https://claude.ai/artifact/1QpgARccy2UroiG85LF4xV
+
 **Working branch:** `claude/freeman-built-generations-pitch-906z9l`. Nothing here is deployed to
 freemangc.com, and nothing in `v5/` or the root site was changed.
 
