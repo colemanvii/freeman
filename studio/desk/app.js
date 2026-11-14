@@ -14,7 +14,7 @@ function node(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=
 function append(parent,children){children.forEach(function(x){parent.appendChild(x);});return parent;}
 function link(href,cls,txt){var a=node("a",cls,txt);a.href=href; if(/^https?:/.test(href)){a.target="_blank";a.rel="noopener noreferrer";}return a;}
 function dt(s){return new Date(s+"T12:00:00").toLocaleDateString("en-US",{day:"2-digit",month:"short",year:"numeric"}).toUpperCase();}
-function isNew(x){return lastVisit>0 && new Date(x.date+"T23:59:59-05:00").getTime()>lastVisit;}
+function isNew(x){return lastVisit>0 && new Date(x.updatedAt||x.date+"T12:00:00").getTime()>lastVisit;}
 function renderWork(){
  var root=$("#nowList"); root.replaceChildren();
  loaded.work.forEach(function(x){
