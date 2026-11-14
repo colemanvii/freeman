@@ -1,0 +1,109 @@
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id)};
+
+/* ---------- chapter nav ---------- */
+var links=[].slice.call(document.querySelectorAll('#chapnav a'));
+var secs=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1))});
+function mark(){
+  var y=window.scrollY+120,cur=0;
+  secs.forEach(function(s,i){if(s&&s.getBoundingClientRect().top+window.scrollY<=y)cur=i});
+  links.forEach(function(a,i){a.setAttribute('aria-current',i===cur?'true':'false')});
+}
+var tick=false;
+window.addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(function(){mark();tick=false})}},{passive:true});
+mark();
+
+/* ---------- storyboard ---------- */
+var F=[
+ {s:"INT. A ROOM FREEMAN BUILT / EVENING",t:"The room, full",a:"We hear it first: a dining room in the middle of service. Then the picture, wide and still. Nobody is introduced. Hold it for a full minute.",l:"The room's own light. Warm, low, practical.",so:"The room at full volume, recorded in stereo. No music added.",c:"Tripod, wide, locked. Composed like an architectural photograph.",w:"Cusick, crew day (evening)"},
+ {s:"BLACK",t:"Title",a:"Hard cut to black and to silence. The title, small. A time stamp from before sunrise the same day. The red is the only colour.",l:"None.",so:"Silence, then a room tone so quiet it reads as silence.",c:"Card. Four seconds.",w:"Edit"},
+ {s:"EXT. DOWNTOWN CARTERSVILLE / DAWN",t:"Before anyone is up",a:"The main street before it wakes. Streetlamps still on. One truck pulls in and parks. We stay wide and let it happen.",l:"First natural light, flat and cool.",so:"Birds. A train somewhere off. An engine, a door.",c:"Tripod, wide. Longer than is comfortable.",w:"Cole, R6 Mark III"},
+ {s:"INT. FREEMAN OFFICE / DAWN",t:"The desk",a:"Gabe alone with the day's drawings. The actual desk of someone running a construction company. He is not talking to us. He is working.",l:"Window light only, then the lamps he switches on in shot.",so:"Paper, a chair, a first phone call heard from one side.",c:"Tripod, side-on, medium wide. One take.",w:"Cole, R6 Mark III"},
+ {s:"INT. TRUCK / MORNING",t:"The road",a:"Through the windshield, north Georgia going by. His voice begins here, from the conversation recorded later, laid over the drive.",l:"Whatever the morning gives.",so:"Cab, tyres, radio if it is on. Voice close.",c:"Passenger seat or dash. Level horizon.",w:"Cole, R6 Mark III"},
+ {s:"EXT. SITE / FIRST HOUR",t:"The tailgate",a:"The crew gathers at the back of a truck. Drawings come out. The day's sequence is talked through in the order it will happen. Everyone is named on screen as they speak.",l:"Low sun through the tree line.",so:"Boom. Overlapping talk, coffee, a machine warming up.",c:"Handheld, calm. A wide and one closer size.",w:"Cusick, crew day (morning)"},
+ {s:"EXT. SITE / MORNING",t:"The drawing",a:"Hands on the sheet. A pencil circles the detail that is about to matter. We look where they look.",l:"Open shade.",so:"Paper in the wind. A question, an answer.",c:"Handheld, short telephoto, close.",w:"Cusick, crew day (morning)"},
+ {s:"INT. SITE / MORNING",t:"One task, start to finish",a:"One person doing one piece of work, from the first move to the last. Uncut if the work allows it. This is the centre of the film, and it has no commentary.",l:"Daylight through open framing.",so:"Only the work. Close enough to hear the material.",c:"Tripod, wide, with a second closer angle on the hands.",w:"Cusick, crew day (morning)"},
+ {s:"INT. SITE / MIDDAY",t:"The decision",a:"Gabe and the superintendent standing at the thing itself. Something does not match the drawing, and it has to be settled now. We do not explain it. We watch it get decided.",l:"As found.",so:"Lavalier on Gabe, boom on the room. A tape measure.",c:"Handheld, over the shoulder, then the reverse.",w:"Cusick, crew day"},
+ {s:"INT. BY A WINDOW / AFTERNOON",t:"The conversation",a:"Gabe, seated, close, off-centre. He is talking with me, not to the lens. About an hour is recorded and perhaps two minutes are used, mostly as voice over the work.",l:"Window side. The far side of the face falls away.",so:"Voice, close and unhurried. Room tone under it.",c:"Tripod, two sizes, one camera. Not a lit interview.",w:"Cusick, crew day (afternoon)"},
+ {s:"EXT. THE FINISHED PLACE / DUSK",t:"Lights on",a:"The front of a building Freeman built, as its lights come on and the first guests arrive. We have been here before, but we do not know it yet.",l:"Blue hour against the warm windows.",so:"Street. A door opening onto the sound of the room.",c:"Tripod, wide, square to the facade.",w:"Cusick, crew day (evening)"},
+ {s:"INT. THE ROOM / EVENING",t:"The room, again",a:"The first frame of the film, from the same position. Now the viewer looks at the ceiling, the joinery, the door. Gabe is at the edge of the frame, watching, unrecognised by anyone eating. The eagle stamps once. End.",l:"The room's own light.",so:"The room, full. Then cut to silence for the stamp.",c:"Tripod, wide, matched exactly to frame 01.",w:"Cusick, crew day (evening)"}
+];
+var cur=0,strip=$('sbStrip'),btns=[];
+function svg(i){return '<svg class="sb" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"><use href="#sb'+(i+1)+'"/></svg>'}
+function pad(n){return (n<10?'0':'')+n}
+F.forEach(function(f,i){
+  var b=document.createElement('button');b.type='button';b.innerHTML=svg(i);
+  b.setAttribute('aria-label','Frame '+pad(i+1)+': '+f.t);b.onclick=function(){show(i)};strip.appendChild(b);btns.push(b);
+});
+function show(i){
+  cur=(i+F.length)%F.length;var f=F[cur];
+  $('sbFrame').innerHTML=svg(cur);$('sbFrame').setAttribute('aria-label','Concept drawing for frame '+pad(cur+1)+': '+f.t);
+  $('sbSlug').innerHTML='<b>'+pad(cur+1)+'</b> &nbsp;/&nbsp; '+f.s;
+  $('sbTitle').textContent=f.t;$('sbAct').textContent=f.a;$('sbLight').textContent=f.l;$('sbSound').textContent=f.so;$('sbCam').textContent=f.c;$('sbWho').textContent=f.w;
+  $('sbCount').textContent=pad(cur+1)+' / '+pad(F.length);
+  btns.forEach(function(b,j){b.setAttribute('aria-pressed',j===cur?'true':'false')});
+}
+$('sbPrev').onclick=function(){show(cur-1)};$('sbNext').onclick=function(){show(cur+1)};
+$('board').addEventListener('keydown',function(e){if(e.key==='ArrowLeft'){show(cur-1)}else if(e.key==='ArrowRight'){show(cur+1)}});
+show(0);
+
+/* ---------- budget ---------- */
+var S={
+ lean:{d:"Five crew days, three finished films of six to eight minutes, and short pieces from the rest. The safest way to protect quality on a smaller budget.",films:"three films",
+  rows:[["Professional crew days","5 days × $2,500 target","p",12500,12500],["Editing","3 films × 7 days × $500 to $800","e",10500,16800],["Colour and sound mix","3 films × $1,200 to $1,800","e",3600,5400],["Travel and accommodation","5 shoots × $300 to $700","e",1500,3500],["Music licensing","Library subscription, if used","e",0,500],["Media and storage","Drives, backup","e",300,600]]},
+ proposed:{d:"Five crew days and five finished films of six to ten minutes, each with short cuts for Instagram. This is the proposal.",films:"five films",
+  rows:[["Professional crew days","5 days × $2,500 target","p",12500,12500],["Editing","5 films × 8 to 10 days × $500 to $800","e",20000,40000],["Colour and sound mix","5 films × $1,200 to $2,400","e",6000,12000],["Travel and accommodation","5 shoots × $300 to $700","e",1500,3500],["Music licensing","Library subscription, five months","e",500,1000],["Media and storage","Drives, backup","e",300,600]]},
+ full:{d:"Five longer films of ten to fifteen minutes, edited at a full documentary pace, with two extra crew days. Shown so you can see the ceiling. I am not proposing it.",films:"five longer films",
+  rows:[["Professional crew days","5 days × $2,500 target","p",12500,12500],["Additional crew days","2 days × $2,500 target","e",5000,5000],["Editing","5 films × 20 days × $500 to $800","e",50000,80000],["Colour and sound mix","5 films × $2,000 to $3,500","e",10000,17500],["Travel and accommodation","7 shoots × $300 to $700","e",2100,4900],["Music licensing","Library or single licences","e",1000,2500],["Media and storage","Drives, backup","e",500,1000]]}
+};
+function money(n){return '$'+Math.round(n).toLocaleString('en-US')}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function budget(k){
+  var s=S[k],lo=0,hi=0,h='';
+  s.rows.forEach(function(r){lo+=r[3];hi+=r[4];
+    h+='<tr><td>'+esc(r[0])+'</td><td>'+esc(r[1])+'</td><td><span class="tag '+(r[2]==='p'?'v">Proposed':'e">Estimate')+'</span></td><td class="num">'+money(r[3])+'</td><td class="num">'+money(r[4])+'</td></tr>'});
+  var cl=lo*.1,ch=hi*.1;
+  h+='<tr class="sub"><td>Contingency</td><td>10% of the lines above</td><td><span class="tag e">Estimate</span></td><td class="num">'+money(cl)+'</td><td class="num">'+money(ch)+'</td></tr>';
+  h+='<tr class="total"><td>All-in</td><td>'+esc(s.films)+'</td><td></td><td class="num">'+money(lo+cl)+'</td><td class="num">'+money(hi+ch)+'</td></tr>';
+  document.querySelector('#budget tbody').innerHTML=h;
+  var rl=Math.round((lo+cl)/500)*500,rh=Math.round((hi+ch)/500)*500;
+  $('allN').textContent=money(rl)+' – '+money(rh);
+  $('allD').textContent='Rounded. For '+s.films+', including the crew days. An estimate range built from published benchmarks, to be replaced by real quotes.';
+  $('scopeDesc').textContent=s.d;
+  [].forEach.call(document.querySelectorAll('#scope button'),function(b){b.setAttribute('aria-pressed',b.dataset.s===k?'true':'false')});
+}
+[].forEach.call(document.querySelectorAll('#scope button'),function(b){b.onclick=function(){budget(b.dataset.s)}});
+budget('proposed');
+
+/* ---------- Gabe's call ---------- */
+var call=null,optBtns=[].slice.call(document.querySelectorAll('#call .opts button')),note=$('callNote'),status=$('callStatus'),docRef=null;
+var LABEL={yes:'Yes, in principle',talk:"Let's talk first",no:'Not now'};
+function paint(){optBtns.forEach(function(b){b.setAttribute('aria-pressed',b.dataset.c===call?'true':'false')})}
+optBtns.forEach(function(b){b.onclick=function(){call=b.dataset.c;paint();status.textContent='Selected: '+LABEL[call]+'. Not saved yet.'}});
+function when(ms){try{return new Date(ms).toLocaleString('en-US',{month:'long',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'})}catch(e){return ''}}
+function showSaved(d){
+  if(!d||!d.call)return;
+  call=d.call;paint();
+  if(document.activeElement!==note)note.value=d.note||'';
+  status.textContent='Saved: '+(LABEL[d.call]||d.call)+(d.at?', '+when(d.at):'')+'. Cole can see this.';
+}
+$('call').addEventListener('submit',function(e){
+  e.preventDefault();
+  if(!call){status.textContent='Choose one of the three first.';return}
+  var data={call:call,note:note.value.trim().slice(0,1500),at:Date.now()};
+  if(!docRef){status.textContent='This view cannot save a call. Tell Cole directly: '+LABEL[call]+'.';return}
+  status.textContent='Saving…';
+  docRef.set(data).then(function(){showSaved(data)},function(){status.textContent='That did not save from this view. Tell Cole directly: '+LABEL[call]+'.'});
+});
+var c=window.claude;
+if(c&&typeof c.use==='function'){
+  c.use('db').then(function(db){
+    if(!db)return;
+    docRef=db.doc('decision/gabe');
+    docRef.get().then(function(snap){if(snap&&snap.exists)showSaved(snap.data())},function(){});
+  },function(){});
+}
+})();
+</script>
