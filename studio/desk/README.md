@@ -13,7 +13,7 @@ The source repository colemanvii/freeman is PUBLIC. All data in desk/content.jso
 - studio/edition-001/index.html — the original presentation as an archive item.
 
 ## Add an entry
-Edit ONLY desk/content.json. Add an object to work / notes / archive and publish a new preview commit. Store an ISO date. The homepage reads content.json on each visit without cache. For cards, use photographs already licensed and credited by Freeman. Keep claims precise: "proposed", "working study", "unapproved" where appropriate. If an idea is not approved, do not call it a commitment. No CMS or auto-publishing is claimed.
+Edit ONLY desk/content.json. Add an object to work / notes / archive and publish a new preview commit. Store an ISO date and an ISO updatedAt timestamp on work items; use the actual editing time for the "since last visit" indicator. The homepage reads content.json on each visit without cache. For cards, use photographs already licensed and credited by Freeman. Keep claims precise: "proposed", "working study", "unapproved" where appropriate. If an idea is not approved, do not call it a commitment. No CMS or auto-publishing is claimed.
 
 ## "What's new" and feedback
 This browser records last-visit time when the page is exited; the "new since visit" label compares work item dates to that timestamp. The feature is browser-local, not a server-side cross-device history. Reaction choices and the text note are browser-local. EMAIL COLE opens an email draft; the sender must press Send. There is no fake synchronized feedback save.
