@@ -20,7 +20,29 @@ sites, cusickmedia.com and freemangc.com. Only a web-search tool worked.
   - **INFERRED** — a reading of the evidence, not a sourced fact.
   - **UNKNOWN** — looked for and not found.
 
-To finish properly: watch the eight films listed in the pitch, and re-check each figure against its page.
+**Status: incomplete.** A second attempt on the revision (same day) failed the same way: `openresidency.com`,
+`www.youtube.com`, `representclo.com`, `culted.com`, `www.flannels.com` and `www.cusickmedia.com` all refused at
+DNS level from the research environment. Nothing below should be described as complete research.
+
+To finish properly:
+
+1. Listen to Open Residency Ep. 17 from 16:30 ("What Does Your Content System Look Like?") and note what
+   George Heaton says, with timestamps.
+2. Watch the eight films listed in the pitch in full.
+3. Read the Culted and Flannels interviews; replace paraphrases with exact words or remove them.
+4. Take runtimes, dates and subscriber counts from YouTube itself.
+
+This needs the hosts above allowed in the environment's network settings, or the viewing done by a person.
+
+### Open Residency, Ep. 17 — what is and is not established
+
+| | Status |
+|---|---|
+| "George Heaton – The Clothing Brand That Should've Died, But Became a Cult", Ep. 17, published 24 Nov 2025 (Apple lists 25 Nov), 1:55:14, 14 chapters, host Mark Brazil | REPORTED — [show page](https://openresidency.com/george-heaton), [Spotify](https://open.spotify.com/episode/4ruDKbUac3vuzIjETqB8hL), [Apple Podcasts](https://podcasts.apple.com/gb/podcast/george-heaton-the-clothing-brand-that-shouldve-died/id1791782856?i=1000738349109) |
+| Chapter at 00:16:30 titled "What Does Your Content System Look Like?" | REPORTED |
+| Show description mentions the personal brand flywheel and the content machine behind Owners' Club and 247 | REPORTED |
+| Anything he actually says in the chapter | **NOT HEARD.** No public transcript found (one aggregator states none is available) |
+| A $250M valuation / $50M secondary figure attributed to this episode | Single X post; unconfirmed; not used |
 
 ---
 
@@ -206,7 +228,12 @@ Source: `release/american-gothic-2026-11-05` (`v5/app.js`, `v5-source/content.js
 | Sound mix | $75–200/hour | 2025 rate guide via search summary; primary page not captured |
 | Music library | Musicbed client coverage from ~$100/month; Epidemic Sound business ~$30–100/month | [Musicbed](https://musicbed.com/blog/?p=4400), [Epidemic Sound](https://www.epidemicsound.com/our-plans/business-plan/) |
 
-**Arithmetic behind the three scopes in the pitch**
+**Illustrative scenarios (appendix A5 of the pitch; not the proposal)**
+
+The proposal is: five months, five professional shoot days, a $12,500 crew-day target, postproduction scope
+and cost to be determined, and a formal production quote before approval. The table below assumes an outside
+editor paid by the day for every film. A negotiated Cusick post package, a shared director/editor arrangement
+or Cole's own time in the edit would change it substantially; the true cost may fall outside these ranges.
 
 | Line | Lean (3 films) | Proposed (5 films, 6–10 min) | Full (5 films, 10–15 min) |
 |---|---|---|---|
