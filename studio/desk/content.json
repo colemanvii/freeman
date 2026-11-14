@@ -12,7 +12,8 @@
       "image": "/edition-002/img/muchacho-03.jpg",
       "alt": "Interior of Muchacho Decatur, a Freeman project",
       "description": "A building told through its drawings, photographs, details and people. The Muchacho record is a study, not an approved record.",
-      "url": "/edition-002/index.html#record"
+      "url": "/edition-002/index.html#record",
+      "updatedAt": "2026-11-13T21:27:00-05:00"
     },
     {
       "id": "film",
@@ -24,7 +25,8 @@
       "image": "/edition-002/img/field-gabe.jpg",
       "alt": "Authentic Freeman field photograph",
       "description": "A documentary series about the people and places behind the work. One pilot proposed; no production commissioned.",
-      "url": "/edition-002/index.html#series"
+      "url": "/edition-002/index.html#series",
+      "updatedAt": "2026-11-13T21:27:00-05:00"
     },
     {
       "id": "house",
@@ -36,7 +38,8 @@
       "image": "/edition-002/img/beetlecat-room.jpg",
       "alt": "BeetleCat interior photographed for Freeman",
       "description": "One coherent catalogue for projects, photographs, records, films, and collaborations.",
-      "url": "/edition-002/index.html#house"
+      "url": "/edition-002/index.html#house",
+      "updatedAt": "2026-11-13T21:27:00-05:00"
     }
   ],
   "notes": [
