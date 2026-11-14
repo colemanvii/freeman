@@ -118,7 +118,7 @@
       return `<div class="fo-close">${say ? `<p class="fo-big">${esc(say)}</p>` : `<p class="fo-big is-name">${esc(p.name)}</p>`}</div>` +
         dl(rows, "fo-particulars") +
         `<nav class="fo-onward" aria-label="Onward"><a href="${esc(url("map.html?p=" + slug))}"><span class="fo-micro">Return</span>${esc(p.name)} on the map</a>` +
-        (nextP ? `<a href="${esc(L.next)}.html"><span class="fo-micro">Next folio</span>${esc(nextP.name)} <i aria-hidden="true">→</i></a>` : "") + `</nav>`;
+        (nextP ? `<a href="${esc((window.FOLIO_HERE || "") + L.next)}.html"><span class="fo-micro">Next folio</span>${esc(nextP.name)} <i aria-hidden="true">→</i></a>` : "") + `</nav>`;
     }
   };
 
@@ -190,7 +190,7 @@
     whereEl.querySelector("span").textContent = titleOf(leaves[i]);
     btnPrev.disabled = i === 0; btnNext.disabled = i === count - 1;
     document.documentElement.dataset.leaf = leaves[i].type;
-    if (!quiet) history.replaceState(null, "", i ? `#${i + 1}` : location.pathname + location.search);
+    if (!quiet) { try { history.replaceState(null, "", i ? `#${i + 1}` : location.pathname + location.search); } catch (e) { /* a sandboxed frame may refuse; turning still works */ } }
   };
   const turn = (d) => go(at + d);
 
