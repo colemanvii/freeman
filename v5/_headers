@@ -66,3 +66,7 @@
 # Freeman Folio, second iteration (study 003, 14 Nov 2026): unpublished case-study prototype, never indexed.
 /folio-2/*
   X-Robots-Tag: noindex, nofollow, noarchive
+
+# The Built Record (16 Nov 2026): case studies, preview only until approved. Remove this block to publish.
+/built/*
+  X-Robots-Tag: noindex, nofollow, noarchive
