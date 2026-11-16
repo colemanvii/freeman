@@ -991,6 +991,8 @@
     }
     const url = new URL(a.getAttribute("href"), document.baseURI);
     if (!isAppUrl(url)) return;
+    // A case-study slideshow is its own page (built/built.js); let the browser load it.
+    if (projects.some((p) => p.slideshow && new RegExp("/project-" + p.slug + "(\\.html)?$").test(url.pathname))) return;
     e.preventDefault();
     navigate(url.href, { focus: a.dataset.focus });
   });

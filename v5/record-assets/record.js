@@ -760,6 +760,9 @@
     const by = cr.find((c) => c.role === 'photography');
     const near = it.placed ? placed.filter((j) => j !== it).map((j) => ({ j, d: Math.hypot(j.x - it.x, j.y - it.y) * KM_PER_UNIT / 1.609344 })).sort((a, b) => a.d - b.d).slice(0, 3) : [];
     const ph = it.photos;
+    // A project with a published case study offers it straight after the photographs, where a phone shows it
+    // without a second scroll; every other project keeps Full project at the foot of its record.
+    const full = `<a class="p-full" href="/project-${esc(it.slug)}"><span>${it.slideshow ? 'View full case study' : 'Full project'}</span><span aria-hidden="true">→</span></a>`;
     const fig = ph.length ? `<figure class="p-fig">
         <div class="p-photos" id="p-photos" tabindex="0" role="group" aria-roledescription="carousel" aria-label="${esc(it.name)} photographs">${ph.map((p, j) => `<div class="p-slide" aria-label="${j + 1} of ${ph.length}"><button type="button" class="p-enlarge" data-k="${j}" aria-label="View photograph ${j + 1} of ${ph.length} full screen"><img src="${esc(sized(p, 960))}" srcset="${esc(srcset(p))}" sizes="(max-width:760px) calc(100vw - 32px), 520px"${p.w ? ` width="${p.w}" height="${p.h}"` : ''} alt="${esc(it.name)}, photograph ${j + 1} of ${ph.length}" decoding="async"${j ? ' loading="lazy"' : ' fetchpriority="high"'} draggable="false"></button></div>`).join('')}</div>
         <figcaption class="p-cap"><span class="p-count" id="p-count">${ph.length > 1 ? `01 / ${String(ph.length).padStart(2, '0')}` : ''}</span><span class="p-by">${by ? `Photograph ${by.people.map((p) => esc(p.name)).join(', ')}` : ''}</span>${ph.length > 1 ? `<span class="p-arrows"><button type="button" data-ph="-1" aria-label="Previous photograph">←</button><button type="button" data-ph="1" aria-label="Next photograph">→</button></span>` : ''}</figcaption></figure>` : '';
@@ -779,9 +782,10 @@
       </div>
       <div class="p-scroll" id="p-scroll">
         ${fig}
+        ${it.slideshow ? full : ''}
         ${it.summary ? `<p class="p-story">${esc(it.summary)}</p>` : ''}
         ${cr.length ? `<dl class="p-credits">${cr.map((c) => `<div><dt>${esc(c.label)}</dt><dd>${c.people.map((p) => partner(p) + (p.note ? ` <span class="p-note">${esc(p.note)}</span>` : '')).join('<br>')}</dd></div>`).join('')}</dl>` : ''}
-        <a class="p-full" href="/project-${esc(it.slug)}"><span>Full project</span><span aria-hidden="true">→</span></a>
+        ${it.slideshow ? '' : full}
         ${near.length ? `<h3 class="p-h">Nearby</h3><ul class="p-near">${near.map(({ j, d }) => `<li><button type="button" data-open="${j.slug}"><span class="n">${esc(j.id)}</span><span class="t">${esc(j.name)}</span><span class="m">${j.site.precision === 'area' || it.site.precision === 'area' ? '≈ ' : ''}${d < .1 ? 'Same site' : d < 10 ? d.toFixed(1) + ' mi' : Math.round(d) + ' mi'}</span></button></li>`).join('')}</ul>` : ''}
       </div>
       <nav class="p-index" id="p-index" hidden aria-label="All projects"><ol>${order.map((j) => `<li><button type="button" data-open="${j.slug}"${j === it ? ' aria-current="true"' : ''}><span class="n">${esc(j.id)}</span><span class="t">${esc(j.name)}</span><span class="w">${j.placed ? esc(shortCity(j)) : 'Not placed'}</span></button></li>`).join('')}</ol></nav>`;

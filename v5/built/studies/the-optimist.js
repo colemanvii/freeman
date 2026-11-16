@@ -35,7 +35,7 @@ window.FREEMAN_BUILT["the-optimist"] = {
       listTitle: "The work", list: ["Custom radius window", "Radius tile around the oven", "Custom millwork", "Custom stainless steel"],
       source: "Scope and schedule as published by Freeman General Contracting" },
     { type: "plate", title: "Lit cabinet", plate: "02", side: "band", ground: "dark", focus: [50, 46] },
-    { type: "colophon", title: "Record", lead: 5, plates: true, next: "muchacho-decatur",
+    { type: "colophon", title: "Record", lead: 5,
       passage: "The photographs show the restaurant. The Oyster Bar itself has not yet been photographed for this record.",
       particulars: [["Scope", "Oyster Bar refresh"], ["Completed", "2024"], ["Schedule", "Three weeks"], ["Area", "About 1,300 sq ft"]] }
   ]

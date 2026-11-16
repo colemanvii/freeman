@@ -1,4 +1,39 @@
-# The Built Record — production prototype (002)
+# Freeman case studies — production prototype (002)
+
+**Round 2, 16 Nov 2026 (later).** Two briefs from Cole changed the system; this section is current and
+overrides anything below it.
+
+The journey: **Projects map → project overview (the map's panel) → View full case study → slideshow.**
+
+- The slideshow opens at the project's existing address, `/project-muchacho-decatur`. `v5/project-muchacho-decatur.html`
+  is now the slideshow shell; the standalone `/built/` contents page and `/built/muchacho-decatur.html` are gone.
+- A project has a slideshow when its record in `v5/records.js` has `"slideshow": true`. Only Muchacho has it.
+  The overview then shows `View full case study →` straight after its photographs; every other project
+  keeps `Full project →` where it was. One changed line in `record-assets/record.js`; the map is otherwise untouched.
+- `← Back to project` (top right, and on the last slide) returns to that project's overview. Arriving from
+  the overview it goes back in history, so the map is as it was left; arriving directly it opens `/map?p=<slug>`.
+  Slides replace the address (`#3`), never push, so browser Back leaves the case study in one step.
+- One ground everywhere, the site's off-white `#fff9f1`. No dark slides.
+- Previous and next arrows stand in the left and right margins at mid-height (at the foot on phones, either
+  side of the counter). Arrow keys and swipe. Counter `03 / 07` at the foot, centred. One 0.28 s dissolve.
+- Three compositions: the opening; a photograph alone; a photograph with a short passage at its right
+  (beneath it on phones). Plus the record slide, and `drawing` for a real sheet. Removed: dark ground,
+  bands, the plate of crops, the whole-photograph view, the tick rail, the wheel, the hint text.
+- Muchacho is seven slides: opening · door open + passage · front room · bar + passage · cased opening +
+  passage · wall light · record. Six photographs, each shown once and whole.
+- **Barnsley and The Optimist have not been moved to this system.** Their files still open at
+  `/built/barnsley-resort.html` and `/built/the-optimist.html` on the new ground with the new navigation, but
+  their slides are the round 1 compositions and are not for review.
+
+Local: `wrangler pages dev v5 --port 8932` (clean URLs are needed), then `/map?p=muchacho-decatur`.
+Check: `PW=<playwright> node studio/built-record-002/journey.mjs` — 379 checks, Chromium, seven screen sizes:
+the overview action, the address, every slide fits, arrows clear of the photograph, counter, ground,
+Back to project, browser back and forward, deep link, swipe, and Beetlecat still reading `Full project`.
+**WebKit and Firefox were not run.**
+
+---
+
+# Round 1 notes (superseded where they differ)
 
 16 Nov 2026. Branch `feature/built-record-002`, cut from the five-leaf folio branch
 (`claude/freeman-case-study-system-fcz54e`) and merged with production

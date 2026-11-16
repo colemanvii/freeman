@@ -59,7 +59,7 @@ window.FREEMAN_BUILT["barnsley-resort"] = {
     { type: "pair", title: "Family pool", layout: "tall-right", plates: ["05", "04"], label: "No. 03 / Barnsley Family Pool", lead: 2, passage: 3 },
     { type: "plate", title: "Woodlands", plate: "06", side: "band", ground: "dark", focus: [50, 50], label: "No. 15 / Woodlands · No. 16 / Dugan’s Pub", passage: 4 },
     { type: "pair", title: "On site", layout: "major-left", plates: ["07", "08"], label: "November 2026", lead: 5 },
-    { type: "colophon", title: "Record", lead: 6, plates: true, next: "the-optimist",
+    { type: "colophon", title: "Record", lead: 6,
       works: [
         { no: "03", name: "Barnsley Family Pool", note: "Pool and pavilion" },
         { no: "15", name: "Woodlands at Barnsley Resort", note: "Restaurant renovation, 2026" },
