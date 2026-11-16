@@ -29,6 +29,18 @@ this register is the list of what would fill it. Web facts were read through a s
 | S | Interior area, seats | Only "nearly 7,000 square feet of outdoor space" is reported, and is not used |
 | S | The ribbon-cutting photograph (frame 14) | On file, not used: names and permission needed |
 
+### Muchacho: the construction record (interviews with Mac Thompson and the project team)
+
+Seven chapters are named in `v5/built/studies/muchacho-decatur.js` and shown as "To be recorded". For each:
+two to four plain sentences, who said them and when, and one photograph or drawing if there is one.
+
+1. Design intent and scope 2. The house and its constraints 3. Challenges and unforeseen conditions
+4. Decisions made in the field 5. Materials, detailing and craftsmanship 6. Architect, owner, trades and
+Freeman 7. Lessons, and the finished result.
+
+Also wanted from the same conversations: any drawing Freeman may show (plan first), any photograph taken
+during the work, and whether the W.C. door, the lattice windows and the wall light are original, reused or new.
+
 ## Barnsley Resort
 
 | | Item | Detail |

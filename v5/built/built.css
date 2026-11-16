@@ -143,3 +143,88 @@ figcaption b{margin-right:14px}
   .fo-particulars dd{font-size:12px}
   .fo-works li{padding:3px 0 4px;font-size:14px}
 }
+
+/* ================= Edition 2: the authored treatment (Muchacho first) =================
+   Scoped to [data-edition="2"], so studies without the flag are unchanged. Same ground, type, arrows and
+   counter. What differs is the editing: a photograph may hold its place from one slide to the next, a
+   sentence may be the subject of a slide, and one slide dissolves into the next. */
+.fo-id{display:none}
+[data-edition="2"] .fo-id{display:inline;margin-left:26px;color:var(--muted)}
+[data-edition="2"] .fo-id b{font-weight:500;color:var(--ink)}
+[data-edition="2"] .fo-leaf{background:var(--paper)}
+[data-edition="2"] .fo-leaf.is-out{visibility:visible;opacity:1;z-index:0}
+[data-edition="2"] .fo-leaf.is-on{z-index:1;transition:opacity .55s ease}
+[data-edition="2"][data-calm] .fo-leaf.is-on{transition:none}
+.fo-entry{background-size:cover;background-position:50% 50%}
+/* the photograph on the slide in view is the one that travels to and from the overview (set by built.js) */
+.fo-leaf.is-on .fo-shared{view-transition-name:fgc-entry}
+/* words do not cross: the outgoing words leave first, the incoming words arrive a moment after the photograph */
+[data-edition="2"] .fo-leaf.is-out :is(.fo-words,.fo-head,p.fo-say,.fo-close,.fo-particulars,figcaption){opacity:0;transition:opacity .16s ease}
+[data-edition="2"] .fo-leaf.is-on.is-in :is(.fo-words,.fo-head,p.fo-say,.fo-close,.fo-particulars,figcaption){animation:fo-words .45s ease .22s both}
+@keyframes fo-words{from{opacity:0}to{opacity:1}}
+[data-edition="2"][data-calm] .fo-leaf :is(.fo-words,.fo-head,p.fo-say,.fo-close,.fo-particulars,figcaption){animation:none;transition:none}
+
+/* the title, and any photograph that holds the same place: full height at the left, words low at the right */
+[data-edition="2"] :is(.fo-title,.is-hold){grid-template-rows:auto minmax(0,1fr) auto}
+[data-edition="2"] :is(.fo-title,.is-hold) .fo-cell{grid-column:1/8;grid-row:1/4}
+[data-edition="2"] .fo-title .fo-head{grid-column:8/13;grid-row:1;padding-top:2px}
+[data-edition="2"] .fo-title .fo-name{font-size:clamp(48px,min(6.6vw,13vh),118px);line-height:.88;margin:0 0 0 -.05em}
+[data-edition="2"] :is(.fo-title,.is-hold) .fo-words{grid-column:8/13;grid-row:3;padding-bottom:30px;gap:clamp(12px,2.2vh,22px)}
+[data-edition="2"] .is-hold .fo-words{grid-column:8/12}
+[data-edition="2"] :is(.fo-title,.is-hold) .fo-lead{font-size:clamp(22px,min(2.15vw,4vh),34px);line-height:1.16;letter-spacing:-.015em;max-width:17em;text-wrap:pretty}
+[data-edition="2"] .is-hold .fo-passage{font-size:clamp(22px,min(2.15vw,4vh),34px);line-height:1.16;font-weight:300;letter-spacing:-.015em;max-width:17em;color:var(--muted)}
+/* a sentence as the subject, one small photograph low at the right */
+[data-edition="2"] .fo-say{grid-template-rows:minmax(0,1fr)}
+[data-edition="2"] p.fo-say{grid-column:1/10;grid-row:1;align-self:start;font-size:clamp(36px,min(5.4vw,10.5vh),96px);line-height:1;font-weight:300;letter-spacing:-.035em;margin-left:-.04em;text-wrap:balance}
+[data-edition="2"] .fo-say .fo-cell{grid-column:9/13;grid-row:1;align-self:end;height:44%;justify-content:flex-end}
+/* the record sits lower on the slide, with air above it */
+/* level marks: a hairline out of the photograph's edge and a label, like the datums of an elevation */
+[data-edition="2"] .fo-fig{position:relative}
+.fo-levels{position:absolute;left:100%;top:0;bottom:30px;width:0}
+.fo-levels li{position:absolute;left:0;display:flex;align-items:center;gap:10px;height:0;white-space:nowrap;font-size:10px;line-height:1;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.fo-levels li::before{content:"";flex:none;width:clamp(18px,2.4vw,40px);border-top:1px solid var(--ink)}
+/* the construction record: chapters still to be recorded, listed once */
+[data-edition="2"] .fo-chlist{grid-column:7/13;grid-row:1;align-self:end;padding-bottom:30px}
+[data-edition="2"] .fo-chlist>.fo-micro{padding-bottom:10px}
+[data-edition="2"] .fo-chlist li{display:grid;grid-template-columns:44px minmax(0,1fr) auto;column-gap:var(--g);align-items:baseline;border-top:1px solid var(--hair);padding:clamp(7px,1.3vh,12px) 0 clamp(8px,1.5vh,14px);font-size:clamp(16px,1.35vw,21px);line-height:1.25;font-weight:300;letter-spacing:-.008em}
+[data-edition="2"] .fo-chlist li:last-child{border-bottom:1px solid var(--hair)}
+[data-edition="2"] .fo-chlist i{font-style:normal}
+/* the record closes in the same voice as the sentence slide: large at the top, particulars low at the right */
+[data-edition="2"] .fo-colophon{grid-template-rows:minmax(0,1fr);padding-bottom:30px}
+[data-edition="2"] .fo-close{grid-column:1/10;grid-row:1;height:100%;gap:0}
+[data-edition="2"] .fo-colophon .fo-lead{font-size:clamp(30px,min(4.3vw,8.6vh),76px);line-height:1.02;letter-spacing:-.032em;margin-left:-.04em;text-wrap:balance}
+[data-edition="2"] .fo-return{margin-top:auto}
+[data-edition="2"] .fo-particulars{grid-column:9/13;grid-row:1;align-self:end}
+@media (max-width:1100px) and (min-width:761px){
+  [data-edition="2"] :is(.fo-title,.is-hold) .fo-cell{grid-column:1/7}
+  [data-edition="2"] .fo-title .fo-head,[data-edition="2"] :is(.fo-title,.is-hold) .fo-words{grid-column:7/13}
+}
+@media (max-width:760px){
+  [data-edition="2"] .fo-id{display:none}
+  [data-edition="2"] .fo-title .fo-head{order:1;padding:0}
+  [data-edition="2"] .fo-title .fo-name{font-size:clamp(30px,9.8vw,46px);line-height:1;white-space:nowrap;margin:0 0 0 -.04em}
+  [data-edition="2"] .fo-title .fo-cell{order:0}
+  [data-edition="2"] .fo-title .fo-kicker{display:none}
+  [data-edition="2"] .fo-title .fo-words{order:2}
+  /* on a phone the title photograph and any photograph that holds its place stand at the top, at one size */
+  [data-edition="2"] :is(.fo-title,.is-hold) .fo-cell{flex:0 0 64%;min-height:0}
+  [data-edition="2"] :is(.fo-title,.is-hold) .fo-words{padding-bottom:4px;gap:8px}
+  [data-edition="2"] :is(.fo-title,.is-hold) .fo-lead,[data-edition="2"] .is-hold .fo-passage{font-size:clamp(17px,4.6vw,20px);line-height:1.2}
+  [data-edition="2"] .fo-leaf.fo-say{justify-content:space-between;gap:20px}
+  [data-edition="2"] p.fo-say{font-size:clamp(34px,10.5vw,46px);line-height:1.02;padding-top:6px}
+  [data-edition="2"] .fo-say .fo-cell{flex:0 1 42%;height:auto;min-height:140px;width:72%;align-self:flex-end;justify-content:flex-end}
+  .fo-levels li{font-size:8.5px;gap:5px;letter-spacing:.05em}
+  .fo-levels li::before{width:8px}
+  [data-edition="2"] .fo-leaf.fo-chapters{justify-content:space-between}
+  [data-edition="2"] .fo-chlist{padding-bottom:6px}
+  [data-edition="2"] .fo-chlist li{grid-template-columns:30px minmax(0,1fr);padding:6px 0 7px;font-size:15px}
+  [data-edition="2"] .fo-chlist i{display:none}
+  [data-edition="2"] .fo-colophon{padding-bottom:10px;gap:16px}
+  [data-edition="2"] .fo-close{flex:1 1 auto;height:auto;padding-top:6px}
+  [data-edition="2"] .fo-colophon .fo-lead{font-size:clamp(26px,7.6vw,34px);line-height:1.06}
+}
+@media (max-width:760px) and (max-height:600px){
+  [data-edition="2"] :is(.fo-title,.is-hold) .fo-cell{flex-basis:58%}
+  [data-edition="2"] :is(.fo-title,.is-hold) .fo-lead,[data-edition="2"] .is-hold .fo-passage{font-size:16px}
+  [data-edition="2"] p.fo-say{font-size:32px}
+}

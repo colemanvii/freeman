@@ -1,5 +1,48 @@
 # Freeman case studies — production prototype (002)
 
+**Round 4, 16 Nov 2026: Muchacho, edition 2.** Current; overrides anything below where they differ.
+Barnsley and The Optimist are unchanged from round 3.
+
+- New edit: `v5/built/studies/muchacho-decatur.js` (`edition: 2`). The reasons for each slide and for the
+  three photographs left out are at the top of that file.
+- Previous version, kept for comparison: `muchacho-decatur-v1.js`, at `/project-muchacho-decatur?edition=1`.
+- Side-by-side sheets: `studio/built-record-002/sheets/` (old and new, desktop and phone; the whole journey).
+
+Seven slides: the door by day (title) · the same door open at evening, cropped to stand exactly where the
+first stood, with level marks for the three things the sentence names · the bar, alone · a sentence, with
+the W.C. door small · the wall light with the sentence about how little should show · the construction
+record · credits and the way back.
+
+**Entering and leaving.** The first photograph in the map's overview and the photograph on the slide in
+view are one element across the two pages (`view-transition-name: fgc-entry`, cross-document view
+transitions; rules in `v5/built/entry.css`). Entering, it grows from the overview into the title slide while
+the map recedes; leaving, it returns. The opt-in is the `<style id="fgc-vt">` in `map.html` and in the
+Muchacho page: off under `prefers-reduced-motion`, on only between the map and a case study whose record
+has `"entry": true`. Browsers without the feature (Firefox today) load the page plainly. The Muchacho
+page's scripts are `blocking="render"` so the transition lands on the finished slide.
+
+**Between slides** (edition 2 only): one slide dissolves into the next; the outgoing words leave first.
+
+**The overview's action** now appears directly under the project's name on phones (the panel is a low
+sheet there) and after the photographs on desktop.
+
+**The construction record.** `chapters: [{ title, body?, plate?, source? }]` in the study file. A chapter
+with `body` is shown by a `{ type: "chapter", n }` slide; chapters without it are listed once on the
+`{ type: "chapters" }` slide as "To be recorded". Seven are named, none is written. Fill them only from
+the interviews (Mac Thompson and the project team) or from documents, and note the source.
+Other new fields: `view: [x, y, w, h]` on a plate (a crop), `levels: [[percent, label]]` on a plate slide,
+`layout: "hold"`, slide types `title` and `say`.
+
+Checks: `journey.mjs` — 1,233 checks, eight contexts including reduced motion, Chromium. `film.mjs [1|2]`
+films the journey frame by frame, including the transitions. **WebKit and Firefox were not run.**
+Return state: after Back to project the overview is open on the same project at the same scroll position.
+In the test browser the map page is reloaded rather than restored, so a map the visitor had panned by hand
+returns to the project's own framing.
+
+---
+
+# Earlier rounds
+
 **Round 2, 16 Nov 2026 (later).** Two briefs from Cole changed the system; this section is current and
 overrides anything below it.
 

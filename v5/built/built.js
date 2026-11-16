@@ -24,6 +24,9 @@
   const p = F && (F.project || all.find((x) => x.slug === (F.record || slug)));
   if (!F || !p || !root) { if (root) root.innerHTML = '<p class="fo-none">This case study is not available.</p>'; return; }
 
+  // Edition 2 is the authored treatment (Muchacho first). Editions without the flag render exactly as before.
+  const ED2 = F.edition === 2;
+  if (ED2) document.documentElement.dataset.edition = "2";
   const BASE = window.BUILT_BASE != null ? window.BUILT_BASE : "../"; // the site root, seen from this page
   const PHOTOS = window.RECORD_PHOTOS || {};
   // The projects whose overview this study returns to. One for most; Barnsley stands for three records.
@@ -48,8 +51,13 @@
   const img = (ph, sizes, eager, more) =>
     `<img src="${esc(url(mid(ph)))}" srcset="${esc(srcset(ph))}" sizes="${esc(sizes)}" width="${ph.w}" height="${ph.h}" alt="${esc(ph.alt)}" decoding="async" draggable="false"${eager ? ' fetchpriority="high"' : ""}${more || ""}>`;
   const caption = (ph) => `<figcaption class="fo-micro"><b>${ph.id}</b>${esc(ph.caption)}</figcaption>`;
-  const figure = (ph, sizes, eager, cls) =>
-    `<div class="fo-cell ${cls || ""}" style="--r:${(ph.w / ph.h).toFixed(4)}"><figure class="fo-fig"><div class="fo-frame">${img(ph, sizes, eager)}</div>${caption(ph)}</figure></div>`;
+  const figure = (ph, sizes, eager, cls) => {
+    if (!ph.view) return `<div class="fo-cell ${cls || ""}" style="--r:${(ph.w / ph.h).toFixed(4)}"><figure class="fo-fig"><div class="fo-frame">${img(ph, sizes, eager)}</div>${caption(ph)}</figure></div>`;
+    // A crop: the frame takes the crop's proportion and the photograph is placed behind it.
+    const [x, y, w, h] = ph.view;
+    const st = ` style="position:absolute;max-width:none;height:auto;width:${(ph.w / w * 100).toFixed(3)}%;left:${(-x / w * 100).toFixed(3)}%;top:${(-y / h * 100).toFixed(3)}%"`;
+    return `<div class="fo-cell ${cls || ""}" style="--r:${(w / h).toFixed(4)}"><figure class="fo-fig"><div class="fo-frame">${img(ph, sizes, eager, st)}</div>${caption(ph)}</figure></div>`;
+  };
 
   // ---------- credits ----------
   const C = window.FREEMAN_CREDITS || { roles: [], partners: {}, projects: {} };
@@ -88,11 +96,24 @@
       return `<header class="fo-head"><p class="fo-kicker fo-micro"><b>No. ${esc(p.id)}</b> / ${esc(p.type)}</p><h1 class="fo-name">${esc(p.name)}</h1><p class="fo-micro">${esc(where.join(", "))}</p></header>` +
         (ph ? figure(ph, "(max-width:760px) 100vw, 60vw", true) : "");
     },
+    // Edition 2. The title: the photograph the visitor has just chosen in the overview, the name, one sentence.
+    title(L) {
+      const ph = photo(L.plate);
+      const held = ph ? figure(ph, "(max-width:760px) 100vw, 50vw", true).replace('class="fo-frame"', `class="fo-frame fo-entry fo-shared" style="background-image:url('${esc(url(mid(ph)))}')"`) : "";
+      return held + `<header class="fo-head"><p class="fo-kicker fo-micro"><b>No. ${esc(p.id)}</b> / ${esc(p.type)}</p><h1 class="fo-name">${esc(p.name)}</h1></header>` +
+        `<div class="fo-words"><p class="fo-lead">${esc(say(L.lead))}</p><p class="fo-micro">${esc(where.join(", "))}</p></div>`;
+    },
+    // Edition 2. A sentence set large, and one small photograph that bears it out.
+    say(L) {
+      const ph = photo(L.plate);
+      return `<p class="fo-say">${esc(say(L.lead))}</p>` + (ph ? figure(ph, "(max-width:760px) 60vw, 30vw") : "");
+    },
     // A photograph, whole. Alone it stands in the middle of the slide; with a passage it stands at the left.
     plate(L) {
       const ph = photo(L.plate);
       if (!ph) return "";
       const w = words(L);
+      if (L.levels) return figure(ph, "(max-width:760px) 100vw, 60vw").replace("</figure>", `<ol class="fo-levels" aria-label="On the photograph">${L.levels.map(([y, t]) => `<li style="top:${y}%">${esc(t)}</li>`).join("")}</ol></figure>`) + (w ? `<div class="fo-words">${w}</div>` : "");
       return figure(ph, w ? "(max-width:760px) 100vw, 60vw" : "(max-width:760px) 100vw, 86vw") + (w ? `<div class="fo-words">${w}</div>` : "");
     },
     // A real sheet supplied by the design team, in a title block. No project has one yet.
@@ -100,6 +121,19 @@
       const tb = [["Sheet", L.sheet], ["Title", L.title], ["Drawn by", L.by], ["Date", L.date], ["Scale", L.scale]].filter(([, v]) => v);
       return `<div class="fo-cell" style="--r:${(L.w / L.h).toFixed(4)}"><figure class="fo-fig fo-sheet"><div class="fo-frame">${L.svg || `<img src="${esc(url(L.src))}" alt="${esc(L.alt || L.title)}" width="${L.w}" height="${L.h}">`}</div></figure></div>` +
         `<div class="fo-words">${L.note ? `<p class="fo-passage">${esc(L.note)}</p>` : ""}${dl(tb.map(([k, v]) => [k, esc(v)]), "fo-particulars")}</div>`;
+    },
+    // Edition 2. The construction record. A chapter that has been recorded (it has `body`) is a slide of its
+    // own: its title, its text, and a photograph or drawing if it has one. Chapters not yet recorded are
+    // listed once, plainly, on the `chapters` slide. Nothing is written until someone who was there says it.
+    chapter(L) {
+      const ch = (F.chapters || [])[L.n - 1]; if (!ch || !ch.body) return "";
+      const ph = ch.plate && photo(ch.plate);
+      return (ph ? figure(ph, "(max-width:760px) 100vw, 50vw") : "") +
+        `<div class="fo-words"><p class="fo-micro fo-label">Construction record / ${pad(L.n)}</p><p class="fo-lead">${esc(ch.title)}</p>${[].concat(ch.body).map((t) => `<p class="fo-passage">${esc(t)}</p>`).join("")}${ch.source ? `<p class="fo-micro">${esc(ch.source)}</p>` : ""}</div>`;
+    },
+    chapters(L) {
+      const list = (F.chapters || []).map((ch, i) => ch.body ? "" : `<li><b class="fo-micro">${pad(i + 1)}</b><span>${esc(ch.title)}</span><i class="fo-micro">To be recorded</i></li>`).join("");
+      return `<p class="fo-say">${esc(say(L.lead))}</p><div class="fo-chlist">${L.note ? `<p class="fo-micro">${esc(L.note)}</p>` : ""}<ol>${list}</ol></div>`;
     },
     // The last slide: who built it and for whom, the particulars, and the way back.
     colophon(L) {
@@ -114,7 +148,7 @@
 
   root.innerHTML =
     `<div class="fo-stage" id="fo-stage">` +
-    leaves.map((L, i) => `<section class="fo-leaf fo-${L.type}${L.type === "plate" ? (words(L) ? " has-words" : " is-alone") : ""}${L.type === "cover" && photo(L.plate) && photo(L.plate).w > photo(L.plate).h ? " is-wide" : ""}" data-i="${i}" aria-roledescription="slide" aria-label="${esc(`${i + 1} of ${count}: ${titleOf(L)}`)}">${(render[L.type] || (() => ""))(L)}</section>`).join("") +
+    leaves.map((L, i) => `<section class="fo-leaf fo-${L.type}${L.type === "plate" ? (words(L) ? " has-words" : " is-alone") : ""}${L.type === "chapter" ? " fo-plate has-words is-hold" : ""}${L.type === "cover" && photo(L.plate) && photo(L.plate).w > photo(L.plate).h ? " is-wide" : ""}${L.layout ? " is-" + L.layout : ""}" data-i="${i}" aria-roledescription="slide" aria-label="${esc(`${i + 1} of ${count}: ${titleOf(L)}`)}">${(render[L.type] || (() => ""))(L)}</section>`).join("") +
     `</div>` +
     `<button type="button" class="fo-arrow fo-prev" data-prev aria-label="Previous slide"><span aria-hidden="true">←</span></button>` +
     `<button type="button" class="fo-arrow fo-next" data-next aria-label="Next slide"><span aria-hidden="true">→</span></button>` +
@@ -122,6 +156,7 @@
 
   const stage = root.querySelector(".fo-stage");
   const els = [...stage.querySelectorAll(".fo-leaf")];
+  if (ED2) els.forEach((el) => { const f = el.querySelector(".fo-frame"); if (f) f.classList.add("fo-shared"); });
   const countEl = root.querySelector(".fo-count b");
   const btnPrev = root.querySelector("[data-prev]"), btnNext = root.querySelector("[data-next]");
   let at = -1;
@@ -130,7 +165,11 @@
   const go = (i, quiet) => {
     i = Math.max(0, Math.min(count - 1, i));
     if (i === at) return;
+    const at0 = at;
     at = i;
+    // Edition 2 dissolves one slide into the next (the outgoing slide stays beneath until the new one is up).
+    if (ED2 && els[at0] && !quiet && !calm.matches) { const out = els[at0]; out.classList.add("is-out"); setTimeout(() => out.classList.remove("is-out"), 700); }
+    if (ED2) els.forEach((el, n) => el.classList.toggle("is-in", n === i && !quiet));
     els.forEach((el, n) => { el.classList.toggle("is-on", n === i); el.inert = n !== i; });
     countEl.textContent = pad(i + 1);
     btnPrev.disabled = i === 0; btnNext.disabled = i === count - 1;
@@ -179,6 +218,14 @@
   }, { passive: true });
   window.addEventListener("hashchange", () => go((parseInt(location.hash.slice(1), 10) || 1) - 1, true));
 
+  // The transition belongs to Back to project. Any other link leaves without it.
+  const vt = document.getElementById("fgc-vt");
+  if (vt) {
+    document.addEventListener("click", (e) => { const a = e.target.closest && e.target.closest("a[href]"); if (a) vt.media = a.hasAttribute("data-back") ? "all" : "not all"; }, true);
+  }
+  // A page transition the browser abandons (a reload, a direct arrival) is not an error.
+  addEventListener("unhandledrejection", (e) => { if (e.reason && e.reason.name === "InvalidStateError" && /Transition was aborted/.test(e.reason.message || "")) e.preventDefault(); });
+  ["pageswap", "pagereveal"].forEach((ev) => addEventListener(ev, (e) => { const t = e.viewTransition; if (t) [t.ready, t.finished, t.updateCallbackDone].forEach((x) => x && x.catch(() => {})); }));
   go((parseInt(location.hash.slice(1), 10) || 1) - 1, true);
   if (calm.matches) document.documentElement.dataset.calm = "";
   document.documentElement.dataset.ready = "";

@@ -1,0 +1,16 @@
+/* Entering a case study. The photograph chosen in the project overview becomes the photograph on the
+   case study's title slide: one element, carried across the two pages, growing into place; the rest of
+   the page dissolves. Leaving runs the same move in reverse. Linked from map.html and from a case-study
+   page that takes part (Muchacho, edition 2). Browsers without cross-document view transitions simply
+   load the page. The opt-in itself is the <style id="fgc-vt"> in each page: it is off under
+   prefers-reduced-motion, and each page switches it off for a navigation to a page that does not take part. */
+::view-transition-group(fgc-entry){animation-duration:.58s;animation-timing-function:cubic-bezier(.45,0,.1,1)}
+::view-transition-old(fgc-entry),::view-transition-new(fgc-entry){width:100%;height:100%;object-fit:cover}
+/* the page being left recedes first; the page arriving comes up as the photograph settles */
+::view-transition-old(root){animation-duration:.22s;animation-timing-function:ease;animation-fill-mode:both}
+::view-transition-new(root){animation-duration:.38s;animation-delay:.2s;animation-timing-function:ease;animation-fill-mode:both}
+
+/* The overview's way in (map panel). On a phone the panel is a low sheet, so the action stands directly
+   under the project's name, where it is seen without scrolling; on a desktop it follows the photographs. */
+.p-full-top{display:none}
+@media (max-width:760px){.p-full-top{display:flex;margin:12px 0 14px}.p-full-after{display:none}}

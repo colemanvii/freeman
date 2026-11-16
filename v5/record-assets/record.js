@@ -762,9 +762,9 @@
     const ph = it.photos;
     // A project with a published case study offers it straight after the photographs, where a phone shows it
     // without a second scroll; every other project keeps Full project at the foot of its record.
-    const full = `<a class="p-full" href="/project-${esc(typeof it.slideshow === 'string' ? it.slideshow : it.slug)}"><span>${it.slideshow ? 'View full case study' : 'Full project'}</span><span aria-hidden="true">→</span></a>`;
+    const full = `<a class="p-full"${it.entry ? ' data-entry' : ''} href="/project-${esc(typeof it.slideshow === 'string' ? it.slideshow : it.slug)}"><span>${it.slideshow ? 'View full case study' : 'Full project'}</span><span aria-hidden="true">→</span></a>`;
     const fig = ph.length ? `<figure class="p-fig">
-        <div class="p-photos" id="p-photos" tabindex="0" role="group" aria-roledescription="carousel" aria-label="${esc(it.name)} photographs">${ph.map((p, j) => `<div class="p-slide" aria-label="${j + 1} of ${ph.length}"><button type="button" class="p-enlarge" data-k="${j}" aria-label="View photograph ${j + 1} of ${ph.length} full screen"><img src="${esc(sized(p, 960))}" srcset="${esc(srcset(p))}" sizes="(max-width:760px) calc(100vw - 32px), 520px"${p.w ? ` width="${p.w}" height="${p.h}"` : ''} alt="${esc(it.name)}, photograph ${j + 1} of ${ph.length}" decoding="async"${j ? ' loading="lazy"' : ' fetchpriority="high"'} draggable="false"></button></div>`).join('')}</div>
+        <div class="p-photos" id="p-photos" tabindex="0" role="group" aria-roledescription="carousel" aria-label="${esc(it.name)} photographs">${ph.map((p, j) => `<div class="p-slide" aria-label="${j + 1} of ${ph.length}"><button type="button" class="p-enlarge" data-k="${j}" aria-label="View photograph ${j + 1} of ${ph.length} full screen"><img src="${esc(sized(p, 960))}" srcset="${esc(srcset(p))}" sizes="(max-width:760px) calc(100vw - 32px), 520px"${p.w ? ` width="${p.w}" height="${p.h}"` : ''} alt="${esc(it.name)}, photograph ${j + 1} of ${ph.length}" decoding="async"${j ? ' loading="lazy"' : ' fetchpriority="high"'}${!j && it.entry ? ' style="view-transition-name:fgc-entry"' : ''} draggable="false"></button></div>`).join('')}</div>
         <figcaption class="p-cap"><span class="p-count" id="p-count">${ph.length > 1 ? `01 / ${String(ph.length).padStart(2, '0')}` : ''}</span><span class="p-by">${by ? `Photograph ${by.people.map((p) => esc(p.name)).join(', ')}` : ''}</span>${ph.length > 1 ? `<span class="p-arrows"><button type="button" data-ph="-1" aria-label="Previous photograph">←</button><button type="button" data-ph="1" aria-label="Next photograph">→</button></span>` : ''}</figcaption></figure>` : '';
     return `<div class="p-top" id="p-top">
         <div class="p-grip" aria-hidden="true"></div>
@@ -781,8 +781,9 @@
         <p class="p-where">${where.filter(Boolean).map((w) => `<span>${esc(w)}</span>`).join('')}</p>
       </div>
       <div class="p-scroll" id="p-scroll">
+        ${it.slideshow ? full.replace('class="p-full"', 'class="p-full p-full-top"') : ''}
         ${fig}
-        ${it.slideshow ? full : ''}
+        ${it.slideshow ? full.replace('class="p-full"', 'class="p-full p-full-after"') : ''}
         ${it.summary ? `<p class="p-story">${esc(it.summary)}</p>` : ''}
         ${cr.length ? `<dl class="p-credits">${cr.map((c) => `<div><dt>${esc(c.label)}</dt><dd>${c.people.map((p) => partner(p) + (p.note ? ` <span class="p-note">${esc(p.note)}</span>` : '')).join('<br>')}</dd></div>`).join('')}</dl>` : ''}
         ${it.slideshow ? '' : full}
@@ -980,6 +981,16 @@
     }
     if (e.key === '/' && document.activeElement !== q && body.dataset.mode === 'map') { e.preventDefault(); q.focus(); }
   });
+  // Entering a case study (built/entry.css). A page that does not take part simply loads; the browser
+  // reports the abandoned transition as a rejected promise, which is expected and is settled here.
+  // The transition is for a link into a case study that takes part (data-entry), and for coming back from one.
+  // For any other link it is switched off before the browser leaves, and on again whenever this page is shown.
+  const vt = document.getElementById('fgc-vt');
+  if (vt) {
+    document.addEventListener('click', (e) => { const a = e.target.closest && e.target.closest('a[href]'); if (a) vt.media = a.hasAttribute('data-entry') ? 'all' : 'not all'; }, true);
+  }
+  addEventListener('unhandledrejection', (e) => { if (e.reason && e.reason.name === 'InvalidStateError' && /Transition was aborted/.test(e.reason.message || '')) e.preventDefault(); });
+  addEventListener('pageswap', (e) => { const t = e.viewTransition; if (t) [t.ready, t.finished, t.updateCallbackDone].forEach((x) => x && x.catch(() => {})); });
   addEventListener('popstate', () => {
     const p = new URLSearchParams(location.search).get('p');
     if (p && bySlug[p]) open(p, { push: false }); else close({ push: false });
