@@ -88,15 +88,10 @@ figcaption b{margin-right:14px}
 .fo-works li:last-child{border-bottom:1px solid var(--hair)}
 .fo-works i{font-style:normal;font-size:13px;color:var(--muted);text-align:right}
 
-/* Barnsley and The Optimist have not been moved to the three compositions yet; these keep them legible. */
-.fo-pair .fo-a{grid-column:1/7}.fo-pair .fo-b{grid-column:7/13}
-.fo-pair{grid-template-rows:minmax(0,1fr) auto}.fo-pair .fo-words{grid-column:1/9;grid-row:2;padding-bottom:20px}
-.fo-statement{grid-template-rows:auto minmax(0,1fr)}
-.fo-figure{grid-column:1/-1;font-size:clamp(56px,min(13vw,30vh),240px);line-height:.86;font-weight:300;letter-spacing:-.05em;white-space:nowrap}
-.fo-statement .fo-words{grid-column:1/8;align-self:end;padding-bottom:20px}
-.fo-listwrap{grid-column:9/13;grid-row:2;align-self:end;padding-bottom:20px}
-.fo-list li{display:flex;gap:20px;border-top:1px solid var(--hair);padding:9px 0 11px;font-size:16px}
-.fo-statement .fo-foot{display:none}
+/* a wide opening photograph takes more of the slide; the name keeps its place */
+.fo-cover.is-wide .fo-head{grid-column:1/5}
+.fo-cover.is-wide .fo-cell{grid-column:5/13}
+.fo-cover.is-wide .fo-name{font-size:clamp(40px,min(5vw,11vh),88px)}
 
 @media (max-width:1100px) and (min-width:761px){
   :root{--side:76px}
@@ -114,7 +109,7 @@ figcaption b{margin-right:14px}
   .fo-arrow span{width:56px;height:56px}
   .fo-prev{left:6px;justify-content:flex-start}.fo-next{right:6px;justify-content:flex-end}
   .fo-cover .fo-head{padding:4px 0 0}
-  .fo-name{font-size:clamp(44px,15vw,68px);margin:0 0 10px -.05em}
+  .fo-name,.fo-cover.is-wide .fo-name{font-size:clamp(44px,15vw,68px);margin:0 0 10px -.05em}
   .fo-kicker{padding-bottom:10px}
   .fo-cover .fo-cell{justify-content:flex-start}
   .is-alone .fo-cell{align-items:center}
@@ -133,8 +128,6 @@ figcaption b{margin-right:14px}
   .fo-particulars dd{font-size:13px;line-height:1.3}
   .fo-works li{grid-template-columns:54px minmax(0,1fr);padding:5px 0 6px;font-size:15px}
   .fo-works i{display:none}
-  .fo-figure{font-size:clamp(52px,18vw,84px);white-space:normal}
-  .fo-list li{padding:6px 0 7px;font-size:14px}
 }
 @media (max-width:760px) and (max-height:600px){
   .fo-leaf{gap:10px}
@@ -142,4 +135,11 @@ figcaption b{margin-right:14px}
   .fo-passage{font-size:14px;line-height:1.32}
   .fo-particulars>div{padding:3px 0 4px}
   .fo-return{min-height:40px;margin-top:2px}
+  .fo-colophon{gap:10px}
+  .fo-particulars>div:nth-child(2){display:none} /* the address is on the opening slide */
+  .fo-close{gap:6px}
+  .fo-close .fo-lead{font-size:17px}
+  .fo-close .fo-passage{font-size:12.5px;line-height:1.3}
+  .fo-particulars dd{font-size:12px}
+  .fo-works li{padding:3px 0 4px;font-size:14px}
 }

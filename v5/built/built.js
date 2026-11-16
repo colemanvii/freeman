@@ -7,7 +7,6 @@
    right edges, the arrow keys, a swipe. A counter at the foot. One short dissolve between slides.
 
    Slides: cover · plate (a photograph alone, or with a short passage) · drawing · colophon.
-   (pair and statement remain for the two studies not yet moved to this system.)
 
    FACTS. A study file composes; it restates nothing the site already records:
      name, number, type          /records.js             (unless the study gives `project`)
@@ -27,7 +26,9 @@
 
   const BASE = window.BUILT_BASE != null ? window.BUILT_BASE : "../"; // the site root, seen from this page
   const PHOTOS = window.RECORD_PHOTOS || {};
-  const home = F.back || F.record || slug; // the project whose overview this study returns to
+  // The projects whose overview this study returns to. One for most; Barnsley stands for three records.
+  const homes = F.records || [F.record || slug];
+  const home = homes[0];
   const site = F.site || ((window.RECORD_SITES || {}).sites || {})[F.record || slug] || {};
   const calm = window.matchMedia("(prefers-reduced-motion: reduce)");
   const esc = (v) => String(v == null ? "" : v).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -94,16 +95,6 @@
       const w = words(L);
       return figure(ph, w ? "(max-width:760px) 100vw, 60vw" : "(max-width:760px) 100vw, 86vw") + (w ? `<div class="fo-words">${w}</div>` : "");
     },
-    pair(L) {
-      const [a, b] = L.plates.map(photo);
-      if (!a || !b) return "";
-      return figure(a, "(max-width:760px) 100vw, 45vw", false, "fo-a") + figure(b, "(max-width:760px) 100vw, 50vw", false, "fo-b") + `<div class="fo-words">${words(L)}</div>`;
-    },
-    statement(L) {
-      const list = L.list ? `<div class="fo-listwrap">${L.listTitle ? `<p class="fo-micro">${esc(L.listTitle)}</p>` : ""}<ol class="fo-list">${L.list.map((t, i) => `<li><b class="fo-micro">${pad(i + 1)}</b>${esc(t)}</li>`).join("")}</ol></div>` : "";
-      return `<p class="fo-figure">${esc(say(L.figure))}</p><div class="fo-words">${words(L)}</div>${list}` +
-        (L.source ? `<p class="fo-foot fo-micro">${esc(L.source)}</p>` : "");
-    },
     // A real sheet supplied by the design team, in a title block. No project has one yet.
     drawing(L) {
       const tb = [["Sheet", L.sheet], ["Title", L.title], ["Drawn by", L.by], ["Date", L.date], ["Scale", L.scale]].filter(([, v]) => v);
@@ -123,7 +114,7 @@
 
   root.innerHTML =
     `<div class="fo-stage" id="fo-stage">` +
-    leaves.map((L, i) => `<section class="fo-leaf fo-${L.type}${L.type === "plate" ? (words(L) ? " has-words" : " is-alone") : ""}${L.layout ? " is-" + L.layout : ""}" data-i="${i}" aria-roledescription="slide" aria-label="${esc(`${i + 1} of ${count}: ${titleOf(L)}`)}">${(render[L.type] || (() => ""))(L)}</section>`).join("") +
+    leaves.map((L, i) => `<section class="fo-leaf fo-${L.type}${L.type === "plate" ? (words(L) ? " has-words" : " is-alone") : ""}${L.type === "cover" && photo(L.plate) && photo(L.plate).w > photo(L.plate).h ? " is-wide" : ""}" data-i="${i}" aria-roledescription="slide" aria-label="${esc(`${i + 1} of ${count}: ${titleOf(L)}`)}">${(render[L.type] || (() => ""))(L)}</section>`).join("") +
     `</div>` +
     `<button type="button" class="fo-arrow fo-prev" data-prev aria-label="Previous slide"><span aria-hidden="true">←</span></button>` +
     `<button type="button" class="fo-arrow fo-next" data-next aria-label="Next slide"><span aria-hidden="true">→</span></button>` +
@@ -155,7 +146,7 @@
   const fromOverview = (() => {
     try {
       const r = new URL(document.referrer);
-      return r.origin === location.origin && /^\/map(\.html)?$/.test(r.pathname) && r.searchParams.get("p") === home && history.length > 1;
+      return r.origin === location.origin && /^\/map(\.html)?$/.test(r.pathname) && homes.includes(r.searchParams.get("p")) && history.length > 1;
     } catch (e) { return false; }
   })();
   document.addEventListener("click", (e) => {

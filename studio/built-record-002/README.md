@@ -7,7 +7,7 @@ The journey: **Projects map → project overview (the map's panel) → View full
 
 - The slideshow opens at the project's existing address, `/project-muchacho-decatur`. `v5/project-muchacho-decatur.html`
   is now the slideshow shell; the standalone `/built/` contents page and `/built/muchacho-decatur.html` are gone.
-- A project has a slideshow when its record in `v5/records.js` has `"slideshow": true`. Only Muchacho has it.
+- A project has a slideshow when its record in `v5/records.js` has `"slideshow": true` (or the slug of a shared study).
   The overview then shows `View full case study →` straight after its photographs; every other project
   keeps `Full project →` where it was. One changed line in `record-assets/record.js`; the map is otherwise untouched.
 - `← Back to project` (top right, and on the last slide) returns to that project's overview. Arriving from
@@ -21,12 +21,20 @@ The journey: **Projects map → project overview (the map's panel) → View full
   bands, the plate of crops, the whole-photograph view, the tick rail, the wheel, the hint text.
 - Muchacho is seven slides: opening · door open + passage · front room · bar + passage · cased opening +
   passage · wall light · record. Six photographs, each shown once and whole.
-- **Barnsley and The Optimist have not been moved to this system.** Their files still open at
-  `/built/barnsley-resort.html` and `/built/the-optimist.html` on the new ground with the new navigation, but
-  their slides are the round 1 compositions and are not for review.
+- **Round 3 (same day): the approved system applied to the other two.** `pair`, `statement` and their
+  styles are removed; every study uses the same three compositions.
+  - The Optimist: `/project-the-optimist`, four slides (opening · the restaurant + passage · lit cabinet · record).
+    The passage about the job stands beside the photograph of the whole restaurant, because no photograph
+    of the Oyster Bar is on file.
+  - Barnsley Resort: `/project-barnsley-resort`, nine slides. It belongs to three records (pool, Woodlands,
+    Dugan's Pub): each has `"slideshow": "barnsley-resort"` in `records.js`, each overview offers it, and
+    Back to project returns to the overview the visitor came from (the pool's on a direct arrival).
+  - `/built/*.html` pages are gone. `/project-barnsley-resort` is a new address; the other two existed.
+- While in preview all three slideshow pages carry `noindex`. `/project-muchacho-decatur` and
+  `/project-the-optimist` are indexable in production today: restore that (and og/canonical tags) at release.
 
 Local: `wrangler pages dev v5 --port 8932` (clean URLs are needed), then `/map?p=muchacho-decatur`.
-Check: `PW=<playwright> node studio/built-record-002/journey.mjs` — 379 checks, Chromium, seven screen sizes:
+Check: `PW=<playwright> node studio/built-record-002/journey.mjs` — 1,079 checks, three studies, Chromium, seven screen sizes:
 the overview action, the address, every slide fits, arrows clear of the photograph, counter, ground,
 Back to project, browser back and forward, deep link, swipe, and Beetlecat still reading `Full project`.
 **WebKit and Firefox were not run.**
