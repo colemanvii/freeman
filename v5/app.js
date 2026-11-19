@@ -337,7 +337,11 @@
     // FREEMAN_PEOPLE_20261119
     const peoplePortraits=["gabe","dillon","cameron","mac","jimmy","macee"].map(n=>`/assets/people/${n}.jpg`);
     const originalGabe=gabePhoto.getAttribute("src");
-    const portraitPreloads=[...peoplePortraits,...services.map(s=>s.image)].map(src=>{const image=new Image();image.src=src;return image;});
+    const portraitPreloads=new Map();
+    function preloadTabPhotos(tab){
+      const sources=tab==="people" ? peoplePortraits : tab==="services" ? services.map(s=>s.image) : [];
+      for(const src of sources){if(!portraitPreloads.has(src)){const image=new Image();image.decoding="async";image.src=src;portraitPreloads.set(src,image);}}
+    }
     function updateImageSpace(){
       const item=currentTab==="people" ? people[currentPerson] : currentTab==="services" ? services[currentService] : null;
       const isPeople=currentTab==="people";
@@ -372,6 +376,8 @@
       currentTab=tab;
       vp.querySelector(".co4").dataset.co4View=tab;
       updateImageSpace();
+      preloadTabPhotos(tab);
+      vp.scrollTop=0;
       vp.querySelectorAll("[data-co4-tab]").forEach(el=>el.setAttribute("aria-selected",String(el.dataset.co4Tab===tab)));
       pageIndex=0;
       if(tab==="philosophy"){
