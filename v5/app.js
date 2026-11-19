@@ -312,9 +312,9 @@
       {name:"Macee Murray",role:"Controller"}
     ];
     const services = [
-      {name:"General Contracting",detail:"Construction execution, coordination of trades, quality, and completion.",image:"assets/projects/barnsley-gardens-2.jpg",alt:"Architectural photograph of Barnsley Gardens",caption:"BARNSLEY GARDENS"},
-      {name:"Construction Management",detail:"Planning and coordination throughout the life of a project.",image:"assets/projects/barnsley-gardens-2.jpg",alt:"Photograph of Barnsley Gardens",caption:"BARNSLEY GARDENS"},
-      {name:"Preconstruction",detail:"Early collaboration around scope, budgets, schedules, and constructability.",image:"assets/projects/beetlecat-interior-2.jpg",alt:"Interior photograph of Beetlecat",caption:"BEETLECAT"}
+      {name:"General Contracting",detail:"Construction execution, coordination of trades, quality, and completion.",image:"/assets/services/general-contracting.svg",alt:"Construction equipment at a wooded job site",caption:"GENERAL CONTRACTING"},
+      {name:"Construction Management",detail:"Planning and coordination throughout the life of a project.",image:"/assets/services/construction-management.svg",alt:"Team members reviewing paperwork in the office",caption:"CONSTRUCTION MANAGEMENT"},
+      {name:"Preconstruction",detail:"Early collaboration around scope, budgets, schedules, and constructability.",image:"/assets/services/preconstruction.svg",alt:"Team members discussing plans at a drawing table",caption:"PRECONSTRUCTION"}
     ];
     let currentTab="philosophy",currentPerson=0,currentService=0;
     vp.innerHTML = `<div class="co4" data-co4-view="philosophy">
@@ -337,17 +337,18 @@
     // FREEMAN_PEOPLE_20261119
     const peoplePortraits=["gabe","dillon","cameron","mac","jimmy","macee"].map(n=>`/assets/people/${n}.jpg`);
     const originalGabe=gabePhoto.getAttribute("src");
-    const portraitPreloads=peoplePortraits.map(src=>{const image=new Image();image.src=src;return image;});
+    const portraitPreloads=[...peoplePortraits,...services.map(s=>s.image)].map(src=>{const image=new Image();image.src=src;return image;});
     function updateImageSpace(){
       const item=currentTab==="people" ? people[currentPerson] : currentTab==="services" ? services[currentService] : null;
       const isPeople=currentTab==="people";
-      const showPortrait=currentTab==="philosophy" || isPeople;
-      const nextSrc=isPeople ? peoplePortraits[currentPerson] : originalGabe;
+      const isServices=currentTab==="services";
+      const showPortrait=currentTab==="philosophy" || isPeople || isServices;
+      const nextSrc=isPeople ? peoplePortraits[currentPerson] : isServices ? item.image : originalGabe;
       if(gabePhoto.getAttribute("src")!==nextSrc)gabePhoto.src=nextSrc;
-      gabePhoto.alt=isPeople ? "Team portrait: "+item.name : "Gabe Freeman outdoors at a construction site";
+      gabePhoto.alt=isPeople ? "Team portrait: "+item.name : isServices ? item.alt : "Gabe Freeman outdoors at a construction site";
       gabePhoto.hidden=!showPortrait;
       imagePlaceholder.hidden=true;
-      imageCaption.textContent=isPeople ? item.name.toUpperCase()+" / "+item.role.toUpperCase() : currentTab==="philosophy" ? "GABE FREEMAN / FOUNDER & PRESIDENT" : "";
+      imageCaption.textContent=isPeople ? item.name.toUpperCase()+" / "+item.role.toUpperCase() : isServices ? item.caption : currentTab==="philosophy" ? "GABE FREEMAN / FOUNDER & PRESIDENT" : "";
     }
     const philosophyParagraphs=[
       "The way a place gets built matters.",
