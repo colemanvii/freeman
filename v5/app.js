@@ -334,13 +334,20 @@
     const imageCaption=vp.querySelector("#co4-image-caption");
     const imagePlaceholder=vp.querySelector("#co4-image-placeholder");
     const gabePhoto=vp.querySelector(".co4-gabe-photo");
+    // FREEMAN_PEOPLE_20261119
+    const peoplePortraits=["gabe","dillon","cameron","mac","jimmy","macee"].map(n=>`/assets/people/${n}.jpg`);
+    const originalGabe=gabePhoto.getAttribute("src");
+    const portraitPreloads=peoplePortraits.map(src=>{const image=new Image();image.src=src;return image;});
     function updateImageSpace(){
       const item=currentTab==="people" ? people[currentPerson] : currentTab==="services" ? services[currentService] : null;
-      const showGabe=currentTab==="philosophy" || (currentTab==="people" && currentPerson===0);
-      gabePhoto.hidden=!showGabe;
-      imagePlaceholder.hidden=showGabe;
-      imagePlaceholder.textContent="ADD IMAGE HERE";
-      imageCaption.textContent=showGabe ? "GABE FREEMAN / FOUNDER & PRESIDENT" : currentTab==="people" ? item.name.toUpperCase()+" / HEADSHOT TO COME" : item.name.toUpperCase()+" / IMAGE TO COME";
+      const isPeople=currentTab==="people";
+      const showPortrait=currentTab==="philosophy" || isPeople;
+      const nextSrc=isPeople ? peoplePortraits[currentPerson] : originalGabe;
+      if(gabePhoto.getAttribute("src")!==nextSrc)gabePhoto.src=nextSrc;
+      gabePhoto.alt=isPeople ? "Team portrait: "+item.name : "Gabe Freeman outdoors at a construction site";
+      gabePhoto.hidden=!showPortrait;
+      imagePlaceholder.hidden=true;
+      imageCaption.textContent=isPeople ? item.name.toUpperCase()+" / "+item.role.toUpperCase() : currentTab==="philosophy" ? "GABE FREEMAN / FOUNDER & PRESIDENT" : "";
     }
     const philosophyParagraphs=[
       "The way a place gets built matters.",
@@ -378,15 +385,23 @@
         const person=people[currentPerson];
         copy.innerHTML=`<h2>Our people<span class="co4-accent">.</span></h2>
           <div class="co4-people" role="group" aria-label="Select a team member">${people.map((p,i)=>`<button type="button" class="co4-choice" data-co4-person="${i}" aria-pressed="${i===currentPerson}"><span>0${i+1}</span><strong>${esc(p.name)}</strong></button>`).join("")}</div>
-          <div class="co4-description"><span id="co4-person-role">${esc(person.role)}</span><p id="co4-person-name">${esc(person.name)}</p><small>Full biography and portrait forthcoming.</small></div>`;
+          <div class="co4-description"><span id="co4-person-role">${esc(person.role)}</span><p id="co4-person-name">${esc(person.name)}</p></div>`;
       }
     }
     vp.addEventListener("click",e=>{
       const tab=e.target.closest("[data-co4-tab]"),service=e.target.closest("[data-co4-service]"),person=e.target.closest("[data-co4-person]");
       if(tab){show(tab.dataset.co4Tab);return;}
       if(service){currentService=Number(service.dataset.co4Service);vp.querySelectorAll("[data-co4-service]").forEach(el=>el.setAttribute("aria-pressed",String(Number(el.dataset.co4Service)===currentService)));vp.querySelector("#co4-service-text").textContent=services[currentService].detail;updateImageSpace();return;}
-      if(person){currentPerson=Number(person.dataset.co4Person);show("people");}
+      if(person){selectPerson(Number(person.dataset.co4Person));}
     });
+    function selectPerson(i){
+      if(currentTab!=="people" || !people[i])return;
+      currentPerson=i;
+      vp.querySelectorAll("[data-co4-person]").forEach(el=>el.setAttribute("aria-pressed",String(Number(el.dataset.co4Person)===i)));
+      vp.querySelector("#co4-person-role").textContent=people[i].role;
+      vp.querySelector("#co4-person-name").textContent=people[i].name;
+      updateImageSpace();
+    }
     vp.querySelector(".co4-nav").addEventListener("keydown",e=>{
       const tabs=[...vp.querySelectorAll("[data-co4-tab]")],i=tabs.indexOf(document.activeElement);
       if(i===-1||!["ArrowLeft","ArrowRight"].includes(e.key))return;
