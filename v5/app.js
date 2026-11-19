@@ -307,7 +307,7 @@
       {name:"Gabe Freeman",role:"Founder / President"},
       {name:"Dillon Vanderpool",role:"Project Manager"},
       {name:"Cameron Dombi",role:"Superintendent"},
-      {name:"Mac Thompson",role:"Superintendent"},
+      {name:"Mac Thompson",role:"Project Manager"},
       {name:"Jimmy Jennings",role:"Superintendent"},
       {name:"Macee Murray",role:"Controller"}
     ];
