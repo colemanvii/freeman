@@ -14,6 +14,8 @@ python3 qa/public-visual-diff.py https://freeman-d6f.pages.dev http://127.0.0.1:
 |---|---|
 | `access-alder-qa.py` | ACCESS: every role/step deep link, invalid and outdated links, Back/Forward/refresh, in-page BACK, CLOSE, keyboard, focus, announcements, codes, layout at 10 viewports, touch targets, contrast. Alder (withdrawn): every proposal path is 404, the ALDER code is not recognized, no Alder reference in the ACCESS source. |
 | `public-navigation-qa.py` | Every public route directly; entrance → Projects → project → refresh → CLOSE; Back/Forward; direct-arrival CLOSE; Fieldwork withdrawn (no link or label on any public page, every old URL 302 → /projects, reader/images not served); `records.js` carries no unpublished fields; contact form present (never submitted); internal source files are not served. |
+| `freemangc-v4-home-qa.py` | V4 entrance: the original 2,278-pixel script assembles on arrival and is finished on Back/Forward and with reduced motion; integer device-pixel scale on a device-pixel boundary; script, navigation and squares on one axis; Light / Dark / Freeman order, swatch colours, page and script colour, selected indicator; colorway change and resize never restart the animation; selecting the script replays it. |
+| `company-mobile-qa.py` | Company: the photograph frame is identical across PHILOSOPHY / SERVICES / PEOPLE, stays inside its row and never covers the tabs (375×667 to 1440×900); a viewport resize keeps the selected tab. Every generated route loads the same `app.js` build. |
 | `public-visual-diff.py` | Pixel comparison of public pages between two deployments, to prove a change left them untouched. |
 
 CI runs the first two on every push to `fix/**` and on pull requests into `freeman-v5-consolidation`
