@@ -335,7 +335,7 @@
     const imagePlaceholder=vp.querySelector("#co4-image-placeholder");
     const gabePhoto=vp.querySelector(".co4-gabe-photo");
     // FREEMAN_PEOPLE_20261119
-    const peoplePortraits=["gabe","dillon","cameron-8a5e08df","mac","jimmy","macee"].map(n=>`/assets/people/${n}.jpg`);
+    const peoplePortraits=["gabe.jpg","dillon.jpg","cameron-5437833d.webp","mac.jpg","jimmy.jpg","macee.jpg"].map(n=>`/assets/people/${n}`);
     const originalGabe=gabePhoto.getAttribute("src");
     const portraitPreloads=new Map();
     function preloadTabPhotos(tab){
