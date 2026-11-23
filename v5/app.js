@@ -309,7 +309,9 @@
       {name:"Cameron Dombi",role:"Superintendent"},
       {name:"Mac Thompson",role:"Project Manager"},
       {name:"Jimmy Jennings",role:"Superintendent"},
-      {name:"Macee Murray",role:"Controller"}
+      {name:"Macee Murray",role:"Controller"},
+      {name:"Cole Calfee",role:"Director of Brand & Creative"},
+      {name:"Slater Stringer",role:"Superintendent"}
     ];
     const services = [
       {name:"General Contracting",detail:"Construction execution, coordination of trades, quality, and completion.",image:"/assets/services/general-contracting.svg",alt:"Construction equipment at a wooded job site",caption:"GENERAL CONTRACTING"},
@@ -335,7 +337,11 @@
     const imagePlaceholder=vp.querySelector("#co4-image-placeholder");
     const gabePhoto=vp.querySelector(".co4-gabe-photo");
     // FREEMAN_PEOPLE_20261119
-    const peoplePortraits=["gabe.jpg","dillon.jpg","cameron-5437833d.webp","mac.jpg","jimmy.jpg","macee.jpg"].map(n=>`/assets/people/${n}`);
+    const peoplePortraits=[
+      ...["gabe.jpg","dillon.jpg","cameron-5437833d.webp","mac.jpg","jimmy.jpg","macee.jpg"].map(n=>`/assets/people/${n}`),
+      "https://drive.google.com/thumbnail?id=1SwcNozubulcEi2R7Z9DQJXTQhou7TzEr&sz=w1600",
+      "https://drive.google.com/thumbnail?id=19AOwGGnSug4A5t3h6nXs2cze-oC6m-Rs&sz=w1600"
+    ];
     const originalGabe=gabePhoto.getAttribute("src");
     const portraitPreloads=new Map();
     function preloadTabPhotos(tab){
