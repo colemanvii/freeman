@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f4f4f1">
+<meta name="robots" content="noindex,nofollow">
+<title>Property Services — Freeman (Concept Study)</title>
+<meta name="description" content="A private concept study for Freeman Property Services. The relationship continues.">
+<style>
+:root{--paper:#f4f4f1;--ink:#242424;--secondary:#777873;--rule:#c7c6bf;--orange:#e75a28}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--paper);color:var(--ink)}
+body{font-family:"American Gothic", "Arial Narrow",Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}button{font:inherit}
+button:focus-visible,a:focus-visible{outline:2px solid var(--orange);outline-offset:5px}
+.frame{min-height:100svh;display:flex;flex-direction:column;padding:25px 32px 24px;max-width:1900px;margin:auto}
+.top,.bottom{display:flex;justify-content:space-between;align-items:center;gap:24px}
+.top{font-size:11px;letter-spacing:.08em;font-weight:700;text-transform:uppercase}
+.brand{font-size:16px;letter-spacing:-.045em;white-space:nowrap}
+.top-right{display:flex;align-items:center;gap:25px}
+.top-right a{transition:color .15s}.top-right a:hover{color:var(--orange)}
+.concept{color:var(--orange)}
+.hairline{height:1px;background:var(--rule);margin-top:19px}
+.main{flex:1;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(265px,.65fr);align-items:center;column-gap:min(8vw,130px);padding:40px 0 55px}
+.eyebrow,.index,.micro,.bottom,.tab,.sheet-head,.sheet-foot{font-family:Monaco,Menlo,"Courier New",monospace}
+.eyebrow{font-size:10px;line-height:1.6;letter-spacing:.1em;text-transform:uppercase;color:var(--secondary);margin-bottom:35px}
+.eyebrow b{color:var(--orange);font-weight:400}
+h1{font-size:clamp(76px,10.7vw,190px);font-weight:500;letter-spacing:-.085em;line-height:.82;margin:0 0 40px;max-width:1100px}
+h1 span{display:block}
+h1 .last{margin-left:7.5%;white-space:nowrap}
+.lede{font-size:clamp(18px,1.8vw,28px);letter-spacing:-.035em;line-height:1.3;max-width:540px;margin:0 0 28px 8px}
+.sub{max-width:490px;color:#62635e;font-size:14px;line-height:1.55;margin:0 0 0 8px}
+.side{align-self:stretch;display:flex;flex-direction:column;justify-content:center}
+.sheet{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.sheet-head{display:flex;justify-content:space-between;padding:12px 0;font-size:10px;letter-spacing:.08em;color:var(--secondary)}
+.sheet-head strong{font-weight:400;color:var(--orange)}
+.service{display:grid;grid-template-columns:34px 1fr 24px;width:100%;align-items:center;gap:10px;text-align:left;appearance:none;border:0;border-top:1px solid var(--rule);background:none;padding:19px 0;cursor:pointer;color:var(--ink)}
+.service .number{font:10px Monaco,monospace;color:var(--secondary)}
+.service .name{font-size:clamp(22px,2.3vw,34px);letter-spacing:-.055em}
+.service .plus{font:21px Arial,sans-serif;text-align:right;color:var(--secondary)}
+.service[aria-expanded=true] .plus{color:var(--orange)}
+.detail{display:none;border-top:1px solid var(--rule);padding:0 15px 18px 44px;font-size:13px;line-height:1.6;color:#666760}
+.detail.open{display:block}
+.sheet-foot{display:flex;justify-content:space-between;gap:16px;padding:13px 0;font-size:10px;line-height:1.5;color:var(--secondary)}
+.barn{margin-top:35px;display:grid;grid-template-columns:1fr auto;align-items:end;border-top:1px solid var(--rule);padding-top:12px;gap:15px}
+.barn-label{font:10px Monaco,Menlo,monospace;color:var(--secondary);letter-spacing:.08em}
+.barn-title{font-size:clamp(28px,3vw,46px);letter-spacing:-.055em;line-height:1.05;margin:13px 0 0}
+.barn-note{font-size:11px;line-height:1.45;color:var(--secondary);max-width:175px;text-align:right}
+.bottom{font-size:10px;color:var(--secondary);letter-spacing:.045em;line-height:1.4;text-transform:uppercase}
+.bottom .center{color:var(--ink)}.bottom .right{text-align:right}
+.bottom-line{height:1px;background:var(--rule);margin-bottom:14px}
+@media(max-width:900px){.main{grid-template-columns:1fr;gap:55px;padding:65px 0 60px}.side{max-width:none}h1{font-size:clamp(73px,15vw,150px)}.frame{padding:23px 24px}.lede{max-width:640px}.sub{max-width:620px}.barn{margin-top:28px}}
+@media(max-width:550px){.frame{padding:18px 17px 18px}.top{align-items:flex-start;font-size:9px}.brand{font-size:13px}.top-right{gap:12px;flex-wrap:wrap;justify-content:flex-end}.top-right a:not(.concept){display:none}.hairline{margin-top:16px}.main{padding:54px 0 45px;gap:52px}.eyebrow{font-size:9px;margin-bottom:32px}h1{font-size:clamp(60px,15vw,93px);margin-bottom:32px;letter-spacing:-.087em}h1 .last{margin-left:4%}.lede{font-size:21px;margin-left:0}.sub{font-size:13px;margin-left:0}.service{padding:16px 0}.service .name{font-size:27px}.barn{grid-template-columns:1fr}.barn-note{text-align:left;max-width:290px}.bottom{font-size:8px;gap:10px;flex-wrap:wrap}.bottom .center{order:3;width:100%;margin-top:5px}.bottom .right{margin-left:auto}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="frame">
+<header>
+  <nav class="top" aria-label="Page navigation">
+    <a class="brand" href="/">FREEMAN GC</a>
+    <div class="top-right"><a href="/">RETURN TO FREEMAN</a><span class="concept">STUDY 001 / NOT PUBLIC</span></div>
+  </nav>
+  <div class="hairline"></div>
+</header>
+<main class="main" id="content">
+  <section aria-labelledby="headline">
+    <div class="eyebrow"><b>01 /</b> FREEMAN PROPERTY SERVICES &nbsp;—&nbsp; A PROPOSED PRACTICE</div>
+    <h1 id="headline"><span>Built</span><span>to last.</span><span class="last">Here to stay.</span></h1>
+    <p class="lede">The relationship doesn't end when construction does.</p>
+    <p class="sub">Places change. Needs evolve. The people who know a property best should be there for what comes next. A proposed Freeman practice for the ongoing care, improvement, and stewardship of the places we build.</p>
+  </section>
+  <aside class="side" aria-label="Proposed services and pilot">
+    <div class="sheet">
+      <div class="sheet-head"><span>SERVICE INDEX / PROPOSED</span><strong>FPS—001</strong></div>
+      <button class="service" aria-expanded="true" aria-controls="detail1" id="service1"><span class="number">01</span><span class="name">Property care</span><span class="plus" aria-hidden="true">−</span></button>
+      <div class="detail open" id="detail1" role="region" aria-labelledby="service1">Ongoing maintenance coordination, service needs, and the small, necessary work that keeps a place performing as intended.</div>
+      <button class="service" aria-expanded="false" aria-controls="detail2" id="service2"><span class="number">02</span><span class="name">Improvements</span><span class="plus" aria-hidden="true">+</span></button>
+      <div class="detail" id="detail2" role="region" aria-labelledby="service2">Repairs, alterations, refreshes, and targeted improvements carried out with an understanding of the original work.</div>
+      <button class="service" aria-expanded="false" aria-controls="detail3" id="service3"><span class="number">03</span><span class="name">Renovation</span><span class="plus" aria-hidden="true">+</span></button>
+      <div class="detail" id="detail3" role="region" aria-labelledby="service3">Planning and building the next chapter of a property as its owners, operations, and ambitions change.</div>
+      <div class="sheet-foot"><span>ONE PROPERTY.<br>AN ENDURING RELATIONSHIP.</span><span>BUILT FOR GENERATIONS™</span></div>
+    </div>
+    <div class="barn">
+      <div><div class="barn-label">POTENTIAL PILOT / 001</div><p class="barn-title">Barnsley<br>Resort.</p></div>
+      <div class="barn-note">A continuing relationship with the property provides a starting point for defining the service.</div>
+    </div>
+  </aside>
+</main>
+<footer><div class="bottom-line"></div><div class="bottom"><span>FREEMAN GENERAL CONTRACTING<br>CARTERSVILLE, GEORGIA</span><span class="center">PROPERTY SERVICES / CONCEPT STUDY</span><span class="right">NOT AN ACTIVE SERVICE OFFERING<br>FOR INTERNAL REVIEW</span></div></footer>
+</div>
+<script>
+const buttons=[...document.querySelectorAll(".service")];
+buttons.forEach(button=>button.addEventListener("click",()=>{
+const wasOpen=button.getAttribute("aria-expanded")==="true";
+buttons.forEach(b=>{b.setAttribute("aria-expanded","false");b.querySelector(".plus").textContent="+";document.getElementById(b.getAttribute("aria-controls")).classList.remove("open")});
+if(!wasOpen){button.setAttribute("aria-expanded","true");button.querySelector(".plus").textContent="−";document.getElementById(button.getAttribute("aria-controls")).classList.add("open")}
+}));
+</script>
+</body>
+</html>
