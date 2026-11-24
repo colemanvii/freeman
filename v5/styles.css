@@ -1148,7 +1148,6 @@ body[data-route="company"] .co4[data-co4-view="philosophy"] .co4-media>.co4-gabe
   body[data-route="company"] .co4:is([data-co4-view="philosophy"],[data-co4-view="people"],[data-co4-view="services"]) .co4-stage{height:auto;grid-template-rows:auto 130px auto}
 }
 
-@media (max-width:760px), (orientation:landscape) and (max-height:540px) and (pointer:coarse){
   body[data-route="company"] .co4-nav{
     display:grid;
     grid-template-columns:repeat(3,minmax(0,1fr));
@@ -1157,7 +1156,6 @@ body[data-route="company"] .co4[data-co4-view="philosophy"] .co4-media>.co4-gabe
   .co4-nav [data-co4-tab="philosophy"]{text-align:left}
   .co4-nav [data-co4-tab="services"]{text-align:center}
   .co4-nav [data-co4-tab="people"]{text-align:right}
-}
 
 .co4[data-co4-view="services"] .co4-visual figcaption{display:none}
 
