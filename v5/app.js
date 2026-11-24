@@ -340,7 +340,9 @@
     const peoplePortraits=[
       "/assets/people/gabe.jpg",
       "https://drive.google.com/thumbnail?id=1GL-PXZMOp6XBIgIOtOHvSfn-OgHWnXKt&sz=w1600",
-      ...["dillon.jpg","cameron-5437833d.webp","mac.jpg","jimmy.jpg","macee.jpg"].map(n=>`/assets/people/${n}`),
+      ...["dillon.jpg","cameron-5437833d.webp","mac.jpg"].map(n=>`/assets/people/${n}`),
+      "https://drive.google.com/thumbnail?id=1hl_aINwDyfPQdWnEhhAsk9yEGtHTNFLn&sz=w1600",
+      "/assets/people/macee.jpg",
       "https://drive.google.com/thumbnail?id=19AOwGGnSug4A5t3h6nXs2cze-oC6m-Rs&sz=w1600"
     ];
     const originalGabe=gabePhoto.getAttribute("src");
