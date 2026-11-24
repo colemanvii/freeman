@@ -305,12 +305,12 @@
     const vp = root.querySelector(".viewport");
     const people = [
       {name:"Gabe Freeman",role:"Founder / President"},
+      {name:"Cole Calfee",role:"Director of Brand & Creative"},
       {name:"Dillon Vanderpool",role:"Project Manager"},
       {name:"Cameron Dombi",role:"Superintendent"},
       {name:"Mac Thompson",role:"Project Manager"},
       {name:"Jimmy Jennings",role:"Superintendent"},
       {name:"Macee Murray",role:"Controller"},
-      {name:"Cole Calfee",role:"Director of Brand & Creative"},
       {name:"Slater Stringer",role:"Superintendent"}
     ];
     const services = [
@@ -338,8 +338,9 @@
     const gabePhoto=vp.querySelector(".co4-gabe-photo");
     // FREEMAN_PEOPLE_20261119
     const peoplePortraits=[
-      ...["gabe.jpg","dillon.jpg","cameron-5437833d.webp","mac.jpg","jimmy.jpg","macee.jpg"].map(n=>`/assets/people/${n}`),
+      "/assets/people/gabe.jpg",
       "https://drive.google.com/thumbnail?id=1GL-PXZMOp6XBIgIOtOHvSfn-OgHWnXKt&sz=w1600",
+      ...["dillon.jpg","cameron-5437833d.webp","mac.jpg","jimmy.jpg","macee.jpg"].map(n=>`/assets/people/${n}`),
       "https://drive.google.com/thumbnail?id=19AOwGGnSug4A5t3h6nXs2cze-oC6m-Rs&sz=w1600"
     ];
     const originalGabe=gabePhoto.getAttribute("src");
