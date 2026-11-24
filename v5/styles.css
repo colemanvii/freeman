@@ -1160,3 +1160,9 @@ body[data-route="company"] .co4[data-co4-view="philosophy"] .co4-media>.co4-gabe
 }
 
 .co4[data-co4-view="services"] .co4-visual figcaption{display:none}
+
+/* People: the portrait caption is the sole name/role label. */
+body[data-route="company"] .co4[data-co4-view="people"] .co4-description{display:none}
+@media(min-width:1000px){
+  body[data-route="company"] .co4[data-co4-view="people"] .co4-visual figcaption{width:max-content;max-width:none;white-space:nowrap;align-self:flex-start;overflow:visible}
+}
